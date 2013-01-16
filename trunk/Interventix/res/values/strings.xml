@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Interventix</string>
+	<string name="hello_world">Hello world!</string>
+	<string name="menu_settings">Settings</string>
+	<string name="username">Username</string>
+	<string name="password_">Password</string>
+	<string name="login_">Login</string>
+	<string name="logo_">Logo Interventix</string>
+	<string name="title_activity_index">IndexActivity</string>
+</resources>

@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#ffffff"
+	tools:context=".MainActivity" >
+	<ImageView
+		android:id="@+id/view_logo"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_centerHorizontal="true"
+		android:contentDescription="@string/logo_"
+		android:src="@drawable/logo_ix" />
+	<EditText
+		android:id="@+id/field_username"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/textView1"
+		android:layout_centerHorizontal="true"
+		android:ems="10"
+		android:hint="@string/username"
+		android:inputType="textNoSuggestions"
+		android:textAllCaps="false"
+		android:textIsSelectable="false" >
+		<requestFocus />
+	</EditText>
+	<EditText
+		android:id="@+id/field_password"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/textView2"
+		android:layout_centerHorizontal="true"
+		android:ems="10"
+		android:hint="@string/password_"
+		android:inputType="textPassword|textNoSuggestions" />
+	<TextView
+		android:id="@+id/textView2"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignLeft="@+id/field_password"
+		android:layout_below="@+id/field_username"
+		android:text="@string/password_" />
+	<TextView
+		android:id="@+id/textView1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignLeft="@+id/textView2"
+		android:layout_below="@+id/view_logo"
+		android:text="@string/username" />
+	<Button
+		android:id="@+id/btn_login"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignLeft="@+id/field_username"
+		android:layout_alignRight="@+id/field_username"
+		android:layout_below="@+id/field_password"
+		android:longClickable="false"
+		android:onClick="loginService"
+		android:text="@string/login_" />
+</RelativeLayout>
