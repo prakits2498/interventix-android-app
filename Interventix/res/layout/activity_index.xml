@@ -2,11 +2,41 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:background="#ffffff"
 	tools:context=".IndexActivity" >
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+	<ImageView
+		android:id="@+id/imageView1"
+		android:layout_width="159dp"
+		android:layout_height="60dp"
+		android:layout_alignParentLeft="false"
+		android:layout_alignParentTop="false"
+		android:clickable="false"
+		android:contentDescription="@string/logo_"
+		android:longClickable="false"
+		android:maxHeight="60dp"
+		android:maxWidth="159dp"
+		android:src="@drawable/logo_ix" />
+	<Button
+		android:id="@+id/button1"
+		android:layout_width="245dp"
+		android:layout_height="57dp"
+		android:layout_below="@+id/imageView1"
 		android:layout_centerHorizontal="true"
-		android:layout_centerVertical="true"
-		android:text="@string/hello_world" />
+		android:layout_marginTop="46dp"
+		android:text="@string/add_interv" />
+	<Button
+		android:id="@+id/button2"
+		android:layout_width="245dp"
+		android:layout_height="57dp"
+		android:layout_below="@+id/button1"
+		android:layout_centerHorizontal="true"
+		android:text="@string/my_interv" />
+	<Button
+		android:id="@+id/button3"
+		android:layout_width="245dp"
+		android:layout_height="57dp"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginBottom="20dp"
+		android:text="@string/exit" />
 </RelativeLayout>

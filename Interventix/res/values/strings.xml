@@ -8,4 +8,7 @@
 	<string name="login_">Login</string>
 	<string name="logo_">Logo Interventix</string>
 	<string name="title_activity_index">IndexActivity</string>
+	<string name="add_interv">AGGIUNGI INTERVENTO</string>
+	<string name="my_interv">I MIEI INTERVENTI</string>
+	<string name="exit">ESCI</string>
 </resources>
