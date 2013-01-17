@@ -22,7 +22,8 @@
 		android:layout_height="44dp"
 		android:layout_alignParentTop="true"
 		android:layout_toRightOf="@+id/imageView1"
-		android:text="@string/others" />
+		android:text="@string/others"
+		android:textSize="12sp" />
 	<TableLayout
 		android:id="@+id/table_Intervs"
 		android:layout_width="match_parent"
@@ -36,5 +37,6 @@
 		android:layout_height="44dp"
 		android:layout_alignParentTop="true"
 		android:layout_toRightOf="@+id/btn_others"
-		android:text="@string/back" />
+		android:text="@string/back"
+		android:textSize="12sp" />
 </RelativeLayout>

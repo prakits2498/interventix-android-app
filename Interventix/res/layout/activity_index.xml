@@ -23,6 +23,7 @@
 		android:layout_below="@+id/imageView1"
 		android:layout_centerHorizontal="true"
 		android:layout_marginTop="46dp"
+		android:onClick="addInterv"
 		android:text="@string/add_interv" />
 	<Button
 		android:id="@+id/btn_back"
@@ -31,6 +32,7 @@
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true"
 		android:layout_marginBottom="20dp"
+		android:onClick="back"
 		android:text="@string/exit" />
 	<Button
 		android:id="@+id/btn_myInterv"
@@ -38,5 +40,6 @@
 		android:layout_height="57dp"
 		android:layout_alignLeft="@+id/btn_addInterv"
 		android:layout_below="@+id/btn_addInterv"
+		android:onClick="myInterv"
 		android:text="@string/my_interv" />
 </RelativeLayout>
