@@ -19,7 +19,6 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.federicocolanoni.projects.interventix.R;
 import com.turbomanage.httpclient.AsyncCallback;
 import com.turbomanage.httpclient.HttpResponse;
 import com.turbomanage.httpclient.ParameterMap;

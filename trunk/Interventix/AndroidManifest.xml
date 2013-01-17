@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.federicocolanoni.projects.interventix"
+	package="com.federicocolantoni.projects.interventix"
 	android:versionCode="1"
 	android:versionName="1.0" >
 	<uses-sdk
@@ -27,6 +27,14 @@
 				<action android:name="com.federicocolantoni.projects.interventix.IndexActivity" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
+		</activity>
+		<activity
+			android:name="com.federicocolantoni.projects.interventix.MyInterventionsActivity"
+			android:label="@string/title_activity_my_interventions" >
+		</activity>
+		<activity
+			android:name="com.federicocolantoni.projects.interventix.TabBarActivity"
+			android:label="@string/title_activity_tab_bar" >
 		</activity>
 	</application>
 </manifest>
