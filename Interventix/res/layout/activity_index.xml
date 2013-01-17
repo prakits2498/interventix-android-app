@@ -17,7 +17,7 @@
 		android:maxWidth="159dp"
 		android:src="@drawable/logo_ix" />
 	<Button
-		android:id="@+id/button1"
+		android:id="@+id/btn_addInterv"
 		android:layout_width="245dp"
 		android:layout_height="57dp"
 		android:layout_below="@+id/imageView1"
@@ -25,18 +25,18 @@
 		android:layout_marginTop="46dp"
 		android:text="@string/add_interv" />
 	<Button
-		android:id="@+id/button2"
-		android:layout_width="245dp"
-		android:layout_height="57dp"
-		android:layout_below="@+id/button1"
-		android:layout_centerHorizontal="true"
-		android:text="@string/my_interv" />
-	<Button
-		android:id="@+id/button3"
+		android:id="@+id/btn_back"
 		android:layout_width="245dp"
 		android:layout_height="57dp"
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true"
 		android:layout_marginBottom="20dp"
 		android:text="@string/exit" />
+	<Button
+		android:id="@+id/btn_myInterv"
+		android:layout_width="245dp"
+		android:layout_height="57dp"
+		android:layout_alignLeft="@+id/btn_addInterv"
+		android:layout_below="@+id/btn_addInterv"
+		android:text="@string/my_interv" />
 </RelativeLayout>

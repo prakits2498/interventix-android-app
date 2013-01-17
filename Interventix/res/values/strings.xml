@@ -11,4 +11,8 @@
 	<string name="add_interv">AGGIUNGI INTERVENTO</string>
 	<string name="my_interv">I MIEI INTERVENTI</string>
 	<string name="exit">ESCI</string>
+	<string name="title_activity_my_interventions">MyInterventionsActivity</string>
+	<string name="others">ALTRI</string>
+	<string name="back">INDIETRO</string>
+	<string name="title_activity_tab_bar">TabBarActivity</string>
 </resources>

@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.Window;
 
-import com.federicocolanoni.projects.interventix.R;
-
 public class IndexActivity extends Activity {
 
     private String idUser;

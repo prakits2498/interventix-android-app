@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#ffffff"
+	tools:context=".MyInterventionsActivity" >
+	<ImageView
+		android:id="@+id/imageView1"
+		android:layout_width="159dp"
+		android:layout_height="60dp"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
+		android:clickable="false"
+		android:contentDescription="@string/logo_"
+		android:longClickable="false"
+		android:maxHeight="60dp"
+		android:maxWidth="159dp"
+		android:src="@drawable/logo_ix" />
+	<Button
+		android:id="@+id/btn_others"
+		android:layout_width="58dp"
+		android:layout_height="44dp"
+		android:layout_alignParentTop="true"
+		android:layout_toRightOf="@+id/imageView1"
+		android:text="@string/others" />
+	<TableLayout
+		android:id="@+id/table_Intervs"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_alignParentLeft="true"
+		android:layout_below="@+id/imageView1" >
+	</TableLayout>
+	<Button
+		android:id="@+id/btn_back"
+		android:layout_width="87dp"
+		android:layout_height="44dp"
+		android:layout_alignParentTop="true"
+		android:layout_toRightOf="@+id/btn_others"
+		android:text="@string/back" />
+</RelativeLayout>
