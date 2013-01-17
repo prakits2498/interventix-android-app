@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -29,14 +30,16 @@ public class MainActivity extends Activity {
     private EditText username, password;
     private String json_req;
 
-    private ProgressDialog dialog;
+    private final String debugTag = "xxx";
 
-    // private HttpResponse response;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
 	super.onCreate(savedInstanceState);
+	requestWindowFeature(Window.FEATURE_NO_TITLE);
+
 	setContentView(R.layout.activity_main);
 
     }
@@ -59,7 +62,7 @@ public class MainActivity extends Activity {
 		    username.getText().toString(), password.getText()
 			    .toString());
 	} catch (Exception e) {
-	    e.printStackTrace();
+	    Log.d(debugTag, e.toString());
 	}
 
 	dialog = ProgressDialog.show(this, "Connessione", "Attendere prego...",
@@ -92,19 +95,30 @@ public class MainActivity extends Activity {
 	    if (resp.get("response").toString().equalsIgnoreCase("success")) {
 		Toast.makeText(this.getBaseContext(), "ACCESSO CONSENTITO",
 			Toast.LENGTH_SHORT).show();
-		Log.d("xxx", "ACCESSO CONSENTITO");
+		Log.d(debugTag, "ACCESSO CONSENTITO");
 		dialog.dismiss();
-		startActivity(new Intent(this, IndexActivity.class));
+
+		Intent intent = new Intent(MainActivity.this,
+			IndexActivity.class);
+		Bundle extra = new Bundle();
+		extra.putString("iduser", resp.get("iduser").toString());
+
+		intent.putExtras(extra);
+
+		username.setText(new String());
+		password.setText(new String());
+
+		startActivity(intent);
 
 	    } else {
 		Toast.makeText(this.getBaseContext(), "ACCESSO NEGATO!",
 			Toast.LENGTH_SHORT).show();
-		Log.d("xxx", "ACCESSO NEGATO");
+		Log.d(debugTag, "ACCESSO NEGATO");
 	    }
 	} catch (ParseException e) {
-	    e.printStackTrace();
+	    Log.d(debugTag, e.toString());
 	} catch (Exception e) {
-	    e.printStackTrace();
+	    Log.d(debugTag, e.toString());
 	}
     }
 }
