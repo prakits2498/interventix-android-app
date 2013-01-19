@@ -42,4 +42,13 @@
 		android:layout_below="@+id/btn_addInterv"
 		android:onClick="myInterv"
 		android:text="@string/my_interv" />
+	<TextView
+		android:id="@+id/label_nominativo"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
+		android:layout_marginLeft="30dp"
+		android:layout_marginTop="16dp"
+		android:layout_toRightOf="@+id/imageView1" />
 </RelativeLayout>
