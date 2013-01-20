@@ -93,7 +93,8 @@ public class IndexActivity extends Activity {
 			    }
 			}
 
-			label_nom.setText(nome + " " + cognome);
+			nominativo = nome + " " + cognome;
+			label_nom.setText(nominativo);
 		    }
 		} catch (ParseException e) {
 		    Log.d(debugTag, e.toString());
