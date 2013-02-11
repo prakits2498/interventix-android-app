@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 import multiface.crypto.cr2.JsonCR2;
@@ -16,6 +17,7 @@ import org.json.simple.parser.ParseException;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -31,8 +33,11 @@ import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 public class MyInterventionsActivity extends Activity {
 
-    private String idUser;
-    private final String debugTag = "xxx";
+    private static final String DEBUG_TAG = "INTERVENTIX";
+    static final String GLOBAL_PREFERENCES = "Preferences";
+
+    private int idUser;
+
     private int first, max;
     private JSONArray datas;
 
@@ -47,10 +52,9 @@ public class MyInterventionsActivity extends Activity {
 
 	setContentView(R.layout.activity_my_interventions);
 
-	Bundle extra = getIntent().getExtras();
-	setIdUser(extra.getString("iduser"));
-
-	Log.d(debugTag, "ID user: " + getIdUser());
+	SharedPreferences prefs = getSharedPreferences(GLOBAL_PREFERENCES,
+		MODE_PRIVATE);
+	idUser = prefs.getInt("iduser", Integer.valueOf(-1));
 
 	first = 0;
 	max = 10;
@@ -82,11 +86,11 @@ public class MyInterventionsActivity extends Activity {
 
 	try {
 	    json_req = JsonCR2.createRequest("interventions", "my", parameters,
-		    Integer.parseInt(idUser));
+		    idUser);
 	} catch (NumberFormatException e) {
-	    Log.d(debugTag, e.toString());
+	    Log.d(DEBUG_TAG, e.toString());
 	} catch (Exception e) {
-	    Log.d(debugTag, e.toString());
+	    Log.d(DEBUG_TAG, e.toString());
 	}
 
 	AndroidHttpClient request = new AndroidHttpClient(
@@ -105,14 +109,12 @@ public class MyInterventionsActivity extends Activity {
 	    public void onComplete(HttpResponse httpResponse) {
 
 		try {
-		    JSONObject resp = JsonCR2.readRequest(httpResponse
+		    JSONObject resp = JsonCR2.read(httpResponse
 			    .getBodyAsString());
 
 		    if (resp.get("response").toString()
 			    .equalsIgnoreCase("success")) {
 			JSONArray datas = (JSONArray) resp.get("data");
-
-			//Log.d("xxx", datas.toString());
 
 			String[] intervs = new String[datas.size()];
 			int cont = 0;
@@ -120,7 +122,7 @@ public class MyInterventionsActivity extends Activity {
 			Iterator it = datas.iterator();
 			while (it.hasNext()) {
 
-			    Map data = (HashMap) it.next();
+			    Map data = (Map) it.next();
 
 			    Map cliente = (HashMap) data.get("cliente");
 
@@ -132,16 +134,15 @@ public class MyInterventionsActivity extends Activity {
 			    Timestamp date = new Timestamp(dataora);
 
 			    String format = "dd-MM-yyyy HH:mm:ss";
-			    DateFormat df = new SimpleDateFormat(format);
+			    DateFormat df = new SimpleDateFormat(format,
+				    Locale.ITALY);
 
-			    String dataoraStringa = df.format(date);
-
-			    //Log.d("xxx", "Intervento: " + intervento);
+			    String dataOraStringa = df.format(date);
 
 			    intervs[cont] = "Intervento n. " + intervento
 				    + "\n"
 				    + cliente.get("nominativo").toString()
-				    + "\ndel " + dataoraStringa;
+				    + "\ndel " + dataOraStringa;
 			    cont++;
 			}
 
@@ -155,9 +156,13 @@ public class MyInterventionsActivity extends Activity {
 			dialog.dismiss();
 		    }
 		} catch (ParseException e) {
-		    Log.d(debugTag, e.toString());
+		    Log.d(DEBUG_TAG,
+			    MyInterventionsActivity.class.getSimpleName()
+				    + " PARSE_EXCEPTION! " + e.toString());
 		} catch (Exception e) {
-		    Log.d(debugTag, e.toString());
+		    Log.d(DEBUG_TAG,
+			    MyInterventionsActivity.class.getSimpleName()
+				    + " GENERIC_EXCEPTION! " + e.toString());
 		}
 	    }
 
@@ -171,23 +176,10 @@ public class MyInterventionsActivity extends Activity {
 
     public void others(View v) {
 
+	int f = first + 10;
+
+	first = f;
+
+	this.request();
     }
-
-    /**
-     * @return the idUser
-     */
-    public String getIdUser() {
-
-	return idUser;
-    }
-
-    /**
-     * @param idUser
-     *            the idUser to set
-     */
-    public void setIdUser(String idUser) {
-
-	this.idUser = idUser;
-    }
-
 }
