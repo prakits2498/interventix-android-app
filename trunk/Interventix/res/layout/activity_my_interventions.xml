@@ -22,7 +22,6 @@
 		android:layout_height="44dp"
 		android:layout_alignParentTop="true"
 		android:layout_toRightOf="@+id/imageView1"
-		android:onClick="others"
 		android:text="@string/others"
 		android:textSize="12sp" />
 	<Button
@@ -31,7 +30,6 @@
 		android:layout_height="44dp"
 		android:layout_alignParentTop="true"
 		android:layout_toRightOf="@+id/btn_others"
-		android:onClick="back"
 		android:text="@string/back"
 		android:textSize="12sp" />
 	<ListView

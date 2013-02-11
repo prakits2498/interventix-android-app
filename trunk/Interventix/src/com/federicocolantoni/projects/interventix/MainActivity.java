@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -44,9 +45,26 @@ public class MainActivity extends Activity {
 
 	setContentView(R.layout.activity_main);
 
+	findViewById(R.id.btn_login).setOnClickListener(new OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+
+		try {
+		    loginService(v);
+		} catch (InterruptedException e) {
+		    Log.d(DEBUG_TAG, MainActivity.class.getSimpleName()
+			    + " INTERRUPTED_EXCEPTION!", e);
+		} catch (IOException e) {
+		    Log.d(DEBUG_TAG, MainActivity.class.getSimpleName()
+			    + " IO_EXCEPTION!", e);
+		}
+	    }
+	});
+
     }
 
-    public void loginService(View v) throws InterruptedException, IOException {
+    private void loginService(View v) throws InterruptedException, IOException {
 
 	username = (EditText) findViewById(R.id.field_username);
 	password = (EditText) findViewById(R.id.field_password);
@@ -76,9 +94,7 @@ public class MainActivity extends Activity {
 	    public void onComplete(HttpResponse httpResponse) {
 
 		requestComplete(httpResponse);
-
 	    }
-
 	});
 
     }
@@ -128,7 +144,7 @@ public class MainActivity extends Activity {
 	    }
 	} catch (ParseException e) {
 	    Log.d(DEBUG_TAG, MainActivity.class.getSimpleName()
-		    + " PARSE_EXCEPTION! " + e.toString());
+		    + " PARSE_EXCEPTION!", e);
 	} catch (Exception e) {
 	    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
 		    + " GENERIC_EXCEPTION!", e);

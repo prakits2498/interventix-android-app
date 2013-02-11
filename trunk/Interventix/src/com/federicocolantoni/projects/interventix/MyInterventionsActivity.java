@@ -20,8 +20,8 @@ import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -60,15 +60,30 @@ public class MyInterventionsActivity extends Activity {
 	max = 10;
 
 	table = (ListView) findViewById(R.id.list_myInterv);
-	this.request();
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+	findViewById(R.id.btn_others).setOnClickListener(new OnClickListener() {
 
-	// Inflate the menu; this adds items to the action bar if it is present.
-	getMenuInflater().inflate(R.menu.activity_my_interventions, menu);
-	return true;
+	    @Override
+	    public void onClick(View v) {
+
+		int f = first + 10;
+
+		first = f;
+
+		MyInterventionsActivity.this.request();
+	    }
+	});
+
+	findViewById(R.id.btn_back).setOnClickListener(new OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+
+		finish();
+	    }
+	});
+
+	request();
     }
 
     private void request() {
@@ -148,7 +163,7 @@ public class MyInterventionsActivity extends Activity {
 
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 				MyInterventionsActivity.this,
-				R.layout.table_cell, R.id.lbl_tableCell,
+				R.layout.interv_row, R.id.lbl_tableCell,
 				intervs);
 
 			table.setAdapter(adapter);
@@ -167,19 +182,5 @@ public class MyInterventionsActivity extends Activity {
 	    }
 
 	});
-    }
-
-    public void back(View v) {
-
-	finish();
-    }
-
-    public void others(View v) {
-
-	int f = first + 10;
-
-	first = f;
-
-	this.request();
     }
 }

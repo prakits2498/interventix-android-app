@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.TextView;
 
@@ -42,8 +43,47 @@ public class ControlPanelActivity extends Activity {
 
 	super.onCreate(savedInstanceState);
 	requestWindowFeature(Window.FEATURE_NO_TITLE);
+	setContentView(R.layout.activity_control_panel);
 
-	setContentView(R.layout.activity_index);
+	setNominativo();
+
+	findViewById(R.id.btn_addInterv).setOnClickListener(
+		new OnClickListener() {
+
+		    @Override
+		    public void onClick(View v) {
+
+			Intent intent = new Intent(ControlPanelActivity.this,
+				TabBarActivity.class);
+
+			startActivity(intent);
+		    }
+		});
+
+	findViewById(R.id.btn_myInterv).setOnClickListener(
+		new OnClickListener() {
+
+		    @Override
+		    public void onClick(View v) {
+
+			Intent intent = new Intent(ControlPanelActivity.this,
+				MyInterventionsActivity.class);
+
+			startActivity(intent);
+		    }
+		});
+
+	findViewById(R.id.btn_exit).setOnClickListener(new OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+
+		finish();
+	    }
+	});
+    }
+
+    private void setNominativo() {
 
 	label_nom = (TextView) findViewById(R.id.label_nominativo);
 
@@ -52,7 +92,7 @@ public class ControlPanelActivity extends Activity {
 	idUser = prefs.getInt("iduser", Integer.valueOf(-1));
 
 	Map parameters = new HashMap();
-	parameters.put(idUser, "idutente");
+	parameters.put("idutente", idUser);
 
 	try {
 	    json_req = JsonCR2
@@ -61,10 +101,8 @@ public class ControlPanelActivity extends Activity {
 	    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
 		    + " NUMBER_FORMAT_EXCEPTION! ", e);
 	} catch (Exception e) {
-	    Log.d(DEBUG_TAG,
-		    ControlPanelActivity.class.getSimpleName()
-			    + " GENERIC_EXCEPTION! onCreate() - JsonCR2.createRequest(\"users\",\"get\",parameters,idUser)"
-			    + e.toString());
+	    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
+		    + " GENERIC_EXCEPTION!", e);
 	}
 
 	AndroidHttpClient request = new AndroidHttpClient(
@@ -82,7 +120,7 @@ public class ControlPanelActivity extends Activity {
 		    JSONObject resp = JsonCR2.read(httpResponse
 			    .getBodyAsString());
 
-		    Map req = (HashMap) resp.get("action");
+		    Map req = (HashMap) resp.get("request");
 
 		    String action = req.get("action").toString();
 		    String section = req.get("section").toString();
@@ -110,7 +148,6 @@ public class ControlPanelActivity extends Activity {
 			    }
 
 			    nominativo = nome + " " + cognome;
-			    Log.d("INTERVENTIX", "Utente: " + nominativo);
 			    label_nom.setText(nominativo);
 
 			    SharedPreferences pref = getSharedPreferences(
@@ -137,10 +174,8 @@ public class ControlPanelActivity extends Activity {
 		    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
 			    + " PARSE_EXCEPTION! ", e);
 		} catch (Exception e) {
-		    Log.d(DEBUG_TAG,
-			    ControlPanelActivity.class.getSimpleName()
-				    + " GENERIC_EXCEPTION! onComplete() - JsonCR2.read(httpResponse.getBodyAsString()"
-				    + e.toString());
+		    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
+			    + " GENERIC_EXCEPTION!", e);
 		}
 	    }
 
@@ -156,10 +191,8 @@ public class ControlPanelActivity extends Activity {
 	    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
 		    + " NUMBER_FORMAT_EXCEPTION! ", e);
 	} catch (Exception e) {
-	    Log.d(DEBUG_TAG,
-		    ControlPanelActivity.class.getSimpleName()
-			    + " GENERIC_EXCEPTION! onCreate() - JsonCR2.createRequest(\"clients\", \"syncro\", parameters2,idUser)"
-			    + e.toString());
+	    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
+		    + " GENERIC_EXCEPTION!", e);
 	}
 
 	AndroidHttpClient request2 = new AndroidHttpClient(
@@ -177,7 +210,7 @@ public class ControlPanelActivity extends Activity {
 		    JSONObject resp = JsonCR2.read(httpResponse2
 			    .getBodyAsString());
 
-		    Map req = (Map) resp.get("action");
+		    Map req = (Map) resp.get("request");
 
 		    String action = req.get("action").toString();
 		    String section = req.get("section").toString();
@@ -196,33 +229,10 @@ public class ControlPanelActivity extends Activity {
 		    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
 			    + " PARSE_EXCEPTION! ", e);
 		} catch (Exception e) {
-		    Log.d(DEBUG_TAG,
-			    ControlPanelActivity.class.getSimpleName()
-				    + " GENERIC_EXCEPTION! onComplete() - JsonCR2.read(httpResponse2.getBodyAsString()) - "
-				    + e.toString());
+		    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
+			    + " GENERIC_EXCEPTION!", e);
 		}
 	    }
 	});
-    }
-
-    public void addInterv(View v) {
-
-	Intent intent = new Intent(ControlPanelActivity.this,
-		TabBarActivity.class);
-
-	startActivity(intent);
-    }
-
-    public void myInterv(View v) {
-
-	Intent intent = new Intent(ControlPanelActivity.this,
-		MyInterventionsActivity.class);
-
-	startActivity(intent);
-    }
-
-    public void back(View v) {
-
-	finish();
     }
 }
