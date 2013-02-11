@@ -56,6 +56,5 @@
 		android:layout_alignRight="@+id/field_username"
 		android:layout_below="@+id/field_password"
 		android:longClickable="false"
-		android:onClick="loginService"
 		android:text="@string/login_" />
 </RelativeLayout>

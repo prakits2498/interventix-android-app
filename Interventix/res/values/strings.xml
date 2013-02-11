@@ -15,4 +15,17 @@
 	<string name="others">ALTRI</string>
 	<string name="back">INDIETRO</string>
 	<string name="title_activity_tab_bar">TabBarActivity</string>
+	<string name="interv">Interventi</string>
+	<string name="clients">Clienti</string>
+	<string name="signature">Firma</string>
+	<string name="costs">Costi</string>
+	<string name="details">Dettagli</string>
+	<string name="new_interv">NUOVO INTERVENTO</string>
+	<string name="type_interv">Tipologia</string>
+	<string name="prod_interv">Prodotto</string>
+	<string name="what_interv">Motivo</string>
+	<string name="nomin_interv">Nominativo</string>
+	<string name="date_interv">Data</string>
+	<string name="time_interv">Ora</string>
+	<string name="save_interv">SALVA</string>
 </resources>
