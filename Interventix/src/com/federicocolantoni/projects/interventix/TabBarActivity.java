@@ -8,6 +8,8 @@ import android.view.Window;
 
 public class TabBarActivity extends Activity {
 
+    private static final String DEBUG_TAG = "INTERVENTIX";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

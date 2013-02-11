@@ -21,7 +21,7 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name="com.federicocolantoni.projects.interventix.IndexActivity"
+			android:name="com.federicocolantoni.projects.interventix.ControlPanelActivity"
 			android:label="@string/title_activity_index" >
 			<intent-filter>
 				<action android:name="com.federicocolantoni.projects.interventix.IndexActivity" />
