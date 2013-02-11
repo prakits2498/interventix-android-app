@@ -59,10 +59,12 @@ public class ControlPanelActivity extends Activity {
 		    .createRequest("users", "get", parameters, idUser);
 	} catch (NumberFormatException e) {
 	    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
-		    + " NUMBER_FORMAT_EXCEPTION! " + e.toString());
+		    + " NUMBER_FORMAT_EXCEPTION! ", e);
 	} catch (Exception e) {
-	    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
-		    + " GENERIC_EXCEPTION! " + e.toString());
+	    Log.d(DEBUG_TAG,
+		    ControlPanelActivity.class.getSimpleName()
+			    + " GENERIC_EXCEPTION! onCreate() - JsonCR2.createRequest(\"users\",\"get\",parameters,idUser)"
+			    + e.toString());
 	}
 
 	AndroidHttpClient request = new AndroidHttpClient(
@@ -108,6 +110,7 @@ public class ControlPanelActivity extends Activity {
 			    }
 
 			    nominativo = nome + " " + cognome;
+			    Log.d("INTERVENTIX", "Utente: " + nominativo);
 			    label_nom.setText(nominativo);
 
 			    SharedPreferences pref = getSharedPreferences(
@@ -132,10 +135,12 @@ public class ControlPanelActivity extends Activity {
 		    }
 		} catch (ParseException e) {
 		    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
-			    + " PARSE_EXCEPTION! " + e.toString());
+			    + " PARSE_EXCEPTION! ", e);
 		} catch (Exception e) {
-		    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
-			    + " GENERIC_EXCEPTION! " + e.toString());
+		    Log.d(DEBUG_TAG,
+			    ControlPanelActivity.class.getSimpleName()
+				    + " GENERIC_EXCEPTION! onComplete() - JsonCR2.read(httpResponse.getBodyAsString()"
+				    + e.toString());
 		}
 	    }
 
@@ -149,10 +154,12 @@ public class ControlPanelActivity extends Activity {
 		    idUser);
 	} catch (NumberFormatException e) {
 	    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
-		    + " NUMBER_FORMAT_EXCEPTION! " + e.toString());
+		    + " NUMBER_FORMAT_EXCEPTION! ", e);
 	} catch (Exception e) {
-	    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
-		    + " GENERIC_EXCEPTION! " + e.toString());
+	    Log.d(DEBUG_TAG,
+		    ControlPanelActivity.class.getSimpleName()
+			    + " GENERIC_EXCEPTION! onCreate() - JsonCR2.createRequest(\"clients\", \"syncro\", parameters2,idUser)"
+			    + e.toString());
 	}
 
 	AndroidHttpClient request2 = new AndroidHttpClient(
@@ -164,10 +171,10 @@ public class ControlPanelActivity extends Activity {
 	request2.post("", paramMap, new AsyncCallback() {
 
 	    @Override
-	    public void onComplete(HttpResponse httpResponse) {
+	    public void onComplete(HttpResponse httpResponse2) {
 
 		try {
-		    JSONObject resp = JsonCR2.read(httpResponse
+		    JSONObject resp = JsonCR2.read(httpResponse2
 			    .getBodyAsString());
 
 		    Map req = (Map) resp.get("action");
@@ -187,10 +194,12 @@ public class ControlPanelActivity extends Activity {
 		    }
 		} catch (ParseException e) {
 		    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
-			    + " PARSE_EXCEPTION! " + e.toString());
+			    + " PARSE_EXCEPTION! ", e);
 		} catch (Exception e) {
-		    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
-			    + " GENERIC_EXCEPTION! " + e.toString());
+		    Log.d(DEBUG_TAG,
+			    ControlPanelActivity.class.getSimpleName()
+				    + " GENERIC_EXCEPTION! onComplete() - JsonCR2.read(httpResponse2.getBodyAsString()) - "
+				    + e.toString());
 		}
 	    }
 	});
@@ -198,7 +207,8 @@ public class ControlPanelActivity extends Activity {
 
     public void addInterv(View v) {
 
-	Intent intent = new Intent(ControlPanelActivity.this, TabBarActivity.class);
+	Intent intent = new Intent(ControlPanelActivity.this,
+		TabBarActivity.class);
 
 	startActivity(intent);
     }
