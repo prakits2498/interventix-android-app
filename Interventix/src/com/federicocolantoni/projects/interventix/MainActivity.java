@@ -56,8 +56,8 @@ public class MainActivity extends Activity {
 		    username.getText().toString(), password.getText()
 			    .toString());
 	} catch (Exception e) {
-	    Log.d(DEBUG_TAG, MainActivity.class.getSimpleName()
-		    + " GENERIC_EXCEPTION! " + e.toString());
+	    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
+		    + " GENERIC_EXCEPTION!", e);
 	}
 
 	dialog = ProgressDialog.show(this, "Connessione", "Attendere prego...",
@@ -100,8 +100,8 @@ public class MainActivity extends Activity {
 			GLOBAL_PREFERENCES, MODE_PRIVATE);
 
 		final Editor editor = prefs.edit();
-		editor.putInt("iduser",
-			Integer.parseInt(resp.get("iduser").toString()));
+		int IdUser = Integer.parseInt(resp.get("iduser").toString());
+		editor.putInt("iduser", IdUser);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 		    editor.apply();
@@ -116,8 +116,8 @@ public class MainActivity extends Activity {
 		    }.start();
 		}
 
-		//username.setText(new String());
-		//password.setText(new String());
+		username.setText(new String());
+		password.setText(new String());
 
 		startActivity(intent);
 
@@ -130,8 +130,8 @@ public class MainActivity extends Activity {
 	    Log.d(DEBUG_TAG, MainActivity.class.getSimpleName()
 		    + " PARSE_EXCEPTION! " + e.toString());
 	} catch (Exception e) {
-	    Log.d(DEBUG_TAG, MainActivity.class.getSimpleName()
-		    + " GENERIC_EXCEPTION! " + e.toString());
+	    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
+		    + " GENERIC_EXCEPTION!", e);
 	}
     }
 }
