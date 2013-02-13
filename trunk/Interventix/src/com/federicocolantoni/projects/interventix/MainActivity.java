@@ -96,7 +96,6 @@ public class MainActivity extends Activity {
 		requestComplete(httpResponse);
 	    }
 	});
-
     }
 
     private void requestComplete(HttpResponse response) {
@@ -116,8 +115,11 @@ public class MainActivity extends Activity {
 			GLOBAL_PREFERENCES, MODE_PRIVATE);
 
 		final Editor editor = prefs.edit();
+
 		int IdUser = Integer.parseInt(resp.get("iduser").toString());
-		editor.putInt("iduser", IdUser);
+		editor.putInt("ID_USER", IdUser);
+
+		editor.putString("REVISION", "0");
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 		    editor.apply();
@@ -146,7 +148,7 @@ public class MainActivity extends Activity {
 	    Log.d(DEBUG_TAG, MainActivity.class.getSimpleName()
 		    + " PARSE_EXCEPTION!", e);
 	} catch (Exception e) {
-	    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
+	    Log.d(DEBUG_TAG, MainActivity.class.getSimpleName()
 		    + " GENERIC_EXCEPTION!", e);
 	}
     }
