@@ -32,6 +32,16 @@
 		android:text="@string/signature"
 		android:textSize="8sp" />
 	<Button
+		android:id="@+id/btn_details"
+		style="?android:attr/buttonStyleSmall"
+		android:layout_width="65dp"
+		android:layout_height="35dp"
+		android:layout_alignParentRight="false"
+		android:layout_alignParentTop="true"
+		android:layout_marginLeft="191dp"
+		android:text="@string/details"
+		android:textSize="8sp" />
+	<Button
 		android:id="@+id/btn_clients"
 		style="?android:attr/buttonStyleSmall"
 		android:layout_width="65dp"
@@ -39,14 +49,5 @@
 		android:layout_alignParentTop="true"
 		android:layout_toLeftOf="@+id/btn_costs"
 		android:text="@string/clients"
-		android:textSize="8sp" />
-	<Button
-		android:id="@+id/btn_details"
-		style="?android:attr/buttonStyleSmall"
-		android:layout_width="65dp"
-		android:layout_height="35dp"
-		android:layout_alignParentTop="true"
-		android:layout_toRightOf="@+id/btn_costs"
-		android:text="@string/details"
 		android:textSize="8sp" />
 </RelativeLayout>

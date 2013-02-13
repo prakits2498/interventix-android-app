@@ -89,7 +89,7 @@ public class ControlPanelActivity extends Activity {
 
 	SharedPreferences prefs = getSharedPreferences(GLOBAL_PREFERENCES,
 		MODE_PRIVATE);
-	idUser = prefs.getInt("iduser", Integer.valueOf(-1));
+	idUser = prefs.getInt("ID_USER", Integer.valueOf(-1));
 
 	Map parameters = new HashMap();
 	parameters.put("idutente", idUser);

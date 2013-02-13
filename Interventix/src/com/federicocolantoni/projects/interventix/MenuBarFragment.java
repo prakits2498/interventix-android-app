@@ -15,15 +15,15 @@ public class MenuBarFragment extends Fragment implements OnClickListener {
 
     public static interface OnMenuBarListener {
 
-	public void onTabInterventoClick();
+	public void onTabInterventoListener();
 
-	public void onTabClientiClick();
+	public void onTabClientiListener();
 
-	public void onTabCostiClick();
+	public void onTabCostiListener();
 
-	public void onTabDettagliClick();
+	public void onTabDettagliListener();
 
-	public void onTabFirmaClick();
+	public void onTabFirmaListener();
     }
 
     @Override
@@ -62,23 +62,23 @@ public class MenuBarFragment extends Fragment implements OnClickListener {
 
 	switch (v.getId()) {
 	    case R.id.btn_interv:
-		mListener.onTabInterventoClick();
+		mListener.onTabInterventoListener();
 		break;
 
 	    case R.id.btn_clients:
-		mListener.onTabClientiClick();
+		mListener.onTabClientiListener();
 		break;
 
 	    case R.id.btn_costs:
-		mListener.onTabCostiClick();
+		mListener.onTabCostiListener();
 		break;
 
 	    case R.id.btn_details:
-		mListener.onTabDettagliClick();
+		mListener.onTabDettagliListener();
 		break;
 
 	    case R.id.btn_signature:
-		mListener.onTabFirmaClick();
+		mListener.onTabFirmaListener();
 		break;
 	}
     }

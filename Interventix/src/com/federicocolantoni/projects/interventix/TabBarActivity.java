@@ -6,16 +6,22 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Window;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.federicocolantoni.projects.interventix.MenuBarFragment.OnMenuBarListener;
 import com.federicocolantoni.projects.interventix.intervento.ClientiFragment;
 import com.federicocolantoni.projects.interventix.intervento.CostiFragment;
 import com.federicocolantoni.projects.interventix.intervento.DettagliFragment;
 import com.federicocolantoni.projects.interventix.intervento.FirmaFragment;
+import com.federicocolantoni.projects.interventix.intervento.Intervento;
 import com.federicocolantoni.projects.interventix.intervento.InterventoFragment;
+import com.federicocolantoni.projects.interventix.intervento.InterventoFragment.OnSaveInterventoListener;
 
 public class TabBarActivity extends FragmentActivity implements
-	OnMenuBarListener {
+	OnMenuBarListener, OnSaveInterventoListener {
+
+    static final String GLOBAL_PREFERENCES = "Preferences";
 
     private static final String DEBUG_TAG = "INTERVENTIX";
     private static final String TAG_INTERVENTO = "INTERVENT";
@@ -27,6 +33,8 @@ public class TabBarActivity extends FragmentActivity implements
     private MenuBarFragment mMenuFrag;
     private FragmentManager fragMng;
     private FragmentTransaction xact;
+
+    private static Intervento interv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +50,7 @@ public class TabBarActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onTabInterventoClick() {
+    public void onTabInterventoListener() {
 
 	xact = fragMng.beginTransaction();
 	xact.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -52,7 +60,7 @@ public class TabBarActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onTabClientiClick() {
+    public void onTabClientiListener() {
 
 	xact = fragMng.beginTransaction();
 	xact.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -62,7 +70,7 @@ public class TabBarActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onTabCostiClick() {
+    public void onTabCostiListener() {
 
 	xact = fragMng.beginTransaction();
 	xact.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -71,7 +79,7 @@ public class TabBarActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onTabDettagliClick() {
+    public void onTabDettagliListener() {
 
 	xact = fragMng.beginTransaction();
 	xact.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -81,11 +89,37 @@ public class TabBarActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onTabFirmaClick() {
+    public void onTabFirmaListener() {
 
 	xact = fragMng.beginTransaction();
 	xact.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 	xact.replace(R.id.frame_for_fragments, new FirmaFragment(), TAG_FIRMA);
 	xact.commit();
+    }
+
+    @Override
+    public void onSaveListener() {
+
+	interv = new Intervento();
+
+	EditText tipologia = (EditText) findViewById(R.id.edit_type_interv);
+	interv.setmTipologia(tipologia.getText().toString());
+
+	EditText prodotto = (EditText) findViewById(R.id.edit_prod);
+	interv.setmProdotto(prodotto.getText().toString());
+
+	EditText motivo = (EditText) findViewById(R.id.edit_what);
+	interv.setmMotivo(motivo.getText().toString());
+
+	EditText nominativo = (EditText) findViewById(R.id.edit_nomin);
+	interv.setmTipologia(nominativo.getText().toString());
+
+	Toast.makeText(
+		this,
+		interv.getmTipologia() + "\n" + interv.getmProdotto() + "\n"
+			+ interv.getmMotivo() + "\n" + interv.getmNominativo(),
+		Toast.LENGTH_LONG).show();
+
+	Toast.makeText(this, "Intervento salvato", Toast.LENGTH_SHORT).show();
     }
 }
