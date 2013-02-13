@@ -1,4 +1,3 @@
-
 package com.federicocolantoni.projects.interventix;
 
 import java.util.HashMap;
@@ -182,7 +181,12 @@ public class ControlPanelActivity extends Activity {
 	});
 
 	Map parameters2 = new HashMap();
-	parameters2.put(Integer.valueOf(2), "revision");
+   /*
+    * parameters2.put(Integer.valueOf(2), "revision");
+    * ERRORE. Secondo me la versione giusta è questa..
+    */
+  // Versione Corretta 
+  parameters2.put("revision",Integer.valueOf(2));
 
 	try {
 	    json_req2 = JsonCR2.createRequest("clients", "syncro", parameters2,
