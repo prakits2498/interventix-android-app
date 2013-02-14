@@ -40,12 +40,12 @@ public class ClientiFragment extends Fragment implements
     static final String GLOBAL_PREFERENCES = "Preferences";
 
     private ListView mListClients;
-    private ClientAdapter adapter;
-    private String json_req;
+    private ClientAdapter mAdapter;
+    private String mJson_req;
 
-    private SharedPreferences prefs;
+    private SharedPreferences mPrefs;
 
-    private static boolean downloaded = false;
+    private static boolean sDownloaded = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,16 +55,18 @@ public class ClientiFragment extends Fragment implements
 	final View v = inflater.inflate(R.layout.clienti_fragment, container,
 		false);
 
-	prefs = getActivity().getSharedPreferences(GLOBAL_PREFERENCES,
+	mListClients = (ListView) v.findViewById(R.id.list_clients);
+
+	mPrefs = getActivity().getSharedPreferences(GLOBAL_PREFERENCES,
 		Context.MODE_PRIVATE);
 
 	try {
 
 	    Map<String, Long> param = new HashMap<String, Long>();
-	    param.put("revision", prefs.getLong("REVISION", 0));
+	    param.put("revision", mPrefs.getLong("REVISION", 0));
 
-	    json_req = JsonCR2.createRequest("clients", "syncro", param,
-		    prefs.getInt("ID_USER", Integer.valueOf(-1)));
+	    mJson_req = JsonCR2.createRequest("clients", "syncro", param,
+		    mPrefs.getInt("ID_USER", Integer.valueOf(-1)));
 	} catch (NumberFormatException e) {
 	    Log.d(MainActivity.DEBUG_TAG, "NUMBER_FORMAT_EXCEPTION!", e);
 	} catch (Exception e) {
@@ -75,7 +77,7 @@ public class ClientiFragment extends Fragment implements
 		"http://176.31.243.123:8080/interventix/connector");
 	request.setMaxRetries(5);
 	ParameterMap paramMap = new ParameterMap();
-	paramMap.add("DATA", json_req);
+	paramMap.add("DATA", mJson_req);
 
 	request.post("", paramMap, new AsyncCallback() {
 
@@ -107,8 +109,8 @@ public class ClientiFragment extends Fragment implements
 
 		    long remoteRev = (Long) data.get("revision");
 
-		    if (remoteRev > prefs.getLong("REVISION", 0)) {
-			final Editor editor = prefs.edit();
+		    if (remoteRev > mPrefs.getLong("REVISION", 0)) {
+			final Editor editor = mPrefs.edit();
 
 			editor.putLong("REVISION", remoteRev);
 

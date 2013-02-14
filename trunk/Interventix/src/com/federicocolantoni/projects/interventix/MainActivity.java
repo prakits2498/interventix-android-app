@@ -27,14 +27,14 @@ public class MainActivity extends Activity {
     public static final String DEBUG_TAG = "INTERVENTIX";
     static final String GLOBAL_PREFERENCES = "Preferences";
 
-    public static final String LOGIN = "com.federico.colantoni.projects.interventix.LOGIN_SUCCESSFULL";
+    public static final String LOGIN = "com.federico.colantoni.projects.interventix.LOGIN";
 
-    private EditText username, password;
-    private String json_req;
+    private EditText mUsername, mPassword;
+    private String mJson_req;
 
-    private ProgressDialog dialog;
+    private ProgressDialog mDialog;
 
-    private Handler handler = new Handler() {
+    private Handler mHandler = new Handler() {
 
 	@Override
 	public void handleMessage(Message msg) {
@@ -44,13 +44,13 @@ public class MainActivity extends Activity {
 	    if (action.equals(LOGIN)) {
 		if (msg.arg1 == RESULT_OK) {
 
-		    dialog.dismiss();
+		    mDialog.dismiss();
 
 		    Toast.makeText(MainActivity.this, "ACCESSO CONSENTITO",
 			    Toast.LENGTH_SHORT).show();
 
-		    username.setText(new String());
-		    password.setText(new String());
+		    mUsername.setText(new String());
+		    mPassword.setText(new String());
 
 		    Intent intent = new Intent(MainActivity.this,
 			    ControlPanelActivity.class);
@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
 		    startActivity(intent);
 		} else {
 
-		    dialog.dismiss();
+		    mDialog.dismiss();
 
 		    Toast.makeText(MainActivity.this, "ACCESSO NEGATO!",
 			    Toast.LENGTH_SHORT).show();
@@ -94,30 +94,28 @@ public class MainActivity extends Activity {
 
     private void loginService(View v) throws InterruptedException, IOException {
 
-	username = (EditText) findViewById(R.id.field_username);
-	password = (EditText) findViewById(R.id.field_password);
+	mUsername = (EditText) findViewById(R.id.field_username);
+	mPassword = (EditText) findViewById(R.id.field_password);
 
 	try {
-	    json_req = JsonCR2.createRequestLogin(
-		    username.getText().toString(), password.getText()
-			    .toString());
+	    mJson_req = JsonCR2.createRequestLogin(mUsername.getText()
+		    .toString(), mPassword.getText().toString());
 	} catch (Exception e) {
 	    Log.d(DEBUG_TAG, "GENERIC_EXCEPTION!", e);
 	}
 
-	Intent intent = new Intent("LOGIN", null, this,
+	Intent intent = new Intent(LOGIN, null, this,
 		InterventixIntentService.class);
 
-	Messenger msn = new Messenger(handler);
+	Messenger msn = new Messenger(mHandler);
 
-	intent.putExtra("REQUEST_LOGIN", json_req);
+	intent.putExtra("REQUEST_LOGIN", mJson_req);
 	intent.putExtra("MESSENGER", msn);
 
 	startService(intent);
 
-	dialog = ProgressDialog.show(MainActivity.this, "Connessione",
+	mDialog = ProgressDialog.show(MainActivity.this, "Connessione",
 		"Attendere prego...", true);
-	dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+	mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
     }
-
 }

@@ -16,9 +16,9 @@ public class ClientAdapter extends CursorAdapter {
 
     private final LayoutInflater mInflater;
     private boolean mFoundIndexes;
-    private int nominativoIndex;
-    private int codFisIndex;
-    private int partitaIVAIndex;
+    private int mNominativoIndex;
+    private int mCodFisIndex;
+    private int mPartitaIVAIndex;
 
     public ClientAdapter(Context context, Cursor c) {
 
@@ -35,17 +35,18 @@ public class ClientAdapter extends CursorAdapter {
 	TextView row_p_iva = (TextView) row.getTag(R.id.row_p_iva);
 
 	if (!mFoundIndexes) {
-	    nominativoIndex = cursor
+	    mNominativoIndex = cursor
 		    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_NOMINATIVO);
-	    codFisIndex = cursor
+	    mCodFisIndex = cursor
 		    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_CODICE_FISCALE);
-	    partitaIVAIndex = cursor
+	    mPartitaIVAIndex = cursor
 		    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_PARTITA_IVA);
 	    mFoundIndexes = true;
 	}
-	String nomin = cursor.getString(nominativoIndex);
-	String cod_fis = cursor.getString(codFisIndex);
-	String p_iva = cursor.getString(partitaIVAIndex);
+
+	String nomin = cursor.getString(mNominativoIndex);
+	String cod_fis = cursor.getString(mCodFisIndex);
+	String p_iva = cursor.getString(mPartitaIVAIndex);
 
 	row_nomin.setText(nomin);
 	row_cod_fis.setText(cod_fis);

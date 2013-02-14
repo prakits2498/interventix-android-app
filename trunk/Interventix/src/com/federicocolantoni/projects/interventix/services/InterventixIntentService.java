@@ -1,8 +1,13 @@
 
 package com.federicocolantoni.projects.interventix.services;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import multiface.crypto.cr2.JsonCR2;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -19,6 +24,7 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.federicocolantoni.projects.interventix.ControlPanelActivity;
 import com.federicocolantoni.projects.interventix.MainActivity;
 import com.turbomanage.httpclient.HttpResponse;
 import com.turbomanage.httpclient.ParameterMap;
@@ -52,7 +58,7 @@ public class InterventixIntentService extends IntentService {
     protected void onHandleIntent(final Intent intent) {
 
 	if (intent != null) {
-	    if (intent.getAction().equals("LOGIN")) {
+	    if (intent.getAction().equals(MainActivity.LOGIN)) {
 
 		final Bundle extras = intent.getExtras();
 
@@ -63,6 +69,20 @@ public class InterventixIntentService extends IntentService {
 
 			login(extras, intent);
 		    }
+		}).start();
+	    } else if (intent.getAction().equals(
+		    ControlPanelActivity.GET_NOMINATIVO)) {
+
+		final Bundle extras = intent.getExtras();
+
+		new Thread(new Runnable() {
+
+		    @Override
+		    public void run() {
+
+			getNominativo(extras, intent);
+		    }
+
 		}).start();
 	    }
 	}
@@ -132,6 +152,113 @@ public class InterventixIntentService extends IntentService {
 		    } catch (RemoteException e) {
 			Log.d(MainActivity.DEBUG_TAG, "SENDING MESSAGE ERROR!",
 				e);
+		    }
+		}
+	    }
+	} catch (ParseException e) {
+	    Log.d(MainActivity.DEBUG_TAG, "PARSE_EXCEPTION!", e);
+	} catch (Exception e) {
+	    Log.d(MainActivity.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
+	}
+    }
+
+    private void getNominativo(Bundle extras, Intent intent) {
+
+	AndroidHttpClient request = new AndroidHttpClient(BASE_URL);
+	request.setMaxRetries(5);
+	ParameterMap paramMap = new ParameterMap();
+	paramMap.add("DATA", intent.getStringExtra("REQUEST_GET_NOMINATIVO"));
+
+	HttpResponse response = request.post("", paramMap);
+
+	try {
+	    JSONObject resp = JsonCR2.read(response.getBodyAsString());
+
+	    Map req = (HashMap) resp.get("request");
+
+	    String action = req.get("action").toString();
+	    String section = req.get("section").toString();
+
+	    if (resp.get("response").toString().equalsIgnoreCase("success")) {
+		if (action.equalsIgnoreCase("get")
+			&& section.equalsIgnoreCase("users")) {
+		    JSONArray datas = (JSONArray) resp.get("data");
+
+		    Map data = new HashMap();
+
+		    Iterator it = datas.iterator();
+
+		    String nome = null, cognome = null;
+
+		    SharedPreferences prefs = getSharedPreferences(
+			    GLOBAL_PREFERENCES, MODE_PRIVATE);
+
+		    while (it.hasNext()) {
+			data = (Map) it.next();
+			String id = data.get("idutente").toString();
+			if (Integer.parseInt(id) == prefs.getInt("ID_USER",
+				Integer.valueOf(-1))) {
+			    nome = (String) data.get("nome");
+			    cognome = (String) data.get("cognome");
+			    break;
+			}
+		    }
+
+		    SharedPreferences pref = getSharedPreferences(
+			    GLOBAL_PREFERENCES,
+			    ControlPanelActivity.MODE_PRIVATE);
+		    final Editor editor = pref.edit();
+		    editor.putString("SAVE_USER", nome + " " + cognome);
+
+		    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			editor.apply();
+		    } else {
+			new Thread() {
+
+			    @Override
+			    public void run() {
+
+				editor.commit();
+			    }
+			}.start();
+		    }
+
+		    int result = Activity.RESULT_OK;
+
+		    if (extras != null) {
+			Messenger messenger = (Messenger) extras
+				.get("MESSENGER");
+			Message message = Message.obtain();
+			message.arg1 = result;
+			message.obj = ControlPanelActivity.GET_NOMINATIVO;
+
+			Bundle bundle = new Bundle();
+			bundle.putString("NOMINATIVO", nome + " " + cognome);
+			message.setData(bundle);
+
+			try {
+			    messenger.send(message);
+			} catch (RemoteException e) {
+			    Log.d(MainActivity.DEBUG_TAG,
+				    "SENDING MESSAGE ERROR!", e);
+			}
+		    }
+		} else {
+		    int result = Activity.RESULT_CANCELED;
+
+		    if (extras != null) {
+			Messenger messenger = (Messenger) extras
+				.get("MESSENGER");
+			Message message = Message.obtain();
+			message.arg1 = result;
+			message.obj = ControlPanelActivity.GET_NOMINATIVO;
+
+			try {
+			    messenger.send(message);
+			} catch (RemoteException e) {
+			    Log.d(MainActivity.DEBUG_TAG,
+				    "SENDING MESSAGE ERROR!", e);
+			}
 		    }
 		}
 	    }
