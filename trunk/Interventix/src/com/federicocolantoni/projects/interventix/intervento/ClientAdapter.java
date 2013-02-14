@@ -1,65 +1,72 @@
 
 package com.federicocolantoni.projects.interventix.intervento;
 
-import java.util.List;
-
 import android.content.Context;
+import android.database.Cursor;
+import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.federicocolantoni.projects.interventix.R;
+import com.federicocolantoni.projects.interventix.data.InterventixAPI;
 
-public class ClientAdapter extends BaseAdapter {
+public class ClientAdapter extends CursorAdapter {
 
-    private final List<Cliente> mList;
     private final LayoutInflater mInflater;
+    private boolean mFoundIndexes;
+    private int nominativoIndex;
+    private int codFisIndex;
+    private int partitaIVAIndex;
 
-    public ClientAdapter(List<Cliente> list, Context context) {
+    public ClientAdapter(Context context, Cursor c) {
 
-	mList = list;
+	super(context, c, ClientAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 	mInflater = LayoutInflater.from(context);
+	mFoundIndexes = false;
     }
 
     @Override
-    public int getCount() {
+    public void bindView(View row, Context context, Cursor cursor) {
 
-	return mList.size();
-    }
+	TextView row_nomin = (TextView) row.getTag(R.id.row_nominativo);
+	TextView row_cod_fis = (TextView) row.getTag(R.id.row_cod_fis);
+	TextView row_p_iva = (TextView) row.getTag(R.id.row_p_iva);
 
-    @Override
-    public Object getItem(int position) {
-
-	return mList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-
-	return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-	final View v;
-	final ViewHolder holder;
-
-	if (convertView == null) {
-	    v = mInflater.inflate(R.layout.client_row, parent, false);
-	} else {
-	    v = convertView;
-	    holder = (ViewHolder) v.getTag();
+	if (!mFoundIndexes) {
+	    nominativoIndex = cursor
+		    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_NOMINATIVO);
+	    codFisIndex = cursor
+		    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_CODICE_FISCALE);
+	    partitaIVAIndex = cursor
+		    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_PARTITA_IVA);
+	    mFoundIndexes = true;
 	}
+	String nomin = cursor.getString(nominativoIndex);
+	String cod_fis = cursor.getString(codFisIndex);
+	String p_iva = cursor.getString(partitaIVAIndex);
 
-	return v;
+	row_nomin.setText(nomin);
+	row_cod_fis.setText(cod_fis);
+	row_p_iva.setText(p_iva);
+
     }
 
-    private static class ViewHolder {
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup listView) {
 
-	public TextView nome;
-	public TextView lang;
+	View view = mInflater.inflate(R.layout.client_row, listView, false);
+
+	View tv_nomin = view.findViewById(R.id.row_nominativo);
+	view.setTag(R.id.row_nominativo, tv_nomin);
+
+	View tv_cod_fis = view.findViewById(R.id.row_cod_fis);
+	view.setTag(R.id.row_cod_fis, tv_cod_fis);
+
+	View tv_p_iva = view.findViewById(R.id.row_p_iva);
+	view.setTag(R.id.row_p_iva, tv_p_iva);
+
+	return view;
     }
 }

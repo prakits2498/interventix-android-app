@@ -1,3 +1,4 @@
+
 package com.federicocolantoni.projects.interventix;
 
 import java.util.HashMap;
@@ -29,7 +30,6 @@ import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 public class ControlPanelActivity extends Activity {
 
-    private static final String DEBUG_TAG = "INTERVENTIX";
     static final String GLOBAL_PREFERENCES = "Preferences";
 
     private int idUser;
@@ -97,11 +97,13 @@ public class ControlPanelActivity extends Activity {
 	    json_req = JsonCR2
 		    .createRequest("users", "get", parameters, idUser);
 	} catch (NumberFormatException e) {
-	    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
-		    + " NUMBER_FORMAT_EXCEPTION! ", e);
+	    Log.d(MainActivity.DEBUG_TAG,
+		    ControlPanelActivity.class.getSimpleName()
+			    + " NUMBER_FORMAT_EXCEPTION! ", e);
 	} catch (Exception e) {
-	    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
-		    + " GENERIC_EXCEPTION!", e);
+	    Log.d(MainActivity.DEBUG_TAG,
+		    ControlPanelActivity.class.getSimpleName()
+			    + " GENERIC_EXCEPTION!", e);
 	}
 
 	AndroidHttpClient request = new AndroidHttpClient(
@@ -170,23 +172,25 @@ public class ControlPanelActivity extends Activity {
 			}
 		    }
 		} catch (ParseException e) {
-		    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
-			    + " PARSE_EXCEPTION! ", e);
+		    Log.d(MainActivity.DEBUG_TAG,
+			    ControlPanelActivity.class.getSimpleName()
+				    + " PARSE_EXCEPTION! ", e);
 		} catch (Exception e) {
-		    Log.d(DEBUG_TAG, ControlPanelActivity.class.getSimpleName()
-			    + " GENERIC_EXCEPTION!", e);
+		    Log.d(MainActivity.DEBUG_TAG,
+			    ControlPanelActivity.class.getSimpleName()
+				    + " GENERIC_EXCEPTION!", e);
 		}
 	    }
 
 	});
 
-	Map parameters2 = new HashMap();
-   /*
-    * parameters2.put(Integer.valueOf(2), "revision");
-    * ERRORE. Secondo me la versione giusta è questa..
-    */
-  // Versione Corretta 
-  parameters2.put("revision",Integer.valueOf(2));
+	//Map parameters2 = new HashMap();
+	/*
+	 * parameters2.put(Integer.valueOf(2), "revision");
+	 * ERRORE. Secondo me la versione giusta e' questa..
+	 */
+	// Versione Corretta 
+	/*parameters2.put("revision", Integer.valueOf(2));
 
 	try {
 	    json_req2 = JsonCR2.createRequest("clients", "syncro", parameters2,
@@ -237,6 +241,6 @@ public class ControlPanelActivity extends Activity {
 			    + " GENERIC_EXCEPTION!", e);
 		}
 	    }
-	});
+	});*/
     }
 }

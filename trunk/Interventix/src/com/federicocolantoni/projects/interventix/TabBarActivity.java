@@ -23,7 +23,6 @@ public class TabBarActivity extends FragmentActivity implements
 
     static final String GLOBAL_PREFERENCES = "Preferences";
 
-    private static final String DEBUG_TAG = "INTERVENTIX";
     private static final String TAG_INTERVENTO = "INTERVENT";
     private static final String TAG_CLIENTI = "CLIENTS";
     private static final String TAG_COSTI = "COSTS";
