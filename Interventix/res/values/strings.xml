@@ -31,4 +31,6 @@
 	<string name="hint_nomin">Nominativo</string>
 	<string name="hint_cod_fis">Codice Fiscale</string>
 	<string name="hint_p_iva">Partita IVA</string>
+	<string name="reload_clients">Ricarica lista clienti</string>
+	<string name="client_dtl">Dettagli Cliente</string>
 </resources>

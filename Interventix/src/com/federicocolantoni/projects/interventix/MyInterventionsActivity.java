@@ -35,13 +35,13 @@ public class MyInterventionsActivity extends Activity {
 
     static final String GLOBAL_PREFERENCES = "Preferences";
 
-    private int idUser;
+    private int mIdUser;
 
-    private int first, max;
-    private JSONArray datas;
+    private int mFirst, mMax;
+    private JSONArray mDatas;
 
-    private ListView table;
-    private ProgressDialog dialog;
+    private ListView mTable;
+    private ProgressDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,21 +53,21 @@ public class MyInterventionsActivity extends Activity {
 
 	SharedPreferences prefs = getSharedPreferences(GLOBAL_PREFERENCES,
 		MODE_PRIVATE);
-	idUser = prefs.getInt("iduser", Integer.valueOf(-1));
+	mIdUser = prefs.getInt("iduser", Integer.valueOf(-1));
 
-	first = 0;
-	max = 10;
+	mFirst = 0;
+	mMax = 10;
 
-	table = (ListView) findViewById(R.id.list_myInterv);
+	mTable = (ListView) findViewById(R.id.list_myInterv);
 
 	findViewById(R.id.btn_others).setOnClickListener(new OnClickListener() {
 
 	    @Override
 	    public void onClick(View v) {
 
-		int f = first + 10;
+		int f = mFirst + 10;
 
-		first = f;
+		mFirst = f;
 
 		MyInterventionsActivity.this.request();
 	    }
@@ -94,8 +94,8 @@ public class MyInterventionsActivity extends Activity {
 	//parameters.put(first, "first");
 	//parameters.put(max, "max");
 
-	parameters.put("first", first);
-	parameters.put("max", max);
+	parameters.put("first", mFirst);
+	parameters.put("max", mMax);
 
 	JSONArray exclude = new JSONArray();
 	exclude.add("firma");
@@ -106,7 +106,7 @@ public class MyInterventionsActivity extends Activity {
 
 	try {
 	    json_req = JsonCR2.createRequest("interventions", "my", parameters,
-		    idUser);
+		    mIdUser);
 	} catch (NumberFormatException e) {
 	    Log.d(MainActivity.DEBUG_TAG, "NUMBER_FORMAT_EXCEPTION!", e);
 	} catch (Exception e) {
@@ -119,9 +119,9 @@ public class MyInterventionsActivity extends Activity {
 	ParameterMap paramMap = new ParameterMap();
 	paramMap.add("DATA", json_req);
 
-	dialog = ProgressDialog.show(this, "Connessione", "Attendere prego...",
+	mDialog = ProgressDialog.show(this, "Connessione", "Attendere prego...",
 		true);
-	dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+	mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
 	request.post("", paramMap, new AsyncCallback() {
 
@@ -134,12 +134,12 @@ public class MyInterventionsActivity extends Activity {
 
 		    if (resp.get("response").toString()
 			    .equalsIgnoreCase("success")) {
-			datas = (JSONArray) resp.get("data");
+			mDatas = (JSONArray) resp.get("data");
 
-			String[] intervs = new String[datas.size()];
+			String[] intervs = new String[mDatas.size()];
 			int cont = 0;
 
-			Iterator it = datas.iterator();
+			Iterator it = mDatas.iterator();
 			while (it.hasNext()) {
 
 			    Map data = (Map) it.next();
@@ -171,9 +171,9 @@ public class MyInterventionsActivity extends Activity {
 				R.layout.interv_row, R.id.lbl_tableCell,
 				intervs);
 
-			table.setAdapter(adapter);
+			mTable.setAdapter(adapter);
 
-			dialog.dismiss();
+			mDialog.dismiss();
 		    }
 		} catch (ParseException e) {
 		    Log.d(MainActivity.DEBUG_TAG, "PARSE_EXCEPTION!", e);
