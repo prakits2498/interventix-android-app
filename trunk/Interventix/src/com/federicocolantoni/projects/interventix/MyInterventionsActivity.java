@@ -1,4 +1,3 @@
-
 package com.federicocolantoni.projects.interventix;
 
 import java.sql.Timestamp;
@@ -89,8 +88,12 @@ public class MyInterventionsActivity extends Activity {
     private void request() {
 
 	Map parameters = new HashMap();
-	parameters.put(first, "first");
-	parameters.put(max, "max");
+  //Anche qui i hai scambiato KEY, VALUE
+  //
+	//parameters.put(first, "first");
+	//parameters.put(max, "max");
+  parameters.put("first", first);
+	parameters.put("max",max);
 
 	JSONArray exclude = new JSONArray();
 	exclude.add("firma");
