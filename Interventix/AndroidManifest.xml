@@ -4,8 +4,8 @@
 	android:versionCode="1"
 	android:versionName="1.0" >
 	<uses-sdk
-		android:minSdkVersion="10"
-		android:targetSdkVersion="16" />
+		android:minSdkVersion="8"
+		android:targetSdkVersion="17" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<application
 		android:allowBackup="true"
@@ -23,10 +23,6 @@
 		<activity
 			android:name="com.federicocolantoni.projects.interventix.ControlPanelActivity"
 			android:label="@string/title_activity_index" >
-			<intent-filter>
-				<action android:name="com.federicocolantoni.projects.interventix.IndexActivity" />
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
 		</activity>
 		<activity
 			android:name="com.federicocolantoni.projects.interventix.MyInterventionsActivity"
@@ -36,5 +32,12 @@
 			android:name="com.federicocolantoni.projects.interventix.TabBarActivity"
 			android:label="@string/title_activity_tab_bar" >
 		</activity>
+		<service android:name=".services.InterventixIntentService" >
+		</service>
+		<provider
+			android:name=".data.InterventixContentProvider"
+			android:authorities="com.federico.colantoni.projects.interventix.cliente"
+			android:exported="false" >
+		</provider>
 	</application>
 </manifest>

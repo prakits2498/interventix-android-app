@@ -28,4 +28,7 @@
 	<string name="date_interv">Data</string>
 	<string name="time_interv">Ora</string>
 	<string name="save_interv">SALVA</string>
+	<string name="hint_nomin">Nominativo</string>
+	<string name="hint_cod_fis">Codice Fiscale</string>
+	<string name="hint_p_iva">Partita IVA</string>
 </resources>

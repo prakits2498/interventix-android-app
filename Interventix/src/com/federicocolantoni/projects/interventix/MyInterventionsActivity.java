@@ -1,3 +1,4 @@
+
 package com.federicocolantoni.projects.interventix;
 
 import java.sql.Timestamp;
@@ -32,7 +33,6 @@ import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 public class MyInterventionsActivity extends Activity {
 
-    private static final String DEBUG_TAG = "INTERVENTIX";
     static final String GLOBAL_PREFERENCES = "Preferences";
 
     private int idUser;
@@ -88,12 +88,14 @@ public class MyInterventionsActivity extends Activity {
     private void request() {
 
 	Map parameters = new HashMap();
-  //Anche qui i hai scambiato KEY, VALUE
-  //
+
+	//Anche qui i hai scambiato KEY, VALUE
+	//
 	//parameters.put(first, "first");
 	//parameters.put(max, "max");
-  parameters.put("first", first);
-	parameters.put("max",max);
+
+	parameters.put("first", first);
+	parameters.put("max", max);
 
 	JSONArray exclude = new JSONArray();
 	exclude.add("firma");
@@ -106,9 +108,9 @@ public class MyInterventionsActivity extends Activity {
 	    json_req = JsonCR2.createRequest("interventions", "my", parameters,
 		    idUser);
 	} catch (NumberFormatException e) {
-	    Log.d(DEBUG_TAG, e.toString());
+	    Log.d(MainActivity.DEBUG_TAG, "NUMBER_FORMAT_EXCEPTION!", e);
 	} catch (Exception e) {
-	    Log.d(DEBUG_TAG, e.toString());
+	    Log.d(MainActivity.DEBUG_TAG, "GENERIC EXCEPTION!", e);
 	}
 
 	AndroidHttpClient request = new AndroidHttpClient(
@@ -132,7 +134,7 @@ public class MyInterventionsActivity extends Activity {
 
 		    if (resp.get("response").toString()
 			    .equalsIgnoreCase("success")) {
-			JSONArray datas = (JSONArray) resp.get("data");
+			datas = (JSONArray) resp.get("data");
 
 			String[] intervs = new String[datas.size()];
 			int cont = 0;
@@ -174,13 +176,9 @@ public class MyInterventionsActivity extends Activity {
 			dialog.dismiss();
 		    }
 		} catch (ParseException e) {
-		    Log.d(DEBUG_TAG,
-			    MyInterventionsActivity.class.getSimpleName()
-				    + " PARSE_EXCEPTION! " + e.toString());
+		    Log.d(MainActivity.DEBUG_TAG, "PARSE_EXCEPTION!", e);
 		} catch (Exception e) {
-		    Log.d(DEBUG_TAG,
-			    MyInterventionsActivity.class.getSimpleName()
-				    + " GENERIC_EXCEPTION! " + e.toString());
+		    Log.d(MainActivity.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
 		}
 	    }
 
