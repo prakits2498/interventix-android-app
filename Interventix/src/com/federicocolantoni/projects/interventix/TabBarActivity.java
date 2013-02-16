@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -46,6 +47,8 @@ public class TabBarActivity extends FragmentActivity implements
 	mFragMng = getSupportFragmentManager();
 	mMenuFrag = (MenuBarFragment) mFragMng
 		.findFragmentById(R.id.menuBar_fragment);
+
+	onTabInterventoListener();
     }
 
     @Override
@@ -61,11 +64,15 @@ public class TabBarActivity extends FragmentActivity implements
     @Override
     public void onTabClientiListener() {
 
-	mXact = mFragMng.beginTransaction();
-	mXact.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	mXact.replace(R.id.frame_for_fragments, new ClientiFragment(),
-		TAG_CLIENTI);
-	mXact.commit();
+	try {
+	    mXact = mFragMng.beginTransaction();
+	    mXact.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	    mXact.replace(R.id.frame_for_fragments, new ClientiFragment(),
+		    TAG_CLIENTI);
+	    mXact.commit();
+	} catch (NoClassDefFoundError e) {
+	    Log.d(MainActivity.DEBUG_TAG, "NO_CLASS_DEF_FOUND_ERROR!", e);
+	}
     }
 
     @Override
@@ -116,8 +123,8 @@ public class TabBarActivity extends FragmentActivity implements
 	Toast.makeText(
 		this,
 		sInterv.getmTipologia() + "\n" + sInterv.getmProdotto() + "\n"
-			+ sInterv.getmMotivo() + "\n" + sInterv.getmNominativo(),
-		Toast.LENGTH_LONG).show();
+			+ sInterv.getmMotivo() + "\n"
+			+ sInterv.getmNominativo(), Toast.LENGTH_LONG).show();
 
 	Toast.makeText(this, "Intervento salvato", Toast.LENGTH_SHORT).show();
     }

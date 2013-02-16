@@ -44,8 +44,7 @@ public class ControlPanelActivity extends Activity {
 		if (msg.arg1 == RESULT_OK) {
 		    Bundle bundle = msg.getData();
 
-		    mLabel_nom.setText(bundle.getString("NOMINATIVO",
-			    "Utente sconosciuto"));
+		    mLabel_nom.setText(bundle.getString("NOMINATIVO"));
 		} else {
 		    Toast.makeText(
 			    ControlPanelActivity.this,
@@ -134,80 +133,6 @@ public class ControlPanelActivity extends Activity {
 	intent.putExtra("MESSENGER", msn);
 
 	startService(intent);
-
-	/*AndroidHttpClient request = new AndroidHttpClient(
-		"http://176.31.243.123:8080/interventix/connector");
-	request.setMaxRetries(5);
-	ParameterMap paramMap = new ParameterMap();
-	paramMap.add("DATA", mJson_req);
-
-	request.post("", paramMap, new AsyncCallback() {
-
-	    @Override
-	    public void onComplete(HttpResponse httpResponse) {
-
-		try {
-		    JSONObject resp = JsonCR2.read(httpResponse
-			    .getBodyAsString());
-
-		    Map req = (HashMap) resp.get("request");
-
-		    String action = req.get("action").toString();
-		    String section = req.get("section").toString();
-
-		    if (resp.get("response").toString()
-			    .equalsIgnoreCase("success")) {
-			if (action.equalsIgnoreCase("get")
-				&& section.equalsIgnoreCase("users")) {
-			    JSONArray datas = (JSONArray) resp.get("data");
-
-			    Map data = new HashMap();
-
-			    Iterator it = datas.iterator();
-
-			    String nome = null, cognome = null;
-
-			    while (it.hasNext()) {
-				data = (Map) it.next();
-				String id = data.get("idutente").toString();
-				if (Integer.parseInt(id) == mIdUser) {
-				    nome = (String) data.get("nome");
-				    cognome = (String) data.get("cognome");
-				    break;
-				}
-			    }
-
-			    mNominativo = nome + " " + cognome;
-			    mLabel_nom.setText(mNominativo);
-
-			    SharedPreferences pref = getSharedPreferences(
-				    GLOBAL_PREFERENCES,
-				    ControlPanelActivity.MODE_PRIVATE);
-			    final Editor editor = pref.edit();
-			    editor.putString("SAVE_USER", mNominativo);
-
-			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-				editor.apply();
-			    } else {
-				new Thread() {
-
-				    @Override
-				    public void run() {
-
-					editor.commit();
-				    }
-				}.start();
-			    }
-			}
-		    }
-		} catch (ParseException e) {
-		    Log.d(MainActivity.DEBUG_TAG, "PARSE_EXCEPTION! ", e);
-		} catch (Exception e) {
-		    Log.d(MainActivity.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
-		}
-	    }
-
-	});*/
 
 	//Map parameters2 = new HashMap();
 	/*

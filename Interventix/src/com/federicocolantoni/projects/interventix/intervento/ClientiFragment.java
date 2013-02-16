@@ -10,18 +10,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import android.annotation.SuppressLint;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
-import android.content.Loader;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -34,18 +32,14 @@ import com.turbomanage.httpclient.ParameterMap;
 import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 @SuppressLint("NewApi")
-public class ClientiFragment extends Fragment implements
-	LoaderCallbacks<Cursor> {
+public class ClientiFragment extends Fragment {
 
     static final String GLOBAL_PREFERENCES = "Preferences";
 
-    private ListView mListClients;
-    private ClientAdapter mAdapter;
-    private String mJson_req;
-
     private SharedPreferences mPrefs;
+    private ListView mListClients;
 
-    private static boolean sDownloaded = false;
+    private String mJson_req;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,10 +49,19 @@ public class ClientiFragment extends Fragment implements
 	final View v = inflater.inflate(R.layout.clienti_fragment, container,
 		false);
 
-	mListClients = (ListView) v.findViewById(R.id.list_clients);
-
 	mPrefs = getActivity().getSharedPreferences(GLOBAL_PREFERENCES,
 		Context.MODE_PRIVATE);
+
+	mListClients = (ListView) v.findViewById(R.id.list_clients);
+
+	v.findViewById(R.id.btn_reload_clients).setOnClickListener(
+		new OnClickListener() {
+
+		    @Override
+		    public void onClick(View v) {
+
+		    }
+		});
 
 	try {
 
@@ -86,6 +89,7 @@ public class ClientiFragment extends Fragment implements
 
 		requestComplete(httpResponse);
 	    }
+
 	});
 
 	return v;
@@ -140,21 +144,5 @@ public class ClientiFragment extends Fragment implements
 	} catch (Exception e) {
 	    Log.d(MainActivity.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
 	}
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
-
-	return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
     }
 }
