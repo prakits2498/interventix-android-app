@@ -64,7 +64,8 @@ public class ClienteDetailFragment extends Fragment implements OnClickListener {
 		FragmentTransaction xact = fragMng.beginTransaction();
 		xact.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		xact.replace(R.id.frame_for_fragments, new ClientiFragment(),
-			TAG_LIST_CLIENTS).commit();
+			TAG_LIST_CLIENTS);
+		xact.commit();
 		break;
 	}
     }
