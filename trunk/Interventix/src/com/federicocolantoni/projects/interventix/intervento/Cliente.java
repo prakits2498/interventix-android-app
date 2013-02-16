@@ -1,7 +1,6 @@
 
 package com.federicocolantoni.projects.interventix.intervento;
 
-import java.util.List;
 
 public class Cliente {
 
@@ -9,8 +8,7 @@ public class Cliente {
     private String mNominativo, mCodiceFiscale, mPartitaIVA, mTelefono, mFax,
 	    mEmail, mReferente, mCitta, mIndirizzo, mInterno, mUfficio, mNote;
     private boolean mCancellato;
-    private int revisione;
-    private List<Intervento> mInterventi;
+    private int mRevisione;
 
     public Cliente() {
 
@@ -30,7 +28,8 @@ public class Cliente {
     }
 
     /**
-     * @param mIdCliente the mIdCliente to set
+     * @param mIdCliente
+     *            the mIdCliente to set
      */
     public void setmIdCliente(Integer mIdCliente) {
 
@@ -46,7 +45,8 @@ public class Cliente {
     }
 
     /**
-     * @param mNominativo the mNominativo to set
+     * @param mNominativo
+     *            the mNominativo to set
      */
     public void setmNominativo(String mNominativo) {
 
@@ -62,7 +62,8 @@ public class Cliente {
     }
 
     /**
-     * @param mCodiceFiscale the mCodiceFiscale to set
+     * @param mCodiceFiscale
+     *            the mCodiceFiscale to set
      */
     public void setmCodiceFiscale(String mCodiceFiscale) {
 
@@ -78,7 +79,8 @@ public class Cliente {
     }
 
     /**
-     * @param mPartitaIVA the mPartitaIVA to set
+     * @param mPartitaIVA
+     *            the mPartitaIVA to set
      */
     public void setmPartitaIVA(String mPartitaIVA) {
 
@@ -94,7 +96,8 @@ public class Cliente {
     }
 
     /**
-     * @param mTelefono the mTelefono to set
+     * @param mTelefono
+     *            the mTelefono to set
      */
     public void setmTelefono(String mTelefono) {
 
@@ -110,7 +113,8 @@ public class Cliente {
     }
 
     /**
-     * @param mFax the mFax to set
+     * @param mFax
+     *            the mFax to set
      */
     public void setmFax(String mFax) {
 
@@ -126,7 +130,8 @@ public class Cliente {
     }
 
     /**
-     * @param mEmail the mEmail to set
+     * @param mEmail
+     *            the mEmail to set
      */
     public void setmEmail(String mEmail) {
 
@@ -142,7 +147,8 @@ public class Cliente {
     }
 
     /**
-     * @param mReferente the mReferente to set
+     * @param mReferente
+     *            the mReferente to set
      */
     public void setmReferente(String mReferente) {
 
@@ -158,7 +164,8 @@ public class Cliente {
     }
 
     /**
-     * @param mCitta the mCitta to set
+     * @param mCitta
+     *            the mCitta to set
      */
     public void setmCitta(String mCitta) {
 
@@ -174,7 +181,8 @@ public class Cliente {
     }
 
     /**
-     * @param mIndirizzo the mIndirizzo to set
+     * @param mIndirizzo
+     *            the mIndirizzo to set
      */
     public void setmIndirizzo(String mIndirizzo) {
 
@@ -190,7 +198,8 @@ public class Cliente {
     }
 
     /**
-     * @param mInterno the mInterno to set
+     * @param mInterno
+     *            the mInterno to set
      */
     public void setmInterno(String mInterno) {
 
@@ -206,7 +215,8 @@ public class Cliente {
     }
 
     /**
-     * @param mUfficio the mUfficio to set
+     * @param mUfficio
+     *            the mUfficio to set
      */
     public void setmUfficio(String mUfficio) {
 
@@ -222,7 +232,8 @@ public class Cliente {
     }
 
     /**
-     * @param mNote the mNote to set
+     * @param mNote
+     *            the mNote to set
      */
     public void setmNote(String mNote) {
 
@@ -238,7 +249,8 @@ public class Cliente {
     }
 
     /**
-     * @param mCancellato the mCancellato to set
+     * @param mCancellato
+     *            the mCancellato to set
      */
     public void setmCancellato(boolean mCancellato) {
 
@@ -248,32 +260,17 @@ public class Cliente {
     /**
      * @return the revisione
      */
-    public int getRevisione() {
+    public int getmRevisione() {
 
-	return revisione;
+	return mRevisione;
     }
 
     /**
-     * @param revisione the revisione to set
+     * @param revisione
+     *            the revisione to set
      */
-    public void setRevisione(int revisione) {
+    public void setmRevisione(int revisione) {
 
-	this.revisione = revisione;
-    }
-
-    /**
-     * @return the mInterventi
-     */
-    public List<Intervento> getmInterventi() {
-
-	return mInterventi;
-    }
-
-    /**
-     * @param mInterventi the mInterventi to set
-     */
-    public void setmInterventi(List<Intervento> mInterventi) {
-
-	this.mInterventi = mInterventi;
+	mRevisione = revisione;
     }
 }
