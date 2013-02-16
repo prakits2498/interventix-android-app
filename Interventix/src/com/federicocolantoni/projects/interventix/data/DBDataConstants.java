@@ -12,7 +12,7 @@ final class DBDataConstants {
     static final String DATABASE_NAME = "interventix";
     static final int DATABASE_VERSION = 1;
 
-    static final String TABLE_CREATE = "CREATE TABLE IF EXISTS "
+    static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
 	    + InterventixAPI.Cliente.PATH + " ("
 	    + InterventixAPI.Cliente.Fields.KEY_ROW_ID
 	    + " INTEGER PRIMARY KEY,"

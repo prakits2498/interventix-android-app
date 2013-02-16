@@ -69,7 +69,7 @@ public class MyInterventionsActivity extends Activity {
 
 		mFirst = f;
 
-		MyInterventionsActivity.this.request();
+		//MyInterventionsActivity.this.request();
 	    }
 	});
 
@@ -82,7 +82,7 @@ public class MyInterventionsActivity extends Activity {
 	    }
 	});
 
-	request();
+	//request();
     }
 
     private void request() {
@@ -119,8 +119,8 @@ public class MyInterventionsActivity extends Activity {
 	ParameterMap paramMap = new ParameterMap();
 	paramMap.add("DATA", json_req);
 
-	mDialog = ProgressDialog.show(this, "Connessione", "Attendere prego...",
-		true);
+	mDialog = ProgressDialog.show(this, "Connessione",
+		"Attendere prego...", true);
 	mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
 	request.post("", paramMap, new AsyncCallback() {
