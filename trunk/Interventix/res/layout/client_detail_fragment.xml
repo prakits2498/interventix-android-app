@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
+	<Button
+		android:id="@+id/btn_client_dtl_back"
+		style="?android:attr/buttonStyleSmall"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
+		android:text="@string/back"
+		android:textSize="12sp" />
+	<ScrollView
+		android:id="@+id/scroll_client_dtl"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentRight="true"
+		android:layout_below="@+id/btn_client_dtl_back" >
+	</ScrollView>
+	<TextView
+		android:id="@+id/textView1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBaseline="@+id/btn_client_dtl_back"
+		android:layout_alignBottom="@+id/btn_client_dtl_back"
+		android:text="@string/client_dtl"
+		android:textSize="20sp" />
+</RelativeLayout>
