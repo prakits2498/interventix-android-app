@@ -360,50 +360,71 @@ public class InterventixIntentService extends IntentService {
 				}
 			    }.start();
 			}
-		    }
 
-		    //************* UPDATING DATABASE - START **************\\
+			//************* UPDATING DATABASE - START **************\\
 
-		    JSONArray clienti_del = (JSONArray) data.get("del");
+			JSONArray clienti_del = (JSONArray) data.get("del");
 
-		    //Log.d(MainActivity.DEBUG_TAG, clienti_del.toJSONString());
+			for (int i = 0; i < clienti_del.size(); i++) {
+			    JSONObject obj = (JSONObject) clienti_del.get(i);
 
-		    for (int i = 0; i < clienti_del.size(); i++) {
-			JSONObject obj = (JSONObject) clienti_del.get(i);
+			    insertClient(obj);
+			}
 
-			insertClient(obj);
-		    }
+			JSONArray clienti_mod = (JSONArray) data.get("mod");
 
-		    JSONArray clienti_mod = (JSONArray) data.get("mod");
+			for (int i = 0; i < clienti_mod.size(); i++) {
+			    JSONObject obj = (JSONObject) clienti_mod.get(i);
 
-		    for (int i = 0; i < clienti_del.size(); i++) {
-			JSONObject obj = (JSONObject) clienti_mod.get(i);
+			    insertClient(obj);
+			}
 
-			insertClient(obj);
-		    }
+			//************* UPDATING DATABASE - FINISH **************\\
 
-		    //************* UPDATING DATABASE - FINISH **************\\
+			int result = Activity.RESULT_OK;
 
-		    int result = Activity.RESULT_OK;
+			if (extras != null) {
+			    Messenger messenger = (Messenger) extras
+				    .get("MESSENGER");
+			    Message message = Message.obtain();
+			    message.arg1 = result;
+			    message.obj = ClientiFragment.GET_LISTA_CLIENTI;
 
-		    if (extras != null) {
-			Messenger messenger = (Messenger) extras
-				.get("MESSENGER");
-			Message message = Message.obtain();
-			message.arg1 = result;
-			message.obj = ClientiFragment.GET_LISTA_CLIENTI;
+			    Bundle bundle = new Bundle();
+			    bundle.putBoolean("DOWNLOADED",
+				    ClientiFragment.firstTimeDownloaded = true);
 
-			Bundle bundle = new Bundle();
-			bundle.putBoolean("DOWNLOADED",
-				ClientiFragment.firstTimeDownloaded = true);
+			    message.setData(bundle);
 
-			message.setData(bundle);
+			    try {
+				messenger.send(message);
+			    } catch (RemoteException e) {
+				Log.d(MainActivity.DEBUG_TAG,
+					"SENDING MESSAGE ERROR!", e);
+			    }
+			}
+		    } else {
+			int result = Activity.RESULT_OK;
 
-			try {
-			    messenger.send(message);
-			} catch (RemoteException e) {
-			    Log.d(MainActivity.DEBUG_TAG,
-				    "SENDING MESSAGE ERROR!", e);
+			if (extras != null) {
+			    Messenger messenger = (Messenger) extras
+				    .get("MESSENGER");
+			    Message message = Message.obtain();
+			    message.arg1 = result;
+			    message.obj = ClientiFragment.GET_LISTA_CLIENTI;
+
+			    Bundle bundle = new Bundle();
+			    bundle.putBoolean("DOWNLOADED", false);
+			    bundle.putBoolean("REV_UPDATED", true);
+
+			    message.setData(bundle);
+
+			    try {
+				messenger.send(message);
+			    } catch (RemoteException e) {
+				Log.d(MainActivity.DEBUG_TAG,
+					"SENDING MESSAGE ERROR!", e);
+			    }
 			}
 		    }
 		} else {
@@ -445,29 +466,64 @@ public class InterventixIntentService extends IntentService {
 		.toString());
 	cv.put(InterventixAPI.Cliente.Fields.KEY_CODICE_FISCALE,
 		obj.get("codicefiscale").toString());
-	cv.put(InterventixAPI.Cliente.Fields.KEY_EMAIL, obj.get("email")
-		.toString());
-	cv.put(InterventixAPI.Cliente.Fields.KEY_FAX, obj.get("fax").toString());
+
+	if (obj.get("email") != null) {
+	    cv.put(InterventixAPI.Cliente.Fields.KEY_EMAIL, obj.get("email")
+		    .toString());
+	} else {
+	    cv.put(InterventixAPI.Cliente.Fields.KEY_EMAIL, "");
+	}
+
+	if (obj.get("fax") != null) {
+	    cv.put(InterventixAPI.Cliente.Fields.KEY_FAX, obj.get("fax")
+		    .toString());
+	} else {
+	    cv.put(InterventixAPI.Cliente.Fields.KEY_FAX, "");
+	}
+
 	cv.put(InterventixAPI.Cliente.Fields.KEY_ID_CLIENTE,
 		Integer.parseInt(obj.get("idcliente").toString()));
 	cv.put(InterventixAPI.Cliente.Fields.KEY_INDIRIZZO, obj
 		.get("indirizzo").toString());
-	cv.put(InterventixAPI.Cliente.Fields.KEY_INTERNO, obj.get("interno")
-		.toString());
+
+	if (obj.get("interno") != null) {
+	    cv.put(InterventixAPI.Cliente.Fields.KEY_INTERNO, obj
+		    .get("interno").toString());
+	} else {
+	    cv.put(InterventixAPI.Cliente.Fields.KEY_INTERNO, "");
+	}
+
 	cv.put(InterventixAPI.Cliente.Fields.KEY_NOMINATIVO,
 		obj.get("nominativo").toString());
-	cv.put(InterventixAPI.Cliente.Fields.KEY_NOTE, obj.get("note")
-		.toString());
+
+	if (obj.get("note") != null) {
+	    cv.put(InterventixAPI.Cliente.Fields.KEY_NOTE, obj.get("note")
+		    .toString());
+	} else {
+	    cv.put(InterventixAPI.Cliente.Fields.KEY_NOTE, "");
+	}
+
 	cv.put(InterventixAPI.Cliente.Fields.KEY_PARTITA_IVA,
 		obj.get("partitaiva").toString());
-	cv.put(InterventixAPI.Cliente.Fields.KEY_REFERENTE, obj
-		.get("referente").toString());
+
+	if (obj.get("referente") != null) {
+	    cv.put(InterventixAPI.Cliente.Fields.KEY_REFERENTE,
+		    obj.get("referente").toString());
+	} else {
+	    cv.put(InterventixAPI.Cliente.Fields.KEY_REFERENTE, "");
+	}
+
 	cv.put(InterventixAPI.Cliente.Fields.KEY_REVISIONE,
 		Integer.parseInt(obj.get("revisione").toString()));
 	cv.put(InterventixAPI.Cliente.Fields.KEY_TELEFONO, obj.get("telefono")
 		.toString());
-	cv.put(InterventixAPI.Cliente.Fields.KEY_UFFICIO, obj.get("ufficio")
-		.toString());
+
+	if (obj.get("ufficio") != null) {
+	    cv.put(InterventixAPI.Cliente.Fields.KEY_UFFICIO, obj
+		    .get("ufficio").toString());
+	} else {
+	    cv.put(InterventixAPI.Cliente.Fields.KEY_UFFICIO, "");
+	}
 
 	cr.insert(target, cv);
     }

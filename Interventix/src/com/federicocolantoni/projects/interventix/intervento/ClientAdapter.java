@@ -49,8 +49,8 @@ public class ClientAdapter extends CursorAdapter {
 	String p_iva = cursor.getString(mPartitaIVAIndex);
 
 	row_nomin.setText(nomin);
-	row_cod_fis.setText(cod_fis);
-	row_p_iva.setText(p_iva);
+	row_cod_fis.setText("C.F. " + cod_fis);
+	row_p_iva.setText("P.IVA " + p_iva);
 
     }
 
