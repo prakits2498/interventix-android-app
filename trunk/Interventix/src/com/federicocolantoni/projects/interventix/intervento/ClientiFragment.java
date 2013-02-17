@@ -20,6 +20,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -45,12 +46,16 @@ public class ClientiFragment extends Fragment implements
     public static final String GET_LISTA_CLIENTI = "com.federico.colantoni.projects.interventix.GET_LISTA_CLIENTI";
     static final String GLOBAL_PREFERENCES = "Preferences";
 
+    private static final String TAG_CLIENTE_DETAIL = "DETAIL";
+
     private final static int CLIENT_LOADER = 1;
 
     private SharedPreferences mPrefs;
 
     private ListView mListClients;
     private ClientAdapter mAdapter;
+
+    private FragmentManager fragMng;
 
     private String mJson_req;
     public static boolean firstTimeDownloaded = false;
@@ -75,9 +80,18 @@ public class ClientiFragment extends Fragment implements
 				Toast.LENGTH_LONG).show();
 		    } else {
 
-			DialogFragment newFragment = new SimpleDialogFragment();
-			newFragment.show(getActivity()
-				.getSupportFragmentManager(), "ALERT_DIALOG");
+			if (bundle.getBoolean("REV_UPDATED") == true) {
+
+			    Toast.makeText(getActivity(),
+				    "La lista clienti e' gia' aggiornata.",
+				    Toast.LENGTH_LONG).show();
+			} else {
+
+			    DialogFragment newFragment = new SimpleDialogFragment();
+			    newFragment.show(getActivity()
+				    .getSupportFragmentManager(),
+				    "ALERT_DIALOG");
+			}
 		    }
 		} else {
 
@@ -131,6 +145,41 @@ public class ClientiFragment extends Fragment implements
 	    public void onItemClick(AdapterView<?> adapter, View view,
 		    int position, long id) {
 
+		/*Cursor cur = (Cursor) adapter.getItemAtPosition(position);
+
+		boolean ok = cur.moveToPosition(position);
+
+		if (ok) {
+		    FragmentTransaction xact = fragMng.beginTransaction();
+
+		    ClienteDetailFragment msgFrag = new ClienteDetailFragment();
+
+		    Bundle bun = new Bundle();
+
+		    bun.putString(
+		        "NAME",
+		        cur.getString(cur
+		    	    .getColumnIndex(MicroBloggingAPI.Messaggio.Fields.NAME)));
+		    bun.putString(
+		        "TITLE",
+		        cur.getString(cur
+		    	    .getColumnIndex(MicroBloggingAPI.Messaggio.Fields.TITLE)));
+		    bun.putLong(
+		        "DATE",
+		        cur.getLong(cur
+		    	    .getColumnIndex(MicroBloggingAPI.Messaggio.Fields.DATE)));
+		    bun.putString(
+		        "BODY",
+		        cur.getString(cur
+		    	    .getColumnIndex(MicroBloggingAPI.Messaggio.Fields.BODY)));
+
+		    msgFrag.setArguments(bun);
+
+		    xact.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		    xact.replace(R.id.frame_for_fragments, msgFrag,
+			    TAG_CLIENTE_DETAIL);
+		    xact.commit();
+		}*/
 	    }
 	});
 
@@ -217,7 +266,7 @@ public class ClientiFragment extends Fragment implements
     public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
 
 	CursorLoader loader = new CursorLoader(getActivity(),
-		InterventixAPI.Cliente.URI, null, null, null,
+		InterventixAPI.Cliente.URI, null, " cancellato=0 ", null,
 		InterventixAPI.Cliente.Fields.KEY_NOMINATIVO + " asc");
 
 	return loader;
