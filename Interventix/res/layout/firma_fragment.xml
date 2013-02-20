@@ -14,4 +14,11 @@
 		android:maxHeight="60dp"
 		android:maxWidth="159dp"
 		android:src="@drawable/logo_ix" />
+	<FrameLayout
+		android:id="@+id/frame_for_signature"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_alignParentLeft="true"
+		android:layout_below="@+id/imageView1" >
+	</FrameLayout>
 </RelativeLayout>

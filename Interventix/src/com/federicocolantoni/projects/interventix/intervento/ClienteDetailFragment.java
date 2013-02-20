@@ -1,6 +1,7 @@
 
 package com.federicocolantoni.projects.interventix.intervento;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,8 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import com.federicocolantoni.projects.interventix.R;
 
@@ -18,9 +18,6 @@ public class ClienteDetailFragment extends Fragment implements OnClickListener {
 
     private static final String TAG_LIST_CLIENTS = "LIST_CLIENTS";
     private Bundle mBundle;
-
-    private TextView mView_title, mView_body;
-    private ScrollView mScroll_client_dtl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,22 +31,21 @@ public class ClienteDetailFragment extends Fragment implements OnClickListener {
 
 	mBundle = getArguments();
 
-	/*EditText edit_nome = (EditText) v.findViewById(R.id.edit_nome);
-	edit_nome.setText(bun.getString("NAME"));
+	EditText edit_nome = (EditText) v.findViewById(R.id.edit_nomin_dtl);
+	edit_nome.setText(mBundle.getString("NOMINATIVO"));
 	edit_nome.setEnabled(false);
+	edit_nome.setTextColor(Color.BLACK);
 
-	edit_title = (EditText) v.findViewById(R.id.edit_title);
-	edit_title.setText(bun.getString("TITLE"));
+	EditText edit_title = (EditText) v.findViewById(R.id.edit_codfis_dtl);
+	edit_title.setText(mBundle.getString("CODICE_FISCALE"));
 	edit_title.setEnabled(true);
+	edit_nome.setTextColor(Color.BLACK);
 
-	EditText edit_date = (EditText) v.findViewById(R.id.edit_date);
-	edit_date.setText(DateFormat.format("MMM dd, yyyy hh:mmaa",
-		bun.getLong("DATE")));
+	EditText edit_date = (EditText) v
+		.findViewById(R.id.edit_partitaiva_dtl);
+	edit_date.setText(mBundle.getString("PARTITA_IVA"));
 	edit_date.setEnabled(false);
-
-	edit_body = (EditText) v.findViewById(R.id.edit_body);
-	edit_body.setText(bun.getString("BODY"));
-	edit_body.setEnabled(true);*/
+	edit_nome.setTextColor(Color.BLACK);
 
 	return v;
     }
