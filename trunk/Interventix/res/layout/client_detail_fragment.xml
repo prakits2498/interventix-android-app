@@ -19,6 +19,40 @@
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentRight="true"
 		android:layout_below="@+id/btn_client_dtl_back" >
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="400dp"
+			android:background="#ffffff"
+			android:orientation="vertical" >
+			<EditText
+				android:id="@+id/edit_nomin_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:ems="10"
+				android:hint="@string/hint_nomin"
+				android:inputType="text" >
+			</EditText>
+			<EditText
+				android:id="@+id/edit_codfis_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_below="@+id/edit_nomin_dtl"
+				android:ems="10"
+				android:hint="@string/hint_cod_fis"
+				android:inputType="text" />
+			<EditText
+				android:id="@+id/edit_partitaiva_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_below="@+id/edit_codfis_dtl"
+				android:ems="10"
+				android:hint="@string/hint_p_iva"
+				android:inputType="text" >
+				<requestFocus />
+			</EditText>
+		</RelativeLayout>
 	</ScrollView>
 	<TextView
 		android:id="@+id/textView1"

@@ -392,7 +392,7 @@ public class InterventixIntentService extends IntentService {
 
 			    Bundle bundle = new Bundle();
 			    bundle.putBoolean("DOWNLOADED",
-				    ClientiFragment.firstTimeDownloaded = true);
+				    ClientiFragment.sFirstTimeDownloaded = true);
 
 			    message.setData(bundle);
 

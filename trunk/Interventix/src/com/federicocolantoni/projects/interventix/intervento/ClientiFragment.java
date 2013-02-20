@@ -21,6 +21,7 @@ import android.os.Messenger;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -55,10 +56,10 @@ public class ClientiFragment extends Fragment implements
     private ListView mListClients;
     private ClientAdapter mAdapter;
 
-    private FragmentManager fragMng;
+    private FragmentManager mFragMng;
 
     private String mJson_req;
-    public static boolean firstTimeDownloaded = false;
+    public static boolean sFirstTimeDownloaded = false;
 
     private Handler mHandler = new Handler() {
 
@@ -138,6 +139,8 @@ public class ClientiFragment extends Fragment implements
 	final View v = inflater.inflate(R.layout.clienti_fragment, container,
 		false);
 
+	mFragMng = getActivity().getSupportFragmentManager();
+
 	mListClients = (ListView) v.findViewById(R.id.list_clients);
 	mListClients.setOnItemClickListener(new OnItemClickListener() {
 
@@ -145,33 +148,29 @@ public class ClientiFragment extends Fragment implements
 	    public void onItemClick(AdapterView<?> adapter, View view,
 		    int position, long id) {
 
-		/*Cursor cur = (Cursor) adapter.getItemAtPosition(position);
+		Cursor cur = (Cursor) adapter.getItemAtPosition(position);
 
 		boolean ok = cur.moveToPosition(position);
 
 		if (ok) {
-		    FragmentTransaction xact = fragMng.beginTransaction();
+		    FragmentTransaction xact = mFragMng.beginTransaction();
 
 		    ClienteDetailFragment msgFrag = new ClienteDetailFragment();
 
 		    Bundle bun = new Bundle();
 
 		    bun.putString(
-		        "NAME",
-		        cur.getString(cur
-		    	    .getColumnIndex(MicroBloggingAPI.Messaggio.Fields.NAME)));
+			    "NOMINATIVO",
+			    cur.getString(cur
+				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_NOMINATIVO)));
 		    bun.putString(
-		        "TITLE",
-		        cur.getString(cur
-		    	    .getColumnIndex(MicroBloggingAPI.Messaggio.Fields.TITLE)));
-		    bun.putLong(
-		        "DATE",
-		        cur.getLong(cur
-		    	    .getColumnIndex(MicroBloggingAPI.Messaggio.Fields.DATE)));
+			    "CODICE_FISCALE",
+			    cur.getString(cur
+				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_CODICE_FISCALE)));
 		    bun.putString(
-		        "BODY",
-		        cur.getString(cur
-		    	    .getColumnIndex(MicroBloggingAPI.Messaggio.Fields.BODY)));
+			    "PARTITA_IVA",
+			    cur.getString(cur
+				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_PARTITA_IVA)));
 
 		    msgFrag.setArguments(bun);
 
@@ -179,7 +178,7 @@ public class ClientiFragment extends Fragment implements
 		    xact.replace(R.id.frame_for_fragments, msgFrag,
 			    TAG_CLIENTE_DETAIL);
 		    xact.commit();
-		}*/
+		}
 	    }
 	});
 
@@ -257,7 +256,7 @@ public class ClientiFragment extends Fragment implements
 
 	intent.putExtra("REQUEST_GET_LISTA_CLIENTI", mJson_req);
 	intent.putExtra("MESSENGER", msn);
-	intent.putExtra("DOWNLOADED", firstTimeDownloaded);
+	intent.putExtra("DOWNLOADED", sFirstTimeDownloaded);
 
 	getActivity().startService(intent);
     }
