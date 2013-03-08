@@ -1,5 +1,7 @@
 
-package com.federicocolantoni.projects.interventix;
+package com.federicocolantoni.projects.interventix.core;
+
+import com.federicocolantoni.projects.interventix.R;
 
 import android.app.Activity;
 import android.os.Bundle;

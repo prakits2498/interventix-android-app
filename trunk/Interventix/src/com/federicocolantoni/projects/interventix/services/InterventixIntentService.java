@@ -27,8 +27,8 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.federicocolantoni.projects.interventix.ControlPanelActivity;
-import com.federicocolantoni.projects.interventix.MainActivity;
+import com.federicocolantoni.projects.interventix.Constants;
+import com.federicocolantoni.projects.interventix.core.ControlPanelActivity;
 import com.federicocolantoni.projects.interventix.data.InterventixAPI;
 import com.federicocolantoni.projects.interventix.intervento.ClientiFragment;
 import com.turbomanage.httpclient.HttpResponse;
@@ -38,13 +38,10 @@ import com.turbomanage.httpclient.android.AndroidHttpClient;
 @SuppressLint("NewApi")
 public class InterventixIntentService extends IntentService {
 
-    private static final String BASE_URL = "http://176.31.243.123:8080/interventix/connector";
-    static final String GLOBAL_PREFERENCES = "Preferences";
-
     public InterventixIntentService() {
 
 	super("InterventixIntentService");
-	Log.d(MainActivity.DEBUG_TAG, "Service avviato");
+	Log.d(Constants.DEBUG_TAG, "Service avviato");
     }
 
     @Override
@@ -63,7 +60,7 @@ public class InterventixIntentService extends IntentService {
     protected void onHandleIntent(final Intent intent) {
 
 	if (intent != null) {
-	    if (intent.getAction().equals(MainActivity.LOGIN)) {
+	    if (intent.getAction().equals(Constants.LOGIN)) {
 
 		final Bundle extras = intent.getExtras();
 
@@ -75,8 +72,7 @@ public class InterventixIntentService extends IntentService {
 			login(extras, intent);
 		    }
 		}).start();
-	    } else if (intent.getAction().equals(
-		    ControlPanelActivity.GET_NOMINATIVO)) {
+	    } else if (intent.getAction().equals(Constants.GET_NOMINATIVO)) {
 
 		final Bundle extras = intent.getExtras();
 
@@ -89,12 +85,11 @@ public class InterventixIntentService extends IntentService {
 		    }
 
 		}).start();
-	    } else if (intent.getAction().equals(
-		    ClientiFragment.GET_LISTA_CLIENTI)) {
+	    } else if (intent.getAction().equals(Constants.GET_LISTA_CLIENTI)) {
 
 		final Bundle extras = intent.getExtras();
 
-		if (intent.getBooleanExtra("DOWNLOADED", false) == false) {
+		if (intent.getBooleanExtra(Constants.DOWNLOADED, false) == false) {
 
 		    new Thread(new Runnable() {
 
@@ -110,20 +105,20 @@ public class InterventixIntentService extends IntentService {
 
 		    if (extras != null) {
 			Messenger messenger = (Messenger) extras
-				.get("MESSENGER");
+				.get(Constants.MESSENGER);
 			Message message = Message.obtain();
 			message.arg1 = result;
-			message.obj = ClientiFragment.GET_LISTA_CLIENTI;
+			message.obj = Constants.GET_LISTA_CLIENTI;
 
 			Bundle bundle = new Bundle();
-			bundle.putBoolean("DOWNLOADED", false);
+			bundle.putBoolean(Constants.DOWNLOADED, false);
 
 			message.setData(bundle);
 
 			try {
 			    messenger.send(message);
 			} catch (RemoteException e) {
-			    Log.d(MainActivity.DEBUG_TAG,
+			    Log.d(Constants.DEBUG_TAG,
 				    "SENDING MESSAGE ERROR!", e);
 			}
 		    }
@@ -134,10 +129,10 @@ public class InterventixIntentService extends IntentService {
 
     private void login(Bundle extras, Intent intent) {
 
-	AndroidHttpClient request = new AndroidHttpClient(BASE_URL);
+	AndroidHttpClient request = new AndroidHttpClient(Constants.BASE_URL);
 	request.setMaxRetries(5);
 	ParameterMap paramMap = new ParameterMap();
-	paramMap.add("DATA", intent.getStringExtra("REQUEST_LOGIN"));
+	paramMap.add("DATA", intent.getStringExtra(Constants.REQUEST_LOGIN));
 
 	HttpResponse response = request.post("", paramMap);
 
@@ -147,14 +142,14 @@ public class InterventixIntentService extends IntentService {
 	    if (resp.get("response").toString().equalsIgnoreCase("success")) {
 
 		SharedPreferences prefs = getSharedPreferences(
-			GLOBAL_PREFERENCES, MODE_PRIVATE);
+			Constants.GLOBAL_PREFERENCES, MODE_PRIVATE);
 
 		final Editor editor = prefs.edit();
 
 		int IdUser = Integer.parseInt(resp.get("iduser").toString());
-		editor.putInt("ID_USER", IdUser);
+		editor.putInt(Constants.ID_USER, IdUser);
 
-		editor.putLong("REVISION", 0);
+		editor.putLong(Constants.REVISION, 0);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 		    editor.apply();
@@ -172,53 +167,54 @@ public class InterventixIntentService extends IntentService {
 		int result = Activity.RESULT_OK;
 
 		if (extras != null) {
-		    Messenger messenger = (Messenger) extras.get("MESSENGER");
+		    Messenger messenger = (Messenger) extras
+			    .get(Constants.MESSENGER);
 		    Message message = Message.obtain();
 		    message.arg1 = result;
-		    message.obj = MainActivity.LOGIN;
+		    message.obj = Constants.LOGIN;
 		    try {
 			messenger.send(message);
 		    } catch (RemoteException e) {
-			Log.d(MainActivity.DEBUG_TAG, "SENDING MESSAGE ERROR!",
-				e);
+			Log.d(Constants.DEBUG_TAG, "SENDING MESSAGE ERROR!", e);
 		    }
 		}
 	    } else {
 		int result = Activity.RESULT_CANCELED;
 
 		if (extras != null) {
-		    Messenger messenger = (Messenger) extras.get("MESSENGER");
+		    Messenger messenger = (Messenger) extras
+			    .get(Constants.MESSENGER);
 		    Message message = Message.obtain();
 		    message.arg1 = result;
-		    message.obj = MainActivity.LOGIN;
+		    message.obj = Constants.LOGIN;
 		    try {
 			messenger.send(message);
 		    } catch (RemoteException e) {
-			Log.d(MainActivity.DEBUG_TAG, "SENDING MESSAGE ERROR!",
-				e);
+			Log.d(Constants.DEBUG_TAG, "SENDING MESSAGE ERROR!", e);
 		    }
 		}
 	    }
 	} catch (ParseException e) {
-	    Log.d(MainActivity.DEBUG_TAG, "PARSE_EXCEPTION!", e);
+	    Log.d(Constants.DEBUG_TAG, "PARSE_EXCEPTION!", e);
 	} catch (Exception e) {
-	    Log.d(MainActivity.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
+	    Log.d(Constants.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
 	}
     }
 
     private void getNominativo(Bundle extras, Intent intent) {
 
-	AndroidHttpClient request = new AndroidHttpClient(BASE_URL);
+	AndroidHttpClient request = new AndroidHttpClient(Constants.BASE_URL);
 	request.setMaxRetries(5);
 	ParameterMap paramMap = new ParameterMap();
-	paramMap.add("DATA", intent.getStringExtra("REQUEST_GET_NOMINATIVO"));
+	paramMap.add("DATA",
+		intent.getStringExtra(Constants.REQUEST_GET_NOMINATIVO));
 
 	HttpResponse response = request.post("", paramMap);
 
 	try {
 	    JSONObject resp = JsonCR2.read(response.getBodyAsString());
 
-	    Map req = (HashMap) resp.get("request");
+	    Map<?, ?> req = (HashMap<?, ?>) resp.get("request");
 
 	    String action = req.get("action").toString();
 	    String section = req.get("section").toString();
@@ -228,20 +224,20 @@ public class InterventixIntentService extends IntentService {
 			&& section.equalsIgnoreCase("users")) {
 		    JSONArray datas = (JSONArray) resp.get("data");
 
-		    Map data = new HashMap();
+		    Map<?, ?> data = new HashMap<Object, Object>();
 
-		    Iterator it = datas.iterator();
+		    Iterator<?> it = datas.iterator();
 
 		    String nome = null, cognome = null;
 
 		    SharedPreferences prefs = getSharedPreferences(
-			    GLOBAL_PREFERENCES, MODE_PRIVATE);
+			    Constants.GLOBAL_PREFERENCES, MODE_PRIVATE);
 
 		    while (it.hasNext()) {
-			data = (Map) it.next();
+			data = (Map<?, ?>) it.next();
 			String id = data.get("idutente").toString();
-			if (Integer.parseInt(id) == prefs.getInt("ID_USER",
-				Integer.valueOf(-1))) {
+			if (Integer.parseInt(id) == prefs.getInt(
+				Constants.ID_USER, Integer.valueOf(-1))) {
 			    nome = (String) data.get("nome");
 			    cognome = (String) data.get("cognome");
 			    break;
@@ -249,10 +245,10 @@ public class InterventixIntentService extends IntentService {
 		    }
 
 		    SharedPreferences pref = getSharedPreferences(
-			    GLOBAL_PREFERENCES,
+			    Constants.GLOBAL_PREFERENCES,
 			    ControlPanelActivity.MODE_PRIVATE);
 		    final Editor editor = pref.edit();
-		    editor.putString("SAVE_USER", nome + " " + cognome);
+		    editor.putString(Constants.SAVE_USER, nome + " " + cognome);
 
 		    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			editor.apply();
@@ -271,19 +267,20 @@ public class InterventixIntentService extends IntentService {
 
 		    if (extras != null) {
 			Messenger messenger = (Messenger) extras
-				.get("MESSENGER");
+				.get(Constants.MESSENGER);
 			Message message = Message.obtain();
 			message.arg1 = result;
-			message.obj = ControlPanelActivity.GET_NOMINATIVO;
+			message.obj = Constants.GET_NOMINATIVO;
 
 			Bundle bundle = new Bundle();
-			bundle.putString("NOMINATIVO", nome + " " + cognome);
+			bundle.putString(Constants.NOMINATIVO, nome + " "
+				+ cognome);
 			message.setData(bundle);
 
 			try {
 			    messenger.send(message);
 			} catch (RemoteException e) {
-			    Log.d(MainActivity.DEBUG_TAG,
+			    Log.d(Constants.DEBUG_TAG,
 				    "SENDING MESSAGE ERROR!", e);
 			}
 		    }
@@ -292,33 +289,34 @@ public class InterventixIntentService extends IntentService {
 
 		    if (extras != null) {
 			Messenger messenger = (Messenger) extras
-				.get("MESSENGER");
+				.get(Constants.MESSENGER);
 			Message message = Message.obtain();
 			message.arg1 = result;
-			message.obj = ControlPanelActivity.GET_NOMINATIVO;
+			message.obj = Constants.GET_NOMINATIVO;
 
 			try {
 			    messenger.send(message);
 			} catch (RemoteException e) {
-			    Log.d(MainActivity.DEBUG_TAG,
+			    Log.d(Constants.DEBUG_TAG,
 				    "SENDING MESSAGE ERROR!", e);
 			}
 		    }
 		}
 	    }
 	} catch (ParseException e) {
-	    Log.d(MainActivity.DEBUG_TAG, "PARSE_EXCEPTION!", e);
+	    Log.d(Constants.DEBUG_TAG, "PARSE_EXCEPTION!", e);
 	} catch (Exception e) {
-	    Log.d(MainActivity.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
+	    Log.d(Constants.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
 	}
     }
 
     private void getListaClienti(Bundle extras, Intent intent) {
 
-	AndroidHttpClient request = new AndroidHttpClient(BASE_URL);
+	AndroidHttpClient request = new AndroidHttpClient(Constants.BASE_URL);
 	request.setMaxRetries(5);
 	ParameterMap paramMap = new ParameterMap();
-	paramMap.add("DATA", intent.getStringExtra("REQUEST_GET_LISTA_CLIENTI"));
+	paramMap.add("DATA",
+		intent.getStringExtra(Constants.REQUEST_GET_LISTA_CLIENTI));
 
 	request.post("", paramMap);
 
@@ -327,7 +325,7 @@ public class InterventixIntentService extends IntentService {
 	try {
 	    JSONObject resp = JsonCR2.read(response.getBodyAsString());
 
-	    Map req = (Map) resp.get("request");
+	    Map<?, ?> req = (Map<?, ?>) resp.get("request");
 
 	    String action = req.get("action").toString();
 	    String section = req.get("section").toString();
@@ -336,17 +334,17 @@ public class InterventixIntentService extends IntentService {
 		if (action.equalsIgnoreCase("syncro")
 			&& section.equalsIgnoreCase("clients")) {
 
-		    Map data = (Map) resp.get("data");
+		    Map<?, ?> data = (Map<?, ?>) resp.get("data");
 
 		    long remoteRev = (Long) data.get("revision");
 
 		    SharedPreferences prefs = getSharedPreferences(
-			    GLOBAL_PREFERENCES, MODE_PRIVATE);
+			    Constants.GLOBAL_PREFERENCES, MODE_PRIVATE);
 
-		    if (remoteRev > prefs.getLong("REVISION", 0)) {
+		    if (remoteRev > prefs.getLong(Constants.REVISION, 0)) {
 			final Editor editor = prefs.edit();
 
-			editor.putLong("REVISION", remoteRev);
+			editor.putLong(Constants.REVISION, remoteRev);
 
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			    editor.apply();
@@ -385,13 +383,13 @@ public class InterventixIntentService extends IntentService {
 
 			if (extras != null) {
 			    Messenger messenger = (Messenger) extras
-				    .get("MESSENGER");
+				    .get(Constants.MESSENGER);
 			    Message message = Message.obtain();
 			    message.arg1 = result;
-			    message.obj = ClientiFragment.GET_LISTA_CLIENTI;
+			    message.obj = Constants.GET_LISTA_CLIENTI;
 
 			    Bundle bundle = new Bundle();
-			    bundle.putBoolean("DOWNLOADED",
+			    bundle.putBoolean(Constants.DOWNLOADED,
 				    ClientiFragment.sFirstTimeDownloaded = true);
 
 			    message.setData(bundle);
@@ -399,7 +397,7 @@ public class InterventixIntentService extends IntentService {
 			    try {
 				messenger.send(message);
 			    } catch (RemoteException e) {
-				Log.d(MainActivity.DEBUG_TAG,
+				Log.d(Constants.DEBUG_TAG,
 					"SENDING MESSAGE ERROR!", e);
 			    }
 			}
@@ -408,21 +406,21 @@ public class InterventixIntentService extends IntentService {
 
 			if (extras != null) {
 			    Messenger messenger = (Messenger) extras
-				    .get("MESSENGER");
+				    .get(Constants.MESSENGER);
 			    Message message = Message.obtain();
 			    message.arg1 = result;
-			    message.obj = ClientiFragment.GET_LISTA_CLIENTI;
+			    message.obj = Constants.GET_LISTA_CLIENTI;
 
 			    Bundle bundle = new Bundle();
-			    bundle.putBoolean("DOWNLOADED", false);
-			    bundle.putBoolean("REV_UPDATED", true);
+			    bundle.putBoolean(Constants.DOWNLOADED, false);
+			    bundle.putBoolean(Constants.REV_UPDATED, true);
 
 			    message.setData(bundle);
 
 			    try {
 				messenger.send(message);
 			    } catch (RemoteException e) {
-				Log.d(MainActivity.DEBUG_TAG,
+				Log.d(Constants.DEBUG_TAG,
 					"SENDING MESSAGE ERROR!", e);
 			    }
 			}
@@ -432,24 +430,24 @@ public class InterventixIntentService extends IntentService {
 
 		    if (extras != null) {
 			Messenger messenger = (Messenger) extras
-				.get("MESSENGER");
+				.get(Constants.MESSENGER);
 			Message message = Message.obtain();
 			message.arg1 = result;
-			message.obj = ClientiFragment.GET_LISTA_CLIENTI;
+			message.obj = Constants.GET_LISTA_CLIENTI;
 
 			try {
 			    messenger.send(message);
 			} catch (RemoteException e) {
-			    Log.d(MainActivity.DEBUG_TAG,
+			    Log.d(Constants.DEBUG_TAG,
 				    "SENDING MESSAGE ERROR!", e);
 			}
 		    }
 		}
 	    }
 	} catch (ParseException e) {
-	    Log.d(MainActivity.DEBUG_TAG, "PARSE_EXCEPTION!", e);
+	    Log.d(Constants.DEBUG_TAG, "PARSE_EXCEPTION!", e);
 	} catch (Exception e) {
-	    Log.d(MainActivity.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
+	    Log.d(Constants.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
 	}
     }
 

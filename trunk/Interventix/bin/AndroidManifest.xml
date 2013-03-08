@@ -13,7 +13,7 @@
 		android:label="@string/app_name"
 		android:theme="@style/AppTheme" >
 		<activity
-			android:name="com.federicocolantoni.projects.interventix.MainActivity"
+			android:name="com.federicocolantoni.projects.interventix.core.MainActivity"
 			android:label="@string/app_name" >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -21,15 +21,15 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name="com.federicocolantoni.projects.interventix.ControlPanelActivity"
+			android:name="com.federicocolantoni.projects.interventix.core.ControlPanelActivity"
 			android:label="@string/title_activity_index" >
 		</activity>
 		<activity
-			android:name="com.federicocolantoni.projects.interventix.MyInterventionsActivity"
+			android:name="com.federicocolantoni.projects.interventix.core.MyInterventionsActivity"
 			android:label="@string/title_activity_my_interventions" >
 		</activity>
 		<activity
-			android:name="com.federicocolantoni.projects.interventix.TabBarActivity"
+			android:name="com.federicocolantoni.projects.interventix.core.TabBarActivity"
 			android:label="@string/title_activity_tab_bar" >
 		</activity>
 		<service android:name=".services.InterventixIntentService" >

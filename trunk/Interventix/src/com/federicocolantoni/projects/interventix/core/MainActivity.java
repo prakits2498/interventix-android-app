@@ -1,10 +1,9 @@
 
-package com.federicocolantoni.projects.interventix;
+package com.federicocolantoni.projects.interventix.core;
 
 import java.io.IOException;
 
 import multiface.crypto.cr2.JsonCR2;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -19,29 +18,25 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.federicocolantoni.projects.interventix.Constants;
+import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.services.InterventixIntentService;
 
-@SuppressLint({ "HandlerLeak", "NewApi" })
 public class MainActivity extends Activity {
-
-    public static final String DEBUG_TAG = "INTERVENTIX";
-    static final String GLOBAL_PREFERENCES = "Preferences";
-
-    public static final String LOGIN = "com.federico.colantoni.projects.interventix.LOGIN";
 
     private EditText mUsername, mPassword;
     private String mJson_req;
 
     private ProgressDialog mDialog;
 
-    private Handler mHandler = new Handler() {
+    private Handler mHandler = new MyHandler() {
 
 	@Override
 	public void handleMessage(Message msg) {
 
 	    String action = (String) msg.obj;
 
-	    if (action.equals(LOGIN)) {
+	    if (action.equals(Constants.LOGIN)) {
 		if (msg.arg1 == RESULT_OK) {
 
 		    mDialog.dismiss();
@@ -67,6 +62,10 @@ public class MainActivity extends Activity {
 	}
     };
 
+    private static class MyHandler extends Handler {
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -83,9 +82,9 @@ public class MainActivity extends Activity {
 		try {
 		    loginService(v);
 		} catch (InterruptedException e) {
-		    Log.d(DEBUG_TAG, "INTERRUPTED_EXCEPTION!", e);
+		    Log.d(Constants.DEBUG_TAG, "INTERRUPTED_EXCEPTION!", e);
 		} catch (IOException e) {
-		    Log.d(DEBUG_TAG, "IO_EXCEPTION!", e);
+		    Log.d(Constants.DEBUG_TAG, "IO_EXCEPTION!", e);
 		}
 	    }
 	});
@@ -101,16 +100,16 @@ public class MainActivity extends Activity {
 	    mJson_req = JsonCR2.createRequestLogin(mUsername.getText()
 		    .toString(), mPassword.getText().toString());
 	} catch (Exception e) {
-	    Log.d(DEBUG_TAG, "GENERIC_EXCEPTION!", e);
+	    Log.d(Constants.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
 	}
 
-	Intent intent = new Intent(LOGIN, null, this,
+	Intent intent = new Intent(Constants.LOGIN, null, this,
 		InterventixIntentService.class);
 
 	Messenger msn = new Messenger(mHandler);
 
-	intent.putExtra("REQUEST_LOGIN", mJson_req);
-	intent.putExtra("MESSENGER", msn);
+	intent.putExtra(Constants.REQUEST_LOGIN, mJson_req);
+	intent.putExtra(Constants.MESSENGER, msn);
 
 	startService(intent);
 

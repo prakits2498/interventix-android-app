@@ -31,21 +31,71 @@ public class ClienteDetailFragment extends Fragment implements OnClickListener {
 
 	mBundle = getArguments();
 
-	EditText edit_nome = (EditText) v.findViewById(R.id.edit_nomin_dtl);
-	edit_nome.setText(mBundle.getString("NOMINATIVO"));
-	edit_nome.setEnabled(false);
-	edit_nome.setTextColor(Color.BLACK);
+	EditText edit_nomin = (EditText) v.findViewById(R.id.edit_nomin_dtl);
+	edit_nomin.setText(mBundle.getString("NOMINATIVO"));
+	edit_nomin.setEnabled(false);
+	edit_nomin.setTextColor(Color.BLACK);
 
-	EditText edit_title = (EditText) v.findViewById(R.id.edit_codfis_dtl);
-	edit_title.setText(mBundle.getString("CODICE_FISCALE"));
-	edit_title.setEnabled(true);
-	edit_nome.setTextColor(Color.BLACK);
+	EditText edit_codfis = (EditText) v.findViewById(R.id.edit_codfis_dtl);
+	edit_codfis.setText(mBundle.getString("CODICE_FISCALE"));
+	edit_codfis.setEnabled(true);
+	edit_codfis.setTextColor(Color.BLACK);
 
-	EditText edit_date = (EditText) v
+	EditText edit_partitaiva = (EditText) v
 		.findViewById(R.id.edit_partitaiva_dtl);
-	edit_date.setText(mBundle.getString("PARTITA_IVA"));
-	edit_date.setEnabled(false);
-	edit_nome.setTextColor(Color.BLACK);
+	edit_partitaiva.setText(mBundle.getString("PARTITA_IVA"));
+	edit_partitaiva.setEnabled(false);
+	edit_partitaiva.setTextColor(Color.BLACK);
+
+	EditText edit_telefono = (EditText) v
+		.findViewById(R.id.edit_telefono_dtl);
+	edit_telefono.setText(mBundle.getString("TELEFONO"));
+	edit_telefono.setEnabled(false);
+	edit_telefono.setTextColor(Color.BLACK);
+
+	EditText edit_fax = (EditText) v.findViewById(R.id.edit_fax_dtl);
+	edit_fax.setText(mBundle.getString("FAX"));
+	edit_fax.setEnabled(false);
+	edit_fax.setTextColor(Color.BLACK);
+
+	EditText edit_email = (EditText) v.findViewById(R.id.edit_email_dtl);
+	edit_email.setText(mBundle.getString("EMAIL"));
+	edit_email.setEnabled(false);
+	edit_email.setTextColor(Color.BLACK);
+
+	EditText edit_refer = (EditText) v
+		.findViewById(R.id.edit_referente_dtl);
+	edit_refer.setText(mBundle.getString("REFERENTE"));
+	edit_refer.setEnabled(false);
+	edit_refer.setTextColor(Color.BLACK);
+
+	EditText edit_citta = (EditText) v.findViewById(R.id.edit_citta_dtl);
+	edit_citta.setText(mBundle.getString("CITTA"));
+	edit_citta.setEnabled(false);
+	edit_citta.setTextColor(Color.BLACK);
+
+	EditText edit_indirizzo = (EditText) v
+		.findViewById(R.id.edit_indirizzo_dtl);
+	edit_indirizzo.setText(mBundle.getString("INDIRIZZO"));
+	edit_indirizzo.setEnabled(false);
+	edit_indirizzo.setTextColor(Color.BLACK);
+
+	EditText edit_interno = (EditText) v
+		.findViewById(R.id.edit_interno_dtl);
+	edit_interno.setText(mBundle.getString("INTERNO"));
+	edit_interno.setEnabled(false);
+	edit_interno.setTextColor(Color.BLACK);
+
+	EditText edit_ufficio = (EditText) v
+		.findViewById(R.id.edit_ufficio_dtl);
+	edit_ufficio.setText(mBundle.getString("UFFICIO"));
+	edit_ufficio.setEnabled(false);
+	edit_ufficio.setTextColor(Color.BLACK);
+
+	EditText edit_note = (EditText) v.findViewById(R.id.edit_note_dtl);
+	edit_note.setText(mBundle.getString("NOTE"));
+	edit_note.setEnabled(false);
+	edit_note.setTextColor(Color.BLACK);
 
 	return v;
     }

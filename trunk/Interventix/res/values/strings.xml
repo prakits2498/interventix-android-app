@@ -33,4 +33,11 @@
 	<string name="hint_p_iva">Partita IVA</string>
 	<string name="reload_clients">Ricarica lista clienti</string>
 	<string name="client_dtl">Dettagli Cliente</string>
+	<string name="hint_telefono">0123456789</string>
+	<string name="hint_email">nome@dominio.com</string>
+	<string name="hint_citta">Roma</string>
+	<string name="hint_interno">Interno 7</string>
+	<string name="hint_ufficio">Ufficio 3</string>
+	<string name="hint_referente">Paolo</string>
+	<string name="hint_note">Note bla bla bla</string>
 </resources>

@@ -1,6 +1,7 @@
 
-package com.federicocolantoni.projects.interventix;
+package com.federicocolantoni.projects.interventix.core;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,14 +27,14 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.federicocolantoni.projects.interventix.Constants;
+import com.federicocolantoni.projects.interventix.R;
 import com.turbomanage.httpclient.AsyncCallback;
 import com.turbomanage.httpclient.HttpResponse;
 import com.turbomanage.httpclient.ParameterMap;
 import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 public class MyInterventionsActivity extends Activity {
-
-    static final String GLOBAL_PREFERENCES = "Preferences";
 
     private int mIdUser;
 
@@ -51,8 +52,8 @@ public class MyInterventionsActivity extends Activity {
 
 	setContentView(R.layout.activity_my_interventions);
 
-	SharedPreferences prefs = getSharedPreferences(GLOBAL_PREFERENCES,
-		MODE_PRIVATE);
+	SharedPreferences prefs = getSharedPreferences(
+		Constants.GLOBAL_PREFERENCES, MODE_PRIVATE);
 	mIdUser = prefs.getInt("iduser", Integer.valueOf(-1));
 
 	mFirst = 0;
@@ -87,12 +88,7 @@ public class MyInterventionsActivity extends Activity {
 
     private void request() {
 
-	Map parameters = new HashMap();
-
-	//Anche qui i hai scambiato KEY, VALUE
-	//
-	//parameters.put(first, "first");
-	//parameters.put(max, "max");
+	Map<Serializable, Comparable<?>> parameters = new HashMap<Serializable, Comparable<?>>();
 
 	parameters.put("first", mFirst);
 	parameters.put("max", mMax);
@@ -108,9 +104,9 @@ public class MyInterventionsActivity extends Activity {
 	    json_req = JsonCR2.createRequest("interventions", "my", parameters,
 		    mIdUser);
 	} catch (NumberFormatException e) {
-	    Log.d(MainActivity.DEBUG_TAG, "NUMBER_FORMAT_EXCEPTION!", e);
+	    Log.d(Constants.DEBUG_TAG, "NUMBER_FORMAT_EXCEPTION!", e);
 	} catch (Exception e) {
-	    Log.d(MainActivity.DEBUG_TAG, "GENERIC EXCEPTION!", e);
+	    Log.d(Constants.DEBUG_TAG, "GENERIC EXCEPTION!", e);
 	}
 
 	AndroidHttpClient request = new AndroidHttpClient(
@@ -139,12 +135,13 @@ public class MyInterventionsActivity extends Activity {
 			String[] intervs = new String[mDatas.size()];
 			int cont = 0;
 
-			Iterator it = mDatas.iterator();
+			Iterator<?> it = mDatas.iterator();
 			while (it.hasNext()) {
 
-			    Map data = (Map) it.next();
+			    Map<?, ?> data = (Map<?, ?>) it.next();
 
-			    Map cliente = (HashMap) data.get("cliente");
+			    Map<?, ?> cliente = (HashMap<?, ?>) data
+				    .get("cliente");
 
 			    String intervento = data.get("idintervento")
 				    .toString();
@@ -176,9 +173,9 @@ public class MyInterventionsActivity extends Activity {
 			mDialog.dismiss();
 		    }
 		} catch (ParseException e) {
-		    Log.d(MainActivity.DEBUG_TAG, "PARSE_EXCEPTION!", e);
+		    Log.d(Constants.DEBUG_TAG, "PARSE_EXCEPTION!", e);
 		} catch (Exception e) {
-		    Log.d(MainActivity.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
+		    Log.d(Constants.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
 		}
 	    }
 

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import multiface.crypto.cr2.JsonCR2;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -35,17 +34,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.federicocolantoni.projects.interventix.MainActivity;
+import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.data.InterventixAPI;
 import com.federicocolantoni.projects.interventix.services.InterventixIntentService;
 
-@SuppressLint({ "NewApi", "ValidFragment", "HandlerLeak" })
 public class ClientiFragment extends Fragment implements
 	LoaderCallbacks<Cursor> {
-
-    public static final String GET_LISTA_CLIENTI = "com.federico.colantoni.projects.interventix.GET_LISTA_CLIENTI";
-    static final String GLOBAL_PREFERENCES = "Preferences";
 
     private static final String TAG_CLIENTE_DETAIL = "DETAIL";
 
@@ -61,19 +56,19 @@ public class ClientiFragment extends Fragment implements
     private String mJson_req;
     public static boolean sFirstTimeDownloaded = false;
 
-    private Handler mHandler = new Handler() {
+    private MyHandler mHandler = new MyHandler() {
 
 	@Override
 	public void handleMessage(Message msg) {
 
 	    String action = (String) msg.obj;
 
-	    if (action.equals(GET_LISTA_CLIENTI)) {
+	    if (action.equals(Constants.GET_LISTA_CLIENTI)) {
 		getActivity();
 		if (msg.arg1 == Activity.RESULT_OK) {
 		    Bundle bundle = msg.getData();
 
-		    if (bundle.getBoolean("DOWNLOADED") == true) {
+		    if (bundle.getBoolean(Constants.DOWNLOADED) == true) {
 
 			Toast.makeText(
 				getActivity(),
@@ -81,7 +76,7 @@ public class ClientiFragment extends Fragment implements
 				Toast.LENGTH_LONG).show();
 		    } else {
 
-			if (bundle.getBoolean("REV_UPDATED") == true) {
+			if (bundle.getBoolean(Constants.REV_UPDATED) == true) {
 
 			    Toast.makeText(getActivity(),
 				    "La lista clienti e' gia' aggiornata.",
@@ -105,12 +100,15 @@ public class ClientiFragment extends Fragment implements
 	}
     };
 
-    private class SimpleDialogFragment extends DialogFragment {
+    private static class MyHandler extends Handler {
+
+    }
+
+    public static class SimpleDialogFragment extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-	    // Use the Builder class for convenient dialog construction
 	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 	    builder.setMessage(
 		    "La lista clienti e' gia' scaricata ma potrebbe non essere aggiornata.\n"
@@ -126,7 +124,6 @@ public class ClientiFragment extends Fragment implements
 				}
 			    });
 
-	    // Create the AlertDialog object and return it
 	    return builder.create();
 	}
     }
@@ -160,17 +157,53 @@ public class ClientiFragment extends Fragment implements
 		    Bundle bun = new Bundle();
 
 		    bun.putString(
-			    "NOMINATIVO",
+			    Constants.NOMINATIVO_CLIENTE,
 			    cur.getString(cur
 				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_NOMINATIVO)));
 		    bun.putString(
-			    "CODICE_FISCALE",
+			    Constants.CODICE_FISCALE,
 			    cur.getString(cur
 				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_CODICE_FISCALE)));
 		    bun.putString(
-			    "PARTITA_IVA",
+			    Constants.PARTITA_IVA,
 			    cur.getString(cur
 				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_PARTITA_IVA)));
+		    bun.putString(
+			    Constants.TELEFONO,
+			    cur.getString(cur
+				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_TELEFONO)));
+		    bun.putString(
+			    Constants.FAX,
+			    cur.getString(cur
+				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_FAX)));
+		    bun.putString(
+			    Constants.EMAIL,
+			    cur.getString(cur
+				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_EMAIL)));
+		    bun.putString(
+			    Constants.REFERENTE,
+			    cur.getString(cur
+				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_REFERENTE)));
+		    bun.putString(
+			    Constants.CITTA,
+			    cur.getString(cur
+				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_CITTA)));
+		    bun.putString(
+			    Constants.INDIRIZZO,
+			    cur.getString(cur
+				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_INDIRIZZO)));
+		    bun.putString(
+			    Constants.INTERNO,
+			    cur.getString(cur
+				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_INTERNO)));
+		    bun.putString(
+			    Constants.UFFICIO,
+			    cur.getString(cur
+				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_UFFICIO)));
+		    bun.putString(
+			    Constants.NOTE,
+			    cur.getString(cur
+				    .getColumnIndex(InterventixAPI.Cliente.Fields.KEY_NOTE)));
 
 		    msgFrag.setArguments(bun);
 
@@ -200,21 +233,22 @@ public class ClientiFragment extends Fragment implements
 				    mPrefs.getInt("ID_USER",
 					    Integer.valueOf(-1)));
 			} catch (NumberFormatException e) {
-			    Log.d(MainActivity.DEBUG_TAG,
+			    Log.d(Constants.DEBUG_TAG,
 				    "NUMBER_FORMAT_EXCEPTION!", e);
 			} catch (Exception e) {
-			    Log.d(MainActivity.DEBUG_TAG, "GENERIC_EXCEPTION!",
-				    e);
+			    Log.d(Constants.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
 			}
 
-			Intent intent = new Intent(GET_LISTA_CLIENTI, null,
-				getActivity(), InterventixIntentService.class);
+			Intent intent = new Intent(Constants.GET_LISTA_CLIENTI,
+				null, getActivity(),
+				InterventixIntentService.class);
 
 			Messenger msn = new Messenger(mHandler);
 
-			intent.putExtra("REQUEST_GET_LISTA_CLIENTI", mJson_req);
-			intent.putExtra("MESSENGER", msn);
-			intent.putExtra("DOWNLOADED", false);
+			intent.putExtra(Constants.REQUEST_GET_LISTA_CLIENTI,
+				mJson_req);
+			intent.putExtra(Constants.MESSENGER, msn);
+			intent.putExtra(Constants.DOWNLOADED, false);
 
 			getActivity().startService(intent);
 		    }
@@ -228,8 +262,8 @@ public class ClientiFragment extends Fragment implements
 
 	super.onActivityCreated(savedInstanceState);
 
-	mPrefs = getActivity().getSharedPreferences(GLOBAL_PREFERENCES,
-		Context.MODE_PRIVATE);
+	mPrefs = getActivity().getSharedPreferences(
+		Constants.GLOBAL_PREFERENCES, Context.MODE_PRIVATE);
 
 	mAdapter = new ClientAdapter(getActivity(), null);
 	mListClients.setAdapter(mAdapter);
@@ -244,19 +278,19 @@ public class ClientiFragment extends Fragment implements
 	    mJson_req = JsonCR2.createRequest("clients", "syncro", param,
 		    mPrefs.getInt("ID_USER", Integer.valueOf(-1)));
 	} catch (NumberFormatException e) {
-	    Log.d(MainActivity.DEBUG_TAG, "NUMBER_FORMAT_EXCEPTION!", e);
+	    Log.d(Constants.DEBUG_TAG, "NUMBER_FORMAT_EXCEPTION!", e);
 	} catch (Exception e) {
-	    Log.d(MainActivity.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
+	    Log.d(Constants.DEBUG_TAG, "GENERIC_EXCEPTION!", e);
 	}
 
-	Intent intent = new Intent(GET_LISTA_CLIENTI, null, getActivity(),
-		InterventixIntentService.class);
+	Intent intent = new Intent(Constants.GET_LISTA_CLIENTI, null,
+		getActivity(), InterventixIntentService.class);
 
 	Messenger msn = new Messenger(mHandler);
 
-	intent.putExtra("REQUEST_GET_LISTA_CLIENTI", mJson_req);
-	intent.putExtra("MESSENGER", msn);
-	intent.putExtra("DOWNLOADED", sFirstTimeDownloaded);
+	intent.putExtra(Constants.REQUEST_GET_LISTA_CLIENTI, mJson_req);
+	intent.putExtra(Constants.MESSENGER, msn);
+	intent.putExtra(Constants.DOWNLOADED, sFirstTimeDownloaded);
 
 	getActivity().startService(intent);
     }

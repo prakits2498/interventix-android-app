@@ -1,5 +1,5 @@
 
-package com.federicocolantoni.projects.interventix;
+package com.federicocolantoni.projects.interventix.core;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -10,7 +10,9 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.federicocolantoni.projects.interventix.MenuBarFragment.OnMenuBarListener;
+import com.federicocolantoni.projects.interventix.Constants;
+import com.federicocolantoni.projects.interventix.R;
+import com.federicocolantoni.projects.interventix.core.MenuBarFragment.OnMenuBarListener;
 import com.federicocolantoni.projects.interventix.intervento.ClientiFragment;
 import com.federicocolantoni.projects.interventix.intervento.CostiFragment;
 import com.federicocolantoni.projects.interventix.intervento.DettagliFragment;
@@ -22,15 +24,12 @@ import com.federicocolantoni.projects.interventix.intervento.InterventoFragment.
 public class TabBarActivity extends FragmentActivity implements
 	OnMenuBarListener, OnSaveInterventoListener {
 
-    static final String GLOBAL_PREFERENCES = "Preferences";
-
     private static final String TAG_INTERVENTO = "INTERVENT";
     private static final String TAG_CLIENTI = "CLIENTS";
     private static final String TAG_COSTI = "COSTS";
     private static final String TAG_DETTAGLI = "DETAILS";
     private static final String TAG_FIRMA = "SIGNATURE";
 
-    private MenuBarFragment mMenuFrag;
     private FragmentManager mFragMng;
     private FragmentTransaction mXact;
 
@@ -45,8 +44,6 @@ public class TabBarActivity extends FragmentActivity implements
 	setContentView(R.layout.activity_tab_bar);
 
 	mFragMng = getSupportFragmentManager();
-	mMenuFrag = (MenuBarFragment) mFragMng
-		.findFragmentById(R.id.menuBar_fragment);
 
 	onTabInterventoListener();
     }
@@ -71,7 +68,7 @@ public class TabBarActivity extends FragmentActivity implements
 		    TAG_CLIENTI);
 	    mXact.commit();
 	} catch (NoClassDefFoundError e) {
-	    Log.d(MainActivity.DEBUG_TAG, "NO_CLASS_DEF_FOUND_ERROR!", e);
+	    Log.d(Constants.DEBUG_TAG, "NO_CLASS_DEF_FOUND_ERROR!", e);
 	}
     }
 
