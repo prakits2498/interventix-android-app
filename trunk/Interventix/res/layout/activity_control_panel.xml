@@ -5,7 +5,7 @@
 	android:background="#ffffff"
 	tools:context=".IndexActivity" >
 	<ImageView
-		android:id="@+id/imageView1"
+		android:id="@+id/view_logo"
 		android:layout_width="159dp"
 		android:layout_height="60dp"
 		android:layout_alignParentLeft="true"
@@ -20,7 +20,7 @@
 		android:id="@+id/btn_addInterv"
 		android:layout_width="245dp"
 		android:layout_height="57dp"
-		android:layout_below="@+id/imageView1"
+		android:layout_below="@id/view_logo"
 		android:layout_centerHorizontal="true"
 		android:layout_marginTop="46dp"
 		android:text="@string/add_interv" />
@@ -36,17 +36,17 @@
 		android:id="@+id/btn_myInterv"
 		android:layout_width="245dp"
 		android:layout_height="57dp"
-		android:layout_alignLeft="@+id/btn_addInterv"
-		android:layout_below="@+id/btn_addInterv"
+		android:layout_alignLeft="@id/btn_addInterv"
+		android:layout_below="@id/btn_addInterv"
 		android:text="@string/my_interv" />
 	<TextView
 		android:id="@+id/label_nominativo"
-		android:layout_width="wrap_content"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
 		android:layout_alignParentTop="true"
-		android:layout_marginLeft="30dp"
 		android:layout_marginTop="16dp"
-		android:layout_toRightOf="@+id/imageView1"
+		android:layout_toRightOf="@id/view_logo"
+		android:gravity="center"
 		android:textIsSelectable="false" />
 </RelativeLayout>

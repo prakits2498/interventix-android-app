@@ -10,13 +10,21 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
+		android:clickable="false"
 		android:contentDescription="@string/logo_"
 		android:src="@drawable/logo_ix" />
-	<EditText
-		android:id="@+id/field_username"
+	<TextView
+		android:id="@+id/textView1"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_below="@+id/textView1"
+		android:layout_alignLeft="@+id/field_username"
+		android:layout_below="@id/view_logo"
+		android:text="@string/username" />
+	<EditText
+		android:id="@id/field_username"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/textView1"
 		android:layout_centerHorizontal="true"
 		android:ems="10"
 		android:hint="@string/username"
@@ -25,36 +33,29 @@
 		android:textIsSelectable="false" >
 		<requestFocus />
 	</EditText>
-	<EditText
-		android:id="@+id/field_password"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/textView2"
-		android:layout_centerHorizontal="true"
-		android:ems="10"
-		android:hint="@string/password_"
-		android:inputType="textPassword|textNoSuggestions" />
 	<TextView
 		android:id="@+id/textView2"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignLeft="@+id/field_password"
-		android:layout_below="@+id/field_username"
+		android:layout_below="@id/field_username"
 		android:text="@string/password_" />
-	<TextView
-		android:id="@+id/textView1"
+	<EditText
+		android:id="@id/field_password"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignLeft="@+id/textView2"
-		android:layout_below="@+id/view_logo"
-		android:text="@string/username" />
+		android:layout_below="@id/textView2"
+		android:layout_centerHorizontal="true"
+		android:ems="10"
+		android:hint="@string/password_"
+		android:inputType="textPassword|textNoSuggestions" />
 	<Button
 		android:id="@+id/btn_login"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignLeft="@+id/field_username"
-		android:layout_alignRight="@+id/field_username"
-		android:layout_below="@+id/field_password"
+		android:layout_alignLeft="@id/field_username"
+		android:layout_alignRight="@id/field_username"
+		android:layout_below="@id/field_password"
 		android:longClickable="false"
 		android:text="@string/login_" />
 </RelativeLayout>

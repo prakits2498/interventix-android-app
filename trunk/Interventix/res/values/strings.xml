@@ -40,4 +40,5 @@
 	<string name="hint_ufficio">Ufficio 3</string>
 	<string name="hint_referente">Paolo</string>
 	<string name="hint_note">Note bla bla bla</string>
+	<string name="hint_indirizzo">via Camino Palmero, 10</string>
 </resources>
