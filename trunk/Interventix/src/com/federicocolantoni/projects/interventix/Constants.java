@@ -4,6 +4,7 @@ package com.federicocolantoni.projects.interventix;
 public final class Constants {
 
     public static final String BASE_URL = "http://176.31.243.123:8080/interventix/connector";
+    public static final String BASE_URL_LOCAL = "http://10.0.2.2:8080/interventix/connector";
 
     public static final String DEBUG_TAG = "INTERVENTIX";
     public static final String DOWNLOADED = "DOWNLOADED";
