@@ -1,61 +1,21 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:background="#ffffff"
-	tools:context=".MainActivity" >
-	<ImageView
-		android:id="@+id/view_logo"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		android:layout_centerHorizontal="true"
-		android:clickable="false"
-		android:contentDescription="@string/logo_"
-		android:src="@drawable/logo_ix" />
-	<TextView
-		android:id="@+id/textView1"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignLeft="@+id/field_username"
-		android:layout_below="@id/view_logo"
-		android:text="@string/username" />
-	<EditText
-		android:id="@id/field_username"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/textView1"
-		android:layout_centerHorizontal="true"
-		android:ems="10"
-		android:hint="@string/username"
-		android:inputType="textNoSuggestions"
-		android:textAllCaps="false"
-		android:textIsSelectable="false" >
-		<requestFocus />
-	</EditText>
-	<TextView
-		android:id="@+id/textView2"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignLeft="@+id/field_password"
-		android:layout_below="@id/field_username"
-		android:text="@string/password_" />
-	<EditText
-		android:id="@id/field_password"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/textView2"
-		android:layout_centerHorizontal="true"
-		android:ems="10"
-		android:hint="@string/password_"
-		android:inputType="textPassword|textNoSuggestions" />
-	<Button
-		android:id="@+id/btn_login"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignLeft="@id/field_username"
-		android:layout_alignRight="@id/field_username"
-		android:layout_below="@id/field_password"
-		android:longClickable="false"
-		android:text="@string/login_" />
-</RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#ffffff"
+              android:orientation="vertical"
+              tools:context=".MainActivity">
+    <ImageView
+            android:id="@+id/view_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:clickable="false"
+            android:contentDescription="@string/logo_"
+            android:src="@drawable/logo_ix"/>
+    <fragment
+            android:id="@+id/frag_login"
+            android:name="com.federicocolantoni.projects.interventix.modules.login.Login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+</LinearLayout>
