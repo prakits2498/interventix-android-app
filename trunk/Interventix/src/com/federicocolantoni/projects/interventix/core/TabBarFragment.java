@@ -10,26 +10,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import com.federicocolantoni.projects.interventix.R;
 
-public class TabBarFragment extends Fragment implements OnClickListener {
+public class TabBarFragment
+        extends Fragment
+        implements OnClickListener {
 
     private OnMenuBarListener mListener;
 
-    public static interface OnMenuBarListener {
-
-        public void onTabInterventoListener();
-
-        public void onTabClientiListener();
-
-        public void onTabCostiListener();
-
-        public void onTabDettagliListener();
-
-        public void onTabFirmaListener();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
 
         super.onCreateView(inflater, container, savedInstanceState);
         final View v = inflater.inflate(R.layout.menu_bar_fragment, container);
@@ -82,5 +71,18 @@ public class TabBarFragment extends Fragment implements OnClickListener {
                 mListener.onTabFirmaListener();
                 break;
         }
+    }
+
+    public static interface OnMenuBarListener {
+
+        public void onTabInterventoListener();
+
+        public void onTabClientiListener();
+
+        public void onTabCostiListener();
+
+        public void onTabDettagliListener();
+
+        public void onTabFirmaListener();
     }
 }

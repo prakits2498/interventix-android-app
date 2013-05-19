@@ -9,14 +9,14 @@ public class Intervento {
 
     private Long mIdIntervento;
     private String mTipologia, mProdotto, mMotivo, mNominativo, mRifFattura,
-	    mRifScontrino, mNote;
+            mRifScontrino, mNote;
     private byte[] mFirma;
     private boolean mSaldato, mCancellato;
     private Date mDataOra, mInizio, mFine;
     private Cliente mIdCliente;
     private Utente mIdTecnico;
     private BigDecimal mCostoManodopera, mCostoComponenti, mCostoAccessori,
-	    mImporto, mTotale;
+            mImporto, mTotale;
     private List<DettagliIntervento> mDettagliIntervento;
     private BigDecimal mIva, mOre;
 
@@ -26,7 +26,7 @@ public class Intervento {
 
     public Intervento(Long mIdIntervento) {
 
-	this.mIdIntervento = mIdIntervento;
+        this.mIdIntervento = mIdIntervento;
     }
 
     /**
@@ -34,16 +34,15 @@ public class Intervento {
      */
     public Long getmIdIntervento() {
 
-	return mIdIntervento;
+        return mIdIntervento;
     }
 
     /**
-     * @param mIdIntervento
-     *            the mIdIntervento to set
+     * @param mIdIntervento the mIdIntervento to set
      */
     public void setmIdIntervento(Long mIdIntervento) {
 
-	this.mIdIntervento = mIdIntervento;
+        this.mIdIntervento = mIdIntervento;
     }
 
     /**
@@ -51,16 +50,15 @@ public class Intervento {
      */
     public String getmTipologia() {
 
-	return mTipologia;
+        return mTipologia;
     }
 
     /**
-     * @param mTipologia
-     *            the mTipologia to set
+     * @param mTipologia the mTipologia to set
      */
     public void setmTipologia(String mTipologia) {
 
-	this.mTipologia = mTipologia;
+        this.mTipologia = mTipologia;
     }
 
     /**
@@ -68,16 +66,15 @@ public class Intervento {
      */
     public String getmProdotto() {
 
-	return mProdotto;
+        return mProdotto;
     }
 
     /**
-     * @param mProdotto
-     *            the mProdotto to set
+     * @param mProdotto the mProdotto to set
      */
     public void setmProdotto(String mProdotto) {
 
-	this.mProdotto = mProdotto;
+        this.mProdotto = mProdotto;
     }
 
     /**
@@ -85,16 +82,15 @@ public class Intervento {
      */
     public String getmMotivo() {
 
-	return mMotivo;
+        return mMotivo;
     }
 
     /**
-     * @param mMotivo
-     *            the mMotivo to set
+     * @param mMotivo the mMotivo to set
      */
     public void setmMotivo(String mMotivo) {
 
-	this.mMotivo = mMotivo;
+        this.mMotivo = mMotivo;
     }
 
     /**
@@ -102,16 +98,15 @@ public class Intervento {
      */
     public String getmNominativo() {
 
-	return mNominativo;
+        return mNominativo;
     }
 
     /**
-     * @param mNominativo
-     *            the mNominativo to set
+     * @param mNominativo the mNominativo to set
      */
     public void setmNominativo(String mNominativo) {
 
-	this.mNominativo = mNominativo;
+        this.mNominativo = mNominativo;
     }
 
     /**
@@ -119,16 +114,15 @@ public class Intervento {
      */
     public String getmRifFattura() {
 
-	return mRifFattura;
+        return mRifFattura;
     }
 
     /**
-     * @param mRifFattura
-     *            the mRifFattura to set
+     * @param mRifFattura the mRifFattura to set
      */
     public void setmRifFattura(String mRifFattura) {
 
-	this.mRifFattura = mRifFattura;
+        this.mRifFattura = mRifFattura;
     }
 
     /**
@@ -136,16 +130,15 @@ public class Intervento {
      */
     public String getmRifScontrino() {
 
-	return mRifScontrino;
+        return mRifScontrino;
     }
 
     /**
-     * @param mRifScontrino
-     *            the mRifScontrino to set
+     * @param mRifScontrino the mRifScontrino to set
      */
     public void setmRifScontrino(String mRifScontrino) {
 
-	this.mRifScontrino = mRifScontrino;
+        this.mRifScontrino = mRifScontrino;
     }
 
     /**
@@ -153,16 +146,15 @@ public class Intervento {
      */
     public String getmNote() {
 
-	return mNote;
+        return mNote;
     }
 
     /**
-     * @param mNote
-     *            the mNote to set
+     * @param mNote the mNote to set
      */
     public void setmNote(String mNote) {
 
-	this.mNote = mNote;
+        this.mNote = mNote;
     }
 
     /**
@@ -170,16 +162,15 @@ public class Intervento {
      */
     public byte[] getmFirma() {
 
-	return mFirma;
+        return mFirma;
     }
 
     /**
-     * @param mFirma
-     *            the mFirma to set
+     * @param mFirma the mFirma to set
      */
     public void setmFirma(byte[] mFirma) {
 
-	this.mFirma = mFirma;
+        this.mFirma = mFirma;
     }
 
     /**
@@ -187,16 +178,15 @@ public class Intervento {
      */
     public boolean ismSaldato() {
 
-	return mSaldato;
+        return mSaldato;
     }
 
     /**
-     * @param mSaldato
-     *            the mSaldato to set
+     * @param mSaldato the mSaldato to set
      */
     public void setmSaldato(boolean mSaldato) {
 
-	this.mSaldato = mSaldato;
+        this.mSaldato = mSaldato;
     }
 
     /**
@@ -204,16 +194,15 @@ public class Intervento {
      */
     public boolean ismCancellato() {
 
-	return mCancellato;
+        return mCancellato;
     }
 
     /**
-     * @param mCancellato
-     *            the mCancellato to set
+     * @param mCancellato the mCancellato to set
      */
     public void setmCancellato(boolean mCancellato) {
 
-	this.mCancellato = mCancellato;
+        this.mCancellato = mCancellato;
     }
 
     /**
@@ -221,7 +210,7 @@ public class Intervento {
      */
     public Date getmDataOra() {
 
-	return mDataOra;
+        return mDataOra;
     }
 
     /**
@@ -229,7 +218,7 @@ public class Intervento {
      */
     public void setmDataOra(Date mDataOra) {
 
-	this.mDataOra = mDataOra;
+        this.mDataOra = mDataOra;
     }
 
     /**
@@ -237,7 +226,7 @@ public class Intervento {
      */
     public Date getmInizio() {
 
-	return mInizio;
+        return mInizio;
     }
 
     /**
@@ -245,7 +234,7 @@ public class Intervento {
      */
     public void setmInizio(Date mInizio) {
 
-	this.mInizio = mInizio;
+        this.mInizio = mInizio;
     }
 
     /**
@@ -253,7 +242,7 @@ public class Intervento {
      */
     public Date getmFine() {
 
-	return mFine;
+        return mFine;
     }
 
     /**
@@ -261,7 +250,7 @@ public class Intervento {
      */
     public void setmFine(Date mFine) {
 
-	this.mFine = mFine;
+        this.mFine = mFine;
     }
 
     /**
@@ -269,7 +258,7 @@ public class Intervento {
      */
     public Cliente getmIdCliente() {
 
-	return mIdCliente;
+        return mIdCliente;
     }
 
     /**
@@ -277,7 +266,7 @@ public class Intervento {
      */
     public void setmIdCliente(Cliente mIdCliente) {
 
-	this.mIdCliente = mIdCliente;
+        this.mIdCliente = mIdCliente;
     }
 
     /**
@@ -285,7 +274,7 @@ public class Intervento {
      */
     public Utente getmIdTecnico() {
 
-	return mIdTecnico;
+        return mIdTecnico;
     }
 
     /**
@@ -293,7 +282,7 @@ public class Intervento {
      */
     public void setmIdTecnico(Utente mIdTecnico) {
 
-	this.mIdTecnico = mIdTecnico;
+        this.mIdTecnico = mIdTecnico;
     }
 
     /**
@@ -301,7 +290,7 @@ public class Intervento {
      */
     public BigDecimal getmCostoManodopera() {
 
-	return mCostoManodopera;
+        return mCostoManodopera;
     }
 
     /**
@@ -309,7 +298,7 @@ public class Intervento {
      */
     public void setmCostoManodopera(BigDecimal mCostoManodopera) {
 
-	this.mCostoManodopera = mCostoManodopera;
+        this.mCostoManodopera = mCostoManodopera;
     }
 
     /**
@@ -317,7 +306,7 @@ public class Intervento {
      */
     public BigDecimal getmCostoComponenti() {
 
-	return mCostoComponenti;
+        return mCostoComponenti;
     }
 
     /**
@@ -325,7 +314,7 @@ public class Intervento {
      */
     public void setmCostoComponenti(BigDecimal mCostoComponenti) {
 
-	this.mCostoComponenti = mCostoComponenti;
+        this.mCostoComponenti = mCostoComponenti;
     }
 
     /**
@@ -333,7 +322,7 @@ public class Intervento {
      */
     public BigDecimal getmCostoAccessori() {
 
-	return mCostoAccessori;
+        return mCostoAccessori;
     }
 
     /**
@@ -341,7 +330,7 @@ public class Intervento {
      */
     public void setmCostoAccessori(BigDecimal mCostoAccessori) {
 
-	this.mCostoAccessori = mCostoAccessori;
+        this.mCostoAccessori = mCostoAccessori;
     }
 
     /**
@@ -349,7 +338,7 @@ public class Intervento {
      */
     public BigDecimal getmImporto() {
 
-	return mImporto;
+        return mImporto;
     }
 
     /**
@@ -357,7 +346,7 @@ public class Intervento {
      */
     public void setmImporto(BigDecimal mImporto) {
 
-	this.mImporto = mImporto;
+        this.mImporto = mImporto;
     }
 
     /**
@@ -365,7 +354,7 @@ public class Intervento {
      */
     public BigDecimal getmTotale() {
 
-	return mTotale;
+        return mTotale;
     }
 
     /**
@@ -373,7 +362,7 @@ public class Intervento {
      */
     public void setmTotale(BigDecimal mTotale) {
 
-	this.mTotale = mTotale;
+        this.mTotale = mTotale;
     }
 
     /**
@@ -381,7 +370,7 @@ public class Intervento {
      */
     public List<DettagliIntervento> getmDettagliIntervento() {
 
-	return mDettagliIntervento;
+        return mDettagliIntervento;
     }
 
     /**
@@ -389,7 +378,7 @@ public class Intervento {
      */
     public void setmDettagliIntervento(List<DettagliIntervento> mDettagliIntervento) {
 
-	this.mDettagliIntervento = mDettagliIntervento;
+        this.mDettagliIntervento = mDettagliIntervento;
     }
 
     /**
@@ -397,7 +386,7 @@ public class Intervento {
      */
     public BigDecimal getmIva() {
 
-	return mIva;
+        return mIva;
     }
 
     /**
@@ -405,7 +394,7 @@ public class Intervento {
      */
     public void setmIva(BigDecimal mIva) {
 
-	this.mIva = mIva;
+        this.mIva = mIva;
     }
 
     /**
@@ -413,7 +402,7 @@ public class Intervento {
      */
     public BigDecimal getmOre() {
 
-	return mOre;
+        return mOre;
     }
 
     /**
@@ -421,6 +410,6 @@ public class Intervento {
      */
     public void setmOre(BigDecimal mOre) {
 
-	this.mOre = mOre;
+        this.mOre = mOre;
     }
 }
