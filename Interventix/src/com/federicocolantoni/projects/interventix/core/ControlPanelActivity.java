@@ -3,12 +3,10 @@ package com.federicocolantoni.projects.interventix.core;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
-import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 
 import java.util.HashMap;
@@ -53,10 +51,6 @@ public class ControlPanelActivity
     private void setNominativo() {
 
         mLabel_nom = (TextView) findViewById(R.id.label_nominativo);
-
-        SharedPreferences prefs = getSharedPreferences(
-                Constants.GLOBAL_PREFERENCES, MODE_PRIVATE);
-        mIdUser = prefs.getInt("ID_USER", Integer.valueOf(- 1));
 
         Map<String, Integer> parameters = new HashMap<String, Integer>();
         parameters.put("idutente", mIdUser);

@@ -10,28 +10,16 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
 
-        <Button
-                android:background="@drawable/back"
-                android:id="@+id/btn_options"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_width="wrap_content"
-                android:minHeight="30dp"
-                android:minWidth="30dp"></Button>
-
         <ImageView
                 android:adjustViewBounds="true"
                 android:clickable="false"
                 android:contentDescription="@string/logo_"
                 android:id="@+id/view_logo"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
-                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
-                android:layout_toRightOf="@+id/btn_options"
-                android:layout_width="match_parent"
-                android:src="@drawable/logo_ix"/>
+                android:layout_width="match_parent" android:src="@drawable/logo_ix"/>
     </RelativeLayout>
 
     <fragment
