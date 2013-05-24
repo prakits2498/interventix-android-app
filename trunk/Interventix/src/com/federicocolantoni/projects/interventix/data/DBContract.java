@@ -59,6 +59,7 @@ public class DBContract {
 	    public static final String CANCELLATO = DATA[6];
 	    public static final String REVISIONE = DATA[7];
 	    public static final String ID_UTENTE = DATA[8];
+	    public static final String CESTINATO = DATA[9];
 	}
     }
 

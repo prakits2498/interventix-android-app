@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="android" url="file://$PROJECT_DIR$/../ActionBarSherlock/library" />
+    <file type="android" url="file://$PROJECT_DIR$/../ActionBarSherlock/samples/demos" />
+    <file type="android" url="file://$PROJECT_DIR$/../ActionBarSherlock/samples/fragments" />
+    <file type="android" url="file://$PROJECT_DIR$/../ActionBarSherlock/samples/known-bugs" />
+    <file type="android" url="file://$PROJECT_DIR$/../ActionBarSherlock/samples/roboguice" />
+    <file type="android" url="file://$PROJECT_DIR$/../ActionBarSherlock/samples/styled" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../ActionBarSherlock/pom.xml" />
+        <option value="$PROJECT_DIR$/../ActionBarSherlock/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/../ActionBarSherlock/library/pom.xml" />
+        <option value="$PROJECT_DIR$/../ActionBarSherlock/pom.xml" />
+        <option value="$PROJECT_DIR$/../ActionBarSherlock/samples/demos/pom.xml" />
+        <option value="$PROJECT_DIR$/../ActionBarSherlock/samples/fragments/pom.xml" />
+        <option value="$PROJECT_DIR$/../ActionBarSherlock/samples/known-bugs/pom.xml" />
+        <option value="$PROJECT_DIR$/../ActionBarSherlock/samples/pom.xml" />
+        <option value="$PROJECT_DIR$/../ActionBarSherlock/samples/roboguice/pom.xml" />
+        <option value="$PROJECT_DIR$/../ActionBarSherlock/samples/styled/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+</project>
+

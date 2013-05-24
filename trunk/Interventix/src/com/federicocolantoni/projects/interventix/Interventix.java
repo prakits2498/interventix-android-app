@@ -24,11 +24,6 @@ public class Interventix extends Application {
 
 	super.onCreate();
 	loadAsyncTask();
-	createInterventixDB();
-    }
-
-    private void createInterventixDB() {
-
     }
 
     private void loadAsyncTask() {
