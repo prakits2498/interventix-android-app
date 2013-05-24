@@ -1,12 +1,13 @@
 
 package com.federicocolantoni.projects.interventix.core;
 
-import static multiface.crypto.cr2.JsonCR2.createRequestLogin;
-import static multiface.crypto.cr2.JsonCR2.read;
-
 import java.io.IOException;
+import java.util.HashMap;
+
+import multiface.crypto.cr2.JsonCR2;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -37,6 +38,7 @@ import com.federicocolantoni.projects.interventix.modules.login.Login.OnLoginLis
 import com.federicocolantoni.projects.interventix.settings.SettingActivity;
 import com.federicocolantoni.projects.interventix.settings.SettingSupportActivity;
 import com.turbomanage.httpclient.HttpResponse;
+import com.turbomanage.httpclient.ParameterMap;
 import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 public class MainActivity extends FragmentActivity implements OnLoginListener {
@@ -72,10 +74,16 @@ public class MainActivity extends FragmentActivity implements OnLoginListener {
 	String json_req = new String();
 
 	try {
-	    json_req = createRequestLogin(mUsername.getText().toString(),
-		    mPassword.getText().toString());
+	    HashMap<String, String> parameters = new HashMap<String, String>();
 
-	    new GetLogin(MainActivity.this).execute(json_req);
+	    parameters.put("username", mUsername.getText().toString());
+	    parameters.put("password", mPassword.getText().toString());
+	    parameters.put("type", "TECNICO");
+
+	    json_req = JsonCR2.createRequest("users", "login", parameters, -1);
+
+	    new GetLogin(MainActivity.this).execute(json_req, mUsername
+		    .getText().toString(), mPassword.getText().toString());
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -151,16 +159,20 @@ public class MainActivity extends FragmentActivity implements OnLoginListener {
 	    // in this case, make a connection to the server to make login
 	    if (!prefs.getBoolean(prefs_auto_login, false)) {
 
+		System.out.println("auto-login false");
+
 		final AndroidHttpClient request = new AndroidHttpClient(url);
 		request.setMaxRetries(5);
-		com.turbomanage.httpclient.ParameterMap paramMap = new com.turbomanage.httpclient.ParameterMap();
+
+		ParameterMap paramMap = new ParameterMap();
 		paramMap.add("DATA", strings[0]);
 
 		HttpResponse response;
 		response = request.post("", paramMap);
 
 		try {
-		    JSONObject jsonResponse = read(response.getBodyAsString());
+		    JSONObject jsonResponse = JsonCR2.read(response
+			    .getBodyAsString());
 
 		    if (jsonResponse.get("response").toString()
 			    .equalsIgnoreCase("success")) {
@@ -168,79 +180,85 @@ public class MainActivity extends FragmentActivity implements OnLoginListener {
 			JSONObject data = (JSONObject) jsonResponse.get("data");
 
 			ContentResolver cr = getContentResolver();
+			ContentValues values;
 
-			String[] projection = new String[] { "count(*)" };
-			String selection = UtenteDB.Fields.USERNAME + "='"
-				+ data.get("username") + "' AND "
-				+ UtenteDB.Fields.PASSWORD + "='"
-				+ data.get("password") + "'";
+			String selection = UtenteDB.Fields.TYPE + "='"
+				+ UtenteDB.UTENTE_ITEM_TYPE + "'";
 
-			Cursor cursor = cr.query(UtenteDB.CONTENT_URI,
-				projection, selection, null, null);
+			Cursor cursor = cr.query(UtenteDB.CONTENT_URI, null,
+				selection, null, null);
 
-			if (!cursor.moveToFirst()) {
+			if (cursor.getCount() > 0) {
 
-			    /*
-			     * TODO insert the code that manages the insert operation for user's data within the DB
-			     * also check if user's informations already are in the DB:
-			     * - if there aren't, to do a INSERT operation;
-			     * - if already there are, to do an UPDATE operation.
-			     * In any case, make login.
-			     */
+			    //Update user's informations
 
-			    ContentValues values = new ContentValues();
+			    while (cursor.moveToNext()) {
 
+				//				values = new ContentValues();
+				//				values.put(UtenteDB.Fields.NOME,
+				//					(String) data.get("nome"));
+				//				values.put(UtenteDB.Fields.COGNOME,
+				//					(String) data.get("cognome"));
+				//				values.put(UtenteDB.Fields.USERNAME,
+				//					(String) data.get("username"));
+				//				values.put(UtenteDB.Fields.CANCELLATO,
+				//					(Boolean) data.get("cancellato"));
+				//				values.put(UtenteDB.Fields.REVISIONE,
+				//					(Long) data.get("revisione"));
+				//				values.put(UtenteDB.Fields.EMAIL,
+				//					(String) data.get("email"));
+				//				values.put(UtenteDB.Fields.TIPO,
+				//					(String) data.get("tipo"));
+				//				values.put(UtenteDB.Fields.CESTINATO,
+				//					(Boolean) data.get("cestinato"));
+				//
+				//				String selectionUpdate = UtenteDB.Fields.ID_UTENTE
+				//					+ "='" + data.get("idutente") + "'";
+				//
+				//				cr.update(UtenteDB.CONTENT_URI, values,
+				//					selectionUpdate, null);
+
+				System.out.println("UPDATE USER DONE");
+
+				result = Activity.RESULT_OK;
+			    }
+			} else {
+
+			    //Insert user's informations
+
+			    values = new ContentValues();
 			    values.put(UtenteDB.Fields.ID_UTENTE,
-				    (String) data.get("idutente"));
-			    values.put(UtenteDB.Fields.USERNAME,
-				    (String) data.get("username"));
-			    values.put(UtenteDB.Fields.PASSWORD,
-				    (String) data.get("password"));
-			    values.put(UtenteDB.Fields.EMAIL,
-				    (String) data.get("email"));
+				    (Long) data.get("idutente"));
+			    values.put(UtenteDB.Fields.TYPE,
+				    UtenteDB.UTENTE_ITEM_TYPE);
 			    values.put(UtenteDB.Fields.NOME,
 				    (String) data.get("nome"));
 			    values.put(UtenteDB.Fields.COGNOME,
 				    (String) data.get("cognome"));
+			    values.put(UtenteDB.Fields.USERNAME,
+				    (String) data.get("username"));
 			    values.put(UtenteDB.Fields.CANCELLATO,
-				    (String) data.get("cancellato"));
+				    (Boolean) data.get("cancellato"));
 			    values.put(UtenteDB.Fields.REVISIONE,
-				    (String) data.get("revisione"));
+				    (Long) data.get("revisione"));
+			    values.put(UtenteDB.Fields.EMAIL,
+				    (String) data.get("email"));
+			    values.put(UtenteDB.Fields.TIPO,
+				    (String) data.get("tipo"));
+			    values.put(UtenteDB.Fields.CESTINATO,
+				    (Boolean) data.get("cestinato"));
 
 			    cr.insert(UtenteDB.CONTENT_URI, values);
 
-			    result = Activity.RESULT_OK;
-			} else {
-			    ContentValues values = new ContentValues();
-
-			    values.put(UtenteDB.Fields.USERNAME,
-				    (String) data.get("username"));
-			    values.put(UtenteDB.Fields.PASSWORD,
-				    (String) data.get("password"));
-			    values.put(UtenteDB.Fields.EMAIL,
-				    (String) data.get("email"));
-			    values.put(UtenteDB.Fields.NOME,
-				    (String) data.get("nome"));
-			    values.put(UtenteDB.Fields.COGNOME,
-				    (String) data.get("cognome"));
-			    values.put(UtenteDB.Fields.CANCELLATO,
-				    (String) data.get("cancellato"));
-			    values.put(UtenteDB.Fields.REVISIONE,
-				    (String) data.get("revisione"));
-
-			    cr.update(
-				    UtenteDB.CONTENT_URI,
-				    values,
-				    UtenteDB.Fields.ID_UTENTE + "="
-					    + data.get("idutente"), null);
+			    System.out.println("INSERT USER DONE");
 
 			    result = Activity.RESULT_OK;
 			}
-
-			cursor.close();
 		    } else {
 			result = Activity.RESULT_CANCELED;
 		    }
+		} catch (ParseException e) {
+		    e.printStackTrace();
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
@@ -250,12 +268,37 @@ public class MainActivity extends FragmentActivity implements OnLoginListener {
 	    // check user's info directly on the DB
 	    else {
 
+		System.out.println("auto-login true");
+
 		/*
 		 * TODO make login checking that the username and password given by user
 		 * are already on the DB:
 		 * - if presents, make login;
-		 * - otherwise, return login error.
+		 * - otherwise, allow the user to choose to connect to the server.
 		 */
+
+		String username = strings[1];
+		String password = strings[2];
+
+		ContentResolver cr = getContentResolver();
+
+		String[] projection = new String[] { "count(*)" };
+		String selection = UtenteDB.Fields.USERNAME + "='" + username
+			+ "' AND " + UtenteDB.Fields.PASSWORD + "='" + password
+			+ "'";
+
+		Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection,
+			selection, null, null);
+
+		if (cursor != null) {
+		    if (!cursor.moveToFirst()) {
+			result = Activity.RESULT_CANCELED;
+		    } else {
+			result = Activity.RESULT_OK;
+		    }
+
+		    cursor.close();
+		}
 	    }
 
 	    return result;
@@ -272,8 +315,11 @@ public class MainActivity extends FragmentActivity implements OnLoginListener {
 		startActivity(new Intent(context, ControlPanelActivity.class));
 	    } else {
 		progress.dismiss();
-		Toast.makeText(context, Constants.ACCESS_DINIED,
-			Toast.LENGTH_SHORT).show();
+		Toast.makeText(
+			context,
+			"Si e' verificato un errore nel login.\n"
+				+ Constants.ACCESS_DINIED, Toast.LENGTH_LONG)
+			.show();
 	    }
 	}
     }

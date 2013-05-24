@@ -32,5 +32,10 @@
 		<activity android:name=".settings.SettingActivity" />
 		<activity android:name=".settings.SettingSupportActivity" >
 		</activity>
+		<provider
+			android:name="com.federicocolantoni.projects.interventix.data.InterventixProvider"
+			android:authorities="com.federicocolantoni.projects.interventix"
+			android:exported="false" >
+		</provider>
 	</application>
 </manifest>
