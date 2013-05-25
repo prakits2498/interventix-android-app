@@ -3,32 +3,42 @@ package com.federicocolantoni.projects.interventix.core;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import multiface.crypto.cr2.JsonCR2;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.R.id;
@@ -41,13 +51,71 @@ import com.turbomanage.httpclient.HttpResponse;
 import com.turbomanage.httpclient.ParameterMap;
 import com.turbomanage.httpclient.android.AndroidHttpClient;
 
-public class MainActivity extends FragmentActivity implements OnLoginListener {
+@SuppressLint("NewApi")
+public class MainActivity extends BaseActivity implements OnLoginListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_main);
+
+	/*
+	 * TODO insert code to control if URL connection's preference is empty or is not empty.
+	 * If is empty, then it'll open a popup that allows the user to insert a valid URL connection;
+	 * this popup never dismiss util the URL connection will be empty.
+	 * Otherwise, the popup will not be shown.
+	 */
+
+	SharedPreferences prefs = null;
+
+	ReadDefaultPreferences readPref = new ReadDefaultPreferences(
+		MainActivity.this);
+	readPref.execute();
+
+	try {
+	    prefs = readPref.get();
+	} catch (InterruptedException e) {
+	    e.printStackTrace();
+	} catch (ExecutionException e) {
+	    e.printStackTrace();
+	}
+
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+	    if (prefs.getString(
+		    getResources().getString(R.string.prefs_key_url), "")
+		    .isEmpty()) {
+
+		FirstRunDialog dialog = new FirstRunDialog();
+		dialog.show(getSupportFragmentManager(), "first_run");
+	    } else {
+		if (prefs.getString(
+			getResources().getString(R.string.prefs_key_url), "")
+			.length() == 0) {
+
+		    FirstRunDialog dialog = new FirstRunDialog();
+		    dialog.show(getSupportFragmentManager(), "first_run");
+		}
+	    }
+	}
+
+	//	Cursor cursor = getContentResolver().query(UtenteDB.CONTENT_URI, null,
+	//		UtenteDB.Fields.TYPE + "='" + UtenteDB.UTENTE_ITEM_TYPE + "'",
+	//		null, null);
+	//
+	//	while (cursor.moveToNext()) {
+	//	    System.out.println("*************");
+	//	    System.out.println("USERNAME: "
+	//		    + cursor.getString(cursor
+	//			    .getColumnIndex(UtenteDB.Fields.USERNAME)));
+	//	    System.out.println("NOME: "
+	//		    + cursor.getString(cursor
+	//			    .getColumnIndex(UtenteDB.Fields.NOME)));
+	//	    System.out.println("COGNOME: "
+	//		    + cursor.getString(cursor
+	//			    .getColumnIndex(UtenteDB.Fields.COGNOME)));
+	//	    System.out.println("*************");
+	//	}
 
 	findViewById(R.id.btn_login).setOnClickListener(new OnClickListener() {
 
@@ -63,6 +131,7 @@ public class MainActivity extends FragmentActivity implements OnLoginListener {
 		}
 	    }
 	});
+
     }
 
     @Override
@@ -82,6 +151,8 @@ public class MainActivity extends FragmentActivity implements OnLoginListener {
 
 	    json_req = JsonCR2.createRequest("users", "login", parameters, -1);
 
+	    //	    System.out.println("REQUEST: \n" + json_req);
+
 	    new GetLogin(MainActivity.this).execute(json_req, mUsername
 		    .getText().toString(), mPassword.getText().toString());
 	} catch (Exception e) {
@@ -92,7 +163,9 @@ public class MainActivity extends FragmentActivity implements OnLoginListener {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-	final MenuInflater inflater = getMenuInflater();
+	super.onCreateOptionsMenu(menu);
+
+	final MenuInflater inflater = getSupportMenuInflater();
 	inflater.inflate(R.menu.activity_main, menu);
 
 	return true;
@@ -100,6 +173,8 @@ public class MainActivity extends FragmentActivity implements OnLoginListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+	super.onOptionsItemSelected(item);
 
 	switch (item.getItemId()) {
 	    case id.menu_options:
@@ -119,7 +194,75 @@ public class MainActivity extends FragmentActivity implements OnLoginListener {
 	}
     }
 
-    private class GetLogin extends android.os.AsyncTask<String, Void, Integer> {
+    public static class FirstRunDialog extends SherlockDialogFragment implements
+	    OnClickListener {
+
+	private EditText input_url;
+	private Button save_url;
+
+	public FirstRunDialog() {
+
+	}
+
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+	    AlertDialog.Builder first_run_dialog = new Builder(getActivity());
+
+	    first_run_dialog.setTitle(R.string.welcome_title);
+	    first_run_dialog.setMessage(R.string.welcome_message);
+
+	    LayoutInflater inflater = getActivity().getLayoutInflater();
+	    View view = inflater.inflate(R.layout.first_run, null);
+
+	    first_run_dialog.setView(view);
+
+	    input_url = (EditText) view.findViewById(R.id.input_first_run);
+	    save_url = (Button) view.findViewById(R.id.save_prefs_url);
+	    save_url.setOnClickListener(this);
+
+	    return first_run_dialog.create();
+	}
+
+	@Override
+	public void onClick(View v) {
+
+	    switch (v.getId()) {
+		case R.id.save_prefs_url:
+
+		    if (input_url.getText().toString().length() != 0) {
+			SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(getSherlockActivity());
+			final Editor editor = prefs.edit();
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			    editor.putString(
+				    getResources().getString(
+					    R.string.prefs_key_url),
+				    input_url.getText().toString()).apply();
+			} else {
+			    new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+
+				    editor.putString(
+					    getResources().getString(
+						    R.string.prefs_key_url),
+					    input_url.getText().toString())
+					    .commit();
+				}
+			    }).start();
+			}
+
+			this.dismiss();
+		    }
+		    break;
+	    }
+	}
+    }
+
+    private class GetLogin extends AsyncTask<String, Void, Integer> {
 
 	private Context context;
 	private ProgressDialog progress;
@@ -183,7 +326,9 @@ public class MainActivity extends FragmentActivity implements OnLoginListener {
 			ContentValues values;
 
 			String selection = UtenteDB.Fields.TYPE + "='"
-				+ UtenteDB.UTENTE_ITEM_TYPE + "'";
+				+ UtenteDB.UTENTE_ITEM_TYPE + "' AND "
+				+ UtenteDB.Fields.USERNAME + "='" + strings[1]
+				+ "'";
 
 			Cursor cursor = cr.query(UtenteDB.CONTENT_URI, null,
 				selection, null, null);
@@ -192,36 +337,33 @@ public class MainActivity extends FragmentActivity implements OnLoginListener {
 
 			    //Update user's informations
 
-			    while (cursor.moveToNext()) {
+			    values = new ContentValues();
+			    values.put(UtenteDB.Fields.NOME,
+				    (String) data.get("nome"));
+			    values.put(UtenteDB.Fields.COGNOME,
+				    (String) data.get("cognome"));
+			    values.put(UtenteDB.Fields.USERNAME,
+				    (String) data.get("username"));
+			    values.put(UtenteDB.Fields.CANCELLATO,
+				    (Boolean) data.get("cancellato"));
+			    values.put(UtenteDB.Fields.REVISIONE,
+				    (Long) data.get("revisione"));
+			    values.put(UtenteDB.Fields.EMAIL,
+				    (String) data.get("email"));
+			    values.put(UtenteDB.Fields.TIPO,
+				    (String) data.get("tipo"));
+			    values.put(UtenteDB.Fields.CESTINATO,
+				    (Boolean) data.get("cestinato"));
 
-				//				values = new ContentValues();
-				//				values.put(UtenteDB.Fields.NOME,
-				//					(String) data.get("nome"));
-				//				values.put(UtenteDB.Fields.COGNOME,
-				//					(String) data.get("cognome"));
-				//				values.put(UtenteDB.Fields.USERNAME,
-				//					(String) data.get("username"));
-				//				values.put(UtenteDB.Fields.CANCELLATO,
-				//					(Boolean) data.get("cancellato"));
-				//				values.put(UtenteDB.Fields.REVISIONE,
-				//					(Long) data.get("revisione"));
-				//				values.put(UtenteDB.Fields.EMAIL,
-				//					(String) data.get("email"));
-				//				values.put(UtenteDB.Fields.TIPO,
-				//					(String) data.get("tipo"));
-				//				values.put(UtenteDB.Fields.CESTINATO,
-				//					(Boolean) data.get("cestinato"));
-				//
-				//				String selectionUpdate = UtenteDB.Fields.ID_UTENTE
-				//					+ "='" + data.get("idutente") + "'";
-				//
-				//				cr.update(UtenteDB.CONTENT_URI, values,
-				//					selectionUpdate, null);
+			    String selectionUpdate = UtenteDB.Fields.ID_UTENTE
+				    + "='" + data.get("idutente") + "'";
 
-				System.out.println("UPDATE USER DONE");
+			    cr.update(UtenteDB.CONTENT_URI, values,
+				    selectionUpdate, null);
 
-				result = Activity.RESULT_OK;
-			    }
+			    System.out.println("UPDATE USER DONE");
+
+			    result = Activity.RESULT_OK;
 			} else {
 
 			    //Insert user's informations
@@ -254,6 +396,8 @@ public class MainActivity extends FragmentActivity implements OnLoginListener {
 
 			    result = Activity.RESULT_OK;
 			}
+
+			cursor.close();
 		    } else {
 			result = Activity.RESULT_CANCELED;
 		    }

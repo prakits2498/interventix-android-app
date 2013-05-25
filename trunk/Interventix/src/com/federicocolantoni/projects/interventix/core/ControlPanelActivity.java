@@ -1,69 +1,52 @@
 
 package com.federicocolantoni.projects.interventix.core;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.TextView;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.R;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@SuppressLint("NewApi")
-public class ControlPanelActivity
-        extends Activity {
-
-    private int mIdUser;
-    private String mJson_req;
-    private TextView mLabel_nom;
+public class ControlPanelActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+	super.onCreate(savedInstanceState);
 
-        setNominativo();
+	getSupportActionBar().setHomeButtonEnabled(true);
+	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        findViewById(R.id.btn_addInterv).setOnClickListener(
-                new OnClickListener() {
+	setContentView(R.layout.activity_home);
 
-                    @Override
-                    public void onClick(View v) {
+	setNominativo();
+    }
 
-                    }
-                });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
+	super.onCreateOptionsMenu(menu);
 
-        findViewById(R.id.btn_exit).setOnClickListener(new OnClickListener() {
+	final MenuInflater inflater = getSupportMenuInflater();
+	inflater.inflate(R.menu.activity_index, menu);
 
-            @Override
-            public void onClick(View v) {
+	return true;
+    }
 
-                finish();
-            }
-        });
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+	if (item.getItemId() == android.R.id.home) {
+	    this.finish();
+	    return true;
+	}
+
+	return super.onOptionsItemSelected(item);
     }
 
     private void setNominativo() {
 
-        mLabel_nom = (TextView) findViewById(R.id.label_nominativo);
-
-        Map<String, Integer> parameters = new HashMap<String, Integer>();
-        parameters.put("idutente", mIdUser);
-
-//        try {
-//            mJson_req = JsonCR2.createRequest("users", "get", parameters,
-//                                              mIdUser);
-//        }
-//        catch (NumberFormatException e) {
-//            e.printStackTrace();
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 }

@@ -3,8 +3,15 @@
 	<string name="app_name">Interventix</string>
 	<string name="hello_world">Hello world!</string>
 	<string name="menu_settings">Opzioni</string>
-    <string name="prefs_key_url">PREFS_KEY_URL</string>
-    <string name="prefs_key_auto_login">PREFS_KEY_AUTO_LOGIN</string>
+	<string name="menu_back">Indietro</string>
+	<string name="menu_refresh">Aggiorna</string>
+	<string name="menu_add">Aggiungi Intervento</string>
+	<string name="prefs_key_url">PREFS_KEY_URL</string>
+	<string name="prefs_url_title">Inserisci l\'indirizzo del sito che ti e\' stato fornito nel contratto</string>
+	<string name="prefs_url_hint">http://azienda.interventix.com</string>
+	<string name="welcome_title">Benvenuto su Interventix</string>
+	<string name="welcome_message">Interventix e\' stata avviata per la prima volta. Inserire l\'indirizzo per la connessione al server che e\' stato fornito nel contratto.</string>
+	<string name="prefs_key_auto_login">PREFS_KEY_AUTO_LOGIN</string>
 	<string name="username">Username</string>
 	<string name="password_">Password</string>
 	<string name="login_">Login</string>
@@ -29,7 +36,7 @@
 	<string name="nomin_interv">Nominativo</string>
 	<string name="date_interv">Data</string>
 	<string name="time_interv">Ora</string>
-	<string name="save_interv">SALVA</string>
+	<string name="save">SALVA</string>
 	<string name="hint_nomin">Nominativo</string>
 	<string name="hint_cod_fis">Codice Fiscale</string>
 	<string name="hint_p_iva">Partita IVA</string>
