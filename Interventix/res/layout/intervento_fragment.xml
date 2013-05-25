@@ -143,7 +143,7 @@
 				android:layout_below="@+id/edit_date"
 				android:layout_centerHorizontal="true"
 				android:layout_marginTop="20dp"
-				android:text="@string/save_interv" />
+				android:text="@string/save" />
 		</RelativeLayout>
 	</ScrollView>
 	<ImageView

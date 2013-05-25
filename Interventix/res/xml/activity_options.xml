@@ -3,9 +3,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 	<PreferenceCategory android:title="Opzioni di connessione" >
 		<EditTextPreference
-			android:hint="azienda.interventix.com"
+			android:hint="@string/prefs_url_hint"
 			android:key="@string/prefs_key_url"
-			android:summary="Inserisci l&apos;indirizzo del sito al quale vuoi collegarti"
+			android:summary="@string/prefs_url_title"
 			android:title="URL Connection" />
 		<SwitchPreference
 			android:defaultValue="false"
