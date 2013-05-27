@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 
 import multiface.crypto.cr2.JsonCR2;
 
+import org.acra.ACRA;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -60,13 +61,6 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_main);
 
-	/*
-	 * TODO insert code to control if URL connection's preference is empty or is not empty.
-	 * If is empty, then it'll open a popup that allows the user to insert a valid URL connection;
-	 * this popup never dismiss util the URL connection will be empty.
-	 * Otherwise, the popup will not be shown.
-	 */
-
 	SharedPreferences prefs = null;
 
 	ReadDefaultPreferences readPref = new ReadDefaultPreferences(
@@ -77,8 +71,10 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	    prefs = readPref.get();
 	} catch (InterruptedException e) {
 	    e.printStackTrace();
+	    ACRA.getErrorReporter().handleSilentException(e);
 	} catch (ExecutionException e) {
 	    e.printStackTrace();
+	    ACRA.getErrorReporter().handleSilentException(e);
 	}
 
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
@@ -126,12 +122,13 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 		    onLogin();
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
+		    ACRA.getErrorReporter().handleSilentException(e);
 		} catch (IOException e) {
 		    e.printStackTrace();
+		    ACRA.getErrorReporter().handleSilentException(e);
 		}
 	    }
 	});
-
     }
 
     @Override
@@ -157,6 +154,7 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 		    .getText().toString(), mPassword.getText().toString());
 	} catch (Exception e) {
 	    e.printStackTrace();
+	    ACRA.getErrorReporter().handleSilentException(e);
 	}
     }
 
@@ -239,7 +237,8 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 			    editor.putString(
 				    getResources().getString(
 					    R.string.prefs_key_url),
-				    input_url.getText().toString()).apply();
+				    "http://" + input_url.getText().toString()
+					    + "/Interventix/connector").apply();
 			} else {
 			    new Thread(new Runnable() {
 
@@ -289,7 +288,8 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	    int result = 0;
 
 	    final SharedPreferences prefs = PreferenceManager
-		    .getDefaultSharedPreferences(context);
+		    .getDefaultSharedPreferences(context
+			    .getApplicationContext());
 
 	    final String prefs_url = getResources().getString(
 		    string.prefs_key_url);
@@ -361,6 +361,21 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 			    cr.update(UtenteDB.CONTENT_URI, values,
 				    selectionUpdate, null);
 
+			    SharedPreferences localPrefs = getSharedPreferences(
+				    Constants.PREFERENCES, Context.MODE_PRIVATE);
+
+			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+				localPrefs
+					.edit()
+					.putLong(Constants.USER_ID,
+						(Long) data.get("idutente"))
+					.apply();
+			    } else {
+				Editor editor = localPrefs.edit();
+				editor.putLong(Constants.USER_ID,
+					(Long) data.get("idutente")).commit();
+			    }
+
 			    System.out.println("UPDATE USER DONE");
 
 			    result = Activity.RESULT_OK;
@@ -392,6 +407,21 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 
 			    cr.insert(UtenteDB.CONTENT_URI, values);
 
+			    SharedPreferences localPrefs = getSharedPreferences(
+				    Constants.PREFERENCES, Context.MODE_PRIVATE);
+
+			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+				localPrefs
+					.edit()
+					.putLong(Constants.USER_ID,
+						(Long) data.get("idutente"))
+					.apply();
+			    } else {
+				Editor editor = localPrefs.edit();
+				editor.putLong(Constants.USER_ID,
+					(Long) data.get("idutente")).commit();
+			    }
+
 			    System.out.println("INSERT USER DONE");
 
 			    result = Activity.RESULT_OK;
@@ -403,47 +433,49 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 		    }
 		} catch (ParseException e) {
 		    e.printStackTrace();
+		    ACRA.getErrorReporter().handleSilentException(e);
 		} catch (Exception e) {
 		    e.printStackTrace();
+		    ACRA.getErrorReporter().handleSilentException(e);
 		}
 	    }
 
 	    // in this case, auto login's flag is true
 	    // check user's info directly on the DB
-	    else {
-
-		System.out.println("auto-login true");
-
-		/*
-		 * TODO make login checking that the username and password given by user
-		 * are already on the DB:
-		 * - if presents, make login;
-		 * - otherwise, allow the user to choose to connect to the server.
-		 */
-
-		String username = strings[1];
-		String password = strings[2];
-
-		ContentResolver cr = getContentResolver();
-
-		String[] projection = new String[] { "count(*)" };
-		String selection = UtenteDB.Fields.USERNAME + "='" + username
-			+ "' AND " + UtenteDB.Fields.PASSWORD + "='" + password
-			+ "'";
-
-		Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection,
-			selection, null, null);
-
-		if (cursor != null) {
-		    if (!cursor.moveToFirst()) {
-			result = Activity.RESULT_CANCELED;
-		    } else {
-			result = Activity.RESULT_OK;
-		    }
-
-		    cursor.close();
-		}
-	    }
+	    //	    else {
+	    //
+	    //		System.out.println("auto-login true");
+	    //
+	    //		/*
+	    //		 * TODO make login checking that the username and password given by user
+	    //		 * are already on the DB:
+	    //		 * - if presents, make login;
+	    //		 * - otherwise, allow the user to choose to connect to the server.
+	    //		 */
+	    //
+	    //		String username = strings[1];
+	    //		String password = strings[2];
+	    //
+	    //		ContentResolver cr = getContentResolver();
+	    //
+	    //		String[] projection = new String[] { "count(*)" };
+	    //		String selection = UtenteDB.Fields.USERNAME + "='" + username
+	    //			+ "' AND " + UtenteDB.Fields.PASSWORD + "='" + password
+	    //			+ "'";
+	    //
+	    //		Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection,
+	    //			selection, null, null);
+	    //
+	    //		if (cursor != null) {
+	    //		    if (!cursor.moveToFirst()) {
+	    //			result = Activity.RESULT_CANCELED;
+	    //		    } else {
+	    //			result = Activity.RESULT_OK;
+	    //		    }
+	    //
+	    //		    cursor.close();
+	    //		}
+	    //	    }
 
 	    return result;
 	}
@@ -456,7 +488,11 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 		Toast.makeText(context, Constants.ACCESS_ALLOWED,
 			Toast.LENGTH_LONG).show();
 
-		startActivity(new Intent(context, ControlPanelActivity.class));
+		EditText password = (EditText) findViewById(R.id.field_password);
+
+		password.setText("");
+
+		startActivity(new Intent(context, HomeActivity.class));
 	    } else {
 		progress.dismiss();
 		Toast.makeText(

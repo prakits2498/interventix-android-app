@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">Interventix</string>
-	<string name="hello_world">Hello world!</string>
 	<string name="menu_settings">Opzioni</string>
 	<string name="menu_back">Indietro</string>
 	<string name="menu_refresh">Aggiorna</string>
@@ -14,6 +13,11 @@
 	<string name="prefs_key_auto_login">PREFS_KEY_AUTO_LOGIN</string>
 	<string name="username">Username</string>
 	<string name="password_">Password</string>
+	<string name="crash_toast_report">L\'applicazione e\' terminata in modo imprevisto, ma un report del crash e\' stato inviato allo sviluppatore per aiutarlo a correggere l\'errore.</string>
+	<string name="crash_dialog_report">Si e\' verificato un errore inatteso. Per favore, aiutaci a risolverlo inviandoci i dati dell\'errore.</string>
+	<string name="crash_dialog_title">Interventix si e\' chiusa in modo anomalo.</string>
+	<string name="crash_dialog_comment">Puoi aggiungere un commento sull\'errore:</string>
+	<string name="crash_dialog_ok_toast">Grazie!</string>
 	<string name="login_">Login</string>
 	<string name="logo_">Logo Interventix</string>
 	<string name="title_activity_index">IndexActivity</string>
