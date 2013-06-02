@@ -63,6 +63,31 @@ public class DBContract {
 	}
     }
 
+    public static class ClienteDB extends Data {
+
+	public static final String CLIENTE_ITEM_TYPE = Data.SINGLE_ITEM_TYPE
+		+ ".cliente";
+
+	public static class Fields extends Data.Fields {
+
+	    public static final String NOMINATIVO = DATA[0];
+	    public static final String PARTITAIVA = DATA[1];
+	    public static final String TELEFONO = DATA[2];
+	    public static final String CITTA = DATA[3];
+	    public static final String EMAIL = DATA[4];
+	    public static final String REFERENTE = DATA[5];
+	    public static final String FAX = DATA[6];
+	    public static final String REVISIONE = DATA[7];
+	    public static final String ID_CLIENTE = DATA[8];
+	    public static final String CANCELLATO = DATA[9];
+	    public static final String CODICE_FISCALE = DATA[10];
+	    public static final String NOTE = DATA[11];
+	    public static final String INDIRIZZO = DATA[12];
+	    public static final String UFFICIO = DATA[13];
+	    public static final String INTERNO = DATA[14];
+	}
+    }
+
     public static class InterventoDB extends Data {
 
 	public static final String INTERVENTO_ITEM_TYPE = Data.SINGLE_ITEM_TYPE
@@ -92,6 +117,8 @@ public class DBContract {
 	    public static final String TOTALE = DATA[18];
 	    public static final String IVA = DATA[19];
 	    public static final String ORE = DATA[20];
+	    public static final String CHIUSO = DATA[21];
+	    public static final String ID_INTERVENTO = DATA[22];
 	}
     }
 

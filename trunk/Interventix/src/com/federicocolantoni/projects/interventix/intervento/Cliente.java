@@ -5,7 +5,7 @@ package com.federicocolantoni.projects.interventix.intervento;
 public class Cliente {
 
     private Integer mIdCliente;
-    private String mNominativo, mCodiceFiscale, mPartitaIVA, mTelefono, mFax,
+    private Intervento mNominativo, mCodiceFiscale, mPartitaIVA, mTelefono, mFax,
 	    mEmail, mReferente, mCitta, mIndirizzo, mInterno, mUfficio, mNote;
     private boolean mCancellato;
     private int mRevisione;
@@ -39,7 +39,7 @@ public class Cliente {
     /**
      * @return the mNominativo
      */
-    public String getmNominativo() {
+    public Intervento getmNominativo() {
 
 	return mNominativo;
     }
@@ -48,7 +48,7 @@ public class Cliente {
      * @param mNominativo
      *            the mNominativo to set
      */
-    public void setmNominativo(String mNominativo) {
+    public void setmNominativo(Intervento mNominativo) {
 
 	this.mNominativo = mNominativo;
     }
@@ -56,7 +56,7 @@ public class Cliente {
     /**
      * @return the mCodiceFiscale
      */
-    public String getmCodiceFiscale() {
+    public Intervento getmCodiceFiscale() {
 
 	return mCodiceFiscale;
     }
@@ -65,7 +65,7 @@ public class Cliente {
      * @param mCodiceFiscale
      *            the mCodiceFiscale to set
      */
-    public void setmCodiceFiscale(String mCodiceFiscale) {
+    public void setmCodiceFiscale(Intervento mCodiceFiscale) {
 
 	this.mCodiceFiscale = mCodiceFiscale;
     }
@@ -73,7 +73,7 @@ public class Cliente {
     /**
      * @return the mPartitaIVA
      */
-    public String getmPartitaIVA() {
+    public Intervento getmPartitaIVA() {
 
 	return mPartitaIVA;
     }
@@ -82,7 +82,7 @@ public class Cliente {
      * @param mPartitaIVA
      *            the mPartitaIVA to set
      */
-    public void setmPartitaIVA(String mPartitaIVA) {
+    public void setmPartitaIVA(Intervento mPartitaIVA) {
 
 	this.mPartitaIVA = mPartitaIVA;
     }
@@ -90,7 +90,7 @@ public class Cliente {
     /**
      * @return the mTelefono
      */
-    public String getmTelefono() {
+    public Intervento getmTelefono() {
 
 	return mTelefono;
     }
@@ -99,7 +99,7 @@ public class Cliente {
      * @param mTelefono
      *            the mTelefono to set
      */
-    public void setmTelefono(String mTelefono) {
+    public void setmTelefono(Intervento mTelefono) {
 
 	this.mTelefono = mTelefono;
     }
@@ -107,7 +107,7 @@ public class Cliente {
     /**
      * @return the mFax
      */
-    public String getmFax() {
+    public Intervento getmFax() {
 
 	return mFax;
     }
@@ -116,7 +116,7 @@ public class Cliente {
      * @param mFax
      *            the mFax to set
      */
-    public void setmFax(String mFax) {
+    public void setmFax(Intervento mFax) {
 
 	this.mFax = mFax;
     }
@@ -124,7 +124,7 @@ public class Cliente {
     /**
      * @return the mEmail
      */
-    public String getmEmail() {
+    public Intervento getmEmail() {
 
 	return mEmail;
     }
@@ -133,7 +133,7 @@ public class Cliente {
      * @param mEmail
      *            the mEmail to set
      */
-    public void setmEmail(String mEmail) {
+    public void setmEmail(Intervento mEmail) {
 
 	this.mEmail = mEmail;
     }
@@ -141,7 +141,7 @@ public class Cliente {
     /**
      * @return the mReferente
      */
-    public String getmReferente() {
+    public Intervento getmReferente() {
 
 	return mReferente;
     }
@@ -150,7 +150,7 @@ public class Cliente {
      * @param mReferente
      *            the mReferente to set
      */
-    public void setmReferente(String mReferente) {
+    public void setmReferente(Intervento mReferente) {
 
 	this.mReferente = mReferente;
     }
@@ -158,7 +158,7 @@ public class Cliente {
     /**
      * @return the mCitta
      */
-    public String getmCitta() {
+    public Intervento getmCitta() {
 
 	return mCitta;
     }
@@ -167,7 +167,7 @@ public class Cliente {
      * @param mCitta
      *            the mCitta to set
      */
-    public void setmCitta(String mCitta) {
+    public void setmCitta(Intervento mCitta) {
 
 	this.mCitta = mCitta;
     }
@@ -175,7 +175,7 @@ public class Cliente {
     /**
      * @return the mIndirizzo
      */
-    public String getmIndirizzo() {
+    public Intervento getmIndirizzo() {
 
 	return mIndirizzo;
     }
@@ -184,7 +184,7 @@ public class Cliente {
      * @param mIndirizzo
      *            the mIndirizzo to set
      */
-    public void setmIndirizzo(String mIndirizzo) {
+    public void setmIndirizzo(Intervento mIndirizzo) {
 
 	this.mIndirizzo = mIndirizzo;
     }
@@ -192,7 +192,7 @@ public class Cliente {
     /**
      * @return the mInterno
      */
-    public String getmInterno() {
+    public Intervento getmInterno() {
 
 	return mInterno;
     }
@@ -201,7 +201,7 @@ public class Cliente {
      * @param mInterno
      *            the mInterno to set
      */
-    public void setmInterno(String mInterno) {
+    public void setmInterno(Intervento mInterno) {
 
 	this.mInterno = mInterno;
     }
@@ -209,7 +209,7 @@ public class Cliente {
     /**
      * @return the mUfficio
      */
-    public String getmUfficio() {
+    public Intervento getmUfficio() {
 
 	return mUfficio;
     }
@@ -218,7 +218,7 @@ public class Cliente {
      * @param mUfficio
      *            the mUfficio to set
      */
-    public void setmUfficio(String mUfficio) {
+    public void setmUfficio(Intervento mUfficio) {
 
 	this.mUfficio = mUfficio;
     }
@@ -226,7 +226,7 @@ public class Cliente {
     /**
      * @return the mNote
      */
-    public String getmNote() {
+    public Intervento getmNote() {
 
 	return mNote;
     }
@@ -235,7 +235,7 @@ public class Cliente {
      * @param mNote
      *            the mNote to set
      */
-    public void setmNote(String mNote) {
+    public void setmNote(Intervento mNote) {
 
 	this.mNote = mNote;
     }
