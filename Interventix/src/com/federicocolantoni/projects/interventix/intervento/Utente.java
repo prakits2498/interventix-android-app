@@ -6,7 +6,7 @@ import java.util.List;
 public class Utente {
 
     private Integer mIdUtente;
-    private String mNome, mCognome, mUserName, mPassword, mEmail, mTipo;
+    private Intervento mNome, mCognome, mUserName, mPassword, mEmail, mTipo;
     private boolean mCancellato;
     private List<Intervento> mInterventi;
 
@@ -38,7 +38,7 @@ public class Utente {
     /**
      * @return the mNome
      */
-    public String getmNome() {
+    public Intervento getmNome() {
 
 	return mNome;
     }
@@ -46,7 +46,7 @@ public class Utente {
     /**
      * @param mNome the mNome to set
      */
-    public void setmNome(String mNome) {
+    public void setmNome(Intervento mNome) {
 
 	this.mNome = mNome;
     }
@@ -54,7 +54,7 @@ public class Utente {
     /**
      * @return the mCognome
      */
-    public String getmCognome() {
+    public Intervento getmCognome() {
 
 	return mCognome;
     }
@@ -62,7 +62,7 @@ public class Utente {
     /**
      * @param mCognome the mCognome to set
      */
-    public void setmCognome(String mCognome) {
+    public void setmCognome(Intervento mCognome) {
 
 	this.mCognome = mCognome;
     }
@@ -70,7 +70,7 @@ public class Utente {
     /**
      * @return the mUserName
      */
-    public String getmUserName() {
+    public Intervento getmUserName() {
 
 	return mUserName;
     }
@@ -78,7 +78,7 @@ public class Utente {
     /**
      * @param mUserName the mUserName to set
      */
-    public void setmUserName(String mUserName) {
+    public void setmUserName(Intervento mUserName) {
 
 	this.mUserName = mUserName;
     }
@@ -86,7 +86,7 @@ public class Utente {
     /**
      * @return the mPassword
      */
-    public String getmPassword() {
+    public Intervento getmPassword() {
 
 	return mPassword;
     }
@@ -94,7 +94,7 @@ public class Utente {
     /**
      * @param mPassword the mPassword to set
      */
-    public void setmPassword(String mPassword) {
+    public void setmPassword(Intervento mPassword) {
 
 	this.mPassword = mPassword;
     }
@@ -102,7 +102,7 @@ public class Utente {
     /**
      * @return the mEmail
      */
-    public String getmEmail() {
+    public Intervento getmEmail() {
 
 	return mEmail;
     }
@@ -110,7 +110,7 @@ public class Utente {
     /**
      * @param mEmail the mEmail to set
      */
-    public void setmEmail(String mEmail) {
+    public void setmEmail(Intervento mEmail) {
 
 	this.mEmail = mEmail;
     }
@@ -118,7 +118,7 @@ public class Utente {
     /**
      * @return the mTipo
      */
-    public String getmTipo() {
+    public Intervento getmTipo() {
 
 	return mTipo;
     }
@@ -126,7 +126,7 @@ public class Utente {
     /**
      * @param mTipo the mTipo to set
      */
-    public void setmTipo(String mTipo) {
+    public void setmTipo(Intervento mTipo) {
 
 	this.mTipo = mTipo;
     }

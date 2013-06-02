@@ -1,9 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="#ffffff"
-	tools:context=".IndexActivity" >
+	android:background="#ffffff" >
 	<ImageView
 		android:id="@+id/view_logo"
 		android:layout_width="159dp"
@@ -17,22 +15,25 @@
 		android:maxWidth="159dp"
 		android:src="@drawable/logo_ix" />
 	<TextView
-		android:id="@+id/label_nominativo"
+		android:id="@+id/list_header_open"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_alignParentLeft="true"
-		android:layout_below="@+id/view_logo"
-		android:gravity="left"
-		android:hint="@string/nomin_interv"
-		android:paddingLeft="8dp"
-		android:textIsSelectable="false" />
+		android:layout_below="@id/view_logo"
+		android:background="#00FF00"
+		android:gravity="center_horizontal"
+		android:paddingLeft="4dp"
+		android:paddingRight="4dp"
+		android:textColor="@android:color/black" />
 	<ListView
 		android:id="@+id/list_interv_open"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_below="@id/label_nominativo"
-		android:layout_marginTop="4dp"
+		android:layout_below="@id/list_header_open"
+		android:layout_marginBottom="8dp"
 		android:layout_marginLeft="4dp"
-		android:layout_marginRight="4dp" >
+		android:layout_marginRight="4dp"
+		android:layout_marginTop="4dp"
+		android:divider="@android:color/transparent"
+		android:dividerHeight="4dp" >
 	</ListView>
 </RelativeLayout>

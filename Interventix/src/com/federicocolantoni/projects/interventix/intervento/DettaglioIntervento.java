@@ -4,7 +4,7 @@ package com.federicocolantoni.projects.interventix.intervento;
 public class DettaglioIntervento {
 
     private Long mIdDettaglioIntervento;
-    private String mTipo, mOggetto, mDescrizione;
+    private Intervento mTipo, mOggetto, mDescrizione;
     private Intervento mIntervento;
 
     public DettaglioIntervento() {
@@ -35,7 +35,7 @@ public class DettaglioIntervento {
     /**
      * @return the mTipo
      */
-    public String getmTipo() {
+    public Intervento getmTipo() {
 
         return this.mTipo;
     }
@@ -43,7 +43,7 @@ public class DettaglioIntervento {
     /**
      * @param mTipo the mTipo to set
      */
-    public void setmTipo(String mTipo) {
+    public void setmTipo(Intervento mTipo) {
 
         this.mTipo = mTipo;
     }
@@ -51,7 +51,7 @@ public class DettaglioIntervento {
     /**
      * @return the mOggetto
      */
-    public String getmOggetto() {
+    public Intervento getmOggetto() {
 
         return mOggetto;
     }
@@ -59,7 +59,7 @@ public class DettaglioIntervento {
     /**
      * @param mOggetto the mOggetto to set
      */
-    public void setmOggetto(String mOggetto) {
+    public void setmOggetto(Intervento mOggetto) {
 
         this.mOggetto = mOggetto;
     }
@@ -67,7 +67,7 @@ public class DettaglioIntervento {
     /**
      * @return the mDescrizione
      */
-    public String getmDescrizione() {
+    public Intervento getmDescrizione() {
 
         return this.mDescrizione;
     }
@@ -75,7 +75,7 @@ public class DettaglioIntervento {
     /**
      * @param mDescrizione the mDescrizione to set
      */
-    public void setmDescrizione(String mDescrizione) {
+    public void setmDescrizione(Intervento mDescrizione) {
 
         this.mDescrizione = mDescrizione;
     }

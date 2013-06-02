@@ -2,7 +2,6 @@
 package com.federicocolantoni.projects.interventix.intervento;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 public class Intervento {
@@ -12,9 +11,9 @@ public class Intervento {
 	    mRifScontrino, mNote;
     private byte[] mFirma;
     private boolean mSaldato, mCancellato;
-    private Date mDataOra, mInizio, mFine;
-    private Cliente mIdCliente;
-    private Utente mIdTecnico;
+    private Long mDataOra, mInizio, mFine;
+    private Long mIdCliente;
+    private Long mIdTecnico;
     private BigDecimal mCostoManodopera, mCostoComponenti, mCostoAccessori,
 	    mImporto, mTotale;
     private List<DettaglioIntervento> mDettaglioIntervento;
@@ -219,7 +218,7 @@ public class Intervento {
     /**
      * @return the mDataOra
      */
-    public Date getmDataOra() {
+    public Long getmDataOra() {
 
 	return mDataOra;
     }
@@ -228,7 +227,7 @@ public class Intervento {
      * @param mDataOra
      *            the mDataOra to set
      */
-    public void setmDataOra(Date mDataOra) {
+    public void setmDataOra(Long mDataOra) {
 
 	this.mDataOra = mDataOra;
     }
@@ -236,7 +235,7 @@ public class Intervento {
     /**
      * @return the mInizio
      */
-    public Date getmInizio() {
+    public Long getmInizio() {
 
 	return mInizio;
     }
@@ -245,7 +244,7 @@ public class Intervento {
      * @param mInizio
      *            the mInizio to set
      */
-    public void setmInizio(Date mInizio) {
+    public void setmInizio(Long mInizio) {
 
 	this.mInizio = mInizio;
     }
@@ -253,7 +252,7 @@ public class Intervento {
     /**
      * @return the mFine
      */
-    public Date getmFine() {
+    public Long getmFine() {
 
 	return mFine;
     }
@@ -262,7 +261,7 @@ public class Intervento {
      * @param mFine
      *            the mFine to set
      */
-    public void setmFine(Date mFine) {
+    public void setmFine(Long mFine) {
 
 	this.mFine = mFine;
     }
@@ -270,7 +269,7 @@ public class Intervento {
     /**
      * @return the mIdCliente
      */
-    public Cliente getmIdCliente() {
+    public Long getmIdCliente() {
 
 	return mIdCliente;
     }
@@ -279,7 +278,7 @@ public class Intervento {
      * @param mIdCliente
      *            the mIdCliente to set
      */
-    public void setmIdCliente(Cliente mIdCliente) {
+    public void setmIdCliente(Long mIdCliente) {
 
 	this.mIdCliente = mIdCliente;
     }
@@ -287,7 +286,7 @@ public class Intervento {
     /**
      * @return the mIdTecnico
      */
-    public Utente getmIdTecnico() {
+    public Long getmIdTecnico() {
 
 	return mIdTecnico;
     }
@@ -296,7 +295,7 @@ public class Intervento {
      * @param mIdTecnico
      *            the mIdTecnico to set
      */
-    public void setmIdTecnico(Utente mIdTecnico) {
+    public void setmIdTecnico(Long mIdTecnico) {
 
 	this.mIdTecnico = mIdTecnico;
     }

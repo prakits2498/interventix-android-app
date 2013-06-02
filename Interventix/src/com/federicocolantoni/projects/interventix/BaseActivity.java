@@ -1,8 +1,6 @@
 
 package com.federicocolantoni.projects.interventix;
 
-import org.acra.ACRA;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,12 +17,6 @@ public class BaseActivity extends SherlockFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
 	super.onCreate(savedInstanceState);
-
-	try {
-	    StrictModeWrapper.init(BaseActivity.this);
-	} catch (Throwable e) {
-	    ACRA.getErrorReporter().handleSilentException(e);
-	}
 
 	getSupportActionBar().setTitle(Constants.INTERVENTIX_TITLE);
     }

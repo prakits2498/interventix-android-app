@@ -95,24 +95,6 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	    }
 	}
 
-	//	Cursor cursor = getContentResolver().query(UtenteDB.CONTENT_URI, null,
-	//		UtenteDB.Fields.TYPE + "='" + UtenteDB.UTENTE_ITEM_TYPE + "'",
-	//		null, null);
-	//
-	//	while (cursor.moveToNext()) {
-	//	    System.out.println("*************");
-	//	    System.out.println("USERNAME: "
-	//		    + cursor.getString(cursor
-	//			    .getColumnIndex(UtenteDB.Fields.USERNAME)));
-	//	    System.out.println("NOME: "
-	//		    + cursor.getString(cursor
-	//			    .getColumnIndex(UtenteDB.Fields.NOME)));
-	//	    System.out.println("COGNOME: "
-	//		    + cursor.getString(cursor
-	//			    .getColumnIndex(UtenteDB.Fields.COGNOME)));
-	//	    System.out.println("*************");
-	//	}
-
 	findViewById(R.id.btn_login).setOnClickListener(new OnClickListener() {
 
 	    @Override

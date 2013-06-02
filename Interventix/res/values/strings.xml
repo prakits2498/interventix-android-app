@@ -3,7 +3,7 @@
 	<string name="app_name">Interventix</string>
 	<string name="menu_settings">Opzioni</string>
 	<string name="menu_back">Indietro</string>
-	<string name="menu_refresh">Aggiorna</string>
+	<string name="menu_refresh">Aggiorna Interventi</string>
 	<string name="menu_add">Aggiungi Intervento</string>
 	<string name="prefs_key_url">PREFS_KEY_URL</string>
 	<string name="prefs_url_title">Inserisci l\'indirizzo del sito che ti e\' stato fornito nel contratto</string>
@@ -54,4 +54,6 @@
 	<string name="hint_referente">Paolo</string>
 	<string name="hint_note">Note bla bla bla</string>
 	<string name="hint_indirizzo">via Camino Palmero, 10</string>
+	<string name="interventi_aperti">Interventi aperti</string>
+	<string name="interventi_chiusi">Interventi chiusi</string>
 </resources>
