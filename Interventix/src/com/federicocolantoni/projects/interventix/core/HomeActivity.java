@@ -48,7 +48,7 @@ import com.turbomanage.httpclient.ParameterMap;
 import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 @SuppressLint("NewApi")
-public class HomeActivity extends BaseActivity implements OnItemClickListener {
+public class HomeActivity extends BaseActivity {
 
     private Menu optionsMenu;
 
@@ -82,9 +82,6 @@ public class HomeActivity extends BaseActivity implements OnItemClickListener {
 	    e.printStackTrace();
 	}
 
-	System.out.println("Size lista interventi aperti: "
-		+ listInterventionsOpen.size());
-
 	ListView listOpen = (ListView) findViewById(R.id.list_interv_open);
 
 	TextView headerOpen = (TextView) findViewById(R.id.list_header_open);
@@ -95,15 +92,24 @@ public class HomeActivity extends BaseActivity implements OnItemClickListener {
 
 	listOpen.setAdapter(adapter);
 
-	listOpen.setOnItemClickListener(this);
+	listOpen.setOnItemClickListener(new OnItemClickListener() {
+
+	    @Override
+	    public void onItemClick(AdapterView<?> adapter, View view,
+		    int position, long id) {
+
+		Intervento interv = (Intervento) adapter
+			.getItemAtPosition(position);
+
+		Toast.makeText(
+			HomeActivity.this,
+			"Hai selezionato l'intervento "
+				+ interv.getmIdIntervento(), Toast.LENGTH_SHORT)
+			.show();
+	    }
+	});
 
 	adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapter, View view, int position,
-	    long id) {
-
     }
 
     @Override
@@ -245,11 +251,11 @@ public class HomeActivity extends BaseActivity implements OnItemClickListener {
 
 		int result = 0;
 
-		int iduser = params[0].intValue();
+		long iduser = params[0];
 
 		try {
 		    json_req = JsonCR2.createRequest("interventions", "get",
-			    null, iduser);
+			    null, (int) iduser);
 
 		    //		    System.out.println("REQUEST INTERVENTI:\n" + json_req);
 
@@ -299,9 +305,7 @@ public class HomeActivity extends BaseActivity implements OnItemClickListener {
 			    ContentValues values = new ContentValues();
 
 			    if (cursorIntervento.getCount() > 0) {
-				System.out.println("Intervento "
-					+ intervento.get("idintervento")
-					+ " esistente.");
+				cursorIntervento.close();
 			    } else {
 				//*** INSERT INTERVENTO ***\\
 
@@ -309,6 +313,7 @@ public class HomeActivity extends BaseActivity implements OnItemClickListener {
 					InterventoDB.INTERVENTO_ITEM_TYPE);
 				values.put(InterventoDB.Fields.ID_INTERVENTO,
 					(Long) intervento.get("idintervento"));
+
 				values.put(InterventoDB.Fields.CANCELLATO,
 					(Boolean) intervento.get("cancellato"));
 				values.put(InterventoDB.Fields.COSTO_ACCESSORI,
@@ -346,15 +351,18 @@ public class HomeActivity extends BaseActivity implements OnItemClickListener {
 				values.put(
 					InterventoDB.Fields.RIFERIMENTO_SCONTRINO,
 					(String) intervento.get("rifscontrino"));
+
 				values.put(InterventoDB.Fields.SALDATO,
 					(Boolean) intervento.get("saldato"));
 				values.put(InterventoDB.Fields.TIPOLOGIA,
 					(String) intervento.get("tipologia"));
 				values.put(InterventoDB.Fields.TOTALE,
 					(Double) intervento.get("totale"));
+
 				values.put(InterventoDB.Fields.CHIUSO,
 					(Boolean) intervento.get("chiuso"));
-				values.put(InterventoDB.Fields.TECNICO, iduser);
+				values.put(InterventoDB.Fields.TECNICO,
+					(Long) intervento.get("tecnico"));
 
 				cr.insert(InterventoDB.CONTENT_URI, values);
 
@@ -371,9 +379,7 @@ public class HomeActivity extends BaseActivity implements OnItemClickListener {
 				    selectionCliente, null, null);
 
 			    if (cursorCliente.getCount() > 0) {
-				System.out.println("Cliente "
-					+ cliente.get("idcliente")
-					+ " esistente.");
+				cursorCliente.close();
 			    } else {
 				//*** INSERT CLIENTE ***\\\
 				values = new ContentValues();
@@ -418,12 +424,16 @@ public class HomeActivity extends BaseActivity implements OnItemClickListener {
 			}
 
 			result = Activity.RESULT_OK;
+			progress.dismiss();
 		    } else {
 			result = Activity.RESULT_CANCELED;
+			progress.dismiss();
 		    }
 		} catch (Exception e) {
 		    e.printStackTrace();
 		    ACRA.getErrorReporter().handleSilentException(e);
+		} finally {
+		    progress.dismiss();
 		}
 
 		return result;
@@ -433,15 +443,15 @@ public class HomeActivity extends BaseActivity implements OnItemClickListener {
 	    protected void onPostExecute(Integer result) {
 
 		if (result == Activity.RESULT_OK) {
-		    progress.dismiss();
-		    Toast.makeText(this.getActivity(), "Interventi scaricati",
-			    Toast.LENGTH_LONG).show();
+		    //		    progress.dismiss();
+		    //		    Toast.makeText(this.getActivity(), "Interventi scaricati",
+		    //			    Toast.LENGTH_SHORT).show();
 		} else {
-		    progress.dismiss();
+		    //		    progress.dismiss();
 		    Toast.makeText(
 			    this.getActivity(),
 			    "Si e' verificato un errore nel download degli interventi.",
-			    Toast.LENGTH_LONG).show();
+			    Toast.LENGTH_SHORT).show();
 		}
 	    }
 	}.execute(prefs.getLong(Constants.USER_ID, 0l));
@@ -466,7 +476,8 @@ public class HomeActivity extends BaseActivity implements OnItemClickListener {
 		String selection = InterventoDB.Fields.TYPE + "='"
 			+ InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
 			+ InterventoDB.Fields.TECNICO + "="
-			+ params[0].intValue();
+			+ params[0].intValue() + " AND "
+			+ InterventoDB.Fields.CHIUSO + "=0";
 
 		Cursor cursor = cr.query(InterventoDB.CONTENT_URI, null,
 			selection, null, null);

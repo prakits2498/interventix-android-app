@@ -361,6 +361,10 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 			    System.out.println("UPDATE USER DONE");
 
 			    result = Activity.RESULT_OK;
+
+			    progress.dismiss();
+
+			    cursor.close();
 			} else {
 
 			    //Insert user's informations
@@ -407,11 +411,15 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 			    System.out.println("INSERT USER DONE");
 
 			    result = Activity.RESULT_OK;
-			}
 
-			cursor.close();
+			    progress.dismiss();
+
+			    cursor.close();
+			}
 		    } else {
 			result = Activity.RESULT_CANCELED;
+
+			progress.dismiss();
 		    }
 		} catch (ParseException e) {
 		    e.printStackTrace();
@@ -419,6 +427,8 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 		} catch (Exception e) {
 		    e.printStackTrace();
 		    ACRA.getErrorReporter().handleSilentException(e);
+		} finally {
+		    progress.dismiss();
 		}
 	    }
 
@@ -466,21 +476,22 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	protected void onPostExecute(Integer result) {
 
 	    if (result == Activity.RESULT_OK) {
-		progress.dismiss();
-		Toast.makeText(context, Constants.ACCESS_ALLOWED,
-			Toast.LENGTH_LONG).show();
 
 		EditText password = (EditText) findViewById(R.id.field_password);
 
 		password.setText("");
 
+		//		progress.dismiss();
+		//		Toast.makeText(context, Constants.ACCESS_ALLOWED,
+		//			Toast.LENGTH_SHORT).show();
+
 		startActivity(new Intent(context, HomeActivity.class));
 	    } else {
-		progress.dismiss();
+		//		progress.dismiss();
 		Toast.makeText(
 			context,
 			"Si e' verificato un errore nel login.\n"
-				+ Constants.ACCESS_DINIED, Toast.LENGTH_LONG)
+				+ Constants.ACCESS_DINIED, Toast.LENGTH_SHORT)
 			.show();
 	    }
 	}
