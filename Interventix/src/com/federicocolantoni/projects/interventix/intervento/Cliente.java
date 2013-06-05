@@ -1,7 +1,14 @@
 
 package com.federicocolantoni.projects.interventix.intervento;
 
-public class Cliente {
+import java.io.Serializable;
+
+public class Cliente implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6163117197009443000L;
 
     private Integer mIdCliente;
     private String mNominativo, mCodiceFiscale, mPartitaIVA, mTelefono, mFax,

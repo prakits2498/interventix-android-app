@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.federicocolantoni.projects.interventix"
-	android:versionCode="12"
-	android:versionName="0.1.30" >
+	android:versionCode="14"
+	android:versionName="0.1.40" >
 	<uses-sdk
 		android:minSdkVersion="8"
 		android:targetSdkVersion="17" />
@@ -29,13 +29,11 @@
 		<activity
 			android:name="com.federicocolantoni.projects.interventix.core.HomeActivity"
 			android:configChanges="orientation"
-			android:label="@string/title_activity_index"
 			android:screenOrientation="portrait" >
 		</activity>
 		<activity
-			android:name="com.federicocolantoni.projects.interventix.core.MyInterventionsActivity"
+			android:name="com.federicocolantoni.projects.interventix.core.ViewInterventoActivity"
 			android:configChanges="orientation"
-			android:label="@string/title_activity_my_interventions"
 			android:screenOrientation="portrait" >
 		</activity>
 		<activity

@@ -1,10 +1,16 @@
 
 package com.federicocolantoni.projects.interventix.intervento;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class Intervento {
+public class Intervento implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6145022542420590261L;
 
     private Long mIdIntervento;
     private String mTipologia, mProdotto, mMotivo, mNominativo, mRifFattura,
