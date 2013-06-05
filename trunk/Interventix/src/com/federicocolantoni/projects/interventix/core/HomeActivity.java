@@ -18,13 +18,18 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -41,7 +46,9 @@ import com.federicocolantoni.projects.interventix.R.string;
 import com.federicocolantoni.projects.interventix.data.DBContract.ClienteDB;
 import com.federicocolantoni.projects.interventix.data.DBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.data.DBContract.UtenteDB;
+import com.federicocolantoni.projects.interventix.intervento.Cliente;
 import com.federicocolantoni.projects.interventix.intervento.Intervento;
+import com.federicocolantoni.projects.interventix.utils.GetCliente;
 import com.slezica.tools.async.ManagedAsyncTask;
 import com.turbomanage.httpclient.HttpResponse;
 import com.turbomanage.httpclient.ParameterMap;
@@ -51,6 +58,8 @@ import com.turbomanage.httpclient.android.AndroidHttpClient;
 public class HomeActivity extends BaseActivity {
 
     private Menu optionsMenu;
+    private Animation refresh_animation;
+    private boolean animationIsRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +71,35 @@ public class HomeActivity extends BaseActivity {
 
 	setContentView(R.layout.activity_home);
 
+	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES,
+		Activity.MODE_PRIVATE);
+
+	final Editor edit = prefs.edit();
+
 	try {
-	    getSupportActionBar().setTitle(setNominativo());
+	    String nominativo = setNominativo();
+
+	    edit.putString("USER_NOMINATIVO", nominativo);
+	    getSupportActionBar().setTitle(nominativo);
+
 	} catch (InterruptedException e) {
 	    e.printStackTrace();
 	} catch (ExecutionException e) {
 	    e.printStackTrace();
+	}
+
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+	    edit.apply();
+	} else {
+
+	    new Thread(new Runnable() {
+
+		@Override
+		public void run() {
+
+		    edit.commit();
+		}
+	    });
 	}
 
 	retrieveInterventionsFromServer();
@@ -92,6 +124,8 @@ public class HomeActivity extends BaseActivity {
 
 	listOpen.setAdapter(adapter);
 
+	adapter.notifyDataSetChanged();
+
 	listOpen.setOnItemClickListener(new OnItemClickListener() {
 
 	    @Override
@@ -101,15 +135,73 @@ public class HomeActivity extends BaseActivity {
 		Intervento interv = (Intervento) adapter
 			.getItemAtPosition(position);
 
+		Cliente cliente = new Cliente();
+
+		GetCliente cl = new GetCliente(HomeActivity.this);
+		cl.execute(interv.getmIdCliente());
+
+		try {
+		    cliente = cl.get();
+		} catch (InterruptedException e) {
+		    e.printStackTrace();
+		} catch (ExecutionException e) {
+		    e.printStackTrace();
+		}
+
 		Toast.makeText(
 			HomeActivity.this,
 			"Hai selezionato l'intervento "
 				+ interv.getmIdIntervento(), Toast.LENGTH_SHORT)
 			.show();
+
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("INTERVENTO", interv);
+		bundle.putSerializable("CLIENTE", cliente);
+
+		Intent intent = new Intent(HomeActivity.this,
+			ViewInterventoActivity.class);
+
+		intent.putExtra("BUNDLE_INTERVENTO", bundle);
+
+		startActivity(intent);
 	    }
 	});
 
-	adapter.notifyDataSetChanged();
+	refresh_animation = AnimationUtils.loadAnimation(HomeActivity.this,
+		R.anim.refresh_animation);
+	refresh_animation.setAnimationListener(new AnimationListener() {
+
+	    @Override
+	    public void onAnimationStart(Animation animation) {
+
+	    }
+
+	    @Override
+	    public void onAnimationRepeat(Animation animation) {
+
+	    }
+
+	    @Override
+	    public void onAnimationEnd(Animation animation) {
+
+		animation.reset();
+	    }
+	});
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+	if (keyCode == KeyEvent.KEYCODE_BACK) {
+	    return true;
+	}
+
+	return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 
     @Override
@@ -129,7 +221,16 @@ public class HomeActivity extends BaseActivity {
 	switch (item.getItemId()) {
 	    case R.id.menu_refresh:
 
-		return true;
+		if (!animationIsRunning) {
+		    refresh_animation.start();
+		    animationIsRunning = true;
+
+		    return true;
+		} else {
+		    refresh_animation.cancel();
+
+		    return true;
+		}
 
 	    case android.R.id.home:
 		SharedPreferences prefs = getSharedPreferences(

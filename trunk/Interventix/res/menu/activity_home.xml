@@ -1,12 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 	<item
 		android:id="@+id/menu_add"
-		android:icon="@drawable/button_add_4"
+		android:icon="@drawable/button_add"
 		android:showAsAction="ifRoom"
 		android:title="@string/menu_add"/>
 	<item
 		android:id="@+id/menu_refresh"
-		android:icon="@drawable/ic_action_refresh"
+		android:icon="@drawable/refresh"
 		android:showAsAction="ifRoom"
 		android:title="@string/menu_refresh"/>
 </menu>
