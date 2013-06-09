@@ -288,6 +288,7 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 
 		final AndroidHttpClient request = new AndroidHttpClient(url);
 		request.setMaxRetries(5);
+		request.setConnectionTimeout(Constants.CONNECTION_TIMEOUT);
 
 		ParameterMap paramMap = new ParameterMap();
 		paramMap.add("DATA", strings[0]);
@@ -364,7 +365,12 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 
 			    progress.dismiss();
 
-			    cursor.close();
+			    if (!cursor.isClosed()) {
+				cursor.close();
+			    } else {
+				System.out
+					.println("Cursor for GetLogin - UPDATE MODE is closed");
+			    }
 			} else {
 
 			    //Insert user's informations
@@ -414,7 +420,13 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 
 			    progress.dismiss();
 
-			    cursor.close();
+			    if (!cursor.isClosed()) {
+				cursor.close();
+			    } else {
+				System.out
+					.println("Cursor for GetLogin - INSERT MODE is closed");
+			    }
+
 			}
 		    } else {
 			result = Activity.RESULT_CANCELED;

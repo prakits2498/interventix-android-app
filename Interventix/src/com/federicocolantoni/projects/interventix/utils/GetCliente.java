@@ -37,6 +37,12 @@ public class GetCliente extends AsyncTask<Long, Void, Cliente> {
 		    .getColumnIndex(ClienteDB.Fields.NOMINATIVO)));
 	}
 
+	if (!cursor.isClosed()) {
+	    cursor.close();
+	} else {
+	    System.out.println("Cursor for GetCliente is closed");
+	}
+
 	return cliente;
     }
 

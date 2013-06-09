@@ -27,9 +27,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -37,7 +34,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.Constants;
@@ -49,17 +45,20 @@ import com.federicocolantoni.projects.interventix.data.DBContract.UtenteDB;
 import com.federicocolantoni.projects.interventix.intervento.Cliente;
 import com.federicocolantoni.projects.interventix.intervento.Intervento;
 import com.federicocolantoni.projects.interventix.utils.GetCliente;
+import com.federicocolantoni.projects.interventix.view.ViewInterventoActivity;
+import com.manuelpeinado.refreshactionitem.ProgressIndicatorType;
+import com.manuelpeinado.refreshactionitem.RefreshActionItem;
+import com.manuelpeinado.refreshactionitem.RefreshActionItem.RefreshActionListener;
 import com.slezica.tools.async.ManagedAsyncTask;
 import com.turbomanage.httpclient.HttpResponse;
 import com.turbomanage.httpclient.ParameterMap;
 import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 @SuppressLint("NewApi")
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements RefreshActionListener {
 
-    private Menu optionsMenu;
-    private Animation refresh_animation;
-    private boolean animationIsRunning = false;
+    private RefreshActionItem mRefreshActionItem;
+    private boolean refreshActive = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,35 +70,36 @@ public class HomeActivity extends BaseActivity {
 
 	setContentView(R.layout.activity_home);
 
-	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES,
-		Activity.MODE_PRIVATE);
+	String nominativo = null;
+
+	final SharedPreferences prefs = getSharedPreferences(
+		Constants.PREFERENCES, Activity.MODE_PRIVATE);
 
 	final Editor edit = prefs.edit();
 
 	try {
-	    String nominativo = setNominativo();
+	    nominativo = setNominativo();
 
-	    edit.putString("USER_NOMINATIVO", nominativo);
+	    edit.putString(Constants.USER_NOMINATIVO, nominativo);
 	    getSupportActionBar().setTitle(nominativo);
 
+	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+		edit.apply();
+	    } else {
+
+		new Thread(new Runnable() {
+
+		    @Override
+		    public void run() {
+
+			edit.commit();
+		    }
+		}).start();
+	    }
 	} catch (InterruptedException e) {
 	    e.printStackTrace();
 	} catch (ExecutionException e) {
 	    e.printStackTrace();
-	}
-
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-	    edit.apply();
-	} else {
-
-	    new Thread(new Runnable() {
-
-		@Override
-		public void run() {
-
-		    edit.commit();
-		}
-	    });
 	}
 
 	retrieveInterventionsFromServer();
@@ -161,30 +161,9 @@ public class HomeActivity extends BaseActivity {
 		Intent intent = new Intent(HomeActivity.this,
 			ViewInterventoActivity.class);
 
-		intent.putExtra("BUNDLE_INTERVENTO", bundle);
+		intent.putExtras(bundle);
 
 		startActivity(intent);
-	    }
-	});
-
-	refresh_animation = AnimationUtils.loadAnimation(HomeActivity.this,
-		R.anim.refresh_animation);
-	refresh_animation.setAnimationListener(new AnimationListener() {
-
-	    @Override
-	    public void onAnimationStart(Animation animation) {
-
-	    }
-
-	    @Override
-	    public void onAnimationRepeat(Animation animation) {
-
-	    }
-
-	    @Override
-	    public void onAnimationEnd(Animation animation) {
-
-		animation.reset();
 	    }
 	});
     }
@@ -207,30 +186,55 @@ public class HomeActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-	optionsMenu = menu;
+	getSupportMenuInflater().inflate(R.menu.activity_home, menu);
 
-	final MenuInflater inflater = getSupportMenuInflater();
-	inflater.inflate(R.menu.activity_home, menu);
+	MenuItem item = menu.findItem(R.id.refresh_menu);
 
-	return super.onCreateOptionsMenu(menu);
+	if (item != null) {
+	    mRefreshActionItem = (RefreshActionItem) item.getActionView();
+	    mRefreshActionItem.setMenuItem(item);
+	    //	    mRefreshActionItem.setMax(100);
+	    mRefreshActionItem.setRefreshActionListener(this);
+	    mRefreshActionItem
+		    .setProgressIndicatorType(ProgressIndicatorType.INDETERMINATE);
+	}
+
+	return true;
+    }
+
+    private void loadData() {
+
+	mRefreshActionItem.showProgress(true);
+
+	new ManagedAsyncTask<Void, Void, Void>(HomeActivity.this) {
+
+	    @Override
+	    protected Void doInBackground(Void... params) {
+
+		for (int i = 0; i <= 100; ++i) {
+		    try {
+			Thread.sleep(20);
+			mRefreshActionItem.setProgress(i);
+		    } catch (InterruptedException e) {
+			e.printStackTrace();
+		    }
+		}
+
+		return null;
+	    }
+
+	    @Override
+	    protected void onPostExecute(Void result) {
+
+		mRefreshActionItem.showProgress(false);
+	    }
+	}.execute();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
 	switch (item.getItemId()) {
-	    case R.id.menu_refresh:
-
-		if (!animationIsRunning) {
-		    refresh_animation.start();
-		    animationIsRunning = true;
-
-		    return true;
-		} else {
-		    refresh_animation.cancel();
-
-		    return true;
-		}
 
 	    case android.R.id.home:
 		SharedPreferences prefs = getSharedPreferences(
@@ -253,26 +257,9 @@ public class HomeActivity extends BaseActivity {
 		}
 
 		this.finish();
-		return true;
 	}
 
 	return super.onOptionsItemSelected(item);
-    }
-
-    private void setRefreshActionButtonState(final boolean refreshing) {
-
-	if (optionsMenu != null) {
-	    final MenuItem refreshItem = optionsMenu
-		    .findItem(R.id.menu_refresh);
-	    if (refreshItem != null) {
-		if (refreshing) {
-		    refreshItem
-			    .setActionView(R.layout.actionbar_indeterminate_progress);
-		} else {
-		    refreshItem.setActionView(null);
-		}
-	    }
-	}
     }
 
     private String setNominativo() throws InterruptedException,
@@ -311,7 +298,11 @@ public class HomeActivity extends BaseActivity {
 				    .getColumnIndex(UtenteDB.Fields.COGNOME));
 		}
 
-		cursor.close();
+		if (!cursor.isClosed()) {
+		    cursor.close();
+		} else {
+		    System.out.println("Cursor for setNominativo is closed");
+		}
 
 		return res;
 	    }
@@ -385,6 +376,9 @@ public class HomeActivity extends BaseActivity {
 
 			JSONArray data = (JSONArray) json_resp.get("data");
 
+			Cursor cursorIntervento = null;
+			Cursor cursorCliente = null;
+
 			for (int i = 0; i < data.size(); i++) {
 			    JSONObject intervento = (JSONObject) data.get(i);
 
@@ -399,7 +393,7 @@ public class HomeActivity extends BaseActivity {
 				    + InterventoDB.Fields.ID_INTERVENTO + "="
 				    + intervento.get("idintervento");
 
-			    Cursor cursorIntervento = cr.query(
+			    cursorIntervento = cr.query(
 				    InterventoDB.CONTENT_URI, null, selection,
 				    null, null);
 
@@ -467,7 +461,7 @@ public class HomeActivity extends BaseActivity {
 
 				cr.insert(InterventoDB.CONTENT_URI, values);
 
-				cursorIntervento.close();
+				//				cursorIntervento.close();
 			    }
 
 			    String selectionCliente = ClienteDB.Fields.TYPE
@@ -475,9 +469,8 @@ public class HomeActivity extends BaseActivity {
 				    + "' AND " + ClienteDB.Fields.ID_CLIENTE
 				    + "=" + cliente.get("idcliente");
 
-			    Cursor cursorCliente = cr.query(
-				    ClienteDB.CONTENT_URI, null,
-				    selectionCliente, null, null);
+			    cursorCliente = cr.query(ClienteDB.CONTENT_URI,
+				    null, selectionCliente, null, null);
 
 			    if (cursorCliente.getCount() > 0) {
 				cursorCliente.close();
@@ -520,9 +513,12 @@ public class HomeActivity extends BaseActivity {
 
 				cr.insert(ClienteDB.CONTENT_URI, values);
 
-				cursorCliente.close();
+				//				cursorCliente.close();
 			    }
 			}
+
+			cursorIntervento.close();
+			cursorCliente.close();
 
 			result = Activity.RESULT_OK;
 			progress.dismiss();
@@ -646,5 +642,11 @@ public class HomeActivity extends BaseActivity {
 	}.execute(prefs.getLong(Constants.USER_ID, 0l));
 
 	return listIntervento.get();
+    }
+
+    @Override
+    public void onRefreshButtonClick(RefreshActionItem sender) {
+
+	loadData();
     }
 }
