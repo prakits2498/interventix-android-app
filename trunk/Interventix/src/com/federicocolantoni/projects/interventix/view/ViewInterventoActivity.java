@@ -1,12 +1,9 @@
 
-package com.federicocolantoni.projects.interventix.core;
+package com.federicocolantoni.projects.interventix.view;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -18,20 +15,9 @@ import com.actionbarsherlock.view.MenuItem;
 import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.intervento.Cliente;
-import com.federicocolantoni.projects.interventix.intervento.Intervento;
-
-/* TODO questa Activity consente di visualizzare tutti i dati di un intervento,
- * e per farlo
- * verranno utilizzati i Fragment, i quali mostreranno le varie informazioni
- * relative all'intervento,
- * al cliente dell'intervento e ai dettagli dell'intervento (qualora ce ne
- * fossero). */
 
 @SuppressLint("NewApi")
 public class ViewInterventoActivity extends BaseActivity {
-
-    private Menu optionsMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,36 +29,30 @@ public class ViewInterventoActivity extends BaseActivity {
 
 	setContentView(R.layout.view_intervento);
 
+	Bundle extras = getIntent().getExtras();
+
 	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES,
 		Activity.MODE_PRIVATE);
 
-	String nominativo = prefs.getString("USER_NOMINATIVO", null);
+	String nominativo = prefs.getString(Constants.USER_NOMINATIVO, null);
 
 	getSupportActionBar().setTitle(nominativo);
-
-	Bundle extras = getIntent().getExtras();
-
-	Intervento interv = null;
-	Cliente cliente = null;
-
-	if (extras != null) {
-	    interv = (Intervento) extras.getSerializable("INTERVENTO");
-	    cliente = (Cliente) extras.getSerializable("CLIENTE");
-	}
 
 	FragmentManager manager = getSupportFragmentManager();
 	FragmentTransaction transaction = manager.beginTransaction();
 
-	OverViewIntervento overView = new OverViewIntervento();
+	OverViewInterventoFragment overView = new OverViewInterventoFragment();
 
 	Bundle bundle = new Bundle();
-	bundle.putSerializable("INTERVENTO", interv);
 	bundle.putString("NOMINATIVO", nominativo);
-	bundle.putSerializable("CLIENTE", cliente);
+	bundle.putAll(extras);
 
 	overView.setArguments(bundle);
 
-	transaction.replace(R.id.fragments_layout, overView).commit();
+	transaction.add(R.id.fragments_layout, overView,
+		Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+	transaction.addToBackStack(Constants.VIEW_INTERVENTO_TRANSACTION);
+	transaction.commit();
     }
 
     @Override
@@ -93,8 +73,6 @@ public class ViewInterventoActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-	optionsMenu = menu;
-
 	final MenuInflater inflater = getSupportMenuInflater();
 	inflater.inflate(R.menu.view_intervento, menu);
 
@@ -107,27 +85,8 @@ public class ViewInterventoActivity extends BaseActivity {
 	switch (item.getItemId()) {
 
 	    case android.R.id.home:
-		SharedPreferences prefs = getSharedPreferences(
-			Constants.PREFERENCES, Context.MODE_PRIVATE);
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-		    prefs.edit().clear().apply();
-		} else {
-		    final Editor editor = prefs.edit();
-		    editor.clear();
-
-		    new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-
-			    editor.commit();
-			}
-		    }).start();
-		}
 
 		this.finish();
-		return true;
 	}
 
 	return super.onOptionsItemSelected(item);

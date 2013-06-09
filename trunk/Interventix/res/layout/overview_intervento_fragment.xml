@@ -4,39 +4,143 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical" >
 	<TextView
-		android:id="@+id/tv_summary_intervenion"
+		android:id="@+id/tv_summary_intervention"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_marginLeft="4dp"
+		android:layout_marginRight="4dp"
+		android:gravity="center_horizontal|center_vertical"
 		android:textSize="18sp"
 		android:textStyle="bold" />
-	<include
+	<LinearLayout
 		android:id="@+id/row_client"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		layout="@layout/interv_row" />
-	<include
+		android:background="#000000"
+		android:orientation="vertical" >
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="1dp"
+			android:layout_marginRight="1dp"
+			android:layout_marginTop="1dp"
+			android:background="#FFFFFF"
+			android:paddingLeft="4dp"
+			android:text="@string/row_client"
+			android:textColor="@android:color/black"
+			android:textSize="18sp"
+			android:textStyle="bold" />
+		<TextView
+			android:id="@+id/tv_row_client"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="1dp"
+			android:layout_marginRight="1dp"
+			android:background="#FFFFFF"
+			android:paddingLeft="4dp" />
+	</LinearLayout>
+	<LinearLayout
 		android:id="@+id/row_user"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		layout="@layout/interv_row" />
-	<include
+		android:background="#000000"
+		android:orientation="vertical" >
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="1dp"
+			android:layout_marginRight="1dp"
+			android:layout_marginTop="1dp"
+			android:background="#FFFFFF"
+			android:paddingLeft="4dp"
+			android:text="@string/row_user"
+			android:textColor="@android:color/black"
+			android:textSize="18sp"
+			android:textStyle="bold" />
+		<TextView
+			android:id="@+id/tv_row_user"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="1dp"
+			android:layout_marginRight="1dp"
+			android:background="#FFFFFF"
+			android:paddingLeft="4dp" />
+	</LinearLayout>
+	<LinearLayout
 		android:id="@+id/row_informations"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		layout="@layout/interv_row" />
-	<include
+		android:background="#000000"
+		android:orientation="vertical" >
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="1dp"
+			android:layout_marginRight="1dp"
+			android:layout_marginTop="1dp"
+			android:background="#FFFFFF"
+			android:paddingLeft="4dp"
+			android:text="@string/row_informations"
+			android:textColor="@android:color/black"
+			android:textSize="18sp"
+			android:textStyle="bold" />
+	</LinearLayout>
+	<LinearLayout
 		android:id="@+id/row_details"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		layout="@layout/interv_row" />
-	<include
+		android:background="#000000"
+		android:orientation="horizontal" >
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="1dp"
+			android:layout_marginRight="1dp"
+			android:layout_marginTop="1dp"
+			android:background="#FFFFFF"
+			android:paddingLeft="4dp"
+			android:text="@string/row_details"
+			android:textColor="@android:color/black"
+			android:textSize="18sp"
+			android:textStyle="bold" />
+	</LinearLayout>
+	<LinearLayout
 		android:id="@+id/row_costs"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		layout="@layout/interv_row" />
-	<include
+		android:background="#000000"
+		android:orientation="horizontal" >
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="1dp"
+			android:layout_marginRight="1dp"
+			android:layout_marginTop="1dp"
+			android:background="#FFFFFF"
+			android:paddingLeft="4dp"
+			android:text="@string/row_costs"
+			android:textColor="@android:color/black"
+			android:textSize="18sp"
+			android:textStyle="bold" />
+	</LinearLayout>
+	<LinearLayout
 		android:id="@+id/row_signature"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		layout="@layout/interv_row" />
+		android:background="#000000"
+		android:orientation="vertical" >
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="1dp"
+			android:layout_marginLeft="1dp"
+			android:layout_marginRight="1dp"
+			android:layout_marginTop="1dp"
+			android:background="#FFFFFF"
+			android:paddingLeft="4dp"
+			android:text="@string/row_signature"
+			android:textColor="@android:color/black"
+			android:textSize="18sp"
+			android:textStyle="bold" />
+	</LinearLayout>
 </LinearLayout>

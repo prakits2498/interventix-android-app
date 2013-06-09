@@ -3,8 +3,8 @@
 	<string name="app_name">Interventix</string>
 	<string name="menu_settings">Opzioni</string>
 	<string name="menu_back">Indietro</string>
-	<string name="menu_refresh">Aggiorna Interventi</string>
-	<string name="menu_add">Aggiungi Intervento</string>
+	<string name="refresh_menu">Aggiorna Interventi</string>
+	<string name="add_menu">Aggiungi Intervento</string>
 	<string name="prefs_key_url">PREFS_KEY_URL</string>
 	<string name="prefs_url_title">Inserisci l\'indirizzo del sito che ti e\' stato fornito nel contratto</string>
 	<string name="prefs_url_hint">http://azienda.interventix.com</string>
@@ -56,4 +56,18 @@
 	<string name="hint_indirizzo">via Camino Palmero, 10</string>
 	<string name="interventi_aperti">Interventi aperti</string>
 	<string name="interventi_chiusi">Interventi chiusi</string>
+	<string name="row_client">Cliente</string>
+	<string name="row_user">Tecnico</string>
+	<string name="row_informations">Informazioni</string>
+	<string name="row_details">Dettagli</string>
+	<string name="row_costs">Costi</string>
+	<string name="row_signature">Firma</string>
+	<string name="row_tipology">Tipologia</string>
+	<string name="row_mode">Modalità</string>
+	<string name="row_product">Prodotto</string>
+	<string name="row_reason">Motivo</string>
+	<string name="row_name">Nominativo</string>
+	<string name="row_date">Data</string>
+	<string name="row_references">Riferimenti</string>
+	<string name="row_notes">Annotazioni</string>
 </resources>

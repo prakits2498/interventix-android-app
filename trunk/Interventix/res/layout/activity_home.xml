@@ -33,8 +33,10 @@
 		android:layout_marginLeft="4dp"
 		android:layout_marginRight="4dp"
 		android:layout_marginTop="4dp"
-		android:background="#000000"
-		android:divider="@android:color/transparent"
-		android:dividerHeight="1dp" >
+		android:background="#FFFFFF"
+		android:divider="@android:color/black"
+		android:dividerHeight="1dp"
+		android:footerDividersEnabled="false"
+		android:headerDividersEnabled="false" >
 	</ListView>
 </RelativeLayout>
