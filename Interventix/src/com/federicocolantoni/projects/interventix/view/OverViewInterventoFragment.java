@@ -37,7 +37,7 @@ public class OverViewInterventoFragment extends SherlockFragment implements
 
 	Intervento interv = null;
 
-	interv = (Intervento) bundle.getSerializable("INTERVENTO");
+	interv = (Intervento) bundle.getSerializable(Constants.INTERVENTO);
 
 	getSherlockActivity().getSupportActionBar().setSubtitle(
 		"Intervento " + interv.getmIdIntervento());
@@ -54,14 +54,14 @@ public class OverViewInterventoFragment extends SherlockFragment implements
 	TextView tv_row_client = (TextView) rowCliente
 		.findViewById(R.id.tv_row_client);
 
-	Cliente cliente = (Cliente) bundle.getSerializable("CLIENTE");
+	Cliente cliente = (Cliente) bundle.getSerializable(Constants.CLIENTE);
 	tv_row_client.setText(cliente.getmNominativo());
 
 	View rowTecnico = view.findViewById(R.id.row_user);
 
 	TextView tv_row_user = (TextView) rowTecnico
 		.findViewById(R.id.tv_row_user);
-	tv_row_user.setText(bundle.getString("NOMINATIVO"));
+	tv_row_user.setText(bundle.getString(Constants.USER_NOMINATIVO));
 
 	View rowInformazioni = view.findViewById(R.id.row_informations);
 	rowInformazioni.setOnClickListener(this);
@@ -87,6 +87,9 @@ public class OverViewInterventoFragment extends SherlockFragment implements
 			Constants.INFORMATIONS_INTERVENTO_FRAGMENT);
 		transaction
 			.addToBackStack(Constants.VIEW_INTERVENTO_TRANSACTION);
+		transaction
+			.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+
 		transaction.commit();
 
 		break;

@@ -46,7 +46,6 @@ import com.federicocolantoni.projects.interventix.intervento.Cliente;
 import com.federicocolantoni.projects.interventix.intervento.Intervento;
 import com.federicocolantoni.projects.interventix.utils.GetCliente;
 import com.federicocolantoni.projects.interventix.view.ViewInterventoActivity;
-import com.manuelpeinado.refreshactionitem.ProgressIndicatorType;
 import com.manuelpeinado.refreshactionitem.RefreshActionItem;
 import com.manuelpeinado.refreshactionitem.RefreshActionItem.RefreshActionListener;
 import com.slezica.tools.async.ManagedAsyncTask;
@@ -98,8 +97,10 @@ public class HomeActivity extends BaseActivity implements RefreshActionListener 
 	    }
 	} catch (InterruptedException e) {
 	    e.printStackTrace();
+	    ACRA.getErrorReporter().handleSilentException(e);
 	} catch (ExecutionException e) {
 	    e.printStackTrace();
+	    ACRA.getErrorReporter().handleSilentException(e);
 	}
 
 	retrieveInterventionsFromServer();
@@ -110,8 +111,10 @@ public class HomeActivity extends BaseActivity implements RefreshActionListener 
 	    listInterventionsOpen = getUserInterventions();
 	} catch (InterruptedException e) {
 	    e.printStackTrace();
+	    ACRA.getErrorReporter().handleSilentException(e);
 	} catch (ExecutionException e) {
 	    e.printStackTrace();
+	    ACRA.getErrorReporter().handleSilentException(e);
 	}
 
 	ListView listOpen = (ListView) findViewById(R.id.list_interv_open);
@@ -144,8 +147,10 @@ public class HomeActivity extends BaseActivity implements RefreshActionListener 
 		    cliente = cl.get();
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
+		    ACRA.getErrorReporter().handleSilentException(e);
 		} catch (ExecutionException e) {
 		    e.printStackTrace();
+		    ACRA.getErrorReporter().handleSilentException(e);
 		}
 
 		Toast.makeText(
@@ -155,8 +160,8 @@ public class HomeActivity extends BaseActivity implements RefreshActionListener 
 			.show();
 
 		Bundle bundle = new Bundle();
-		bundle.putSerializable("INTERVENTO", interv);
-		bundle.putSerializable("CLIENTE", cliente);
+		bundle.putSerializable(Constants.INTERVENTO, interv);
+		bundle.putSerializable(Constants.CLIENTE, cliente);
 
 		Intent intent = new Intent(HomeActivity.this,
 			ViewInterventoActivity.class);
@@ -192,11 +197,11 @@ public class HomeActivity extends BaseActivity implements RefreshActionListener 
 
 	if (item != null) {
 	    mRefreshActionItem = (RefreshActionItem) item.getActionView();
-	    mRefreshActionItem.setMenuItem(item);
+	    //	    mRefreshActionItem.setMenuItem(item);
 	    //	    mRefreshActionItem.setMax(100);
-	    mRefreshActionItem.setRefreshActionListener(this);
-	    mRefreshActionItem
-		    .setProgressIndicatorType(ProgressIndicatorType.INDETERMINATE);
+	    //	    mRefreshActionItem.setRefreshActionListener(this);
+	    //	    mRefreshActionItem
+	    //		    .setProgressIndicatorType(ProgressIndicatorType.INDETERMINATE);
 	}
 
 	return true;
@@ -217,6 +222,7 @@ public class HomeActivity extends BaseActivity implements RefreshActionListener 
 			mRefreshActionItem.setProgress(i);
 		    } catch (InterruptedException e) {
 			e.printStackTrace();
+			ACRA.getErrorReporter().handleSilentException(e);
 		    }
 		}
 
@@ -402,6 +408,7 @@ public class HomeActivity extends BaseActivity implements RefreshActionListener 
 			    if (cursorIntervento.getCount() > 0) {
 				cursorIntervento.close();
 			    } else {
+
 				//*** INSERT INTERVENTO ***\\
 
 				values.put(InterventoDB.Fields.TYPE,
