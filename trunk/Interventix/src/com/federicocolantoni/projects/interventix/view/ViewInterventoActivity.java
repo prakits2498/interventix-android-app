@@ -44,7 +44,7 @@ public class ViewInterventoActivity extends BaseActivity {
 	OverViewInterventoFragment overView = new OverViewInterventoFragment();
 
 	Bundle bundle = new Bundle();
-	bundle.putString("NOMINATIVO", nominativo);
+	bundle.putString(Constants.USER_NOMINATIVO, nominativo);
 	bundle.putAll(extras);
 
 	overView.setArguments(bundle);
@@ -52,6 +52,7 @@ public class ViewInterventoActivity extends BaseActivity {
 	transaction.add(R.id.fragments_layout, overView,
 		Constants.OVERVIEW_INTERVENTO_FRAGMENT);
 	transaction.addToBackStack(Constants.VIEW_INTERVENTO_TRANSACTION);
+	transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 	transaction.commit();
     }
 
@@ -59,6 +60,14 @@ public class ViewInterventoActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
 	if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+	    FragmentManager manager = getSupportFragmentManager();
+
+	    if (manager.getBackStackEntryCount() == 1) {
+		this.finish();
+	    } else {
+		manager.popBackStackImmediate();
+	    }
 	    return true;
 	}
 
@@ -68,6 +77,13 @@ public class ViewInterventoActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
+	FragmentManager manager = getSupportFragmentManager();
+
+	if (manager.getBackStackEntryCount() == 1) {
+	    this.finish();
+	} else {
+	    manager.popBackStackImmediate();
+	}
     }
 
     @Override
