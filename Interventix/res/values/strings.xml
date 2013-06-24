@@ -10,6 +10,16 @@
 	<string name="prefs_url_hint">http://azienda.interventix.com</string>
 	<string name="welcome_title">Benvenuto su Interventix</string>
 	<string name="welcome_message">Interventix e\' stata avviata per la prima volta. Inserire l\'indirizzo per la connessione al server che e\' stato fornito nel contratto.</string>
+	<string name="logout_title">Richiesta di logout</string>
+	<string name="logout_message">Sei sicuro di voler effettuare il logout?</string>
+	<string name="logout_positive_btn">Logout</string>
+	<string name="logout_negative_btn">Annulla</string>
+	<string name="tipologia_title">Scegli una tipologia di intervento</string>
+	<string-array name="tipologia_choose">
+		<item n="0">Su richiesta</item>
+		<item n="1">Programmata</item>
+	</string-array>
+	<string name="ok_btn">OK</string>
 	<string name="prefs_key_auto_login">PREFS_KEY_AUTO_LOGIN</string>
 	<string name="username">Username</string>
 	<string name="password_">Password</string>
@@ -65,7 +75,7 @@
 	<string name="row_tipology">Tipologia</string>
 	<string name="row_mode">Modalità</string>
 	<string name="row_product">Prodotto</string>
-	<string name="row_reason">Motivo</string>
+	<string name="row_motivation">Motivo</string>
 	<string name="row_name">Nominativo</string>
 	<string name="row_date">Data</string>
 	<string name="row_references">Riferimenti</string>

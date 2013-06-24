@@ -3,7 +3,11 @@ package com.federicocolantoni.projects.interventix.view;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -59,16 +63,21 @@ public class ViewInterventoActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-	if (keyCode == KeyEvent.KEYCODE_BACK) {
+	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES,
+		Context.MODE_PRIVATE);
 
-	    FragmentManager manager = getSupportFragmentManager();
+	if (!prefs.getBoolean(Constants.EDIT_MODE, false)) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-	    if (manager.getBackStackEntryCount() == 1) {
-		this.finish();
-	    } else {
-		manager.popBackStackImmediate();
+		FragmentManager manager = getSupportFragmentManager();
+
+		if (manager.getBackStackEntryCount() == 1) {
+		    this.finish();
+		} else {
+		    manager.popBackStackImmediate();
+		}
+		return true;
 	    }
-	    return true;
 	}
 
 	return super.onKeyDown(keyCode, event);
@@ -77,12 +86,17 @@ public class ViewInterventoActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
-	FragmentManager manager = getSupportFragmentManager();
+	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES,
+		Context.MODE_PRIVATE);
 
-	if (manager.getBackStackEntryCount() == 1) {
-	    this.finish();
-	} else {
-	    manager.popBackStackImmediate();
+	if (!prefs.getBoolean(Constants.EDIT_MODE, false)) {
+	    FragmentManager manager = getSupportFragmentManager();
+
+	    if (manager.getBackStackEntryCount() == 1) {
+		this.finish();
+	    } else {
+		manager.popBackStackImmediate();
+	    }
 	}
     }
 
@@ -103,6 +117,63 @@ public class ViewInterventoActivity extends BaseActivity {
 	    case android.R.id.home:
 
 		this.finish();
+
+	    case R.id.edit_mode:
+
+		SharedPreferences prefs = getSharedPreferences(
+			Constants.PREFERENCES, Activity.MODE_PRIVATE);
+
+		if (!prefs.getBoolean(Constants.EDIT_MODE, false)) {
+
+		    System.out.println("EDIT_MODE false");
+
+		    final Editor editor = prefs.edit();
+
+		    editor.putBoolean(Constants.EDIT_MODE, true);
+
+		    System.out.println("EDIT_MODE set to true");
+
+		    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			editor.apply();
+		    } else {
+			new Thread(new Runnable() {
+
+			    @Override
+			    public void run() {
+
+				editor.commit();
+			    }
+			});
+		    }
+
+		    sendBroadcast(new Intent(Constants.EDIT_MODE));
+		} else {
+
+		    System.out.println("EDIT_MODE true");
+
+		    final Editor editor = prefs.edit();
+
+		    editor.putBoolean(Constants.EDIT_MODE, false);
+
+		    System.out.println("EDIT_MODE set to false");
+
+		    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			editor.apply();
+		    } else {
+			new Thread(new Runnable() {
+
+			    @Override
+			    public void run() {
+
+				editor.commit();
+			    }
+			});
+		    }
+
+		    sendBroadcast(new Intent(Constants.EDIT_MODE));
+		}
+
+		break;
 	}
 
 	return super.onOptionsItemSelected(item);

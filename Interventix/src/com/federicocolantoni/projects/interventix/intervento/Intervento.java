@@ -14,7 +14,7 @@ public class Intervento implements Serializable {
 
     private Long mIdIntervento;
     private String mTipologia, mProdotto, mMotivo, mNominativo, mRifFattura,
-	    mRifScontrino, mNote;
+	    mRifScontrino, mNote, mModalita;
     private byte[] mFirma;
     private boolean mSaldato, mCancellato;
     private Long mDataOra, mInizio, mFine;
@@ -441,5 +441,22 @@ public class Intervento implements Serializable {
     public void setmOre(BigDecimal mOre) {
 
 	this.mOre = mOre;
+    }
+
+    /**
+     * @return the mModalita
+     */
+    public String getmModalita() {
+
+	return mModalita;
+    }
+
+    /**
+     * @param mModalita
+     *            the mModalita to set
+     */
+    public void setmModalita(String mModalita) {
+
+	this.mModalita = mModalita;
     }
 }

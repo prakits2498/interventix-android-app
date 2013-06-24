@@ -51,7 +51,7 @@
 			android:layout_marginLeft="1dp"
 			android:layout_marginRight="1dp"
 			android:layout_marginTop="1dp"
-			android:background="#FFFFFF"
+			android:background="#FF888888"
 			android:paddingLeft="4dp"
 			android:text="@string/row_user"
 			android:textColor="@android:color/black"

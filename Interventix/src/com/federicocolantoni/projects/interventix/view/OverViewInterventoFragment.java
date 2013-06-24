@@ -1,6 +1,8 @@
 
 package com.federicocolantoni.projects.interventix.view;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +19,7 @@ import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.intervento.Cliente;
 import com.federicocolantoni.projects.interventix.intervento.Intervento;
 
+@SuppressLint("NewApi")
 public class OverViewInterventoFragment extends SherlockFragment implements
 	OnClickListener {
 
@@ -58,10 +61,14 @@ public class OverViewInterventoFragment extends SherlockFragment implements
 	tv_row_client.setText(cliente.getmNominativo());
 
 	View rowTecnico = view.findViewById(R.id.row_user);
+	rowTecnico.setBackgroundColor(Color.GRAY);
+	rowTecnico.setEnabled(false);
 
-	TextView tv_row_user = (TextView) rowTecnico
+	TextView tv_row_tecnico = (TextView) rowTecnico
 		.findViewById(R.id.tv_row_user);
-	tv_row_user.setText(bundle.getString(Constants.USER_NOMINATIVO));
+	tv_row_tecnico.setText(bundle.getString(Constants.USER_NOMINATIVO));
+	tv_row_tecnico.setBackgroundColor(Color.GRAY);
+	tv_row_tecnico.setEnabled(false);
 
 	View rowInformazioni = view.findViewById(R.id.row_informations);
 	rowInformazioni.setOnClickListener(this);
@@ -88,7 +95,7 @@ public class OverViewInterventoFragment extends SherlockFragment implements
 		transaction
 			.addToBackStack(Constants.VIEW_INTERVENTO_TRANSACTION);
 		transaction
-			.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+			.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
 		transaction.commit();
 
