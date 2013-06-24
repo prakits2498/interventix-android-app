@@ -119,6 +119,7 @@ public class DBContract {
 	    public static final String ORE = DATA[20];
 	    public static final String CHIUSO = DATA[21];
 	    public static final String ID_INTERVENTO = DATA[22];
+	    public static final String MODALITA = DATA[23];
 	}
     }
 

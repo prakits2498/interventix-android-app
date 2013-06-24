@@ -7,7 +7,6 @@ import java.util.concurrent.ExecutionException;
 
 import multiface.crypto.cr2.JsonCR2;
 
-import org.acra.ACRA;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -31,14 +30,17 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
@@ -59,6 +61,10 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
     protected void onCreate(Bundle savedInstanceState) {
 
 	super.onCreate(savedInstanceState);
+
+	BugSenseHandler.initAndStartSession(MainActivity.this,
+		Constants.API_KEY);
+
 	setContentView(R.layout.activity_main);
 
 	SharedPreferences prefs = null;
@@ -71,10 +77,10 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	    prefs = readPref.get();
 	} catch (InterruptedException e) {
 	    e.printStackTrace();
-	    ACRA.getErrorReporter().handleSilentException(e);
+	    BugSenseHandler.sendException(e);
 	} catch (ExecutionException e) {
 	    e.printStackTrace();
-	    ACRA.getErrorReporter().handleSilentException(e);
+	    BugSenseHandler.sendException(e);
 	}
 
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
@@ -90,7 +96,8 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 			.length() == 0) {
 
 		    FirstRunDialog dialog = new FirstRunDialog();
-		    dialog.show(getSupportFragmentManager(), "first_run");
+		    dialog.show(getSupportFragmentManager(),
+			    Constants.FIRST_RUN_DIALOG_FRAGMENT);
 		}
 	    }
 	}
@@ -104,10 +111,10 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 		    onLogin();
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
-		    ACRA.getErrorReporter().handleSilentException(e);
+		    BugSenseHandler.sendException(e);
 		} catch (IOException e) {
 		    e.printStackTrace();
-		    ACRA.getErrorReporter().handleSilentException(e);
+		    BugSenseHandler.sendException(e);
 		}
 	    }
 	});
@@ -130,13 +137,11 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 
 	    json_req = JsonCR2.createRequest("users", "login", parameters, -1);
 
-	    //	    System.out.println("REQUEST: \n" + json_req);
-
 	    new GetLogin(MainActivity.this).execute(json_req, mUsername
 		    .getText().toString(), mPassword.getText().toString());
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    ACRA.getErrorReporter().handleSilentException(e);
+	    BugSenseHandler.sendException(e);
 	}
     }
 
@@ -280,6 +285,8 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 
 	    final String url = prefs.getString(prefs_url, null);
 
+	    System.out.println("URL: " + url);
+
 	    // checks if auto login's flag is false
 	    // in this case, make a connection to the server to make login
 	    if (!prefs.getBoolean(prefs_auto_login, false)) {
@@ -289,6 +296,7 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 		final AndroidHttpClient request = new AndroidHttpClient(url);
 		request.setMaxRetries(5);
 		request.setConnectionTimeout(Constants.CONNECTION_TIMEOUT);
+		request.setReadTimeout(Constants.CONNECTION_TIMEOUT);
 
 		ParameterMap paramMap = new ParameterMap();
 		paramMap.add("DATA", strings[0]);
@@ -435,10 +443,10 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 		    }
 		} catch (ParseException e) {
 		    e.printStackTrace();
-		    ACRA.getErrorReporter().handleSilentException(e);
+		    BugSenseHandler.sendException(e);
 		} catch (Exception e) {
 		    e.printStackTrace();
-		    ACRA.getErrorReporter().handleSilentException(e);
+		    BugSenseHandler.sendException(e);
 		} finally {
 		    progress.dismiss();
 		}
@@ -493,18 +501,24 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 
 		password.setText("");
 
-		//		progress.dismiss();
-		//		Toast.makeText(context, Constants.ACCESS_ALLOWED,
-		//			Toast.LENGTH_SHORT).show();
-
 		startActivity(new Intent(context, HomeActivity.class));
 	    } else {
-		//		progress.dismiss();
-		Toast.makeText(
-			context,
-			"Si e' verificato un errore nel login.\n"
-				+ Constants.ACCESS_DINIED, Toast.LENGTH_SHORT)
-			.show();
+
+		LayoutInflater inflater = getLayoutInflater();
+
+		View custom_toast_layout = inflater.inflate(
+			R.layout.custom_toast,
+			(ViewGroup) findViewById(R.id.toast_layout));
+
+		TextView text_toast = (TextView) custom_toast_layout
+			.findViewById(R.id.text_toast);
+		text_toast.setText("Si e' verificato un errore nel login.\n"
+			+ Constants.ACCESS_DINIED);
+
+		Toast custom_toast = new Toast(getApplicationContext());
+		custom_toast.setDuration(Toast.LENGTH_SHORT);
+		custom_toast.setView(custom_toast_layout);
+		custom_toast.show();
 	    }
 	}
     }
