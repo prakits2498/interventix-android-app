@@ -9,11 +9,11 @@ import android.os.AsyncTask;
 import com.federicocolantoni.projects.interventix.data.DBContract.ClienteDB;
 import com.federicocolantoni.projects.interventix.intervento.Cliente;
 
-public class GetCliente extends AsyncTask<Long, Void, Cliente> {
+public class GetNominativoCliente extends AsyncTask<Long, Void, Cliente> {
 
     private Context context;
 
-    public GetCliente(Context context) {
+    public GetNominativoCliente(Context context) {
 
 	this.context = context.getApplicationContext();
     }
@@ -23,12 +23,17 @@ public class GetCliente extends AsyncTask<Long, Void, Cliente> {
 
 	ContentResolver cr = context.getContentResolver();
 
-	String selection = ClienteDB.Fields.TYPE + "='"
-		+ ClienteDB.CLIENTE_ITEM_TYPE + "' AND "
-		+ ClienteDB.Fields.ID_CLIENTE + "=" + params[0];
+	String[] projection = new String[] { ClienteDB.Fields._ID,
+		ClienteDB.Fields.NOMINATIVO };
 
-	Cursor cursor = cr.query(ClienteDB.CONTENT_URI, null, selection, null,
-		null);
+	String selection = ClienteDB.Fields.TYPE + " =? AND "
+		+ ClienteDB.Fields.ID_CLIENTE + " = ?";
+
+	String[] selectionArgs = new String[] { ClienteDB.CLIENTE_ITEM_TYPE,
+		"" + params[0] };
+
+	Cursor cursor = cr.query(ClienteDB.CONTENT_URI, projection, selection,
+		selectionArgs, null);
 
 	Cliente cliente = new Cliente();
 
@@ -40,7 +45,7 @@ public class GetCliente extends AsyncTask<Long, Void, Cliente> {
 	if (!cursor.isClosed()) {
 	    cursor.close();
 	} else {
-	    System.out.println("Cursor for GetCliente is closed");
+	    System.out.println("Cursor for GetNominativoCliente is closed");
 	}
 
 	return cliente;

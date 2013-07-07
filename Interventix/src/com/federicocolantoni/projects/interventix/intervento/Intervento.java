@@ -16,7 +16,7 @@ public class Intervento implements Serializable {
     private String mTipologia, mProdotto, mMotivo, mNominativo, mRifFattura,
 	    mRifScontrino, mNote, mModalita;
     private byte[] mFirma;
-    private boolean mSaldato, mCancellato;
+    private boolean mSaldato, mCancellato, mChiuso;
     private Long mDataOra, mInizio, mFine;
     private Long mIdCliente;
     private Long mIdTecnico;
@@ -219,6 +219,23 @@ public class Intervento implements Serializable {
     public void setmCancellato(boolean mCancellato) {
 
 	this.mCancellato = mCancellato;
+    }
+
+    /**
+     * @return the mChiuso
+     */
+    public boolean ismChiuso() {
+
+	return mChiuso;
+    }
+
+    /**
+     * @param mChiuso
+     *            the mChiuso to set
+     */
+    public void setmChiuso(boolean mChiuso) {
+
+	this.mChiuso = mChiuso;
     }
 
     /**

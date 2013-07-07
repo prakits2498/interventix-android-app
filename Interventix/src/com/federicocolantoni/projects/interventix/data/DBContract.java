@@ -60,6 +60,7 @@ public class DBContract {
 	    public static final String REVISIONE = DATA[7];
 	    public static final String ID_UTENTE = DATA[8];
 	    public static final String CESTINATO = DATA[9];
+	    public static final String MODIFICATO = DATA[24];
 	}
     }
 
@@ -85,6 +86,7 @@ public class DBContract {
 	    public static final String INDIRIZZO = DATA[12];
 	    public static final String UFFICIO = DATA[13];
 	    public static final String INTERNO = DATA[14];
+	    public static final String MODIFICATO = DATA[24];
 	}
     }
 
@@ -120,6 +122,7 @@ public class DBContract {
 	    public static final String CHIUSO = DATA[21];
 	    public static final String ID_INTERVENTO = DATA[22];
 	    public static final String MODALITA = DATA[23];
+	    public static final String MODIFICATO = DATA[24];
 	}
     }
 
@@ -134,6 +137,7 @@ public class DBContract {
 	    public static final String OGGETTO = DATA[1];
 	    public static final String DESCRIZIONE = DATA[2];
 	    public static final String INTERVENTO = DATA[3];
+	    public static final String MODIFICATO = DATA[24];
 	}
     }
 }

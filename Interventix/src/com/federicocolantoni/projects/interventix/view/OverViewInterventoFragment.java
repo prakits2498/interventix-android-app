@@ -1,6 +1,11 @@
 
 package com.federicocolantoni.projects.interventix.view;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,18 +19,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.intervento.Cliente;
 import com.federicocolantoni.projects.interventix.intervento.Intervento;
+import com.federicocolantoni.projects.interventix.utils.GetNominativoCliente;
+import com.federicocolantoni.projects.interventix.utils.GetOverviewIntervento;
 
 @SuppressLint("NewApi")
-public class OverViewInterventoFragment extends SherlockFragment implements
-	OnClickListener {
+public class OverViewInterventoFragment extends SherlockFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	    Bundle savedInstanceState) {
+
+	BugSenseHandler.initAndStartSession(getSherlockActivity(),
+		Constants.API_KEY);
 
 	super.onCreateView(inflater, container, savedInstanceState);
 
@@ -40,47 +50,64 @@ public class OverViewInterventoFragment extends SherlockFragment implements
 
 	Intervento interv = null;
 
-	interv = (Intervento) bundle.getSerializable(Constants.INTERVENTO);
+	try {
+	    interv = new GetOverviewIntervento(getSherlockActivity()).execute(
+		    bundle.getLong(Constants.ID_INTERVENTO)).get();
+	} catch (InterruptedException e) {
+	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
+	} catch (ExecutionException e) {
+	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
+	}
 
 	getSherlockActivity().getSupportActionBar().setSubtitle(
-		"Intervento " + interv.getmIdIntervento());
+		"Intervento " + bundle.getLong(Constants.ID_INTERVENTO));
 
 	TextView summary = (TextView) view
 		.findViewById(R.id.tv_summary_intervention);
 	new DateFormat();
-	summary.setText("Interv. " + interv.getmIdIntervento() + " del "
-		+ DateFormat.format("dd/MM/yyyy", interv.getmDataOra()) + " "
-		+ DateFormat.format("hh:mm", interv.getmDataOra()));
+	summary.setText("Interv. "
+		+ bundle.getLong(Constants.ID_INTERVENTO)
+		+ " del "
+		+ new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ITALY)
+			.format(new Date(interv.getmDataOra())));
 
 	View rowCliente = view.findViewById(R.id.row_client);
 
 	TextView tv_row_client = (TextView) rowCliente
 		.findViewById(R.id.tv_row_client);
 
-	Cliente cliente = (Cliente) bundle.getSerializable(Constants.CLIENTE);
+	Cliente cliente = null;
+	try {
+	    cliente = new GetNominativoCliente(getSherlockActivity()).execute(
+		    interv.getmIdCliente()).get();
+	} catch (InterruptedException e) {
+	    e.printStackTrace();
+	} catch (ExecutionException e) {
+	    e.printStackTrace();
+	}
 	tv_row_client.setText(cliente.getmNominativo());
 
 	View rowTecnico = view.findViewById(R.id.row_user);
-	rowTecnico.setBackgroundColor(Color.GRAY);
 	rowTecnico.setEnabled(false);
 
 	TextView tv_row_tecnico = (TextView) rowTecnico
 		.findViewById(R.id.tv_row_user);
 	tv_row_tecnico.setText(bundle.getString(Constants.USER_NOMINATIVO));
-	tv_row_tecnico.setBackgroundColor(Color.GRAY);
+	tv_row_tecnico.setBackgroundColor(Color.LTGRAY);
 	tv_row_tecnico.setEnabled(false);
 
+	final Bundle infoIntervBundle = new Bundle();
+	infoIntervBundle.putAll(bundle);
+	infoIntervBundle.putSerializable(Constants.CLIENTE, cliente);
+
 	View rowInformazioni = view.findViewById(R.id.row_informations);
-	rowInformazioni.setOnClickListener(this);
+	//	rowInformazioni.setLayoutParams(rowTecnico.getLayoutParams());
+	rowInformazioni.setOnClickListener(new OnClickListener() {
 
-	return view;
-    }
-
-    @Override
-    public void onClick(View v) {
-
-	switch (v.getId()) {
-	    case R.id.row_informations:
+	    @Override
+	    public void onClick(View v) {
 
 		FragmentManager manager = getActivity()
 			.getSupportFragmentManager();
@@ -88,18 +115,28 @@ public class OverViewInterventoFragment extends SherlockFragment implements
 
 		InformationsInterventoFragment infoInterv = new InformationsInterventoFragment();
 
-		infoInterv.setArguments(getArguments());
+		infoInterv.setArguments(infoIntervBundle);
 
 		transaction.replace(R.id.fragments_layout, infoInterv,
 			Constants.INFORMATIONS_INTERVENTO_FRAGMENT);
 		transaction
-			.addToBackStack(Constants.VIEW_INTERVENTO_TRANSACTION);
+			.addToBackStack(Constants.INFORMATIONS_INTERVENTO_FRAGMENT);
 		transaction
 			.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
 		transaction.commit();
+	    }
+	});
 
-		break;
-	}
+	View rowDetails = view.findViewById(R.id.row_details);
+	rowDetails.setLayoutParams(rowTecnico.getLayoutParams());
+
+	View rowCosts = view.findViewById(R.id.row_costs);
+	rowCosts.setLayoutParams(rowTecnico.getLayoutParams());
+
+	View rowSignature = view.findViewById(R.id.row_signature);
+	rowSignature.setLayoutParams(rowTecnico.getLayoutParams());
+
+	return view;
     }
 }

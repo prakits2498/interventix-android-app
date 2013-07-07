@@ -35,5 +35,10 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Downloads/joda-time-2.2/joda-time-2.2.jar" sourcepath="/Users/federico/Downloads/joda-time-2.2/joda-time-2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/Users/federico/Downloads/joda-time-2.2/joda-time-2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

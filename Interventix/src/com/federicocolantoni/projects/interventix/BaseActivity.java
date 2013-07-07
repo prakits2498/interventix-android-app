@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.bugsense.trace.BugSenseHandler;
 
 @SuppressLint("NewApi")
 public class BaseActivity extends SherlockFragmentActivity {
@@ -17,6 +18,9 @@ public class BaseActivity extends SherlockFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
 	super.onCreate(savedInstanceState);
+
+	BugSenseHandler.initAndStartSession(BaseActivity.this,
+		Constants.API_KEY);
 
 	getSupportActionBar().setTitle(Constants.INTERVENTIX_TITLE);
     }

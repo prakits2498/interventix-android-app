@@ -4,17 +4,12 @@ package com.federicocolantoni.projects.interventix.view;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.Constants;
@@ -55,7 +50,7 @@ public class ViewInterventoActivity extends BaseActivity {
 
 	transaction.add(R.id.fragments_layout, overView,
 		Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-	transaction.addToBackStack(Constants.VIEW_INTERVENTO_TRANSACTION);
+	transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
 	transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 	transaction.commit();
     }
@@ -100,14 +95,14 @@ public class ViewInterventoActivity extends BaseActivity {
 	}
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-	final MenuInflater inflater = getSupportMenuInflater();
-	inflater.inflate(R.menu.view_intervento, menu);
-
-	return super.onCreateOptionsMenu(menu);
-    }
+    //    @Override
+    //    public boolean onCreateOptionsMenu(Menu menu) {
+    //
+    //	final MenuInflater inflater = getSupportMenuInflater();
+    //	inflater.inflate(R.menu.view_intervento, menu);
+    //
+    //	return super.onCreateOptionsMenu(menu);
+    //    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -117,63 +112,6 @@ public class ViewInterventoActivity extends BaseActivity {
 	    case android.R.id.home:
 
 		this.finish();
-
-	    case R.id.edit_mode:
-
-		SharedPreferences prefs = getSharedPreferences(
-			Constants.PREFERENCES, Activity.MODE_PRIVATE);
-
-		if (!prefs.getBoolean(Constants.EDIT_MODE, false)) {
-
-		    System.out.println("EDIT_MODE false");
-
-		    final Editor editor = prefs.edit();
-
-		    editor.putBoolean(Constants.EDIT_MODE, true);
-
-		    System.out.println("EDIT_MODE set to true");
-
-		    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			editor.apply();
-		    } else {
-			new Thread(new Runnable() {
-
-			    @Override
-			    public void run() {
-
-				editor.commit();
-			    }
-			});
-		    }
-
-		    sendBroadcast(new Intent(Constants.EDIT_MODE));
-		} else {
-
-		    System.out.println("EDIT_MODE true");
-
-		    final Editor editor = prefs.edit();
-
-		    editor.putBoolean(Constants.EDIT_MODE, false);
-
-		    System.out.println("EDIT_MODE set to false");
-
-		    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			editor.apply();
-		    } else {
-			new Thread(new Runnable() {
-
-			    @Override
-			    public void run() {
-
-				editor.commit();
-			    }
-			});
-		    }
-
-		    sendBroadcast(new Intent(Constants.EDIT_MODE));
-		}
-
-		break;
 	}
 
 	return super.onOptionsItemSelected(item);

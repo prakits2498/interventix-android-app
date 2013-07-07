@@ -2,6 +2,7 @@
 package com.federicocolantoni.projects.interventix.core;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
@@ -23,6 +24,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,10 +33,8 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
@@ -50,6 +51,9 @@ import com.federicocolantoni.projects.interventix.data.DBContract.UtenteDB;
 import com.federicocolantoni.projects.interventix.modules.login.Login.OnLoginListener;
 import com.federicocolantoni.projects.interventix.settings.SettingActivity;
 import com.federicocolantoni.projects.interventix.settings.SettingSupportActivity;
+import com.federicocolantoni.projects.interventix.utils.InterventixToast;
+import com.turbomanage.httpclient.BasicRequestHandler;
+import com.turbomanage.httpclient.HttpRequestException;
 import com.turbomanage.httpclient.HttpResponse;
 import com.turbomanage.httpclient.ParameterMap;
 import com.turbomanage.httpclient.android.AndroidHttpClient;
@@ -123,25 +127,72 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
     @Override
     public void onLogin() throws InterruptedException, IOException {
 
-	EditText mUsername = (EditText) findViewById(R.id.field_username);
-	EditText mPassword = (EditText) findViewById(R.id.field_password);
+	//	WifiManager wifiMan = (WifiManager) getSystemService(WIFI_SERVICE);
+
+	ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES,
+		Context.MODE_PRIVATE);
+
+	EditText username = (EditText) findViewById(R.id.field_username);
+	EditText password = (EditText) findViewById(R.id.field_password);
+
+	//	Set<String> loginData = new HashSet<String>();
+	//	loginData.add(username.getText().toString());
+	//	loginData.add(password.getText().toString());
+
+	//	final Editor edit = prefs.edit();
+	//	edit.putString(Constants.USERNAME, username.getText().toString());
+	//	edit.putString(Constants.PASSWORD, password.getText().toString());
+	//
+	//	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+	//	    edit.apply();
+	//	} else {
+	//	    new Thread(new Runnable() {
+	//
+	//		@Override
+	//		public void run() {
+	//
+	//		    edit.commit();
+	//		}
+	//	    }).start();
+	//	}
 
 	String json_req = new String();
+	if (networkInfo != null && networkInfo.isConnected()) {
+	    //	if (wifiMan.isWifiEnabled()) {
 
-	try {
-	    HashMap<String, String> parameters = new HashMap<String, String>();
+	    //TODO inserire il controllo per capire se si è già connessi a una rete Internet o meno;
+	    //in caso non si è connessi, notificare all'utente se desidera collegarsi a una rete
 
-	    parameters.put("username", mUsername.getText().toString());
-	    parameters.put("password", mPassword.getText().toString());
-	    parameters.put("type", "TECNICO");
+	    try {
+		HashMap<String, String> parameters = new HashMap<String, String>();
 
-	    json_req = JsonCR2.createRequest("users", "login", parameters, -1);
+		parameters.put("username", username.getText().toString());
+		parameters.put("password", password.getText().toString());
+		parameters.put("type", "TECNICO");
 
-	    new GetLogin(MainActivity.this).execute(json_req, mUsername
-		    .getText().toString(), mPassword.getText().toString());
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    BugSenseHandler.sendException(e);
+		json_req = JsonCR2.createRequest("users", "login", parameters,
+			-1);
+
+		new GetLogin(MainActivity.this).execute(json_req, username
+			.getText().toString(), password.getText().toString());
+	    } catch (Exception e) {
+		e.printStackTrace();
+		BugSenseHandler.sendException(e);
+	    }
+	} else {
+
+	    if (prefs.getString(Constants.USERNAME, null).equals(
+		    username.getText().toString())
+		    && prefs.getString(Constants.PASSWORD, null).equals(
+			    password.getText().toString())) {
+
+		password.setText("");
+
+		startActivity(new Intent(MainActivity.this, HomeActivity.class));
+	    }
 	}
     }
 
@@ -261,6 +312,7 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	    progress.setTitle("Login in corso");
 	    progress.setMessage("Attendere prego...");
 	    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+	    progress.setCancelable(false);
 	}
 
 	@Override
@@ -274,7 +326,7 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 
 	    int result = 0;
 
-	    final SharedPreferences prefs = PreferenceManager
+	    final SharedPreferences defaultPrefs = PreferenceManager
 		    .getDefaultSharedPreferences(context
 			    .getApplicationContext());
 
@@ -283,28 +335,38 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	    final String prefs_auto_login = getResources().getString(
 		    string.prefs_key_auto_login);
 
-	    final String url = prefs.getString(prefs_url, null);
+	    final String url = defaultPrefs.getString(prefs_url, null);
 
 	    System.out.println("URL: " + url);
 
 	    // checks if auto login's flag is false
 	    // in this case, make a connection to the server to make login
-	    if (!prefs.getBoolean(prefs_auto_login, false)) {
+	    if (!defaultPrefs.getBoolean(prefs_auto_login, false)) {
 
 		System.out.println("auto-login false");
 
-		final AndroidHttpClient request = new AndroidHttpClient(url);
-		request.setMaxRetries(5);
-		request.setConnectionTimeout(Constants.CONNECTION_TIMEOUT);
-		request.setReadTimeout(Constants.CONNECTION_TIMEOUT);
-
-		ParameterMap paramMap = new ParameterMap();
-		paramMap.add("DATA", strings[0]);
-
-		HttpResponse response;
-		response = request.post("", paramMap);
-
 		try {
+		    final AndroidHttpClient request = new AndroidHttpClient(
+			    url, new BasicRequestHandler() {
+
+				@Override
+				public boolean onError(HttpRequestException e) {
+
+				    e.printStackTrace();
+
+				    return true;
+				}
+			    });
+		    request.setMaxRetries(5);
+		    request.setConnectionTimeout(Constants.CONNECTION_TIMEOUT);
+		    request.setReadTimeout(Constants.CONNECTION_TIMEOUT);
+
+		    ParameterMap paramMap = new ParameterMap();
+		    paramMap.add("DATA", strings[0]);
+
+		    HttpResponse response;
+		    response = request.post("", paramMap);
+
 		    JSONObject jsonResponse = JsonCR2.read(response
 			    .getBodyAsString());
 
@@ -410,16 +472,29 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 			    SharedPreferences localPrefs = getSharedPreferences(
 				    Constants.PREFERENCES, Context.MODE_PRIVATE);
 
+			    EditText username = (EditText) findViewById(R.id.field_username);
+			    EditText password = (EditText) findViewById(R.id.field_password);
+
 			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 				localPrefs
 					.edit()
 					.putLong(Constants.USER_ID,
 						(Long) data.get("idutente"))
+					.putString(Constants.USERNAME,
+						username.getText().toString())
+					.putString(Constants.PASSWORD,
+						password.getText().toString())
 					.apply();
 			    } else {
-				Editor editor = localPrefs.edit();
-				editor.putLong(Constants.USER_ID,
-					(Long) data.get("idutente")).commit();
+				localPrefs
+					.edit()
+					.putLong(Constants.USER_ID,
+						(Long) data.get("idutente"))
+					.putString(Constants.USERNAME,
+						username.getText().toString())
+					.putString(Constants.PASSWORD,
+						password.getText().toString())
+					.commit();
 			    }
 
 			    System.out.println("INSERT USER DONE");
@@ -444,6 +519,9 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 		} catch (ParseException e) {
 		    e.printStackTrace();
 		    BugSenseHandler.sendException(e);
+		} catch (SocketTimeoutException e) {
+		    e.printStackTrace();
+		    BugSenseHandler.sendException(e);
 		} catch (Exception e) {
 		    e.printStackTrace();
 		    BugSenseHandler.sendException(e);
@@ -452,42 +530,42 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 		}
 	    }
 
-	    // in this case, auto login's flag is true
-	    // check user's info directly on the DB
-	    //	    else {
-	    //
-	    //		System.out.println("auto-login true");
-	    //
-	    //		/*
-	    //		 * TODO make login checking that the username and password given by user
-	    //		 * are already on the DB:
-	    //		 * - if presents, make login;
-	    //		 * - otherwise, allow the user to choose to connect to the server.
-	    //		 */
-	    //
-	    //		String username = strings[1];
-	    //		String password = strings[2];
-	    //
-	    //		ContentResolver cr = getContentResolver();
-	    //
-	    //		String[] projection = new String[] { "count(*)" };
-	    //		String selection = UtenteDB.Fields.USERNAME + "='" + username
-	    //			+ "' AND " + UtenteDB.Fields.PASSWORD + "='" + password
-	    //			+ "'";
-	    //
-	    //		Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection,
-	    //			selection, null, null);
-	    //
-	    //		if (cursor != null) {
-	    //		    if (!cursor.moveToFirst()) {
-	    //			result = Activity.RESULT_CANCELED;
-	    //		    } else {
-	    //			result = Activity.RESULT_OK;
-	    //		    }
-	    //
-	    //		    cursor.close();
-	    //		}
-	    //	    }
+	    //in this case, auto login's flag is true
+	    //check user's info directly on the DB
+	    else {
+
+		System.out.println("auto-login true");
+
+		/*
+		 * TODO make login checking that the username and password given by user
+		 * are already on the DB:
+		 * - if presents, make login;
+		 * - otherwise, allow the user to choose to connect to the server.
+		 */
+
+		//		String username = strings[1];
+		//		String password = strings[2];
+		//
+		//		ContentResolver cr = getContentResolver();
+		//
+		//		String[] projection = new String[] { "count(*)" };
+		//		String selection = UtenteDB.Fields.USERNAME + "='" + username
+		//			+ "' AND " + UtenteDB.Fields.PASSWORD + "='" + password
+		//			+ "'";
+		//
+		//		Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection,
+		//			selection, null, null);
+		//
+		//		if (cursor != null) {
+		//		    if (!cursor.moveToFirst()) {
+		//			result = Activity.RESULT_CANCELED;
+		//		    } else {
+		//			result = Activity.RESULT_OK;
+		//		    }
+		//
+		//		    cursor.close();
+		//		}
+	    }
 
 	    return result;
 	}
@@ -504,21 +582,25 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 		startActivity(new Intent(context, HomeActivity.class));
 	    } else {
 
-		LayoutInflater inflater = getLayoutInflater();
+		//		LayoutInflater inflater = getLayoutInflater();
+		//
+		//		View custom_toast_layout = inflater.inflate(
+		//			R.layout.custom_toast,
+		//			(ViewGroup) findViewById(R.id.toast_layout));
+		//
+		//		TextView text_toast = (TextView) custom_toast_layout
+		//			.findViewById(R.id.text_toast);
+		//		text_toast.setText("Si è verificato un errore nel login.\n"
+		//			+ Constants.ACCESS_DINIED);
+		//
+		//		Toast custom_toast = new Toast(getApplicationContext());
+		//		custom_toast.setDuration(Toast.LENGTH_SHORT);
+		//		custom_toast.setView(custom_toast_layout);
+		//		custom_toast.show();
 
-		View custom_toast_layout = inflater.inflate(
-			R.layout.custom_toast,
-			(ViewGroup) findViewById(R.id.toast_layout));
-
-		TextView text_toast = (TextView) custom_toast_layout
-			.findViewById(R.id.text_toast);
-		text_toast.setText("Si e' verificato un errore nel login.\n"
-			+ Constants.ACCESS_DINIED);
-
-		Toast custom_toast = new Toast(getApplicationContext());
-		custom_toast.setDuration(Toast.LENGTH_SHORT);
-		custom_toast.setView(custom_toast_layout);
-		custom_toast.show();
+		InterventixToast.makeToast(context,
+			"Si è verificato un errore nel login.\n"
+				+ Constants.ACCESS_DINIED, Toast.LENGTH_SHORT);
 	    }
 	}
     }
