@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/DateTimeDialog"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content" >
+	<com.federicocolantoni.projects.interventix.utils.DateTimePicker
+		android:id="@+id/DateTimePicker"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
+	<LinearLayout
+		android:id="@+id/ControlButtons"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/DateTimePicker"
+		android:background="#000000"
+		android:padding="4dp"
+		android:weightSum="3" >
+		<Button
+			android:id="@+id/CancelDialog"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@android:string/cancel"
+			android:textColor="#FFFFFF" />
+		<Button
+			android:id="@+id/ResetDateTime"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/reset"
+			android:textColor="#FFFFFF" />
+		<Button
+			android:id="@+id/SetDateTime"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@android:string/ok"
+			android:textColor="#FFFFFF" />
+	</LinearLayout>
+</RelativeLayout>

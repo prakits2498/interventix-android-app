@@ -19,6 +19,15 @@
 		<item n="0">Su richiesta</item>
 		<item n="1">Programmata</item>
 	</string-array>
+	<string name="modalita_title">Scegli una modalità di intervento</string>
+	<string-array name="modalita_choose">
+		<item n="0">Contrattualizzato</item>
+		<item n="1">Pagamento Diretto</item>
+		<item n="2">Post-Vendita (Garanzia)</item>
+		<item n="3">Comodato d\'Uso</item>
+	</string-array>
+	<string name="prodotto_title">Inserisci il nome del prodotto dell\'intervento</string>
+	<string name="nominativo_title">Inserisci il nominativo per l\'intervento</string>
 	<string name="ok_btn">OK</string>
 	<string name="prefs_key_auto_login">PREFS_KEY_AUTO_LOGIN</string>
 	<string name="username">Username</string>
@@ -44,6 +53,7 @@
 	<string name="costs">Costi</string>
 	<string name="details">Dettagli</string>
 	<string name="new_interv">NUOVO INTERVENTO</string>
+	<string name="numero_intervento">Intervento n° </string>
 	<string name="type_interv">Tipologia</string>
 	<string name="prod_interv">Prodotto</string>
 	<string name="what_interv">Motivo</string>
@@ -80,4 +90,5 @@
 	<string name="row_date">Data</string>
 	<string name="row_references">Riferimenti</string>
 	<string name="row_notes">Annotazioni</string>
+	<string name="reset">Ripristina</string>
 </resources>

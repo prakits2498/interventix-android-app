@@ -3,7 +3,9 @@
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
+        <option name="APK_PATH" value="/out/production/Interventix/Interventix.apk" />
         <option name="UPDATE_PROPERTY_FILES" value="true" />
+        <includeAssetsFromLibraries>true</includeAssetsFromLibraries>
         <notImportedProperties>
           <property>MANIFEST_FILE_PATH</property>
           <property>RESOURCES_DIR_PATH</property>
@@ -22,6 +24,7 @@
     <orderEntry type="jdk" jdkName="Android 4.2.2" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="libs" level="project" />
+    <orderEntry type="module" module-name="actionbarsherlock" exported="" />
   </component>
 </module>
 
