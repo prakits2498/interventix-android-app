@@ -14,6 +14,7 @@ public final class Constants {
     public static final String USER_ID = "USER_ID";
     public static final String USER_NOMINATIVO = "USER_NOMINATIVO";
     public static final int CONNECTION_TIMEOUT = 16000;
+    public static final String COSTS_INTERVENTO_FRAGMENT = "COSTS_INTERVENTO_FRAGMENT";
     public static final String OVERVIEW_INTERVENTO_FRAGMENT = "OVERVIEW_INTERVENTO";
     public static final String INFORMATIONS_INTERVENTO_FRAGMENT = "INFORMATIONS_INTERVENTO";
     public static final String VIEW_INTERVENTO_TRANSACTION = "VIEW_INTERVENTO_TRANSACTION";

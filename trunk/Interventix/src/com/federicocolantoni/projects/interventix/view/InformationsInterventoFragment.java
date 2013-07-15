@@ -384,22 +384,18 @@ public class InformationsInterventoFragment extends SherlockFragment {
     public void onPause() {
 
 	super.onPause();
-
-	System.out.println("InformationsInterventoFragment - paused");
     }
 
     @Override
     public void onResume() {
 
 	super.onResume();
-
-	System.out.println("InformationsInterventoFragment - resumed");
     }
 
     public static class SetTipologia extends SherlockDialogFragment implements
 	    OnClickListener {
 
-	private String tipologiaChanged;
+	private String mTipologiaChanged;
 
 	public SetTipologia() {
 
@@ -428,7 +424,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 			    TextView tv_tipology = (TextView) getSherlockActivity()
 				    .findViewById(R.id.tv_row_tipology);
 			    tv_tipology.setText(choices[which]);
-			    tipologiaChanged = choices[which];
+			    mTipologiaChanged = choices[which];
 			    //			    }
 			}
 		    });
@@ -446,7 +442,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 		    getSherlockActivity());
 
 	    ContentValues values = new ContentValues();
-	    values.put(InterventoDB.Fields.TIPOLOGIA, tipologiaChanged);
+	    values.put(InterventoDB.Fields.TIPOLOGIA, mTipologiaChanged);
 
 	    String selection = InterventoDB.Fields.TYPE + " = '"
 		    + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
@@ -464,7 +460,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
     public static class SetModalita extends SherlockDialogFragment implements
 	    OnClickListener {
 
-	private String modalitaChanged;
+	private String mModalitaChanged;
 
 	public SetModalita() {
 
@@ -494,7 +490,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 			    TextView tv_mode = (TextView) getSherlockActivity()
 				    .findViewById(R.id.tv_row_mode);
 			    tv_mode.setText(choices[which]);
-			    modalitaChanged = choices[which];
+			    mModalitaChanged = choices[which];
 			    //			    }
 			}
 		    });
@@ -512,7 +508,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 		    getSherlockActivity());
 
 	    ContentValues values = new ContentValues();
-	    values.put(InterventoDB.Fields.MODALITA, modalitaChanged);
+	    values.put(InterventoDB.Fields.MODALITA, mModalitaChanged);
 
 	    String selection = InterventoDB.Fields.TYPE + " = '"
 		    + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
@@ -530,7 +526,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
     public static class SetProdotto extends SherlockDialogFragment implements
 	    OnClickListener {
 
-	private EditText edit_prodotto;
+	private EditText mEdit_prodotto;
 
 	public SetProdotto() {
 
@@ -546,10 +542,10 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    TextView tv_prodotto = (TextView) getSherlockActivity()
 		    .findViewById(R.id.tv_row_product);
 
-	    edit_prodotto = new EditText(getSherlockActivity());
-	    edit_prodotto.setText(tv_prodotto.getText());
+	    mEdit_prodotto = new EditText(getSherlockActivity());
+	    mEdit_prodotto.setText(tv_prodotto.getText());
 
-	    prodotto.setView(edit_prodotto);
+	    prodotto.setView(mEdit_prodotto);
 
 	    prodotto.setPositiveButton(getResources()
 		    .getString(R.string.ok_btn), this);
@@ -562,13 +558,13 @@ public class InformationsInterventoFragment extends SherlockFragment {
 
 	    TextView tv_product = (TextView) getSherlockActivity()
 		    .findViewById(R.id.tv_row_product);
-	    tv_product.setText(edit_prodotto.getText());
+	    tv_product.setText(mEdit_prodotto.getText());
 
 	    SaveChangesIntervento saveChange = new SaveChangesIntervento(
 		    getSherlockActivity());
 
 	    ContentValues values = new ContentValues();
-	    values.put(InterventoDB.Fields.PRODOTTO, edit_prodotto.getText()
+	    values.put(InterventoDB.Fields.PRODOTTO, mEdit_prodotto.getText()
 		    .toString());
 
 	    String selection = InterventoDB.Fields.TYPE + " = '"
@@ -587,7 +583,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
     public static class SetNominativo extends SherlockDialogFragment implements
 	    OnClickListener {
 
-	private EditText edit_nominativo;
+	private EditText mEdit_nominativo;
 
 	public SetNominativo() {
 
@@ -603,10 +599,10 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    TextView tv_nominativo = (TextView) getSherlockActivity()
 		    .findViewById(R.id.tv_row_name);
 
-	    edit_nominativo = new EditText(getSherlockActivity());
-	    edit_nominativo.setText(tv_nominativo.getText());
+	    mEdit_nominativo = new EditText(getSherlockActivity());
+	    mEdit_nominativo.setText(tv_nominativo.getText());
 
-	    nominativo.setView(edit_nominativo);
+	    nominativo.setView(mEdit_nominativo);
 
 	    nominativo.setPositiveButton(
 		    getResources().getString(R.string.ok_btn), this);
@@ -619,13 +615,13 @@ public class InformationsInterventoFragment extends SherlockFragment {
 
 	    TextView tv_name = (TextView) getSherlockActivity().findViewById(
 		    R.id.tv_row_name);
-	    tv_name.setText(edit_nominativo.getText());
+	    tv_name.setText(mEdit_nominativo.getText());
 
 	    SaveChangesIntervento saveChange = new SaveChangesIntervento(
 		    getSherlockActivity());
 
 	    ContentValues values = new ContentValues();
-	    values.put(InterventoDB.Fields.NOMINATIVO, edit_nominativo
+	    values.put(InterventoDB.Fields.NOMINATIVO, mEdit_nominativo
 		    .getText().toString());
 
 	    String selection = InterventoDB.Fields.TYPE + " = '"

@@ -45,7 +45,8 @@ public class GetNominativoCliente extends AsyncTask<Long, Void, Cliente> {
 	if (!cursor.isClosed()) {
 	    cursor.close();
 	} else {
-	    System.out.println("Cursor for GetNominativoCliente is closed");
+	    System.out.println("Cursor for " + this.getClass().getSimpleName()
+		    + " is closed");
 	}
 
 	return cliente;
