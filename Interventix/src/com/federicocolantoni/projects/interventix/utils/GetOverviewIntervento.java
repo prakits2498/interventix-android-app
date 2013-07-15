@@ -17,7 +17,7 @@ public class GetOverviewIntervento extends AsyncTask<Long, Void, Intervento> {
 
     public GetOverviewIntervento(Context context) {
 
-	this.mContext = context.getApplicationContext();
+	mContext = context.getApplicationContext();
     }
 
     @Override
@@ -56,7 +56,8 @@ public class GetOverviewIntervento extends AsyncTask<Long, Void, Intervento> {
 	if (!cursor.isClosed()) {
 	    cursor.close();
 	} else {
-	    System.out.println("Cursor for GetOverviewIntervento is closed");
+	    System.out.println("Cursor for " + this.getClass().getSimpleName()
+		    + " is closed");
 	}
 
 	return overviewIntervento;

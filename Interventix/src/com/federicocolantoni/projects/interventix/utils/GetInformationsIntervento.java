@@ -59,8 +59,8 @@ public class GetInformationsIntervento extends
 	if (!cursor.isClosed()) {
 	    cursor.close();
 	} else {
-	    System.out
-		    .println("Cursor for GetInformationsIntervento is closed");
+	    System.out.println("Cursor for " + this.getClass().getSimpleName()
+		    + " is closed");
 	}
 
 	return informationsIntervento;

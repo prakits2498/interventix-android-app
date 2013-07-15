@@ -19,6 +19,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/view_logo"
+		android:layout_marginTop="8dp"
 		android:background="#00FF00"
 		android:gravity="center_horizontal"
 		android:paddingLeft="4dp"

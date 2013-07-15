@@ -98,12 +98,10 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	tv_row_tecnico.setBackgroundColor(Color.LTGRAY);
 	tv_row_tecnico.setEnabled(false);
 
-	final Bundle infoIntervBundle = new Bundle();
-	infoIntervBundle.putAll(bundle);
-	infoIntervBundle.putSerializable(Constants.CLIENTE, cliente);
+	final Bundle intervIDBundle = new Bundle();
+	intervIDBundle.putAll(bundle);
 
 	View rowInformazioni = view.findViewById(R.id.row_informations);
-	//	rowInformazioni.setLayoutParams(rowTecnico.getLayoutParams());
 	rowInformazioni.setOnClickListener(new OnClickListener() {
 
 	    @Override
@@ -114,8 +112,7 @@ public class OverViewInterventoFragment extends SherlockFragment {
 		FragmentTransaction transaction = manager.beginTransaction();
 
 		InformationsInterventoFragment infoInterv = new InformationsInterventoFragment();
-
-		infoInterv.setArguments(infoIntervBundle);
+		infoInterv.setArguments(intervIDBundle);
 
 		transaction.replace(R.id.fragments_layout, infoInterv,
 			Constants.INFORMATIONS_INTERVENTO_FRAGMENT);
@@ -129,13 +126,49 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	});
 
 	View rowDetails = view.findViewById(R.id.row_details);
-	rowDetails.setLayoutParams(rowTecnico.getLayoutParams());
+	rowDetails.setOnClickListener(new OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+
+	    }
+	});
 
 	View rowCosts = view.findViewById(R.id.row_costs);
-	rowCosts.setLayoutParams(rowTecnico.getLayoutParams());
+	rowCosts.setOnClickListener(new OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+
+		FragmentManager manager = getActivity()
+			.getSupportFragmentManager();
+		FragmentTransaction transaction = manager.beginTransaction();
+
+		CostsInterventoFragment costsInterv = new CostsInterventoFragment();
+		costsInterv.setArguments(intervIDBundle);
+
+		transaction.replace(R.id.fragments_layout, costsInterv,
+			Constants.COSTS_INTERVENTO_FRAGMENT);
+		transaction.addToBackStack(Constants.COSTS_INTERVENTO_FRAGMENT);
+		transaction
+			.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
+		transaction.commit();
+	    }
+	});
+
+	TextView tv_row_costs = (TextView) rowCosts
+		.findViewById(R.id.tv_row_costs);
+	tv_row_costs.setText(interv.getmTotale().toPlainString() + " €");
 
 	View rowSignature = view.findViewById(R.id.row_signature);
-	rowSignature.setLayoutParams(rowTecnico.getLayoutParams());
+	rowSignature.setOnClickListener(new OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+
+	    }
+	});
 
 	return view;
     }

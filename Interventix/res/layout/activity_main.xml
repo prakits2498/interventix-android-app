@@ -1,31 +1,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:background="#ffffff"
-              android:layout_height="match_parent"
-              android:layout_width="match_parent"
-              android:orientation="vertical"
-              tools:context=".MainActivity">
-
-    <RelativeLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-
-        <ImageView
-                android:adjustViewBounds="true"
-                android:clickable="false"
-                android:contentDescription="@string/logo_"
-                android:id="@+id/view_logo"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent" android:src="@drawable/logo_ix"/>
-    </RelativeLayout>
-
-    <fragment
-            android:id="@+id/frag_login"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:name="com.federicocolantoni.projects.interventix.modules.login.Login"
-            tools:layout="@layout/login"/>
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#ffffff"
+	android:orientation="vertical"
+	tools:context=".MainActivity" >
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" >
+		<ImageView
+			android:id="@+id/view_logo"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentRight="true"
+			android:layout_alignParentTop="true"
+			android:adjustViewBounds="true"
+			android:clickable="false"
+			android:contentDescription="@string/logo_"
+			android:src="@drawable/logo_ix" />
+	</RelativeLayout>
+	<fragment
+		android:id="@+id/frag_login"
+		android:name="com.federicocolantoni.projects.interventix.modules.login.Login"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		tools:layout="@layout/login" />
 </LinearLayout>

@@ -91,4 +91,11 @@
 	<string name="row_references">Riferimenti</string>
 	<string name="row_notes">Annotazioni</string>
 	<string name="reset">Ripristina</string>
+	<string name="row_manodopera">Manodopera</string>
+	<string name="row_componenti">Componenti</string>
+	<string name="row_accessori">Accessori</string>
+	<string name="row_importo">Importo</string>
+	<string name="row_iva">IVA (21.00 %)</string>
+	<string name="row_totale">Totale</string>
+	<string name="content_right_nav">Right Navigation</string>
 </resources>
