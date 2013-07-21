@@ -1,4 +1,3 @@
-
 package com.federicocolantoni.projects.interventix.adapter;
 
 import java.util.Locale;
@@ -21,94 +20,94 @@ import com.federicocolantoni.projects.interventix.utils.GetNominativoCliente;
 
 public class InterventionsAdapter extends CursorAdapter {
 
-    private LayoutInflater mInflater;
-    private boolean mFoundIndexes;
+	private final LayoutInflater mInflater;
+	private boolean mFoundIndexes;
 
-    private int mIdInterventoIndex;
-    private int mClienteInterventoIndex;
-    private int mDataInterventoIndex;
+	private int mNumeroInterventoIndex;
+	private int mClienteInterventoIndex;
+	private int mDataInterventoIndex;
 
-    public InterventionsAdapter(Context context, Cursor c) {
+	public InterventionsAdapter(Context context, Cursor c) {
 
-	super(context, c, InterventionsAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-	mInflater = LayoutInflater.from(context);
-	mFoundIndexes = false;
-    }
-
-    @Override
-    public void bindView(View row, Context context, Cursor cursor) {
-
-	TextView tv_nome_intervento = (TextView) row
-		.getTag(R.id.tv_nome_intervento);
-	TextView tv_cliente_intervento = (TextView) row
-		.getTag(R.id.tv_cliente_intervento);
-	TextView tv_data_intervento = (TextView) row
-		.getTag(R.id.tv_data_intervento);
-
-	if (!mFoundIndexes) {
-	    mIdInterventoIndex = cursor
-		    .getColumnIndex(InterventoDB.Fields.ID_INTERVENTO);
-	    mClienteInterventoIndex = cursor
-		    .getColumnIndex(InterventoDB.Fields.CLIENTE);
-	    mDataInterventoIndex = cursor
-		    .getColumnIndex(InterventoDB.Fields.DATA_ORA);
-
-	    mFoundIndexes = true;
+		super(context, c, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+		mInflater = LayoutInflater.from(context);
+		mFoundIndexes = false;
 	}
 
-	Long idInterv = cursor.getLong(mIdInterventoIndex);
+	@Override
+	public void bindView(View row, Context context, Cursor cursor) {
 
-	Long idCliente = cursor.getLong(mClienteInterventoIndex);
+		TextView tv_nome_intervento = (TextView) row
+				.getTag(R.id.tv_nome_intervento);
+		TextView tv_cliente_intervento = (TextView) row
+				.getTag(R.id.tv_cliente_intervento);
+		TextView tv_data_intervento = (TextView) row
+				.getTag(R.id.tv_data_intervento);
 
-	String nomeInterv = mContext.getString(R.string.numero_intervento)
-		+ idInterv;
+		if (!mFoundIndexes) {
+			mNumeroInterventoIndex = cursor
+					.getColumnIndex(InterventoDB.Fields.NUMERO_INTERVENTO);
+			mClienteInterventoIndex = cursor
+					.getColumnIndex(InterventoDB.Fields.CLIENTE);
+			mDataInterventoIndex = cursor
+					.getColumnIndex(InterventoDB.Fields.DATA_ORA);
 
-	tv_nome_intervento.setText(nomeInterv);
+			mFoundIndexes = true;
+		}
 
-	GetNominativoCliente clienteAsyncTask = new GetNominativoCliente(
-		mContext);
-	clienteAsyncTask.execute(idCliente);
+		Long idInterv = cursor.getLong(mNumeroInterventoIndex);
 
-	Cliente cliente = null;
-	try {
-	    cliente = clienteAsyncTask.get();
-	    tv_cliente_intervento.setText(cliente.getmNominativo() + " - ");
-	} catch (InterruptedException e) {
-	    e.printStackTrace();
-	} catch (ExecutionException e) {
-	    e.printStackTrace();
+		Long idCliente = cursor.getLong(mClienteInterventoIndex);
+
+		String nomeInterv = mContext.getString(R.string.numero_intervento)
+				+ idInterv;
+
+		tv_nome_intervento.setText(nomeInterv);
+
+		GetNominativoCliente clienteAsyncTask = new GetNominativoCliente(
+				mContext);
+		clienteAsyncTask.execute(idCliente);
+
+		Cliente cliente = null;
+		try {
+			cliente = clienteAsyncTask.get();
+			tv_cliente_intervento.setText(cliente.getmNominativo() + " - ");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+
+		DateTime dt = new DateTime(cursor.getLong(mDataInterventoIndex));
+
+		// DateTimeFormatter formatter = DateTimeFormat
+		// .forPattern("dd/MM/yyyy HH:mm");
+		// formatter.withLocale(Locale.ITALY);
+
+		tv_data_intervento.setText(dt
+				.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
+
+		// tv_data_intervento.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm",
+		// Locale.ITALY).format(new Date(cursor
+		// .getLong(mDataInterventoIndex))));
 	}
 
-	DateTime dt = new DateTime(cursor.getLong(mDataInterventoIndex));
+	@Override
+	public View newView(Context context, Cursor cursor, ViewGroup listView) {
 
-	//	DateTimeFormatter formatter = DateTimeFormat
-	//		.forPattern("dd/MM/yyyy HH:mm");
-	//	formatter.withLocale(Locale.ITALY);
+		View view = mInflater.inflate(R.layout.interv_row, listView, false);
 
-	tv_data_intervento.setText(dt
-		.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
+		TextView tv_nome_intervento = (TextView) view
+				.findViewById(R.id.tv_nome_intervento);
+		TextView tv_cliente_intervento = (TextView) view
+				.findViewById(R.id.tv_cliente_intervento);
+		TextView tv_data_intervento = (TextView) view
+				.findViewById(R.id.tv_data_intervento);
 
-	//	tv_data_intervento.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm",
-	//		Locale.ITALY).format(new Date(cursor
-	//		.getLong(mDataInterventoIndex))));
-    }
+		view.setTag(R.id.tv_nome_intervento, tv_nome_intervento);
+		view.setTag(R.id.tv_cliente_intervento, tv_cliente_intervento);
+		view.setTag(R.id.tv_data_intervento, tv_data_intervento);
 
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup listView) {
-
-	View view = mInflater.inflate(R.layout.interv_row, listView, false);
-
-	TextView tv_nome_intervento = (TextView) view
-		.findViewById(R.id.tv_nome_intervento);
-	TextView tv_cliente_intervento = (TextView) view
-		.findViewById(R.id.tv_cliente_intervento);
-	TextView tv_data_intervento = (TextView) view
-		.findViewById(R.id.tv_data_intervento);
-
-	view.setTag(R.id.tv_nome_intervento, tv_nome_intervento);
-	view.setTag(R.id.tv_cliente_intervento, tv_cliente_intervento);
-	view.setTag(R.id.tv_data_intervento, tv_data_intervento);
-
-	return view;
-    }
+		return view;
+	}
 }

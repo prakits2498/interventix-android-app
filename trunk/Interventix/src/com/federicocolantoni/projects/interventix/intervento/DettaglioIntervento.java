@@ -1,98 +1,119 @@
-
 package com.federicocolantoni.projects.interventix.intervento;
 
 public class DettaglioIntervento {
 
-    private Long mIdDettaglioIntervento;
-    private Intervento mTipo, mOggetto, mDescrizione;
-    private Intervento mIntervento;
+	private Long mIdDettaglioIntervento;
+	private String mTipo, mOggetto, mDescrizione;
+	private Long mIntervento;
+	private Long mInizio, mFine;
 
-    public DettaglioIntervento() {
+	public DettaglioIntervento() {
 
-    }
+	}
 
-    public DettaglioIntervento(Long idDettaglioIntervento) {
+	public DettaglioIntervento(Long idDettaglioIntervento) {
 
-        this.mIdDettaglioIntervento = idDettaglioIntervento;
-    }
+		mIdDettaglioIntervento = idDettaglioIntervento;
+	}
 
-    /**
-     * @return the mIdDettaglioIntervento
-     */
-    public Long getmIdDettaglioIntervento() {
+	/**
+	 * @return the mIdDettaglioIntervento
+	 */
+	public Long getmIdDettaglioIntervento() {
 
-        return this.mIdDettaglioIntervento;
-    }
+		return mIdDettaglioIntervento;
+	}
 
-    /**
-     * @param mIdDettaglioIntervento the mIdDettaglioIntervento to set
-     */
-    public void setmIdDettaglioIntervento(Long mIdDettaglioIntervento) {
+	/**
+	 * @param mIdDettaglioIntervento
+	 *            the mIdDettaglioIntervento to set
+	 */
+	public void setmIdDettaglioIntervento(Long mIdDettaglioIntervento) {
 
-        this.mIdDettaglioIntervento = mIdDettaglioIntervento;
-    }
+		this.mIdDettaglioIntervento = mIdDettaglioIntervento;
+	}
 
-    /**
-     * @return the mTipo
-     */
-    public Intervento getmTipo() {
+	/**
+	 * @return the mTipo
+	 */
+	public String getmTipo() {
 
-        return this.mTipo;
-    }
+		return mTipo;
+	}
 
-    /**
-     * @param mTipo the mTipo to set
-     */
-    public void setmTipo(Intervento mTipo) {
+	/**
+	 * @param mTipo
+	 *            the mTipo to set
+	 */
+	public void setmTipo(String mTipo) {
 
-        this.mTipo = mTipo;
-    }
+		this.mTipo = mTipo;
+	}
 
-    /**
-     * @return the mOggetto
-     */
-    public Intervento getmOggetto() {
+	/**
+	 * @return the mOggetto
+	 */
+	public String getmOggetto() {
 
-        return mOggetto;
-    }
+		return mOggetto;
+	}
 
-    /**
-     * @param mOggetto the mOggetto to set
-     */
-    public void setmOggetto(Intervento mOggetto) {
+	/**
+	 * @param mOggetto
+	 *            the mOggetto to set
+	 */
+	public void setmOggetto(String mOggetto) {
 
-        this.mOggetto = mOggetto;
-    }
+		this.mOggetto = mOggetto;
+	}
 
-    /**
-     * @return the mDescrizione
-     */
-    public Intervento getmDescrizione() {
+	/**
+	 * @return the mDescrizione
+	 */
+	public String getmDescrizione() {
 
-        return this.mDescrizione;
-    }
+		return mDescrizione;
+	}
 
-    /**
-     * @param mDescrizione the mDescrizione to set
-     */
-    public void setmDescrizione(Intervento mDescrizione) {
+	/**
+	 * @param mDescrizione
+	 *            the mDescrizione to set
+	 */
+	public void setmDescrizione(String mDescrizione) {
 
-        this.mDescrizione = mDescrizione;
-    }
+		this.mDescrizione = mDescrizione;
+	}
 
-    /**
-     * @return the mIntervento
-     */
-    public Intervento getmIntervento() {
+	/**
+	 * @return the mIntervento
+	 */
+	public Long getmIntervento() {
 
-        return this.mIntervento;
-    }
+		return mIntervento;
+	}
 
-    /**
-     * @param mIntervento the mIntervento to set
-     */
-    public void setmIntervento(Intervento mIntervento) {
+	/**
+	 * @param mIntervento
+	 *            the mIntervento to set
+	 */
+	public void setmIntervento(Long mIntervento) {
 
-        this.mIntervento = mIntervento;
-    }
+		this.mIntervento = mIntervento;
+	}
+
+	public Long getmInizio() {
+		return mInizio;
+	}
+
+	public void setmInizio(Long mInizio) {
+		this.mInizio = mInizio;
+	}
+
+	public Long getmFine() {
+		return mFine;
+	}
+
+	public void setmFine(Long mFine) {
+		this.mFine = mFine;
+	}
 }

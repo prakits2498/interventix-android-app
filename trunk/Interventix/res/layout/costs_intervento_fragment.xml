@@ -1,193 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical" >
-	<TextView
-		android:id="@+id/tv_costs_intervention"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginLeft="4dp"
-		android:layout_marginRight="4dp"
-		android:gravity="center_horizontal|center_vertical"
-		android:textSize="18sp"
-		android:textStyle="bold" />
-	<ScrollView
-		android:layout_width="match_parent"
-		android:layout_height="match_parent" >
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical" >
-			<LinearLayout
-				android:id="@+id/row_manodopera"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="#000000"
-				android:orientation="vertical" >
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="1dp"
-					android:layout_marginRight="1dp"
-					android:layout_marginTop="1dp"
-					android:background="#FFFFFF"
-					android:paddingLeft="4dp"
-					android:text="@string/row_manodopera"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
-				<TextView
-					android:id="@+id/tv_row_manodopera"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="1dp"
-					android:layout_marginRight="1dp"
-					android:background="#FFFFFF"
-					android:paddingLeft="4dp"
-					android:textSize="16sp" />
-			</LinearLayout>
-			<LinearLayout
-				android:id="@+id/row_componenti"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="#000000"
-				android:orientation="vertical" >
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="1dp"
-					android:layout_marginRight="1dp"
-					android:layout_marginTop="1dp"
-					android:background="#FFFFFF"
-					android:paddingLeft="4dp"
-					android:text="@string/row_componenti"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
-				<TextView
-					android:id="@+id/tv_row_componenti"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="1dp"
-					android:layout_marginRight="1dp"
-					android:background="#FFFFFF"
-					android:paddingLeft="4dp"
-					android:textSize="16sp" />
-			</LinearLayout>
-			<LinearLayout
-				android:id="@+id/row_accessori"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="#000000"
-				android:orientation="vertical" >
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="1dp"
-					android:layout_marginRight="1dp"
-					android:layout_marginTop="1dp"
-					android:background="#FFFFFF"
-					android:paddingLeft="4dp"
-					android:text="@string/row_accessori"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
-				<TextView
-					android:id="@+id/tv_row_accessori"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="1dp"
-					android:layout_marginRight="1dp"
-					android:background="#FFFFFF"
-					android:paddingLeft="4dp"
-					android:textSize="16sp" />
-			</LinearLayout>
-			<LinearLayout
-				android:id="@+id/row_importo"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="#000000"
-				android:orientation="vertical" >
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="1dp"
-					android:layout_marginRight="1dp"
-					android:layout_marginTop="1dp"
-					android:background="#FFCCCCCC"
-					android:paddingLeft="4dp"
-					android:text="@string/row_importo"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
-				<TextView
-					android:id="@+id/tv_row_importo"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="1dp"
-					android:layout_marginRight="1dp"
-					android:background="#FFCCCCCC"
-					android:paddingLeft="4dp"
-					android:textSize="16sp" />
-			</LinearLayout>
-			<LinearLayout
-				android:id="@+id/row_iva"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="#000000"
-				android:orientation="vertical" >
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="1dp"
-					android:layout_marginRight="1dp"
-					android:layout_marginTop="1dp"
-					android:background="#FFCCCCCC"
-					android:paddingLeft="4dp"
-					android:text="@string/row_iva"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
-				<TextView
-					android:id="@+id/tv_row_iva"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="1dp"
-					android:layout_marginRight="1dp"
-					android:background="#FFCCCCCC"
-					android:paddingLeft="4dp"
-					android:textSize="16sp" />
-			</LinearLayout>
-			<LinearLayout
-				android:id="@+id/row_totale"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="#000000"
-				android:orientation="vertical" >
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="1dp"
-					android:layout_marginRight="1dp"
-					android:layout_marginTop="1dp"
-					android:background="#FF4455"
-					android:paddingLeft="4dp"
-					android:text="@string/row_totale"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
-				<TextView
-					android:id="@+id/tv_row_totale"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="1dp"
-					android:layout_marginLeft="1dp"
-					android:layout_marginRight="1dp"
-					android:background="#FF4455"
-					android:paddingLeft="4dp"
-					android:textSize="16sp" />
-			</LinearLayout>
-		</LinearLayout>
-	</ScrollView>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tv_costs_intervention"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/row_manodopera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#000000"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#FFFFFF"
+                    android:paddingLeft="4dp"
+                    android:text="@string/row_manodopera"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_row_manodopera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:background="#FFFFFF"
+                    android:paddingLeft="4dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/row_componenti"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#000000"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#FFFFFF"
+                    android:paddingLeft="4dp"
+                    android:text="@string/row_componenti"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_row_componenti"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:background="#FFFFFF"
+                    android:paddingLeft="4dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/row_accessori"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#000000"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#FFFFFF"
+                    android:paddingLeft="4dp"
+                    android:text="@string/row_accessori"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_row_accessori"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:background="#FFFFFF"
+                    android:paddingLeft="4dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/row_importo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#000000"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#FFCCCCCC"
+                    android:paddingLeft="4dp"
+                    android:text="@string/row_importo"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_row_importo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:background="#FFCCCCCC"
+                    android:paddingLeft="4dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/row_iva"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#000000"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#FFCCCCCC"
+                    android:paddingLeft="4dp"
+                    android:text="@string/row_iva"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_row_iva"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:background="#FFCCCCCC"
+                    android:paddingLeft="4dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/row_totale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#000000"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#FF4455"
+                    android:paddingLeft="4dp"
+                    android:text="@string/row_totale"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_row_totale"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:background="#FF4455"
+                    android:paddingLeft="4dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>
