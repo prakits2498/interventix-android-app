@@ -29,79 +29,79 @@ import android.support.v4.app.Fragment;
 
 public class TaskManagerFragment extends Fragment implements TaskManager {
 
-    public static final String DEFAULT_TAG = "TaskManagerFragment";
+	public static final String DEFAULT_TAG = "TaskManagerFragment";
 
-    protected final Object mLock = new Object();
+	protected final Object mLock = new Object();
 
-    protected Boolean mReady = false;
-    protected List<Runnable> mPendingCallbacks = new LinkedList<Runnable>();
+	protected Boolean mReady = false;
+	protected List<Runnable> mPendingCallbacks = new LinkedList<Runnable>();
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 
-	super.onCreate(savedInstanceState);
-	setRetainInstance(true);
-    }
-
-    @Override
-    public void onDetach() {
-
-	super.onDetach();
-
-	synchronized (mLock) {
-	    mReady = false;
+		super.onCreate(savedInstanceState);
+		setRetainInstance(true);
 	}
-    }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+	@Override
+	public void onDetach() {
 
-	super.onActivityCreated(savedInstanceState);
-	synchronized (mLock) {
-	    mReady = true;
+		super.onDetach();
 
-	    int pendingCallbacks = mPendingCallbacks.size();
-
-	    while (pendingCallbacks-- > 0) {
-		runNow(mPendingCallbacks.remove(0));
-	    }
+		synchronized (mLock) {
+			mReady = false;
+		}
 	}
-    }
 
-    @Override
-    public boolean isReady() {
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
 
-	synchronized (mLock) {
-	    return mReady;
+		super.onActivityCreated(savedInstanceState);
+		synchronized (mLock) {
+			mReady = true;
+
+			int pendingCallbacks = mPendingCallbacks.size();
+
+			while (pendingCallbacks-- > 0) {
+				runNow(mPendingCallbacks.remove(0));
+			}
+		}
 	}
-    }
 
-    protected void setReady(boolean ready) {
+	@Override
+	public boolean isReady() {
 
-	synchronized (mLock) {
-	    mReady = ready;
+		synchronized (mLock) {
+			return mReady;
+		}
 	}
-    }
 
-    protected void addPending(Runnable runnable) {
+	protected void setReady(boolean ready) {
 
-	synchronized (mLock) {
-	    mPendingCallbacks.add(runnable);
+		synchronized (mLock) {
+			mReady = ready;
+		}
 	}
-    }
 
-    @Override
-    public void runWhenReady(Runnable runnable) {
+	protected void addPending(Runnable runnable) {
 
-	if (isReady()) {
-	    runNow(runnable);
-	} else {
-	    addPending(runnable);
+		synchronized (mLock) {
+			mPendingCallbacks.add(runnable);
+		}
 	}
-    }
 
-    protected void runNow(Runnable runnable) {
+	@Override
+	public void runWhenReady(Runnable runnable) {
 
-	getActivity().runOnUiThread(runnable);
-    }
+		if (isReady()) {
+			runNow(runnable);
+		} else {
+			addPending(runnable);
+		}
+	}
+
+	protected void runNow(Runnable runnable) {
+
+		getActivity().runOnUiThread(runnable);
+	}
 }

@@ -1,4 +1,3 @@
-
 package com.federicocolantoni.projects.interventix;
 
 // import static org.acra.ReportField.ANDROID_VERSION;
@@ -39,6 +38,8 @@ package com.federicocolantoni.projects.interventix;
 import android.annotation.SuppressLint;
 import android.app.Application;
 
+import com.bugsense.trace.BugSenseHandler;
+
 // @ReportsCrashes(formKey = "", formUri =
 // "http://www.bugsense.com/api/acra?api_key=0ec355e8", /*reportType =
 // org.acra.sender.HttpSender.Type.JSON,*/httpMethod =
@@ -56,21 +57,23 @@ import android.app.Application;
 // resToastText = R.string.crash_toast_report)
 public class Interventix extends Application {
 
-    @SuppressLint("NewApi")
-    @Override
-    public void onCreate() {
+	@SuppressLint("NewApi")
+	@Override
+	public void onCreate() {
 
-	super.onCreate();
-	//	ACRA.init(this);
-	loadAsyncTask();
-    }
+		BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
 
-    private void loadAsyncTask() {
-
-	try {
-	    Class.forName("android.os.AsyncTask");
-	} catch (ClassNotFoundException e) {
-	    e.printStackTrace();
+		super.onCreate();
+		// ACRA.init(this);
+		loadAsyncTask();
 	}
-    }
+
+	private void loadAsyncTask() {
+
+		try {
+			Class.forName("android.os.AsyncTask");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 }

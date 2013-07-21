@@ -1,4 +1,3 @@
-
 package com.federicocolantoni.projects.interventix.settings;
 
 import android.annotation.SuppressLint;
@@ -14,10 +13,10 @@ import com.federicocolantoni.projects.interventix.R;
 @SuppressLint("NewApi")
 public class SettingFragment extends PreferenceFragment {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 
-	super.onCreate(savedInstanceState);
-	addPreferencesFromResource(R.xml.activity_options);
-    }
+		super.onCreate(savedInstanceState);
+		addPreferencesFromResource(R.xml.activity_preferences_options);
+	}
 }

@@ -1,4 +1,3 @@
-
 package com.federicocolantoni.projects.interventix.modules.login;
 
 import java.io.IOException;
@@ -15,48 +14,48 @@ import com.federicocolantoni.projects.interventix.R;
 
 public class Login extends SherlockFragment implements OnClickListener {
 
-    private Login.OnLoginListener mListener;
+	private Login.OnLoginListener mListener;
 
-    @Override
-    public void onAttach(Activity a) {
+	@Override
+	public void onAttach(Activity a) {
 
-	super.onAttach(a);
-	if (a instanceof Login.OnLoginListener) {
-	    mListener = (Login.OnLoginListener) a;
+		super.onAttach(a);
+		if (a instanceof Login.OnLoginListener) {
+			mListener = (Login.OnLoginListener) a;
+		}
 	}
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	    Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
-	super.onCreateView(inflater, container, savedInstanceState);
-	final View view = inflater.inflate(R.layout.login, container, false);
+		super.onCreateView(inflater, container, savedInstanceState);
+		final View view = inflater.inflate(R.layout.login, container, false);
 
-	view.findViewById(R.id.btn_login).setOnClickListener(this);
+		view.findViewById(R.id.btn_login).setOnClickListener(this);
 
-	return view;
-    }
-
-    public void OnLoginListener(Login.OnLoginListener listener) {
-
-	mListener = listener;
-    }
-
-    @Override
-    public void onClick(View v) {
-
-	try {
-	    mListener.onLogin();
-	} catch (InterruptedException e) {
-	    e.printStackTrace();
-	} catch (IOException e) {
-	    e.printStackTrace();
+		return view;
 	}
-    }
 
-    public static interface OnLoginListener {
+	public void OnLoginListener(Login.OnLoginListener listener) {
 
-	public void onLogin() throws InterruptedException, IOException;
-    }
+		mListener = listener;
+	}
+
+	@Override
+	public void onClick(View v) {
+
+		try {
+			mListener.onLogin();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static interface OnLoginListener {
+
+		public void onLogin() throws InterruptedException, IOException;
+	}
 }
