@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#ffffff" >
+	<!-- <ScrollView -->
+	<!-- android:id="@+id/scroll_intervento" -->
+	<!-- android:layout_width="match_parent" -->
+	<!-- android:layout_height="match_parent" -->
+	<!-- android:layout_below="@+id/imageView1" > -->
+	<!-- <RelativeLayout -->
+	<!-- android:layout_width="match_parent" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:background="#ffffff" -->
+	<!-- android:orientation="vertical" > -->
+	<!-- <TextView -->
+	<!-- android:id="@+id/textView1" -->
+	<!-- android:layout_width="wrap_content" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:layout_below="@+id/imageView1" -->
+	<!-- android:layout_centerHorizontal="true" -->
+	<!-- android:text="@string/new_interv" -->
+	<!-- android:textAppearance="?android:attr/textAppearanceLarge" /> -->
+	<!-- <EditText -->
+	<!-- android:id="@+id/edit_prod" -->
+	<!-- android:layout_width="wrap_content" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:layout_alignParentRight="true" -->
+	<!-- android:layout_below="@+id/edit_type_interv" -->
+	<!-- android:layout_marginRight="20dp" -->
+	<!-- android:ems="10" -->
+	<!-- android:hint="@string/prod_interv" -->
+	<!-- android:inputType="text" /> -->
+	<!-- <EditText -->
+	<!-- android:id="@+id/edit_nomin" -->
+	<!-- android:layout_width="wrap_content" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:layout_alignParentRight="true" -->
+	<!-- android:layout_below="@+id/edit_prod" -->
+	<!-- android:layout_marginRight="20dp" -->
+	<!-- android:ems="10" -->
+	<!-- android:hint="@string/nomin_interv" -->
+	<!-- android:inputType="text" /> -->
+	<!-- <EditText -->
+	<!-- android:id="@+id/edit_date" -->
+	<!-- android:layout_width="80dp" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:layout_alignLeft="@+id/edit_what" -->
+	<!-- android:layout_below="@+id/edit_what" -->
+	<!-- android:ems="10" -->
+	<!-- android:hint="@string/date_interv" -->
+	<!-- android:inputType="date" /> -->
+	<!-- <EditText -->
+	<!-- android:id="@+id/edit_type_interv" -->
+	<!-- android:layout_width="wrap_content" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:layout_alignParentRight="true" -->
+	<!-- android:layout_below="@+id/textView1" -->
+	<!-- android:layout_marginRight="20dp" -->
+	<!-- android:layout_marginTop="10dp" -->
+	<!-- android:ems="10" -->
+	<!-- android:hint="@string/type_interv" -->
+	<!-- android:inputType="text" > -->
+	<!-- <requestFocus /> -->
+	<!-- </EditText> -->
+	<!-- <TextView -->
+	<!-- android:id="@+id/textView2" -->
+	<!-- android:layout_width="wrap_content" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:layout_alignBaseline="@+id/edit_type_interv" -->
+	<!-- android:layout_alignBottom="@+id/edit_type_interv" -->
+	<!-- android:layout_alignRight="@+id/textView3" -->
+	<!-- android:text="@string/type_interv" -->
+	<!-- android:textStyle="bold" /> -->
+	<!-- <TextView -->
+	<!-- android:id="@+id/textView4" -->
+	<!-- android:layout_width="wrap_content" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:layout_alignBaseline="@+id/edit_what" -->
+	<!-- android:layout_alignBottom="@+id/edit_what" -->
+	<!-- android:layout_alignRight="@+id/textView6" -->
+	<!-- android:text="@string/what_interv" -->
+	<!-- android:textStyle="bold" /> -->
+	<!-- <TextView -->
+	<!-- android:id="@+id/textView5" -->
+	<!-- android:layout_width="wrap_content" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:layout_alignBaseline="@+id/edit_nomin" -->
+	<!-- android:layout_alignBottom="@+id/edit_nomin" -->
+	<!-- android:layout_alignRight="@+id/textView4" -->
+	<!-- android:text="@string/nomin_interv" -->
+	<!-- android:textStyle="bold" /> -->
+	<!-- <TextView -->
+	<!-- android:id="@+id/textView3" -->
+	<!-- android:layout_width="wrap_content" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:layout_alignBaseline="@+id/edit_prod" -->
+	<!-- android:layout_alignBottom="@+id/edit_prod" -->
+	<!-- android:layout_alignRight="@+id/textView5" -->
+	<!-- android:text="@string/prod_interv" -->
+	<!-- android:textStyle="bold" /> -->
+	<!-- <EditText -->
+	<!-- android:id="@+id/edit_what" -->
+	<!-- android:layout_width="wrap_content" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:layout_alignLeft="@+id/edit_nomin" -->
+	<!-- android:layout_below="@+id/edit_nomin" -->
+	<!-- android:ems="10" -->
+	<!-- android:hint="@string/what_interv" -->
+	<!-- android:inputType="text" /> -->
+	<!-- <TextView -->
+	<!-- android:id="@+id/textView6" -->
+	<!-- android:layout_width="wrap_content" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:layout_alignBaseline="@+id/edit_date" -->
+	<!-- android:layout_alignBottom="@+id/edit_date" -->
+	<!-- android:layout_toLeftOf="@+id/edit_date" -->
+	<!-- android:text="@string/date_interv" -->
+	<!-- android:textStyle="bold" /> -->
+	<!-- <EditText -->
+	<!-- android:id="@+id/edit_time" -->
+	<!-- android:layout_width="80dp" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:layout_alignBaseline="@+id/edit_date" -->
+	<!-- android:layout_alignBottom="@+id/edit_date" -->
+	<!-- android:layout_alignRight="@+id/edit_what" -->
+	<!-- android:ems="10" -->
+	<!-- android:hint="@string/time_interv" -->
+	<!-- android:inputType="time" /> -->
+	<!-- <TextView -->
+	<!-- android:id="@+id/textView7" -->
+	<!-- android:layout_width="wrap_content" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:layout_alignBaseline="@+id/edit_time" -->
+	<!-- android:layout_alignBottom="@+id/edit_time" -->
+	<!-- android:layout_toLeftOf="@+id/edit_time" -->
+	<!-- android:text="@string/time_interv" -->
+	<!-- android:textStyle="bold" /> -->
+	<!-- <Button -->
+	<!-- android:id="@+id/btn_save_interv" -->
+	<!-- android:layout_width="200dp" -->
+	<!-- android:layout_height="wrap_content" -->
+	<!-- android:layout_below="@+id/edit_date" -->
+	<!-- android:layout_centerHorizontal="true" -->
+	<!-- android:layout_marginTop="20dp" -->
+	<!-- android:text="@string/save" /> -->
+	<!-- </RelativeLayout> -->
+	<!-- </ScrollView> -->
+	<!-- <ImageView -->
+	<!-- android:id="@+id/imageView1" -->
+	<!-- android:layout_width="159dp" -->
+	<!-- android:layout_height="60dp" -->
+	<!-- android:layout_alignParentLeft="true" -->
+	<!-- android:layout_alignParentTop="true" -->
+	<!-- android:clickable="false" -->
+	<!-- android:contentDescription="@string/logo_" -->
+	<!-- android:longClickable="false" -->
+	<!-- android:maxHeight="60dp" -->
+	<!-- android:maxWidth="159dp" -->
+	<!-- android:src="@drawable/logo_ix" /> -->
+	<!-- <Button -->
+	<!-- android:id="@+id/btn_back" -->
+	<!-- android:layout_width="87dp" -->
+	<!-- android:layout_height="44dp" -->
+	<!-- android:layout_alignParentRight="true" -->
+	<!-- android:layout_alignParentTop="true" -->
+	<!-- android:layout_marginRight="10dp" -->
+	<!-- android:text="@string/back" -->
+	<!-- android:textSize="12sp" /> -->
+</RelativeLayout>

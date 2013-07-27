@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item
+		android:id="@+id/add_menu"
+		android:icon="@drawable/button_add"
+		android:showAsAction="ifRoom"
+		android:title="@string/add_menu"/>
+	<item
+		android:id="@+id/refresh_menu"
+		android:actionViewClass="com.manuelpeinado.refreshactionitem.RefreshActionItem"
+		android:showAsAction="always"
+		android:title="@string/refresh_menu"/>
+</menu>

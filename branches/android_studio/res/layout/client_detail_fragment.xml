@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
+	<Button
+		android:id="@+id/btn_client_dtl_back"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
+		android:text="@string/back"
+		android:textSize="12sp" />
+	<ScrollView
+		android:id="@+id/scroll_client_dtl"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentRight="true"
+		android:layout_below="@id/btn_client_dtl_back" >
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="#ffffff"
+			android:orientation="vertical" >
+			<EditText
+				android:id="@+id/edit_nomin_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/hint_nomin"
+				android:inputType="text" >
+			</EditText>
+			<EditText
+				android:id="@+id/edit_codfis_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_below="@id/edit_nomin_dtl"
+				android:hint="@string/hint_cod_fis"
+				android:inputType="text" />
+			<EditText
+				android:id="@+id/edit_partitaiva_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_below="@id/edit_codfis_dtl"
+				android:hint="@string/hint_p_iva"
+				android:inputType="text" >
+			</EditText>
+			<EditText
+				android:id="@+id/edit_telefono_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_below="@id/edit_partitaiva_dtl"
+				android:hint="@string/hint_telefono"
+				android:inputType="phone" >
+			</EditText>
+			<EditText
+				android:id="@+id/edit_fax_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_below="@id/edit_telefono_dtl"
+				android:hint="@string/hint_telefono"
+				android:inputType="phone" >
+			</EditText>
+			<EditText
+				android:id="@+id/edit_email_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_below="@id/edit_fax_dtl"
+				android:hint="@string/hint_email"
+				android:inputType="textEmailAddress" >
+			</EditText>
+			<EditText
+				android:id="@+id/edit_ufficio_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_below="@id/edit_email_dtl"
+				android:hint="@string/hint_ufficio"
+				android:inputType="text" />
+			<EditText
+				android:id="@+id/edit_referente_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_below="@id/edit_ufficio_dtl"
+				android:hint="@string/hint_referente"
+				android:inputType="text" />
+			<EditText
+				android:id="@+id/edit_citta_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_below="@id/edit_referente_dtl"
+				android:hint="@string/hint_citta"
+				android:inputType="text" />
+			<EditText
+				android:id="@+id/edit_indirizzo_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_below="@id/edit_citta_dtl"
+				android:hint="@string/hint_indirizzo"
+				android:inputType="textPostalAddress" >
+			</EditText>
+			<EditText
+				android:id="@+id/edit_interno_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_below="@id/edit_indirizzo_dtl"
+				android:hint="@string/hint_interno"
+				android:inputType="text" />
+			<EditText
+				android:id="@+id/edit_note_dtl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_below="@+id/edit_interno_dtl"
+				android:hint="@string/hint_note"
+				android:inputType="text" >
+			</EditText>
+		</RelativeLayout>
+	</ScrollView>
+	<TextView
+		android:id="@+id/textView1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBaseline="@id/btn_client_dtl_back"
+		android:layout_alignBottom="@id/btn_client_dtl_back"
+		android:text="@string/client_dtl"
+		android:textSize="20sp" />
+</RelativeLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE PreferenceScreen PUBLIC "//UNKNOWN/" "unknown.dtd">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+	<PreferenceCategory android:title="Opzioni di connessione" >
+		<EditTextPreference
+			android:hint="@string/prefs_url_hint"
+			android:key="@string/prefs_key_url"
+			android:summary="@string/prefs_url_title"
+			android:title="URL Connection" />
+		<SwitchPreference
+			android:defaultValue="false"
+			android:key="@string/prefs_key_auto_login"
+			android:title="Auto Login" />
+	</PreferenceCategory>
+</PreferenceScreen>
