@@ -18,17 +18,17 @@
     <string name="tipologia_title">Scegli una tipologia di intervento</string>
 
     <string-array name="tipologia_choose">
-        <item n="0">Su richiesta</item>
-        <item n="1">Programmata</item>
+        <item>Su richiesta</item>
+        <item>Programmata</item>
     </string-array>
 
     <string name="modalita_title">Scegli una modalità di intervento</string>
 
     <string-array name="modalita_choose">
-        <item n="0">Contrattualizzato</item>
-        <item n="1">Pagamento Diretto</item>
-        <item n="2">Post-Vendita (Garanzia)</item>
-        <item n="3">Comodato d\'Uso</item>
+        <item>Contrattualizzato</item>
+        <item>Pagamento Diretto</item>
+        <item>Post-Vendita (Garanzia)</item>
+        <item>Comodato d\'Uso</item>
     </string-array>
 
     <string name="prodotto_title">Inserisci il nome del prodotto dell\'intervento</string>
@@ -112,5 +112,7 @@
 
     <!-- URL connessione server -->
     <string name="url_connection">http://</string>
+    <string name="no_connections">Nessuna connessione attiva</string>
+    <string name="enable_connections">Vuoi abilitare la rete WI-FI o mobile?</string>
 
 </resources>
