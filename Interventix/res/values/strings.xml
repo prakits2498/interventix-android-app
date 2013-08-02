@@ -14,7 +14,7 @@
     <string name="logout_title">Richiesta di logout</string>
     <string name="logout_message">Sei sicuro di voler effettuare il logout?</string>
     <string name="logout_positive_btn">Logout</string>
-    <string name="logout_negative_btn">Annulla</string>
+    <string name="btn_cancel">Annulla</string>
     <string name="tipologia_title">Scegli una tipologia di intervento</string>
 
     <string-array name="tipologia_choose">
@@ -109,8 +109,13 @@
     <string name="content_right_nav">Right Navigation</string>
     <string name="no_details_interv">Nessun dettaglio</string>
     <string name="add_details_interv">Aggiungi dettaglio</string>
+    <string name="interv_mod_title">Intervento modificato!</string>
+    <string name="interv_mod_text">Salvare le modifiche?</string>
 
     <!-- URL connessione server -->
     <string name="url_connection">http://</string>
+    <string name="conn_unavailable_text">Vuoi attivare ora la connessione a internet WIFI o mobile?</string>
+    <string name="enable_wifi">Attiva WIFI</string>
+    <string name="enable_mobile">Attiva conn. dati</string>
 
 </resources>

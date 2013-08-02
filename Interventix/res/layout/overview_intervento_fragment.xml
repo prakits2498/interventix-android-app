@@ -158,10 +158,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="1dp"
-                    android:maxLines="2"
                     android:layout_weight="1"
                     android:background="#FFFFFF"
                     android:gravity="center_vertical|right"
+                    android:maxLines="2"
                     android:paddingRight="4dp"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="16sp" />
@@ -233,15 +233,15 @@
                 android:layout_height="wrap_content"
                 android:background="#000000"
                 android:orientation="horizontal"
-                android:weightSum="1" >
+                android:weightSum="2" >
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="1dp"
                     android:layout_marginLeft="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF"
+                    android:background="#FF4455"
                     android:gravity="center_vertical|left"
                     android:paddingLeft="4dp"
                     android:text="@string/row_signature"
@@ -249,13 +249,25 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/tv_row_signature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="1dp"
+                    android:layout_weight="1"
+                    android:background="#FF4455"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="4dp"
+                    android:textSize="18sp" />
+
                 <ImageView
                     android:id="@+id/img_signature_right_navigation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
                     android:layout_marginRight="1dp"
-                    android:background="#FFFFFF"
+                    android:background="#FF4455"
                     android:contentDescription="@string/content_right_nav"
                     android:src="@drawable/ic_navigation_next_item" />
             </LinearLayout>

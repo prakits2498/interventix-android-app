@@ -2,12 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry exported="true" kind="lib" path="libs/basic-http-client-android-0.88.jar" sourcepath="/Users/federico/Downloads/basic-http-client/src">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/Users/federico/Downloads/basic-http-client.javadoc/docs/"/>
-			<attribute name="source_encoding" value="UTF-8"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="libs/bcprov-jdk15on-147.jar" sourcepath="/Users/federico/Downloads/bcprov-jdk15on-148/src.zip">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/Users/federico/Downloads/bcprov-jdk15on-148/docs/"/>
@@ -37,13 +31,13 @@
 			<attribute name="javadoc_location" value="jar:file:/Users/federico/Downloads/roboguice-sherlock-1.5-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry exported="true" kind="lib" path="/Users/federico/Downloads/joda-time-2.2/joda-time-2.2.jar" sourcepath="/Users/federico/Downloads/joda-time-2.2/joda-time-2.2-sources.jar">
+	<classpathentry kind="lib" path="libs/joda-time-2.2.jar" sourcepath="/Users/federico/Downloads/joda-time-2.2/joda-time-2.2-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/Users/federico/Downloads/joda-time-2.2/joda-time-2.2-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
