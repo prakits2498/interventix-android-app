@@ -31,144 +31,144 @@ import android.support.v4.app.FragmentManager;
 
 public abstract class ManagedAsyncTask<Params, Progress, Result> {
 
-	private TaskManagerFragment mManager;
+    private TaskManagerFragment mManager;
 
-	private InternalAsyncTask mTask;
+    private InternalAsyncTask mTask;
 
-	public ManagedAsyncTask(FragmentActivity activity) {
+    public ManagedAsyncTask(FragmentActivity activity) {
 
-		this(activity, TaskManagerFragment.DEFAULT_TAG);
+	this(activity, TaskManagerFragment.DEFAULT_TAG);
+    }
+
+    public ManagedAsyncTask(FragmentActivity activity, String fragmentTag) {
+
+	FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+	mManager = (TaskManagerFragment) fragmentManager
+		.findFragmentByTag(fragmentTag);
+
+	if (mManager == null) {
+	    mManager = new TaskManagerFragment();
+
+	    fragmentManager.beginTransaction().add(mManager, fragmentTag)
+		    .commit();
 	}
 
-	public ManagedAsyncTask(FragmentActivity activity, String fragmentTag) {
+	mTask = new InternalAsyncTask();
+    }
 
-		FragmentManager fragmentManager = activity.getSupportFragmentManager();
+    protected void onPreExecute() {
 
-		mManager = (TaskManagerFragment) fragmentManager
-				.findFragmentByTag(fragmentTag);
+    }
 
-		if (mManager == null) {
-			mManager = new TaskManagerFragment();
+    protected abstract Result doInBackground(Params... params);
 
-			fragmentManager.beginTransaction().add(mManager, fragmentTag)
-					.commit();
-		}
+    protected void onProgressUpdate(Progress... values) {
 
-		mTask = new InternalAsyncTask();
-	}
+    }
 
+    protected void onPostExecute(Result result) {
+
+    }
+
+    protected void onCancelled() {
+
+    }
+
+    public ManagedAsyncTask<Params, Progress, Result> execute(Params... params) {
+
+	mTask.execute(params);
+
+	return this;
+    }
+
+    public FragmentActivity getActivity() {
+
+	return mManager.getActivity();
+    }
+
+    public boolean cancel(boolean mayInterruptIfRunning) {
+
+	return mTask.cancel(mayInterruptIfRunning);
+    }
+
+    public boolean isCancelled() {
+
+	return mTask.isCancelled();
+    }
+
+    public Result get() throws InterruptedException, ExecutionException {
+
+	return mTask.get();
+    }
+
+    public Result get(long timeout, TimeUnit unit) throws InterruptedException,
+	    ExecutionException, TimeoutException {
+
+	return mTask.get(timeout, unit);
+    }
+
+    public AsyncTask.Status getStatus() {
+
+	return mTask.getStatus();
+    }
+
+    protected class InternalAsyncTask extends
+	    AsyncTask<Params, Progress, Result> {
+
+	@Override
 	protected void onPreExecute() {
 
+	    ManagedAsyncTask.this.onPreExecute();
 	}
 
-	protected abstract Result doInBackground(Params... params);
+	@Override
+	protected Result doInBackground(Params... params) {
 
-	protected void onProgressUpdate(Progress... values) {
-
+	    return ManagedAsyncTask.this.doInBackground(params);
 	}
 
-	protected void onPostExecute(Result result) {
+	@Override
+	protected void onProgressUpdate(final Progress... values) {
 
+	    mManager.runWhenReady(new Runnable() {
+
+		@Override
+		public void run() {
+
+		    ManagedAsyncTask.this.onProgressUpdate(values);
+		}
+	    });
+
+	    return;
+	};
+
+	@Override
+	protected void onPostExecute(final Result result) {
+
+	    mManager.runWhenReady(new Runnable() {
+
+		@Override
+		public void run() {
+
+		    ManagedAsyncTask.this.onPostExecute(result);
+		}
+	    });
+
+	    return;
 	}
 
+	@Override
 	protected void onCancelled() {
 
-	}
-
-	public ManagedAsyncTask<Params, Progress, Result> execute(Params... params) {
-
-		mTask.execute(params);
-
-		return this;
-	}
-
-	public FragmentActivity getActivity() {
-
-		return mManager.getActivity();
-	}
-
-	public boolean cancel(boolean mayInterruptIfRunning) {
-
-		return mTask.cancel(mayInterruptIfRunning);
-	}
-
-	public boolean isCancelled() {
-
-		return mTask.isCancelled();
-	}
-
-	public Result get() throws InterruptedException, ExecutionException {
-
-		return mTask.get();
-	}
-
-	public Result get(long timeout, TimeUnit unit) throws InterruptedException,
-			ExecutionException, TimeoutException {
-
-		return mTask.get(timeout, unit);
-	}
-
-	public AsyncTask.Status getStatus() {
-
-		return mTask.getStatus();
-	}
-
-	protected class InternalAsyncTask extends
-			AsyncTask<Params, Progress, Result> {
+	    mManager.runWhenReady(new Runnable() {
 
 		@Override
-		protected void onPreExecute() {
+		public void run() {
 
-			ManagedAsyncTask.this.onPreExecute();
+		    ManagedAsyncTask.this.onCancelled();
 		}
-
-		@Override
-		protected Result doInBackground(Params... params) {
-
-			return ManagedAsyncTask.this.doInBackground(params);
-		}
-
-		@Override
-		protected void onProgressUpdate(final Progress... values) {
-
-			mManager.runWhenReady(new Runnable() {
-
-				@Override
-				public void run() {
-
-					ManagedAsyncTask.this.onProgressUpdate(values);
-				}
-			});
-
-			return;
-		};
-
-		@Override
-		protected void onPostExecute(final Result result) {
-
-			mManager.runWhenReady(new Runnable() {
-
-				@Override
-				public void run() {
-
-					ManagedAsyncTask.this.onPostExecute(result);
-				}
-			});
-
-			return;
-		}
-
-		@Override
-		protected void onCancelled() {
-
-			mManager.runWhenReady(new Runnable() {
-
-				@Override
-				public void run() {
-
-					ManagedAsyncTask.this.onCancelled();
-				}
-			});
-		}
+	    });
 	}
+    }
 }

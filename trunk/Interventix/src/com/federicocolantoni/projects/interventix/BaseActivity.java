@@ -13,49 +13,49 @@ import com.bugsense.trace.BugSenseHandler;
 @SuppressLint("NewApi")
 public class BaseActivity extends SherlockFragmentActivity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
-		super.onCreate(savedInstanceState);
+	super.onCreate(savedInstanceState);
 
-		BugSenseHandler.initAndStartSession(BaseActivity.this,
-				Constants.API_KEY);
+	BugSenseHandler.initAndStartSession(BaseActivity.this,
+		Constants.API_KEY);
 
-		getSupportActionBar().setTitle(Constants.INTERVENTIX_TITLE);
+	getSupportActionBar().setTitle(Constants.INTERVENTIX_TITLE);
+    }
+
+    @Override
+    protected void onDestroy() {
+
+	super.onDestroy();
+	if (BuildConfig.DEBUG) {
+	    System.gc();
+	}
+    }
+
+    public static class ReadDefaultPreferences extends
+	    AsyncTask<Void, Void, SharedPreferences> {
+
+	private Context context;
+
+	public ReadDefaultPreferences(Context context) {
+
+	    this.context = context;
 	}
 
 	@Override
-	protected void onDestroy() {
+	protected SharedPreferences doInBackground(Void... params) {
 
-		super.onDestroy();
-		if (BuildConfig.DEBUG) {
-			System.gc();
-		}
+	    SharedPreferences prefs = PreferenceManager
+		    .getDefaultSharedPreferences(context
+			    .getApplicationContext());
+	    return prefs;
 	}
 
-	public static class ReadDefaultPreferences extends
-			AsyncTask<Void, Void, SharedPreferences> {
+	@Override
+	protected void onPostExecute(SharedPreferences result) {
 
-		private Context context;
-
-		public ReadDefaultPreferences(Context context) {
-
-			this.context = context;
-		}
-
-		@Override
-		protected SharedPreferences doInBackground(Void... params) {
-
-			SharedPreferences prefs = PreferenceManager
-					.getDefaultSharedPreferences(context
-							.getApplicationContext());
-			return prefs;
-		}
-
-		@Override
-		protected void onPostExecute(SharedPreferences result) {
-
-			super.onPostExecute(result);
-		}
+	    super.onPostExecute(result);
 	}
+    }
 }

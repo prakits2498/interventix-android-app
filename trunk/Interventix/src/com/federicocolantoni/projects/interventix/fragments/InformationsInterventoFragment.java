@@ -14,8 +14,12 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,9 +35,9 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.data.DBContract.Data;
-import com.federicocolantoni.projects.interventix.data.DBContract.Data.Fields;
-import com.federicocolantoni.projects.interventix.data.DBContract.InterventoDB;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.intervento.Intervento;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatcher;
@@ -43,592 +47,656 @@ import com.federicocolantoni.projects.interventix.utils.SaveChangesIntervento;
 @SuppressLint("NewApi")
 public class InformationsInterventoFragment extends SherlockFragment {
 
-	public static final int TOKEN_NOMINATIVO = 5;
-	public static final int TOKEN_PRODOTTO = 4;
-	public static final int TOKEN_MODALITA = 3;
-	public static final int TOKEN_MOTIVO = 2;
+    public static final int TOKEN_NOMINATIVO = 5;
+    public static final int TOKEN_PRODOTTO = 4;
+    public static final int TOKEN_MODALITA = 3;
+    public static final int TOKEN_MOTIVO = 2;
 
-	public static long id_intervento;
+    public static long id_intervento;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	    Bundle savedInstanceState) {
 
-		BugSenseHandler.initAndStartSession(getSherlockActivity(),
-				Constants.API_KEY);
+	BugSenseHandler.initAndStartSession(getSherlockActivity(),
+		Constants.API_KEY);
 
-		super.onCreateView(inflater, container, savedInstanceState);
+	super.onCreateView(inflater, container, savedInstanceState);
 
-		getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
-		getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(
-				true);
+	getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
+	getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(
+		true);
 
-		final View view = inflater.inflate(
-				R.layout.information_intervento_fragment, container, false);
+	final View view = inflater.inflate(
+		R.layout.information_intervento_fragment, container, false);
 
-		Bundle bundle = getArguments();
+	Bundle bundle = getArguments();
 
-		id_intervento = bundle.getLong(Constants.ID_INTERVENTO);
+	id_intervento = bundle.getLong(Constants.ID_INTERVENTO);
 
-		Intervento interv = null;
+	Intervento interv = null;
 
+	try {
+	    interv = new GetInformationsIntervento(getSherlockActivity())
+		    .execute(id_intervento).get();
+	} catch (InterruptedException e) {
+	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
+	} catch (ExecutionException e) {
+	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
+	}
+
+	TextView info_interv = (TextView) view
+		.findViewById(R.id.tv_info_intervention);
+	info_interv.setText("Informazioni Intervento "
+		+ bundle.getLong(Constants.NUMERO_INTERVENTO));
+
+	View tipologia = view.findViewById(R.id.row_tipology);
+	tipologia.setOnClickListener(new View.OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+
+		new SetTipologia().show(getFragmentManager(),
+			Constants.TIPOLOGIA_DIALOG_FRAGMENT);
+	    }
+	});
+
+	TextView tv_tipology = (TextView) tipologia
+		.findViewById(R.id.tv_row_tipology);
+	tv_tipology.setText(interv.getmTipologia());
+
+	View mode = view.findViewById(R.id.row_mode);
+	mode.setOnClickListener(new View.OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+
+		new SetModalita().show(getFragmentManager(),
+			Constants.MODALITA_DIALOG_FRAGMENT);
+	    }
+	});
+
+	TextView tv_mode = (TextView) mode.findViewById(R.id.tv_row_mode);
+	tv_mode.setText(interv.getmModalita());
+
+	View product = view.findViewById(R.id.row_product);
+	product.setOnClickListener(new View.OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+
+		new SetProdotto().show(getFragmentManager(),
+			Constants.PRODOTTO_DIALOG_FRAGMENT);
+	    }
+	});
+
+	TextView tv_product = (TextView) product
+		.findViewById(R.id.tv_row_product);
+	tv_product.setText(interv.getmProdotto());
+
+	View motivation = view.findViewById(R.id.row_motivation);
+	motivation.setOnClickListener(new View.OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+
+		new SetMotivationDialog().show(getFragmentManager(),
+			Constants.MOTIVO_DIALOG_FRAGMENT);
+	    }
+	});
+
+	TextView tv_motivation = (TextView) motivation
+		.findViewById(R.id.tv_row_motivation);
+	tv_motivation.setText(interv.getmMotivo());
+
+	View nominativo = view.findViewById(R.id.row_name);
+	nominativo.setOnClickListener(new View.OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+
+		new SetNominativo().show(getFragmentManager(),
+			Constants.NOMINATIVO_DIALOG_FRAGMENT);
+	    }
+	});
+
+	TextView tv_nominativo = (TextView) nominativo
+		.findViewById(R.id.tv_row_name);
+	tv_nominativo.setText(interv.getmNominativo());
+
+	final View date_interv = view.findViewById(R.id.row_date);
+
+	date_interv.setOnClickListener(new View.OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+
+		final TextView tv_date_interv = (TextView) date_interv
+			.findViewById(R.id.tv_row_date);
+
+		final Dialog dateTimeDialog = new Dialog(getSherlockActivity());
+
+		final RelativeLayout dateTimeDialogView = (RelativeLayout) getSherlockActivity()
+			.getLayoutInflater().inflate(R.layout.date_time_dialog,
+				null);
+
+		final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView
+			.findViewById(R.id.DateTimePicker);
+
+		Date date = null;
 		try {
-			interv = new GetInformationsIntervento(getSherlockActivity())
-					.execute(id_intervento).get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			BugSenseHandler.sendException(e);
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-			BugSenseHandler.sendException(e);
+		    date = new SimpleDateFormat("dd/MM/yyyy HH:mm",
+			    Locale.ITALY).parse(tv_date_interv.getText()
+			    .toString());
+		} catch (ParseException e) {
+		    e.printStackTrace();
 		}
 
-		TextView info_interv = (TextView) view
-				.findViewById(R.id.tv_info_intervention);
-		info_interv.setText("Informazioni Intervento "
-				+ bundle.getLong(Constants.NUMERO_INTERVENTO));
+		dateTimePicker.setDateTime(date);
 
-		View tipologia = view.findViewById(R.id.row_tipology);
-		tipologia.setOnClickListener(new View.OnClickListener() {
+		dateTimePicker.setDateChangedListener(new DateWatcher() {
 
-			@Override
-			public void onClick(View v) {
+		    @Override
+		    public void onDateChanged(Calendar c) {
 
-				new SetTipologia().show(getFragmentManager(),
-						Constants.TIPOLOGIA_DIALOG_FRAGMENT);
-			}
+		    }
 		});
 
-		TextView tv_tipology = (TextView) tipologia
-				.findViewById(R.id.tv_row_tipology);
-		tv_tipology.setText(interv.getmTipologia());
+		((Button) dateTimeDialogView.findViewById(R.id.SetDateTime))
+			.setOnClickListener(new View.OnClickListener() {
 
-		View mode = view.findViewById(R.id.row_mode);
-		mode.setOnClickListener(new View.OnClickListener() {
+			    @Override
+			    public void onClick(View v) {
 
-			@Override
-			public void onClick(View v) {
+				dateTimePicker.clearFocus();
 
-				new SetModalita().show(getFragmentManager(),
-						Constants.MODALITA_DIALOG_FRAGMENT);
-			}
-		});
+				DateTime dt = new DateTime(dateTimePicker
+					.getYear(), dateTimePicker.getMonth(),
+					dateTimePicker.getDay(), dateTimePicker
+						.getHour(), dateTimePicker
+						.getMinute());
 
-		TextView tv_mode = (TextView) mode.findViewById(R.id.tv_row_mode);
-		tv_mode.setText(interv.getmModalita());
+				tv_date_interv.setText(dt.toString(
+					"dd/MM/yyyy HH:mm", Locale.ITALY));
 
-		View product = view.findViewById(R.id.row_product);
-		product.setOnClickListener(new View.OnClickListener() {
+				SaveChangesIntervento saveChange = new SaveChangesIntervento(
+					getSherlockActivity());
 
-			@Override
-			public void onClick(View v) {
+				Date newDate = dt.toDate();
 
-				new SetProdotto().show(getFragmentManager(),
-						Constants.PRODOTTO_DIALOG_FRAGMENT);
-			}
-		});
+				ContentValues values = new ContentValues();
+				values.put(InterventoDB.Fields.DATA_ORA,
+					newDate.getTime());
+				values.put(InterventoDB.Fields.MODIFICATO, "M");
 
-		TextView tv_product = (TextView) product
-				.findViewById(R.id.tv_row_product);
-		tv_product.setText(interv.getmProdotto());
+				String selection = Fields.TYPE + " = '"
+					+ InterventoDB.INTERVENTO_ITEM_TYPE
+					+ "' AND "
+					+ InterventoDB.Fields.ID_INTERVENTO
+					+ " = ?";
 
-		View motivation = view.findViewById(R.id.row_motivation);
-		motivation.setOnClickListener(new View.OnClickListener() {
+				String[] selectionArgs = new String[] { ""
+					+ id_intervento };
 
-			@Override
-			public void onClick(View v) {
+				saveChange.startUpdate(TOKEN_NOMINATIVO, null,
+					Data.CONTENT_URI, values, selection,
+					selectionArgs);
 
-				new SetMotivationDialog().show(getFragmentManager(),
-						Constants.MOTIVO_DIALOG_FRAGMENT);
-			}
-		});
+				SharedPreferences prefs = getSherlockActivity()
+					.getSharedPreferences(
+						Constants.PREFERENCES,
+						Context.MODE_PRIVATE);
 
-		TextView tv_motivation = (TextView) motivation
-				.findViewById(R.id.tv_row_motivation);
-		tv_motivation.setText(interv.getmMotivo());
+				final Editor edit = prefs.edit();
 
-		View nominativo = view.findViewById(R.id.row_name);
-		nominativo.setOnClickListener(new View.OnClickListener() {
+				edit.putBoolean(Constants.INTERV_MODIFIED, true);
 
-			@Override
-			public void onClick(View v) {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+				    edit.apply();
+				} else {
+				    new Thread(new Runnable() {
 
-				new SetNominativo().show(getFragmentManager(),
-						Constants.NOMINATIVO_DIALOG_FRAGMENT);
-			}
-		});
+					@Override
+					public void run() {
+					    edit.commit();
+					}
+				    }).start();
+				}
 
-		TextView tv_nominativo = (TextView) nominativo
-				.findViewById(R.id.tv_row_name);
-		tv_nominativo.setText(interv.getmNominativo());
+				dateTimeDialog.dismiss();
+			    }
+			});
 
-		final View date_interv = view.findViewById(R.id.row_date);
+		((Button) dateTimeDialogView.findViewById(R.id.CancelDialog))
+			.setOnClickListener(new View.OnClickListener() {
 
-		date_interv.setOnClickListener(new View.OnClickListener() {
+			    @Override
+			    public void onClick(View v) {
 
-			@Override
-			public void onClick(View v) {
+				dateTimeDialog.cancel();
+			    }
+			});
 
-				// new DateTimePicker().show(getFragmentManager(),
-				// Constants.DATAORA_DIALOG_FRAGMENT);
+		((Button) dateTimeDialogView.findViewById(R.id.ResetDateTime))
+			.setOnClickListener(new View.OnClickListener() {
 
-				final TextView tv_date_interv = (TextView) date_interv
-						.findViewById(R.id.tv_row_date);
-
-				final Dialog dateTimeDialog = new Dialog(getSherlockActivity());
-
-				final RelativeLayout dateTimeDialogView = (RelativeLayout) getSherlockActivity()
-						.getLayoutInflater().inflate(R.layout.date_time_dialog,
-								null);
-
-				final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView
-						.findViewById(R.id.DateTimePicker);
+			    @Override
+			    public void onClick(View v) {
 
 				Date date = null;
 				try {
-					date = new SimpleDateFormat("dd/MM/yyyy HH:mm",
-							Locale.ITALY).parse(tv_date_interv.getText()
-							.toString());
+				    date = new SimpleDateFormat(
+					    "dd/MM/yyyy HH:mm", Locale.ITALY)
+					    .parse(tv_date_interv.getText()
+						    .toString());
 				} catch (ParseException e) {
-					e.printStackTrace();
+				    e.printStackTrace();
 				}
 
 				dateTimePicker.setDateTime(date);
+			    }
+			});
 
-				dateTimePicker.setDateChangedListener(new DateWatcher() {
+		dateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dateTimeDialog.setContentView(dateTimeDialogView);
+		dateTimeDialog.setCancelable(false);
+		dateTimeDialog.show();
+	    }
+	});
 
-					@Override
-					public void onDateChanged(Calendar c) {
+	TextView tv_date_interv = (TextView) date_interv
+		.findViewById(R.id.tv_row_date);
 
-					}
-				});
+	DateTime dt = new DateTime(interv.getmDataOra());
 
-				((Button) dateTimeDialogView.findViewById(R.id.SetDateTime))
-						.setOnClickListener(new View.OnClickListener() {
+	tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
 
-							@Override
-							public void onClick(View v) {
+	return view;
+    }
 
-								dateTimePicker.clearFocus();
+    @Override
+    public void onPause() {
 
-								// String result_string = String
-								// .valueOf(dateTimePicker.getDay())
-								// + "/"
-								// + dateTimePicker.getMonth()
-								// + "/"
-								// + String.valueOf(dateTimePicker
-								// .getYear())
-								// + "  "
-								// + String.valueOf(dateTimePicker
-								// .getHour())
-								// + ":"
-								// + String.valueOf(dateTimePicker
-								// .getMinute());
-								// if(mDateTimePicker.getHour() > 12)
-								// result_string = result_string + "PM";
-								// else result_string = result_string + "AM";
+	super.onPause();
+    }
 
-								// String format = "dd/MMM/yyyy hh:mm";
+    @Override
+    public void onResume() {
 
-								DateTime dt = new DateTime(dateTimePicker
-										.getYear(), dateTimePicker.getMonth(),
-										dateTimePicker.getDay(), dateTimePicker
-												.getHour(), dateTimePicker
-												.getMinute());
+	super.onResume();
+    }
 
-								tv_date_interv.setText(dt.toString(
-										"dd/MM/yyyy HH:mm", Locale.ITALY));
+    public static class SetTipologia extends SherlockDialogFragment implements
+	    OnClickListener {
 
-								SaveChangesIntervento saveChange = new SaveChangesIntervento(
-										getSherlockActivity());
+	private String mTipologiaChanged;
 
-								Date newDate = dt.toDate();
+	public SetTipologia() {
 
-								ContentValues values = new ContentValues();
-								values.put(InterventoDB.Fields.DATA_ORA,
-										newDate.getTime());
+	}
 
-								String selection = Fields.TYPE + " = '"
-										+ InterventoDB.INTERVENTO_ITEM_TYPE
-										+ "' AND "
-										+ InterventoDB.Fields.ID_INTERVENTO
-										+ " = ?";
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-								String[] selectionArgs = new String[]{""
-										+ id_intervento};
+	    AlertDialog.Builder tipologia = new Builder(getSherlockActivity());
 
-								saveChange.startUpdate(TOKEN_NOMINATIVO, null,
-										Data.CONTENT_URI, values, selection,
-										selectionArgs);
-								dateTimeDialog.dismiss();
-							}
-						});
+	    tipologia.setTitle(getResources().getString(
+		    R.string.tipologia_title));
+	    final String[] choices = getResources().getStringArray(
+		    R.array.tipologia_choose);
+	    tipologia.setSingleChoiceItems(choices, -1,
+		    new DialogInterface.OnClickListener() {
 
-				((Button) dateTimeDialogView.findViewById(R.id.CancelDialog))
-						.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 
-							@Override
-							public void onClick(View v) {
-
-								dateTimeDialog.cancel();
-							}
-						});
-
-				((Button) dateTimeDialogView.findViewById(R.id.ResetDateTime))
-						.setOnClickListener(new View.OnClickListener() {
-
-							@Override
-							public void onClick(View v) {
-
-								Date date = null;
-								try {
-									date = new SimpleDateFormat(
-											"dd/MM/yyyy HH:mm", Locale.ITALY)
-											.parse(tv_date_interv.getText()
-													.toString());
-								} catch (ParseException e) {
-									e.printStackTrace();
-								}
-
-								// dateTimePicker.reset();
-								dateTimePicker.setDateTime(date);
-							}
-						});
-
-				dateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-				dateTimeDialog.setContentView(dateTimeDialogView);
-				dateTimeDialog.setCancelable(false);
-				dateTimeDialog.show();
+			    TextView tv_tipology = (TextView) getSherlockActivity()
+				    .findViewById(R.id.tv_row_tipology);
+			    tv_tipology.setText(choices[which]);
+			    mTipologiaChanged = choices[which];
 			}
-		});
+		    });
 
-		TextView tv_date_interv = (TextView) date_interv
-				.findViewById(R.id.tv_row_date);
+	    tipologia.setPositiveButton(
+		    getResources().getString(R.string.ok_btn), this);
 
-		DateTime dt = new DateTime(interv.getmDataOra());
-
-		tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
-
-		// tv_date_interv.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm",
-		// Locale.ITALY).format(new Date(interv.getmDataOra())));
-
-		return view;
+	    return tipologia.create();
 	}
 
 	@Override
-	public void onPause() {
+	public void onClick(DialogInterface dialog, int which) {
 
-		super.onPause();
+	    SaveChangesIntervento saveChange = new SaveChangesIntervento(
+		    getSherlockActivity());
+
+	    ContentValues values = new ContentValues();
+	    values.put(InterventoDB.Fields.TIPOLOGIA, mTipologiaChanged);
+	    values.put(InterventoDB.Fields.MODIFICATO, "M");
+
+	    String selection = Fields.TYPE + " = '"
+		    + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
+		    + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+
+	    String[] selectionArgs = new String[] { "" + id_intervento };
+
+	    saveChange.startUpdate(TOKEN_MODALITA, null, Data.CONTENT_URI,
+		    values, selection, selectionArgs);
+
+	    SharedPreferences prefs = getSherlockActivity()
+		    .getSharedPreferences(Constants.PREFERENCES,
+			    Context.MODE_PRIVATE);
+
+	    final Editor edit = prefs.edit();
+
+	    edit.putBoolean(Constants.INTERV_MODIFIED, true);
+
+	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+		edit.apply();
+	    } else {
+		new Thread(new Runnable() {
+
+		    @Override
+		    public void run() {
+			edit.commit();
+		    }
+		}).start();
+	    }
+
+	    dialog.dismiss();
+	}
+    }
+
+    public static class SetModalita extends SherlockDialogFragment implements
+	    OnClickListener {
+
+	private String mModalitaChanged;
+
+	public SetModalita() {
+
 	}
 
 	@Override
-	public void onResume() {
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-		super.onResume();
+	    AlertDialog.Builder modalita = new Builder(getSherlockActivity());
+
+	    modalita.setTitle(getResources().getString(R.string.modalita_title));
+	    final String[] choices = getResources().getStringArray(
+		    R.array.modalita_choose);
+
+	    modalita.setSingleChoiceItems(choices, -1,
+		    new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+			    TextView tv_mode = (TextView) getSherlockActivity()
+				    .findViewById(R.id.tv_row_mode);
+			    tv_mode.setText(choices[which]);
+			    mModalitaChanged = choices[which];
+			}
+		    });
+
+	    modalita.setPositiveButton(getResources()
+		    .getString(R.string.ok_btn), this);
+
+	    return modalita.create();
 	}
 
-	public static class SetTipologia extends SherlockDialogFragment
-			implements
-				OnClickListener {
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
 
-		private String mTipologiaChanged;
+	    SaveChangesIntervento saveChange = new SaveChangesIntervento(
+		    getSherlockActivity());
 
-		public SetTipologia() {
+	    ContentValues values = new ContentValues();
+	    values.put(InterventoDB.Fields.MODALITA, mModalitaChanged);
+	    values.put(InterventoDB.Fields.MODIFICATO, "M");
 
-		}
+	    String selection = Fields.TYPE + " = '"
+		    + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
+		    + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
+	    String[] selectionArgs = new String[] { "" + id_intervento };
 
-			AlertDialog.Builder tipologia = new Builder(getSherlockActivity());
+	    saveChange.startUpdate(TOKEN_MODALITA, null, Data.CONTENT_URI,
+		    values, selection, selectionArgs);
 
-			tipologia.setTitle(getResources().getString(
-					R.string.tipologia_title));
-			final String[] choices = getResources().getStringArray(
-					R.array.tipologia_choose);
-			tipologia.setSingleChoiceItems(choices, -1,
-					new DialogInterface.OnClickListener() {
+	    dialog.dismiss();
+	}
+    }
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
+    public static class SetProdotto extends SherlockDialogFragment implements
+	    OnClickListener {
 
-							// if (which == 0) {
-							// TextView tv_tipology = (TextView)
-							// getSherlockActivity()
-							// .findViewById(R.id.tv_row_tipology);
-							// tv_tipology.setText(choices[which]);
-							// } else {
-							TextView tv_tipology = (TextView) getSherlockActivity()
-									.findViewById(R.id.tv_row_tipology);
-							tv_tipology.setText(choices[which]);
-							mTipologiaChanged = choices[which];
-							// }
-						}
-					});
+	private EditText mEdit_prodotto;
 
-			tipologia.setPositiveButton(
-					getResources().getString(R.string.ok_btn), this);
+	public SetProdotto() {
 
-			return tipologia.create();
-		}
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-
-			SaveChangesIntervento saveChange = new SaveChangesIntervento(
-					getSherlockActivity());
-
-			ContentValues values = new ContentValues();
-			values.put(InterventoDB.Fields.TIPOLOGIA, mTipologiaChanged);
-
-			String selection = Fields.TYPE + " = '"
-					+ InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
-					+ InterventoDB.Fields.ID_INTERVENTO + " = ?";
-
-			String[] selectionArgs = new String[]{"" + id_intervento};
-
-			saveChange.startUpdate(TOKEN_MODALITA, null, Data.CONTENT_URI,
-					values, selection, selectionArgs);
-
-			dialog.dismiss();
-		}
 	}
 
-	public static class SetModalita extends SherlockDialogFragment
-			implements
-				OnClickListener {
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-		private String mModalitaChanged;
+	    AlertDialog.Builder prodotto = new Builder(getSherlockActivity());
 
-		public SetModalita() {
+	    prodotto.setTitle(R.string.prodotto_title);
 
-		}
+	    TextView tv_prodotto = (TextView) getSherlockActivity()
+		    .findViewById(R.id.tv_row_product);
 
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
+	    mEdit_prodotto = new EditText(getSherlockActivity());
+	    mEdit_prodotto.setText(tv_prodotto.getText());
 
-			AlertDialog.Builder modalita = new Builder(getSherlockActivity());
+	    prodotto.setView(mEdit_prodotto);
 
-			modalita.setTitle(getResources().getString(R.string.modalita_title));
-			final String[] choices = getResources().getStringArray(
-					R.array.modalita_choose);
+	    prodotto.setPositiveButton(getResources()
+		    .getString(R.string.ok_btn), this);
 
-			modalita.setSingleChoiceItems(choices, -1,
-					new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-
-							// if (which == 0) {
-							// TextView tv_mode = (TextView)
-							// getSherlockActivity()
-							// .findViewById(R.id.tv_row_mode);
-							// tv_mode.setText(choices[which]);
-							// modalitaChanged=choices[which];
-							// } else {
-							TextView tv_mode = (TextView) getSherlockActivity()
-									.findViewById(R.id.tv_row_mode);
-							tv_mode.setText(choices[which]);
-							mModalitaChanged = choices[which];
-							// }
-						}
-					});
-
-			modalita.setPositiveButton(getResources()
-					.getString(R.string.ok_btn), this);
-
-			return modalita.create();
-		}
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-
-			SaveChangesIntervento saveChange = new SaveChangesIntervento(
-					getSherlockActivity());
-
-			ContentValues values = new ContentValues();
-			values.put(InterventoDB.Fields.MODALITA, mModalitaChanged);
-
-			String selection = Fields.TYPE + " = '"
-					+ InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
-					+ InterventoDB.Fields.ID_INTERVENTO + " = ?";
-
-			String[] selectionArgs = new String[]{"" + id_intervento};
-
-			saveChange.startUpdate(TOKEN_MODALITA, null, Data.CONTENT_URI,
-					values, selection, selectionArgs);
-
-			dialog.dismiss();
-		}
+	    return prodotto.create();
 	}
 
-	public static class SetProdotto extends SherlockDialogFragment
-			implements
-				OnClickListener {
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
 
-		private EditText mEdit_prodotto;
+	    TextView tv_product = (TextView) getSherlockActivity()
+		    .findViewById(R.id.tv_row_product);
+	    tv_product.setText(mEdit_prodotto.getText());
 
-		public SetProdotto() {
+	    SaveChangesIntervento saveChange = new SaveChangesIntervento(
+		    getSherlockActivity());
 
-		}
+	    ContentValues values = new ContentValues();
+	    values.put(InterventoDB.Fields.PRODOTTO, mEdit_prodotto.getText()
+		    .toString());
+	    values.put(InterventoDB.Fields.MODIFICATO, "M");
 
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
+	    String selection = Fields.TYPE + " = '"
+		    + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
+		    + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 
-			AlertDialog.Builder prodotto = new Builder(getSherlockActivity());
+	    String[] selectionArgs = new String[] { "" + id_intervento };
 
-			prodotto.setTitle(R.string.prodotto_title);
+	    saveChange.startUpdate(TOKEN_PRODOTTO, null, Data.CONTENT_URI,
+		    values, selection, selectionArgs);
 
-			TextView tv_prodotto = (TextView) getSherlockActivity()
-					.findViewById(R.id.tv_row_product);
+	    SharedPreferences prefs = getSherlockActivity()
+		    .getSharedPreferences(Constants.PREFERENCES,
+			    Context.MODE_PRIVATE);
 
-			mEdit_prodotto = new EditText(getSherlockActivity());
-			mEdit_prodotto.setText(tv_prodotto.getText());
+	    final Editor edit = prefs.edit();
 
-			prodotto.setView(mEdit_prodotto);
+	    edit.putBoolean(Constants.INTERV_MODIFIED, true);
 
-			prodotto.setPositiveButton(getResources()
-					.getString(R.string.ok_btn), this);
+	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+		edit.apply();
+	    } else {
+		new Thread(new Runnable() {
 
-			return prodotto.create();
-		}
+		    @Override
+		    public void run() {
+			edit.commit();
+		    }
+		}).start();
+	    }
 
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
+	    dialog.dismiss();
+	}
+    }
 
-			TextView tv_product = (TextView) getSherlockActivity()
-					.findViewById(R.id.tv_row_product);
-			tv_product.setText(mEdit_prodotto.getText());
+    public static class SetNominativo extends SherlockDialogFragment implements
+	    OnClickListener {
 
-			SaveChangesIntervento saveChange = new SaveChangesIntervento(
-					getSherlockActivity());
+	private EditText mEdit_nominativo;
 
-			ContentValues values = new ContentValues();
-			values.put(InterventoDB.Fields.PRODOTTO, mEdit_prodotto.getText()
-					.toString());
+	public SetNominativo() {
 
-			String selection = Fields.TYPE + " = '"
-					+ InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
-					+ InterventoDB.Fields.ID_INTERVENTO + " = ?";
-
-			String[] selectionArgs = new String[]{"" + id_intervento};
-
-			saveChange.startUpdate(TOKEN_PRODOTTO, null, Data.CONTENT_URI,
-					values, selection, selectionArgs);
-
-			dialog.dismiss();
-		}
 	}
 
-	public static class SetNominativo extends SherlockDialogFragment
-			implements
-				OnClickListener {
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-		private EditText mEdit_nominativo;
+	    AlertDialog.Builder nominativo = new Builder(getSherlockActivity());
 
-		public SetNominativo() {
+	    nominativo.setTitle(R.string.nominativo_title);
 
-		}
+	    TextView tv_nominativo = (TextView) getSherlockActivity()
+		    .findViewById(R.id.tv_row_name);
 
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
+	    mEdit_nominativo = new EditText(getSherlockActivity());
+	    mEdit_nominativo.setText(tv_nominativo.getText());
 
-			AlertDialog.Builder nominativo = new Builder(getSherlockActivity());
+	    nominativo.setView(mEdit_nominativo);
 
-			nominativo.setTitle(R.string.nominativo_title);
+	    nominativo.setPositiveButton(
+		    getResources().getString(R.string.ok_btn), this);
 
-			TextView tv_nominativo = (TextView) getSherlockActivity()
-					.findViewById(R.id.tv_row_name);
-
-			mEdit_nominativo = new EditText(getSherlockActivity());
-			mEdit_nominativo.setText(tv_nominativo.getText());
-
-			nominativo.setView(mEdit_nominativo);
-
-			nominativo.setPositiveButton(
-					getResources().getString(R.string.ok_btn), this);
-
-			return nominativo.create();
-		}
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-
-			TextView tv_name = (TextView) getSherlockActivity().findViewById(
-					R.id.tv_row_name);
-			tv_name.setText(mEdit_nominativo.getText());
-
-			SaveChangesIntervento saveChange = new SaveChangesIntervento(
-					getSherlockActivity());
-
-			ContentValues values = new ContentValues();
-			values.put(InterventoDB.Fields.NOMINATIVO, mEdit_nominativo
-					.getText().toString());
-
-			String selection = Fields.TYPE + " = '"
-					+ InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
-					+ InterventoDB.Fields.ID_INTERVENTO + " = ?";
-
-			String[] selectionArgs = new String[]{"" + id_intervento};
-
-			saveChange.startUpdate(TOKEN_NOMINATIVO, null, Data.CONTENT_URI,
-					values, selection, selectionArgs);
-			dialog.dismiss();
-		}
+	    return nominativo.create();
 	}
 
-	public static class SetMotivationDialog extends SherlockDialogFragment
-			implements
-				OnClickListener {
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
 
-		private EditText mEdit_motivo;
+	    TextView tv_name = (TextView) getSherlockActivity().findViewById(
+		    R.id.tv_row_name);
+	    tv_name.setText(mEdit_nominativo.getText());
 
-		public SetMotivationDialog() {
+	    SaveChangesIntervento saveChange = new SaveChangesIntervento(
+		    getSherlockActivity());
 
-		}
+	    ContentValues values = new ContentValues();
+	    values.put(InterventoDB.Fields.NOMINATIVO, mEdit_nominativo
+		    .getText().toString());
+	    values.put(InterventoDB.Fields.MODIFICATO, "M");
 
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
+	    String selection = Fields.TYPE + " = '"
+		    + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
+		    + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 
-			AlertDialog.Builder motivo = new Builder(getSherlockActivity());
+	    String[] selectionArgs = new String[] { "" + id_intervento };
 
-			motivo.setTitle(R.string.motivation_title);
+	    saveChange.startUpdate(TOKEN_NOMINATIVO, null, Data.CONTENT_URI,
+		    values, selection, selectionArgs);
 
-			TextView tv_motivo = (TextView) getSherlockActivity().findViewById(
-					R.id.tv_row_motivation);
+	    SharedPreferences prefs = getSherlockActivity()
+		    .getSharedPreferences(Constants.PREFERENCES,
+			    Context.MODE_PRIVATE);
 
-			mEdit_motivo = new EditText(getSherlockActivity());
-			mEdit_motivo.setText(tv_motivo.getText());
+	    final Editor edit = prefs.edit();
 
-			motivo.setView(mEdit_motivo);
+	    edit.putBoolean(Constants.INTERV_MODIFIED, true);
 
-			motivo.setPositiveButton(R.string.ok_btn, this);
+	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+		edit.apply();
+	    } else {
+		new Thread(new Runnable() {
 
-			return motivo.create();
-		}
+		    @Override
+		    public void run() {
+			edit.commit();
+		    }
+		}).start();
+	    }
 
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			TextView tv_name = (TextView) getSherlockActivity().findViewById(
-					R.id.tv_row_motivation);
-			tv_name.setText(mEdit_motivo.getText());
-
-			SaveChangesIntervento saveChange = new SaveChangesIntervento(
-					getSherlockActivity());
-
-			ContentValues values = new ContentValues();
-			values.put(InterventoDB.Fields.MOTIVO, mEdit_motivo.getText()
-					.toString());
-
-			String selection = Fields.TYPE + " = '"
-					+ InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
-					+ InterventoDB.Fields.ID_INTERVENTO + " = ?";
-
-			String[] selectionArgs = new String[]{"" + id_intervento};
-
-			saveChange.startUpdate(TOKEN_MOTIVO, null, Data.CONTENT_URI,
-					values, selection, selectionArgs);
-			dialog.dismiss();
-		}
+	    dialog.dismiss();
 	}
+    }
+
+    public static class SetMotivationDialog extends SherlockDialogFragment
+	    implements OnClickListener {
+
+	private EditText mEdit_motivo;
+
+	public SetMotivationDialog() {
+
+	}
+
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+	    AlertDialog.Builder motivo = new Builder(getSherlockActivity());
+
+	    motivo.setTitle(R.string.motivation_title);
+
+	    TextView tv_motivo = (TextView) getSherlockActivity().findViewById(
+		    R.id.tv_row_motivation);
+
+	    mEdit_motivo = new EditText(getSherlockActivity());
+	    mEdit_motivo.setText(tv_motivo.getText());
+
+	    motivo.setView(mEdit_motivo);
+
+	    motivo.setPositiveButton(R.string.ok_btn, this);
+
+	    return motivo.create();
+	}
+
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+	    TextView tv_name = (TextView) getSherlockActivity().findViewById(
+		    R.id.tv_row_motivation);
+	    tv_name.setText(mEdit_motivo.getText());
+
+	    SaveChangesIntervento saveChange = new SaveChangesIntervento(
+		    getSherlockActivity());
+
+	    ContentValues values = new ContentValues();
+	    values.put(InterventoDB.Fields.MOTIVO, mEdit_motivo.getText()
+		    .toString());
+	    values.put(InterventoDB.Fields.MODIFICATO, "M");
+
+	    String selection = Fields.TYPE + " = '"
+		    + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
+		    + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+
+	    String[] selectionArgs = new String[] { "" + id_intervento };
+
+	    saveChange.startUpdate(TOKEN_MOTIVO, null, Data.CONTENT_URI,
+		    values, selection, selectionArgs);
+
+	    SharedPreferences prefs = getSherlockActivity()
+		    .getSharedPreferences(Constants.PREFERENCES,
+			    Context.MODE_PRIVATE);
+
+	    final Editor edit = prefs.edit();
+
+	    edit.putBoolean(Constants.INTERV_MODIFIED, true);
+
+	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+		edit.apply();
+	    } else {
+		new Thread(new Runnable() {
+
+		    @Override
+		    public void run() {
+			edit.commit();
+		    }
+		}).start();
+	    }
+
+	    dialog.dismiss();
+	}
+    }
 }

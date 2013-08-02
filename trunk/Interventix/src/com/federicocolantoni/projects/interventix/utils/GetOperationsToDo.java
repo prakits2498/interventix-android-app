@@ -32,287 +32,287 @@ import com.slezica.tools.async.ManagedAsyncTask;
 @SuppressLint("NewApi")
 public class GetOperationsToDo extends ManagedAsyncTask<Long, Void, Integer> {
 
-	private final Context context;
+    private final Context context;
 
-	public GetOperationsToDo(FragmentActivity activity) {
+    public GetOperationsToDo(FragmentActivity activity) {
 
-		super(activity);
-		context = activity.getApplicationContext();
-	}
+	super(activity);
+	context = activity.getApplicationContext();
+    }
 
-	@Override
-	protected Integer doInBackground(Long... params) {
+    @Override
+    protected Integer doInBackground(Long... params) {
 
-		final SharedPreferences prefsLocal = context.getSharedPreferences(
-				Constants.PREFERENCES, Context.MODE_PRIVATE);
+	final SharedPreferences prefsLocal = context.getSharedPreferences(
+		Constants.PREFERENCES, Context.MODE_PRIVATE);
 
-		int maxProgressRange = 0;
+	int maxProgressRange = 0;
 
-		Map<String, Object> parametersUsers = new HashMap<String, Object>();
-		parametersUsers.put("revision",
-				prefsLocal.getLong(Constants.REVISION_USERS, 0));
+	Map<String, Object> parametersUsers = new HashMap<String, Object>();
+	parametersUsers.put("revision",
+		prefsLocal.getLong(Constants.REVISION_USERS, 0));
 
-		maxProgressRange += usersSyncro(prefsLocal, maxProgressRange,
-				parametersUsers, params);
+	maxProgressRange += usersSyncro(prefsLocal, maxProgressRange,
+		parametersUsers, params);
 
-		Map<String, Object> parametersClients = new HashMap<String, Object>();
-		parametersClients.put("revision",
-				prefsLocal.getLong(Constants.REVISION_CLIENTS, 0));
+	Map<String, Object> parametersClients = new HashMap<String, Object>();
+	parametersClients.put("revision",
+		prefsLocal.getLong(Constants.REVISION_CLIENTS, 0));
 
-		maxProgressRange += clientsSyncro(prefsLocal, maxProgressRange,
-				parametersClients, params);
+	maxProgressRange += clientsSyncro(prefsLocal, maxProgressRange,
+		parametersClients, params);
 
-		Map<String, Object> parametersInterv = new HashMap<String, Object>();
-		parametersInterv.put("revision",
-				prefsLocal.getLong(Constants.REVISION_INTERVENTIONS, 0));
+	Map<String, Object> parametersInterv = new HashMap<String, Object>();
+	parametersInterv.put("revision",
+		prefsLocal.getLong(Constants.REVISION_INTERVENTIONS, 0));
 
-		maxProgressRange += interventionsSyncro(prefsLocal, maxProgressRange,
-				parametersInterv, params);
+	maxProgressRange += interventionsSyncro(prefsLocal, maxProgressRange,
+		parametersInterv, params);
 
-		return maxProgressRange;
-	}
+	return maxProgressRange;
+    }
 
-	@Override
-	protected void onPostExecute(Integer result) {
+    @Override
+    protected void onPostExecute(Integer result) {
 
-	}
+    }
 
-	private JSONObject connectionForURL(String json_req, final String url_string)
-			throws MalformedURLException, IOException, ProtocolException,
-			ParseException, Exception, UnsupportedEncodingException {
+    private JSONObject connectionForURL(String json_req, final String url_string)
+	    throws MalformedURLException, IOException, ProtocolException,
+	    ParseException, Exception, UnsupportedEncodingException {
 
-		URL url = new URL(url_string + "?DATA=" + json_req);
+	URL url = new URL(url_string + "?DATA=" + json_req);
 
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setConnectTimeout(Constants.CONNECTION_TIMEOUT);
-		conn.setRequestMethod("POST");
-		conn.setDoInput(true);
-		conn.setReadTimeout(Constants.CONNECTION_TIMEOUT);
+	HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	conn.setConnectTimeout(Constants.CONNECTION_TIMEOUT);
+	conn.setRequestMethod("POST");
+	conn.setDoInput(true);
+	conn.setReadTimeout(Constants.CONNECTION_TIMEOUT);
 
-		// System.out.println("URL REQUEST HttpURLConnection - "
-		// + conn.getURL());
+	// System.out.println("URL REQUEST HttpURLConnection - "
+	// + conn.getURL());
 
-		conn.connect();
+	conn.connect();
 
-		if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+	if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 
-			JSONObject json_resp = JsonCR2.read(readIt(conn.getInputStream(),
-					conn.getContentLength()));
-			return json_resp;
-		} else
-			return null;
-	};
+	    JSONObject json_resp = JsonCR2.read(readIt(conn.getInputStream(),
+		    conn.getContentLength()));
+	    return json_resp;
+	} else
+	    return null;
+    };
 
-	private String readIt(InputStream stream, int len) throws IOException,
-			UnsupportedEncodingException {
+    private String readIt(InputStream stream, int len) throws IOException,
+	    UnsupportedEncodingException {
 
-		BufferedReader br = null;
-		StringBuilder sb = new StringBuilder();
+	BufferedReader br = null;
+	StringBuilder sb = new StringBuilder();
 
-		String line;
+	String line;
+	try {
+
+	    br = new BufferedReader(new InputStreamReader(stream));
+	    while ((line = br.readLine()) != null) {
+		sb.append(line);
+	    }
+
+	} catch (IOException e) {
+	    e.printStackTrace();
+	} finally {
+	    if (br != null) {
 		try {
-
-			br = new BufferedReader(new InputStreamReader(stream));
-			while ((line = br.readLine()) != null) {
-				sb.append(line);
-			}
-
+		    br.close();
 		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+		    e.printStackTrace();
 		}
-
-		return sb.toString();
+	    }
 	}
 
-	private int usersSyncro(final SharedPreferences prefsLocal,
-			int maxProgressRange, Map<String, Object> parametersUsers,
-			Long... params) {
-		String json_req;
-		try {
+	return sb.toString();
+    }
 
-			json_req = JsonCR2.createRequest("users", "syncro",
-					parametersUsers, params[0].intValue());
+    private int usersSyncro(final SharedPreferences prefsLocal,
+	    int maxProgressRange, Map<String, Object> parametersUsers,
+	    Long... params) {
+	String json_req;
+	try {
 
-			final SharedPreferences prefsDefault = PreferenceManager
-					.getDefaultSharedPreferences(context);
+	    json_req = JsonCR2.createRequest("users", "syncro",
+		    parametersUsers, params[0].intValue());
 
-			final String prefs_url = context.getResources().getString(
-					string.prefs_key_url);
+	    final SharedPreferences prefsDefault = PreferenceManager
+		    .getDefaultSharedPreferences(context);
 
-			final String url_string = prefsDefault.getString(prefs_url, null);
+	    final String prefs_url = context.getResources().getString(
+		    string.prefs_key_url);
 
-			JSONObject json_resp = connectionForURL(json_req, url_string);
+	    final String url_string = prefsDefault.getString(prefs_url, null);
 
-			if (json_resp != null
-					&& json_resp.get("response").toString()
-							.equalsIgnoreCase("success")) {
-				JSONObject data = (JSONObject) json_resp.get("data");
+	    JSONObject json_resp = connectionForURL(json_req, url_string);
 
-				// final Editor editor = prefsLocal.edit();
-				//
-				// editor.putLong(Constants.REVISION_USERS,
-				// (Long) data.get("revision"));
-				//
-				// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-				// {
-				// editor.apply();
-				// } else {
-				// new Thread(new Runnable() {
-				//
-				// @Override
-				// public void run() {
-				//
-				// editor.commit();
-				// }
-				// });
-				// }
+	    if (json_resp != null
+		    && json_resp.get("response").toString()
+			    .equalsIgnoreCase("success")) {
+		JSONObject data = (JSONObject) json_resp.get("data");
 
-				JSONArray usersMOD = (JSONArray) data.get("mod");
-				JSONArray usersDEL = (JSONArray) data.get("del");
+		// final Editor editor = prefsLocal.edit();
+		//
+		// editor.putLong(Constants.REVISION_USERS,
+		// (Long) data.get("revision"));
+		//
+		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+		// {
+		// editor.apply();
+		// } else {
+		// new Thread(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		//
+		// editor.commit();
+		// }
+		// });
+		// }
 
-				maxProgressRange += usersMOD.size();
-				maxProgressRange += usersDEL.size();
-			}
+		JSONArray usersMOD = (JSONArray) data.get("mod");
+		JSONArray usersDEL = (JSONArray) data.get("del");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		maxProgressRange += usersMOD.size();
+		maxProgressRange += usersDEL.size();
+	    }
 
-		System.out.println("Users syncronized: " + maxProgressRange);
-
-		return maxProgressRange;
+	} catch (Exception e) {
+	    e.printStackTrace();
 	}
 
-	private int clientsSyncro(SharedPreferences prefsLocal,
-			int maxProgressRange, Map<String, Object> parametersClients,
-			Long[] params) {
+	System.out.println("Users syncronized: " + maxProgressRange);
 
-		String json_req;
-		try {
+	return maxProgressRange;
+    }
 
-			json_req = JsonCR2.createRequest("clients", "syncro",
-					parametersClients, params[0].intValue());
+    private int clientsSyncro(SharedPreferences prefsLocal,
+	    int maxProgressRange, Map<String, Object> parametersClients,
+	    Long[] params) {
 
-			final SharedPreferences prefsDefault = PreferenceManager
-					.getDefaultSharedPreferences(context);
+	String json_req;
+	try {
 
-			final String prefs_url = context.getResources().getString(
-					string.prefs_key_url);
+	    json_req = JsonCR2.createRequest("clients", "syncro",
+		    parametersClients, params[0].intValue());
 
-			final String url_string = prefsDefault.getString(prefs_url, null);
+	    final SharedPreferences prefsDefault = PreferenceManager
+		    .getDefaultSharedPreferences(context);
 
-			JSONObject json_resp = connectionForURL(json_req, url_string);
+	    final String prefs_url = context.getResources().getString(
+		    string.prefs_key_url);
 
-			if (json_resp != null
-					&& json_resp.get("response").toString()
-							.equalsIgnoreCase("success")) {
-				JSONObject data = (JSONObject) json_resp.get("data");
+	    final String url_string = prefsDefault.getString(prefs_url, null);
 
-				// final Editor editor = prefsLocal.edit();
-				//
-				// editor.putLong(Constants.REVISION_CLIENTS,
-				// (Long) data.get("revision"));
-				//
-				// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-				// {
-				// editor.apply();
-				// } else {
-				// new Thread(new Runnable() {
-				//
-				// @Override
-				// public void run() {
-				//
-				// editor.commit();
-				// }
-				// });
-				// }
+	    JSONObject json_resp = connectionForURL(json_req, url_string);
 
-				JSONArray clientsMOD = (JSONArray) data.get("mod");
-				JSONArray clientsDEL = (JSONArray) data.get("del");
+	    if (json_resp != null
+		    && json_resp.get("response").toString()
+			    .equalsIgnoreCase("success")) {
+		JSONObject data = (JSONObject) json_resp.get("data");
 
-				maxProgressRange += clientsMOD.size();
-				maxProgressRange += clientsDEL.size();
-			}
+		// final Editor editor = prefsLocal.edit();
+		//
+		// editor.putLong(Constants.REVISION_CLIENTS,
+		// (Long) data.get("revision"));
+		//
+		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+		// {
+		// editor.apply();
+		// } else {
+		// new Thread(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		//
+		// editor.commit();
+		// }
+		// });
+		// }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		JSONArray clientsMOD = (JSONArray) data.get("mod");
+		JSONArray clientsDEL = (JSONArray) data.get("del");
 
-		System.out.println("Clients syncronized: " + maxProgressRange);
+		maxProgressRange += clientsMOD.size();
+		maxProgressRange += clientsDEL.size();
+	    }
 
-		return maxProgressRange;
+	} catch (Exception e) {
+	    e.printStackTrace();
 	}
 
-	private int interventionsSyncro(final SharedPreferences prefsLocal,
-			int maxProgressRange, Map<String, Object> parametersInterv,
-			Long... params) {
-		String json_req;
-		long iduser = params[0];
+	System.out.println("Clients syncronized: " + maxProgressRange);
 
-		try {
-			json_req = JsonCR2.createRequest("interventions", "mysyncro",
-					parametersInterv, (int) iduser);
+	return maxProgressRange;
+    }
 
-			final SharedPreferences prefsDefault = PreferenceManager
-					.getDefaultSharedPreferences(context);
+    private int interventionsSyncro(final SharedPreferences prefsLocal,
+	    int maxProgressRange, Map<String, Object> parametersInterv,
+	    Long... params) {
+	String json_req;
+	long iduser = params[0];
 
-			final String prefs_url = context.getResources().getString(
-					string.prefs_key_url);
+	try {
+	    json_req = JsonCR2.createRequest("interventions", "mysyncro",
+		    parametersInterv, (int) iduser);
 
-			final String url_string = prefsDefault.getString(prefs_url, null);
+	    final SharedPreferences prefsDefault = PreferenceManager
+		    .getDefaultSharedPreferences(context);
 
-			JSONObject json_resp = connectionForURL(json_req, url_string);
+	    final String prefs_url = context.getResources().getString(
+		    string.prefs_key_url);
 
-			if (json_resp != null
-					&& json_resp.get("response").toString()
-							.equalsIgnoreCase("success")) {
+	    final String url_string = prefsDefault.getString(prefs_url, null);
 
-				JSONObject data = (JSONObject) json_resp.get("data");
+	    JSONObject json_resp = connectionForURL(json_req, url_string);
 
-				// final Editor editor = prefsLocal.edit();
-				//
-				// editor.putLong(Constants.REVISION_INTERVENTIONS,
-				// (Long) data.get("revision"));
-				//
-				// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-				// {
-				// editor.apply();
-				// } else {
-				// new Thread(new Runnable() {
-				//
-				// @Override
-				// public void run() {
-				//
-				// editor.commit();
-				// }
-				// });
-				// }
+	    if (json_resp != null
+		    && json_resp.get("response").toString()
+			    .equalsIgnoreCase("success")) {
 
-				JSONArray intervMOD = (JSONArray) data.get("mod");
-				JSONArray intervDEL = (JSONArray) data.get("del");
-				JSONArray interventions = (JSONArray) data.get("intervents");
+		JSONObject data = (JSONObject) json_resp.get("data");
 
-				maxProgressRange += intervMOD.size();
-				maxProgressRange += intervDEL.size();
-				maxProgressRange += interventions.size();
+		// final Editor editor = prefsLocal.edit();
+		//
+		// editor.putLong(Constants.REVISION_INTERVENTIONS,
+		// (Long) data.get("revision"));
+		//
+		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+		// {
+		// editor.apply();
+		// } else {
+		// new Thread(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		//
+		// editor.commit();
+		// }
+		// });
+		// }
 
-			}
+		JSONArray intervMOD = (JSONArray) data.get("mod");
+		JSONArray intervDEL = (JSONArray) data.get("del");
+		JSONArray interventions = (JSONArray) data.get("intervents");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			BugSenseHandler.sendException(e);
-		}
+		maxProgressRange += intervMOD.size();
+		maxProgressRange += intervDEL.size();
+		maxProgressRange += interventions.size();
 
-		System.out.println("Interventions syncronized: " + maxProgressRange);
+	    }
 
-		return maxProgressRange;
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
 	}
+
+	System.out.println("Interventions syncronized: " + maxProgressRange);
+
+	return maxProgressRange;
+    }
 }

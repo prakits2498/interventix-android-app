@@ -57,23 +57,23 @@ import com.bugsense.trace.BugSenseHandler;
 // resToastText = R.string.crash_toast_report)
 public class Interventix extends Application {
 
-	@SuppressLint("NewApi")
-	@Override
-	public void onCreate() {
+    @SuppressLint("NewApi")
+    @Override
+    public void onCreate() {
 
-		BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
+	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
 
-		super.onCreate();
-		// ACRA.init(this);
-		loadAsyncTask();
+	super.onCreate();
+	// ACRA.init(this);
+	loadAsyncTask();
+    }
+
+    private void loadAsyncTask() {
+
+	try {
+	    Class.forName("android.os.AsyncTask");
+	} catch (ClassNotFoundException e) {
+	    e.printStackTrace();
 	}
-
-	private void loadAsyncTask() {
-
-		try {
-			Class.forName("android.os.AsyncTask");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+    }
 }

@@ -5,13 +5,13 @@ import android.content.Intent;
 
 public class InterventixService extends IntentService {
 
-	public InterventixService() {
+    public InterventixService() {
 
-		super("InterventixService");
-	}
+	super("InterventixService");
+    }
 
-	@Override
-	protected void onHandleIntent(Intent intent) {
+    @Override
+    protected void onHandleIntent(Intent intent) {
 
-	}
+    }
 }
