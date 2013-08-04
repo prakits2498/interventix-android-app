@@ -151,7 +151,7 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	    e.printStackTrace();
 	}
 
-	final ListDetailsIntervento temp = listaDetailsInterv;
+	// final ListDetailsIntervento temp = listaDetailsInterv;
 
 	rowDetails.setOnClickListener(new OnClickListener() {
 
@@ -165,10 +165,10 @@ public class OverViewInterventoFragment extends SherlockFragment {
 
 		Bundle detailsIntervBundle = new Bundle(intervIDBundle);
 
-		if (temp.getListDetails().size() > 0) {
-		    detailsIntervBundle.putSerializable(
-			    Constants.LIST_DETAILS_INTERVENTO, temp);
-		}
+		// if (temp.getListDetails().size() > 0) {
+		// detailsIntervBundle.putSerializable(
+		// Constants.LIST_DETAILS_INTERVENTO, temp);
+		// }
 
 		detailsInterv.setArguments(detailsIntervBundle);
 

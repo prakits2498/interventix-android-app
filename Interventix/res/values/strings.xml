@@ -6,6 +6,9 @@
     <string name="menu_back">Indietro</string>
     <string name="refresh_menu">Aggiorna Interventi</string>
     <string name="add_menu">Aggiungi Intervento</string>
+    <string name="send_mail">Invia mail</string>
+    <string name="pay">Salda</string>
+    <string name="close_interv">Chiudi</string>
     <string name="prefs_key_url">PREFS_KEY_URL</string>
     <string name="prefs_url_title">Inserisci l\'indirizzo del sito che ti e\' stato fornito nel contratto</string>
     <string name="prefs_url_hint">http://azienda.interventix.com</string>
@@ -69,6 +72,13 @@
     <string name="nomin_interv">Nominativo</string>
     <string name="date_interv">Data</string>
     <string name="time_interv">Ora</string>
+    <string name="tv_tipo_dettaglio">Tipo</string>
+    <string name="tv_oggetto_dettaglio">Oggetto</string>
+    <string name="tv_tecnici_dettaglio">Tecnici</string>
+    <string name="tv_descrizione_dettaglio">Descrizione</string>
+    <string name="tv_inizio_dettaglio">Inizio</string>
+    <string name="tv_fine_dettaglio">Fine</string>
+    <string name="tv_tot_ore_dettaglio">Totale ore</string>
     <string name="save">SALVA</string>
     <string name="hint_nomin">Nominativo</string>
     <string name="hint_cod_fis">Codice Fiscale</string>

@@ -14,20 +14,15 @@
         android:paddingTop="2dp" >
 
         <TextView
+            android:id="@+id/tv_type_detail_interv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_nome_intervento"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:text="Pluto"
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="2dp"
@@ -35,17 +30,11 @@
         android:paddingRight="2dp" >
 
         <TextView
-            android:id="@+id/tv_cliente_intervento"
+            android:id="@+id/tv_object_detail_interv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="fhgasjfgasg"
             android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tv_data_intervento"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv_cliente_intervento"
-            android:textSize="14sp" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

@@ -3,10 +3,12 @@ package com.federicocolantoni.projects.interventix.fragments;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -16,11 +18,27 @@ import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
+import com.federicocolantoni.projects.interventix.adapter.DettaglioInterventoAdapter;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 
 public class DetailsInterventoFragment extends SherlockFragment implements
 	LoaderCallbacks<Cursor> {
 
-    public static long sId_intervento;
+    private final static int MESSAGE_LOADER = 1;
+
+    private long mId_intervento;
+
+    private final String[] PROJECTION = new String[] {
+	    DettaglioInterventoDB.Fields._ID,
+	    DettaglioInterventoDB.Fields.TIPO,
+	    DettaglioInterventoDB.Fields.OGGETTO };
+
+    private final String SELECTION = DettaglioInterventoDB.Fields.TYPE
+	    + " = ? AND " + DettaglioInterventoDB.Fields.INTERVENTO + " = ?";
+
+    private String[] SELECTION_ARGS;
+
+    private DettaglioInterventoAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,7 +58,11 @@ public class DetailsInterventoFragment extends SherlockFragment implements
 
 	Bundle bundle = getArguments();
 
-	sId_intervento = bundle.getLong(Constants.ID_INTERVENTO);
+	mId_intervento = bundle.getLong(Constants.ID_INTERVENTO);
+
+	SELECTION_ARGS = new String[] {
+		DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
+		"" + mId_intervento };
 
 	TextView tv_costs_intervento = (TextView) view
 		.findViewById(R.id.tv_details_intervention);
@@ -49,8 +71,18 @@ public class DetailsInterventoFragment extends SherlockFragment implements
 
 	// ListDetailsIntervento details = (ListDetailsIntervento) bundle
 	// .getSerializable(Constants.LIST_DETAILS_INTERVENTO);
-	//
+
 	// List<DettaglioIntervento> listDetails = details.getListDetails();
+
+	ListView detailsList = (ListView) view
+		.findViewById(R.id.list_details_intervento);
+
+	mAdapter = new DettaglioInterventoAdapter(getSherlockActivity(), null);
+
+	detailsList.setAdapter(mAdapter);
+
+	getSherlockActivity().getSupportLoaderManager().initLoader(
+		MESSAGE_LOADER, null, this);
 
 	return view;
     }
@@ -70,16 +102,23 @@ public class DetailsInterventoFragment extends SherlockFragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-	return null;
+
+	Loader<Cursor> loader = new CursorLoader(getSherlockActivity(),
+		DettaglioInterventoDB.CONTENT_URI, PROJECTION, SELECTION,
+		SELECTION_ARGS, null);
+
+	return loader;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
+	mAdapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+	mAdapter.swapCursor(null);
     }
 }

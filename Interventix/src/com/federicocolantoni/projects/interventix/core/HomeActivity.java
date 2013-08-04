@@ -55,7 +55,6 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Int
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
-import com.manuelpeinado.refreshactionitem.ProgressIndicatorType;
 import com.manuelpeinado.refreshactionitem.RefreshActionItem;
 import com.manuelpeinado.refreshactionitem.RefreshActionItem.RefreshActionListener;
 import com.slezica.tools.async.ManagedAsyncTask;
@@ -215,27 +214,22 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
-	MenuItem item = menu.findItem(R.id.refresh_menu);
-
-	if (item != null) {
-	    mRefreshActionItem = (RefreshActionItem) item.getActionView();
-	    mRefreshActionItem.setMenuItem(item);
-	    mRefreshActionItem.setRefreshActionListener(this);
-	    mRefreshActionItem
-		    .setProgressIndicatorType(ProgressIndicatorType.PIE);
-	}
+	// MenuItem item = menu.findItem(R.id.refresh_menu);
+	//
+	// if (item != null) {
+	// mRefreshActionItem = (RefreshActionItem) item.getActionView();
+	// mRefreshActionItem.setMenuItem(item);
+	// mRefreshActionItem.setRefreshActionListener(this);
+	// mRefreshActionItem
+	// .setProgressIndicatorType(ProgressIndicatorType.PIE);
+	// }
 
 	ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
 	if (networkInfo != null && networkInfo.isConnected()) {
-	    // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-	    // retrieveInterventionsFromServer();
-	    // getInterventionsSyncro();
-	    // } else {
+
 	    getUsersSyncro();
-	    // getInterventionsSyncro();
-	    // }
 	} else {
 	    InterventixToast
 		    .makeToast(
@@ -390,34 +384,6 @@ public class HomeActivity extends BaseActivity implements
 
 		if (mRefreshActionItem != null) {
 
-		    // TODO Insert the asynctask to calculate the number of
-		    // operations to do and to set the max range of the refresh
-		    // button in the action bar
-
-		    // GetOperationsToDo op = new GetOperationsToDo(
-		    // HomeActivity.this);
-		    //
-		    // op.execute(prefsLocal.getLong(Constants.USER_ID, 0l));
-
-		    // System.out
-		    // .println("RefreshActionItem is not null and progress is true");
-
-		    // try {
-		    // HomeActivity.sProgressMaxValue = op.get();
-		    //
-		    // System.out.println("MAX RANGE: "
-		    // + HomeActivity.sProgressMaxValue);
-		    //
-		    // mRefreshActionItem
-		    // .setMax(HomeActivity.sProgressMaxValue);
-		    // } catch (InterruptedException e) {
-		    // e.printStackTrace();
-		    // BugSenseHandler.sendException(e);
-		    // } catch (ExecutionException e) {
-		    // e.printStackTrace();
-		    // BugSenseHandler.sendException(e);
-		    // }
-		    //
 		    mRefreshActionItem.showProgress(true);
 		}
 	    };
@@ -1055,11 +1021,10 @@ public class HomeActivity extends BaseActivity implements
 				    selectionDettaglioIntervento,
 				    selectionDettIntervArgs, null);
 
-			    if (cursorDettaglioIntervento.getCount() > 0) {
-				cursorDettaglioIntervento.close();
-			    } else {
+			    if (cursorDettaglioIntervento.getCount() == 0) {
 
 				// *** INSERT DETTAGLIO INTERVENTO ***\\\
+
 				values = new ContentValues();
 
 				System.out.println("Dettaglio intervento n° "
@@ -1094,6 +1059,122 @@ public class HomeActivity extends BaseActivity implements
 
 				cursorDettaglioIntervento.close();
 			    }
+			}
+		    } else {
+
+			JSONArray dettagli_intervento = (JSONArray) responseIntervs
+				.get("dettagliintervento");
+
+			// *** UPDATE INTERVENTO ***\\
+
+			values.put(InterventoDB.Fields.CANCELLATO,
+				(Boolean) responseIntervs.get("cancellato"));
+			values.put(InterventoDB.Fields.COSTO_ACCESSORI,
+				(Double) responseIntervs.get("costoaccessori"));
+			values.put(InterventoDB.Fields.COSTO_COMPONENTI,
+				(Double) responseIntervs.get("costocomponenti"));
+			values.put(InterventoDB.Fields.COSTO_MANODOPERA,
+				(Double) responseIntervs.get("costomanodopera"));
+			values.put(InterventoDB.Fields.DATA_ORA,
+				(Long) responseIntervs.get("dataora"));
+			values.put(InterventoDB.Fields.FIRMA,
+				(String) responseIntervs.get("firma"));
+			values.put(InterventoDB.Fields.CLIENTE,
+				(Long) responseIntervs.get("cliente"));
+			values.put(InterventoDB.Fields.IMPORTO,
+				(Double) responseIntervs.get("importo"));
+			values.put(InterventoDB.Fields.IVA,
+				(Double) responseIntervs.get("iva"));
+			values.put(InterventoDB.Fields.MODALITA,
+				(String) responseIntervs.get("modalita"));
+			values.put(InterventoDB.Fields.MOTIVO,
+				(String) responseIntervs.get("motivo"));
+			values.put(InterventoDB.Fields.NOMINATIVO,
+				(String) responseIntervs.get("nominativo"));
+			values.put(InterventoDB.Fields.NOTE,
+				(String) responseIntervs.get("note"));
+			values.put(InterventoDB.Fields.NUMERO_INTERVENTO,
+				(Long) responseIntervs.get("numero"));
+			values.put(InterventoDB.Fields.PRODOTTO,
+				(String) responseIntervs.get("prodotto"));
+			values.put(InterventoDB.Fields.RIFERIMENTO_FATTURA,
+				(String) responseIntervs.get("riffattura"));
+			values.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO,
+				(String) responseIntervs.get("rifscontrino"));
+			values.put(InterventoDB.Fields.SALDATO,
+				(Boolean) responseIntervs.get("saldato"));
+			values.put(InterventoDB.Fields.TIPOLOGIA,
+				(String) responseIntervs.get("tipologia"));
+			values.put(InterventoDB.Fields.TOTALE,
+				(Double) responseIntervs.get("totale"));
+			values.put(InterventoDB.Fields.CHIUSO,
+				(Boolean) responseIntervs.get("chiuso"));
+			values.put(InterventoDB.Fields.TECNICO,
+				(Long) responseIntervs.get("tecnico"));
+
+			String where = InterventoDB.Fields.TYPE + " = ? AND "
+				+ InterventoDB.Fields.ID_INTERVENTO + " = ?";
+
+			cr.update(InterventoDB.CONTENT_URI, values, where,
+				selectionArgs);
+
+			for (int cont = 0; cont < dettagli_intervento.size(); cont++) {
+
+			    JSONObject dettInterv = (JSONObject) dettagli_intervento
+				    .get(cont);
+
+			    String selectionDettaglioIntervento = Fields.TYPE
+				    + " = ? AND "
+				    + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO
+				    + " = ?";
+
+			    String[] selectionDettIntervArgs = new String[] {
+				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
+				    ""
+					    + dettInterv
+						    .get("iddettagliointervento") };
+
+			    // cursorDettaglioIntervento = cr.query(
+			    // DettaglioInterventoDB.CONTENT_URI, null,
+			    // selectionDettaglioIntervento,
+			    // selectionDettIntervArgs, null);
+			    //
+			    // if (cursorDettaglioIntervento.getCount() == 0) {
+
+			    // *** UPDATE DETTAGLIO INTERVENTO ***\\\
+
+			    values = new ContentValues();
+
+			    System.out.println("Dettaglio intervento n° "
+				    + cont + " inserito");
+
+			    values.put(
+				    Fields.TYPE,
+				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
+			    values.put(
+				    DettaglioInterventoDB.Fields.DESCRIZIONE,
+				    (String) dettInterv.get("descrizione"));
+			    values.put(
+				    DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
+				    (Long) dettInterv
+					    .get("iddettagliointervento"));
+			    values.put(DettaglioInterventoDB.Fields.INTERVENTO,
+				    (Long) responseIntervs.get("idintervento"));
+			    values.put(DettaglioInterventoDB.Fields.OGGETTO,
+				    (String) dettInterv.get("oggetto"));
+			    values.put(DettaglioInterventoDB.Fields.TIPO,
+				    (String) dettInterv.get("tipo"));
+			    values.put(DettaglioInterventoDB.Fields.INIZIO,
+				    (Long) dettInterv.get("inizio"));
+			    values.put(DettaglioInterventoDB.Fields.FINE,
+				    (Long) dettInterv.get("fine"));
+
+			    cr.update(DettaglioInterventoDB.CONTENT_URI,
+				    values, selectionDettaglioIntervento,
+				    selectionDettIntervArgs);
+
+			    // cursorDettaglioIntervento.close();
+			    // }
 			}
 		    }
 

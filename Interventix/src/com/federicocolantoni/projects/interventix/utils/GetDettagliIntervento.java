@@ -36,7 +36,7 @@ public class GetDettagliIntervento extends
 		DettaglioInterventoDB.Fields.INIZIO,
 		DettaglioInterventoDB.Fields.FINE };
 
-	String selection = Fields.TYPE + " = ? AND "
+	String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND "
 		+ DettaglioInterventoDB.Fields.INTERVENTO + " = ?";
 
 	String[] selectionArgs = new String[] {

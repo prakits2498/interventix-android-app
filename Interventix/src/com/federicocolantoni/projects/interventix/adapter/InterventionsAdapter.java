@@ -80,16 +80,8 @@ public class InterventionsAdapter extends CursorAdapter {
 
 	DateTime dt = new DateTime(cursor.getLong(mDataInterventoIndex));
 
-	// DateTimeFormatter formatter = DateTimeFormat
-	// .forPattern("dd/MM/yyyy HH:mm");
-	// formatter.withLocale(Locale.ITALY);
-
 	tv_data_intervento.setText(dt
 		.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
-
-	// tv_data_intervento.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm",
-	// Locale.ITALY).format(new Date(cursor
-	// .getLong(mDataInterventoIndex))));
     }
 
     @Override
