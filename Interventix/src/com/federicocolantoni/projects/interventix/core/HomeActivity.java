@@ -23,8 +23,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -55,13 +53,11 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Int
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
-import com.manuelpeinado.refreshactionitem.RefreshActionItem;
-import com.manuelpeinado.refreshactionitem.RefreshActionItem.RefreshActionListener;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
 public class HomeActivity extends BaseActivity implements
-	RefreshActionListener, LoaderCallbacks<Cursor> {
+	LoaderCallbacks<Cursor> {
 
     private final static int MESSAGE_LOADER = 1;
 
@@ -75,9 +71,10 @@ public class HomeActivity extends BaseActivity implements
     static final String[] SELECTION_ARGS = new String[] {
 	    InterventoDB.INTERVENTO_ITEM_TYPE, "0" };
 
-    private RefreshActionItem mRefreshActionItem;
-
     private InterventionsAdapter mAdapter;
+    // private ProgressDialog mProgress;
+
+    private Menu optionsMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +88,18 @@ public class HomeActivity extends BaseActivity implements
 		Constants.API_KEY);
 
 	setContentView(R.layout.activity_home);
+
+	// mProgress = new ProgressDialog(this);
+	// mProgress.setCancelable(false);
+	// mProgress.setCanceledOnTouchOutside(false);
+	// mProgress.setIndeterminate(true);
+	// mProgress.setMessage("Attendere prego...");
+	// mProgress.setIcon(R.drawable.ic_launcher);
+	// mProgress.setTitle("Download interventi");
+
+	getUsersSyncro();
+
+	// mProgress.show();
 
 	ListView listOpen = (ListView) findViewById(R.id.list_interv_open);
 
@@ -113,8 +122,7 @@ public class HomeActivity extends BaseActivity implements
 		Bundle bundle = new Bundle();
 
 		Cursor cur = (Cursor) adapter.getItemAtPosition(position);
-		// boolean ok = cur.moveToPosition(position);
-		// if (ok) {
+
 		bundle.putLong(Constants.ID_INTERVENTO, cur.getLong(cur
 			.getColumnIndex(InterventoDB.Fields.ID_INTERVENTO)));
 		bundle.putLong(Constants.NUMERO_INTERVENTO, cur.getLong(cur
@@ -163,12 +171,14 @@ public class HomeActivity extends BaseActivity implements
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-	    AlertDialog.Builder logout_dialog = new Builder(getActivity());
+	    AlertDialog.Builder logout_dialog = new Builder(
+		    getSherlockActivity());
 
 	    logout_dialog.setTitle(getResources().getString(
 		    R.string.logout_title));
 	    logout_dialog.setMessage(getResources().getString(
 		    R.string.logout_message));
+	    logout_dialog.setIcon(R.drawable.ic_launcher);
 
 	    logout_dialog.setPositiveButton(
 		    getResources().getString(R.string.logout_positive_btn),
@@ -183,25 +193,6 @@ public class HomeActivity extends BaseActivity implements
 	public void onClick(DialogInterface dialog, int which) {
 
 	    if (DialogInterface.BUTTON_POSITIVE == which) {
-		// SharedPreferences prefs = getActivity().getSharedPreferences(
-		// Constants.PREFERENCES, Context.MODE_PRIVATE);
-		//
-		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-		// {
-		// prefs.edit().clear().apply();
-		// } else {
-		// final Editor editor = prefs.edit();
-		// editor.remove(Constants.REVISION_INTERVENTIONS);
-		//
-		// new Thread(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		//
-		// editor.commit();
-		// }
-		// }).start();
-		// }
 
 		dialog.dismiss();
 		getSherlockActivity().finish();
@@ -212,73 +203,15 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-
-	// MenuItem item = menu.findItem(R.id.refresh_menu);
-	//
-	// if (item != null) {
-	// mRefreshActionItem = (RefreshActionItem) item.getActionView();
-	// mRefreshActionItem.setMenuItem(item);
-	// mRefreshActionItem.setRefreshActionListener(this);
-	// mRefreshActionItem
-	// .setProgressIndicatorType(ProgressIndicatorType.PIE);
-	// }
-
-	ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-	if (networkInfo != null && networkInfo.isConnected()) {
-
-	    getUsersSyncro();
-	} else {
-	    InterventixToast
-		    .makeToast(
-			    this,
-			    "Impossibile completare l'operazione: nessuna connessione disponibile.",
-			    Toast.LENGTH_SHORT);
-	}
-
-	return true;
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
+	optionsMenu = menu;
 	getSupportMenuInflater().inflate(R.menu.activity_home, menu);
 
-	return true;
-    }
+	setRefreshActionButtonState(true);
 
-    // private void loadData() {
-    //
-    // mRefreshActionItem.setMax(100);
-    // mRefreshActionItem.showProgress(true);
-    //
-    // new ManagedAsyncTask<Void, Void, Void>(HomeActivity.this) {
-    //
-    // @Override
-    // protected Void doInBackground(Void... params) {
-    //
-    // for (int i = 0; i <= 100; ++i) {
-    // try {
-    // Thread.sleep(20);
-    // mRefreshActionItem.setProgress(i);
-    // } catch (InterruptedException e) {
-    // e.printStackTrace();
-    // BugSenseHandler.sendException(e);
-    // }
-    // }
-    //
-    // return null;
-    // }
-    //
-    // @Override
-    // protected void onPostExecute(Void result) {
-    //
-    // mRefreshActionItem.showProgress(false);
-    // }
-    // }.execute();
-    // }
+	return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -286,34 +219,36 @@ public class HomeActivity extends BaseActivity implements
 	switch (item.getItemId()) {
 
 	case android.R.id.home:
-	    // SharedPreferences prefs = getSharedPreferences(
-	    // Constants.PREFERENCES, Context.MODE_PRIVATE);
-	    //
-	    // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-	    // {
-	    // prefs.edit().clear().apply();
-	    // } else {
-	    // final Editor editor = prefs.edit();
-	    // editor.clear();
-	    //
-	    // new Thread(new Runnable() {
-	    //
-	    // @Override
-	    // public void run() {
-	    //
-	    // editor.commit();
-	    // }
-	    // }).start();
-	    // }
-	    //
-	    // this.finish();
 
 	    LogoutDialog logout = new LogoutDialog();
 	    logout.show(getSupportFragmentManager(),
 		    Constants.LOGOUT_DIALOG_FRAGMENT);
+	    break;
+
+	case R.id.refresh_menu:
+
+	    getInterventionsSyncro();
+	    setRefreshActionButtonState(true);
+
+	    break;
 	}
 
 	return super.onOptionsItemSelected(item);
+    }
+
+    private void setRefreshActionButtonState(final boolean refreshing) {
+	if (optionsMenu != null) {
+	    final MenuItem refreshItem = optionsMenu
+		    .findItem(R.id.refresh_menu);
+	    if (refreshItem != null) {
+		if (refreshing) {
+		    refreshItem
+			    .setActionView(R.layout.actionbar_indeterminate_progress);
+		} else {
+		    refreshItem.setActionView(null);
+		}
+	    }
+	}
     }
 
     private String setNominativo() throws InterruptedException,
@@ -382,10 +317,7 @@ public class HomeActivity extends BaseActivity implements
 	    @Override
 	    protected void onPreExecute() {
 
-		if (mRefreshActionItem != null) {
-
-		    mRefreshActionItem.showProgress(true);
-		}
+		setRefreshActionButtonState(true);
 	    };
 
 	    @Override
@@ -451,13 +383,6 @@ public class HomeActivity extends BaseActivity implements
 			JSONArray usersMOD = (JSONArray) data.get("mod");
 			JSONArray usersDEL = (JSONArray) data.get("del");
 
-			if (mRefreshActionItem != null) {
-			    mRefreshActionItem.setMax(usersMOD.size()
-				    + usersDEL.size());
-			}
-
-			int cont = 0;
-
 			ContentValues values = new ContentValues();
 
 			for (int i = 0; i < usersMOD.size(); i++) {
@@ -491,7 +416,7 @@ public class HomeActivity extends BaseActivity implements
 				cr.insert(UtenteDB.CONTENT_URI, values);
 			    }
 
-			    mRefreshActionItem.setProgress(++cont);
+			    // mRefreshActionItem.setProgress(++cont);
 			}
 
 			if (usersDEL.size() > 0) {
@@ -507,7 +432,6 @@ public class HomeActivity extends BaseActivity implements
 				cr.delete(UtenteDB.CONTENT_URI, where,
 					selectionArgs);
 
-				mRefreshActionItem.setProgress(++cont);
 			    }
 			} else {
 			    System.out.println("DEL USERS EMPTY");
@@ -531,11 +455,6 @@ public class HomeActivity extends BaseActivity implements
 
 		if (result == Activity.RESULT_OK) {
 
-		    if (mRefreshActionItem != null) {
-
-			mRefreshActionItem.showProgress(false);
-		    }
-
 		    getClientsSyncro();
 		} else {
 
@@ -544,10 +463,9 @@ public class HomeActivity extends BaseActivity implements
 				    + Constants.ACCESS_DINIED,
 			    Toast.LENGTH_SHORT);
 
-		    if (mRefreshActionItem != null) {
+		    // mProgress.dismiss();
 
-			mRefreshActionItem.showProgress(false);
-		    }
+		    setRefreshActionButtonState(false);
 		}
 	    }
 
@@ -564,9 +482,6 @@ public class HomeActivity extends BaseActivity implements
 	    @Override
 	    protected void onPreExecute() {
 
-		if (mRefreshActionItem != null) {
-		    mRefreshActionItem.showProgress(true);
-		}
 	    }
 
 	    @Override
@@ -634,13 +549,6 @@ public class HomeActivity extends BaseActivity implements
 			JSONArray clientsMOD = (JSONArray) data.get("mod");
 			JSONArray clientsDEL = (JSONArray) data.get("del");
 
-			if (mRefreshActionItem != null) {
-			    mRefreshActionItem.setMax(clientsMOD.size()
-				    + clientsDEL.size());
-			}
-
-			int cont = 0;
-
 			Cursor cursorCliente = null;
 
 			for (int i = 0; i < clientsMOD.size(); i++) {
@@ -662,9 +570,6 @@ public class HomeActivity extends BaseActivity implements
 			    if (cursorCliente.getCount() > 0) {
 				cursorCliente.close();
 
-				if (mRefreshActionItem != null) {
-				    mRefreshActionItem.setProgress(++cont);
-				}
 			    } else {
 
 				// *** INSERT CLIENTE ***\\\
@@ -707,9 +612,6 @@ public class HomeActivity extends BaseActivity implements
 
 				cursorCliente.close();
 
-				if (mRefreshActionItem != null) {
-				    mRefreshActionItem.setProgress(++cont);
-				}
 			    }
 			}
 
@@ -726,9 +628,6 @@ public class HomeActivity extends BaseActivity implements
 			    cr.delete(ClienteDB.CONTENT_URI, where,
 				    selectionArgs);
 
-			    if (mRefreshActionItem != null) {
-				mRefreshActionItem.setProgress(++cont);
-			    }
 			}
 
 			result = Activity.RESULT_OK;
@@ -747,11 +646,6 @@ public class HomeActivity extends BaseActivity implements
 	    protected void onPostExecute(Integer result) {
 		if (result == Activity.RESULT_OK) {
 
-		    if (mRefreshActionItem != null) {
-
-			mRefreshActionItem.showProgress(false);
-		    }
-
 		    getInterventionsSyncro();
 		} else {
 
@@ -760,10 +654,9 @@ public class HomeActivity extends BaseActivity implements
 				    + Constants.ACCESS_DINIED,
 			    Toast.LENGTH_SHORT);
 
-		    if (mRefreshActionItem != null) {
+		    // mProgress.dismiss();
 
-			mRefreshActionItem.showProgress(false);
-		    }
+		    setRefreshActionButtonState(false);
 		}
 	    }
 	}.execute(prefsLocal.getLong(Constants.USER_ID, 0l));
@@ -779,9 +672,6 @@ public class HomeActivity extends BaseActivity implements
 	    @Override
 	    protected void onPreExecute() {
 
-		if (mRefreshActionItem != null) {
-		    mRefreshActionItem.showProgress(true);
-		}
 	    };
 
 	    @Override
@@ -804,8 +694,8 @@ public class HomeActivity extends BaseActivity implements
 		    json_req = JsonCR2.createRequest("interventions",
 			    "mysyncro", parameters, (int) iduser);
 
-		    // System.out.println("Request mysyncro interventi\n"
-		    // + json_req);
+		    System.out.println("Request mysyncro interventi\n"
+			    + json_req);
 
 		    final SharedPreferences prefsDefault = PreferenceManager
 			    .getDefaultSharedPreferences(HomeActivity.this);
@@ -851,11 +741,6 @@ public class HomeActivity extends BaseActivity implements
 			JSONArray interventions = (JSONArray) data
 				.get("intervents");
 
-			if (mRefreshActionItem != null) {
-			    mRefreshActionItem.setMax(intervMOD.size()
-				    + intervDEL.size() + interventions.size());
-			}
-
 			int cont = 0;
 
 			if (intervMOD.size() > 0) {
@@ -887,17 +772,11 @@ public class HomeActivity extends BaseActivity implements
 				System.out.println("Eliminato l'intervento "
 					+ intervID);
 
-				if (mRefreshActionItem != null) {
-				    mRefreshActionItem.setProgress(++cont);
-				}
 			    }
 			}
 
 			for (int k = 0; k < interventions.size(); ++k) {
 
-			    if (mRefreshActionItem != null) {
-				mRefreshActionItem.setProgress(++cont);
-			    }
 			}
 
 			result = Activity.RESULT_OK;
@@ -996,10 +875,6 @@ public class HomeActivity extends BaseActivity implements
 
 			cr.insert(InterventoDB.CONTENT_URI, values);
 
-			if (mRefreshActionItem != null) {
-			    mRefreshActionItem.setProgress(++contProg);
-			}
-
 			for (int cont = 0; cont < dettagli_intervento.size(); cont++) {
 
 			    JSONObject dettInterv = (JSONObject) dettagli_intervento
@@ -1027,8 +902,8 @@ public class HomeActivity extends BaseActivity implements
 
 				values = new ContentValues();
 
-				System.out.println("Dettaglio intervento n° "
-					+ cont + " inserito");
+				// System.out.println("Dettaglio intervento n° "
+				// + cont + " inserito");
 
 				values.put(
 					Fields.TYPE,
@@ -1053,6 +928,23 @@ public class HomeActivity extends BaseActivity implements
 					(Long) dettInterv.get("inizio"));
 				values.put(DettaglioInterventoDB.Fields.FINE,
 					(Long) dettInterv.get("fine"));
+
+				JSONArray tecnici = (JSONArray) dettInterv
+					.get("tecniciintervento");
+
+				String tecniciInterv = new String();
+
+				for (int i = 0; i < tecnici.size(); i++) {
+				    tecniciInterv += "" + tecnici.get(i);
+
+				    if (i < tecnici.size()) {
+					tecniciInterv += ",";
+				    }
+				}
+
+				values.put(
+					DettaglioInterventoDB.Fields.TECNICI,
+					tecniciInterv);
 
 				cr.insert(DettaglioInterventoDB.CONTENT_URI,
 					values);
@@ -1134,13 +1026,6 @@ public class HomeActivity extends BaseActivity implements
 					    + dettInterv
 						    .get("iddettagliointervento") };
 
-			    // cursorDettaglioIntervento = cr.query(
-			    // DettaglioInterventoDB.CONTENT_URI, null,
-			    // selectionDettaglioIntervento,
-			    // selectionDettIntervArgs, null);
-			    //
-			    // if (cursorDettaglioIntervento.getCount() == 0) {
-
 			    // *** UPDATE DETTAGLIO INTERVENTO ***\\\
 
 			    values = new ContentValues();
@@ -1173,8 +1058,6 @@ public class HomeActivity extends BaseActivity implements
 				    values, selectionDettaglioIntervento,
 				    selectionDettIntervArgs);
 
-			    // cursorDettaglioIntervento.close();
-			    // }
 			}
 		    }
 
@@ -1190,10 +1073,6 @@ public class HomeActivity extends BaseActivity implements
 	    protected void onPostExecute(Integer result) {
 
 		if (result == Activity.RESULT_OK) {
-		    if (mRefreshActionItem != null) {
-
-			mRefreshActionItem.showProgress(false);
-		    }
 
 		    String nominativo = null;
 
@@ -1221,6 +1100,10 @@ public class HomeActivity extends BaseActivity implements
 				}
 			    }).start();
 			}
+
+			setRefreshActionButtonState(false);
+
+			// mProgress.dismiss();
 		    } catch (InterruptedException e) {
 			e.printStackTrace();
 			BugSenseHandler.sendException(e);
@@ -1235,40 +1118,13 @@ public class HomeActivity extends BaseActivity implements
 				    + Constants.ACCESS_DINIED,
 			    Toast.LENGTH_SHORT);
 
-		    if (mRefreshActionItem != null) {
+		    // mProgress.dismiss();
 
-			mRefreshActionItem.showProgress(false);
-		    }
+		    setRefreshActionButtonState(false);
 		}
 	    }
 
 	}.execute(prefsLocal.getLong(Constants.USER_ID, 0l));
-    }
-
-    @Override
-    public void onRefreshButtonClick(RefreshActionItem sender) {
-
-	ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-	if (networkInfo != null && networkInfo.isConnected()) {
-
-	    // TODO inserire il controllo per capire se si è già connessi a una
-	    // rete Internet o meno;
-	    // in caso non si è connessi, notificare all'utente se desidera
-	    // collegarsi a una rete
-
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-		// retrieveInterventionsFromServer();
-		getInterventionsSyncro();
-	    } else {
-		getInterventionsSyncro();
-	    }
-	} else {
-
-	}
-
-	// loadData();
     }
 
     @Override

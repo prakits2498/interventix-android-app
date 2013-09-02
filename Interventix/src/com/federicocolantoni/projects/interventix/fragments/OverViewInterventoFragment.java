@@ -1,17 +1,16 @@
 package com.federicocolantoni.projects.interventix.fragments;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -69,12 +68,17 @@ public class OverViewInterventoFragment extends SherlockFragment {
 
 	TextView summary = (TextView) view
 		.findViewById(R.id.tv_summary_intervention);
-	new DateFormat();
+	// new DateFormat();
+
+	DateTime dt_interv = new DateTime(interv.getmDataOra(),
+		DateTimeZone.forID("Europe/Rome"));
+
 	summary.setText("Interv. "
-		+ bundle.getLong(Constants.NUMERO_INTERVENTO)
-		+ " del "
-		+ new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ITALY)
-			.format(new Date(interv.getmDataOra())));
+		+ bundle.getLong(Constants.NUMERO_INTERVENTO) + " del "
+		+ /*
+		   * new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ITALY)
+		   * .format(new Date(interv.getmDataOra()))+
+		   */dt_interv.toString("dd/MM/yyyy HH:mm"));
 
 	View rowCliente = view.findViewById(R.id.row_client);
 	rowCliente.setOnClickListener(new OnClickListener() {
@@ -119,7 +123,7 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	    @Override
 	    public void onClick(View v) {
 
-		FragmentManager manager = getActivity()
+		FragmentManager manager = getSherlockActivity()
 			.getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 
@@ -151,8 +155,6 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	    e.printStackTrace();
 	}
 
-	// final ListDetailsIntervento temp = listaDetailsInterv;
-
 	rowDetails.setOnClickListener(new OnClickListener() {
 
 	    @Override
@@ -164,11 +166,6 @@ public class OverViewInterventoFragment extends SherlockFragment {
 		DetailsInterventoFragment detailsInterv = new DetailsInterventoFragment();
 
 		Bundle detailsIntervBundle = new Bundle(intervIDBundle);
-
-		// if (temp.getListDetails().size() > 0) {
-		// detailsIntervBundle.putSerializable(
-		// Constants.LIST_DETAILS_INTERVENTO, temp);
-		// }
 
 		detailsInterv.setArguments(detailsIntervBundle);
 
@@ -187,16 +184,17 @@ public class OverViewInterventoFragment extends SherlockFragment {
 		.findViewById(R.id.tv_row_details);
 
 	long numOre = 0l;
+
 	for (DettaglioIntervento obj : listaDetailsInterv.getListDetails()) {
 
 	    numOre += obj.getmFine() - obj.getmInizio();
 	}
 
+	DateTime dt = new DateTime(numOre, DateTimeZone.forID("Europe/Rome"));
+
 	if (listaDetailsInterv.getListDetails().size() > 0) {
 	    tv_row_details.setText(listaDetailsInterv.getListDetails().size()
-		    + " - "
-		    + new SimpleDateFormat("H", Locale.ITALY).format(new Date(
-			    numOre)) + " h");
+		    + " - " + dt.toString("HH:mm"));
 	} else {
 	    tv_row_details.setText(getString(R.string.no_details_interv));
 	}

@@ -1,11 +1,14 @@
 package com.federicocolantoni.projects.interventix.intervento;
 
+import java.util.List;
+
 public class DettaglioIntervento {
 
     private Long mIdDettaglioIntervento;
     private String mTipo, mOggetto, mDescrizione;
     private Long mIntervento;
     private Long mInizio, mFine;
+    private List<Integer> mTecnici;
 
     public DettaglioIntervento() {
 
@@ -115,5 +118,20 @@ public class DettaglioIntervento {
 
     public void setmFine(Long mFine) {
 	this.mFine = mFine;
+    }
+
+    /**
+     * @return the mTecnici
+     */
+    public List<Integer> getmTecnici() {
+	return mTecnici;
+    }
+
+    /**
+     * @param mTecnici
+     *            the mTecnici to set
+     */
+    public void setmTecnici(List<Integer> mTecnici) {
+	this.mTecnici = mTecnici;
     }
 }

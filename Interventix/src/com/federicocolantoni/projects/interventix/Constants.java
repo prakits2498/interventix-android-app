@@ -14,11 +14,13 @@ public final class Constants {
     public static final String USER_NOMINATIVO = "USER_NOMINATIVO";
     public static final int CONNECTION_TIMEOUT = 16000;
     public static final String DETAILS_INTERVENTO_FRAGMENT = "DETAILS_INTERVENTO_FRAGMENT";
+    public static final String DETAILS_DETTAGLIO_INTERVENTO_FRAGMENT = "DETAILS_DETTAGLIO_INTERVENTO_FRAGMENT";
     public static final String COSTS_INTERVENTO_FRAGMENT = "COSTS_INTERVENTO_FRAGMENT";
     public static final String OVERVIEW_INTERVENTO_FRAGMENT = "OVERVIEW_INTERVENTO";
     public static final String INFORMATIONS_INTERVENTO_FRAGMENT = "INFORMATIONS_INTERVENTO";
     public static final String VIEW_INTERVENTO_TRANSACTION = "VIEW_INTERVENTO_TRANSACTION";
     public static final String INTERV_MODIFIED = "INTERV_MODIFIED";
+    public static final String DETT_INTERV_MODIFIED = "DETT_INTERV_MODIFIED";
     public static final String REVISION_INTERVENTIONS = "REVISION_INTERVENTIONS";
     public static final String REVISION_USERS = "REVISION_USERS";
     public static final String REVISION_CLIENTS = "REVISION_CLIENTS";
@@ -36,10 +38,14 @@ public final class Constants {
     public static final String COMPONENTI_DIALOG_FRAGMENT = "COMPONENTI_DIALOG_FRAGMENT";
     public static final String ACCESSORI_DIALOG_FRAGMENT = "ACCESSORI_DIALOG_FRAGMENT";
     public static final String EXIT_INTERVENTO_DIALOG_FRAGMENT = "EXIT_INTERVENTO_DIALOG_FRAGMENT";
+    public static final String TIPO_DETTAGLIO_DIALOG_FRAGMENT = "TIPO_DETTAGLIO_DIALOG_FRAGMENT";
+    public static final String OGGETTO_DETTAGLIO_DIALOG_FRAGMENT = "OGGETTO_DETTAGLIO_DIALOG_FRAGMENT";
+    public static final String DESCRIZIONE_DETTAGLIO_DIALOG_FRAGMENT = "DESCRIZIONE_DETTAGLIO_DIALOG_FRAGMENT";
 
     // *** costanti dell'intervento ***\\
     public static final String INTERVENTO = "INTERVENTO";
     public static final String ID_INTERVENTO = "ID_INTERVENTO";
+    public static final String ID_DETTAGLIO_INTERVENTO = "ID_DETTAGLIO_INTERVENTO";
     public static final String NUMERO_INTERVENTO = "NUMERO_INTERVENTO";
     public static final String NOMINATIVO = "NOMINATIVO";
     public static final String CLIENTE = "CLIENTE";

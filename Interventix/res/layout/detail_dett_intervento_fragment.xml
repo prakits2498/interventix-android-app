@@ -6,6 +6,7 @@
     android:orientation="vertical" >
 
     <TextView
+        android:id="@+id/tv_dett_interv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
@@ -90,7 +91,7 @@
                 android:layout_marginTop="1dp"
                 android:background="@android:color/transparent"
                 android:orientation="horizontal"
-                android:weightSum="1" >
+                android:weightSum="2" >
 
                 <TextView
                     android:layout_width="0dp"
@@ -103,6 +104,15 @@
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_row_tecnici_dettaglio"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:gravity="center_vertical|right"
+                    android:paddingLeft="4dp" />
 
                 <ImageView
                     android:id="@+id/img_tecnici_right_navigation"
@@ -162,7 +172,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_row_inzio_dettaglio"
+                    android:id="@+id/tv_row_inizio_dettaglio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#FFCCCCCC"
@@ -216,7 +226,7 @@
                     android:background="#FF4455"
                     android:paddingLeft="4dp"
                     android:text="@string/tv_tot_ore_dettaglio"
-                    android:textColor="@android:color/black"
+                    android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -226,7 +236,7 @@
                     android:layout_height="wrap_content"
                     android:background="#FF4455"
                     android:paddingLeft="4dp"
-                    android:textColor="#FF3040EE" />
+                    android:textColor="@android:color/white" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

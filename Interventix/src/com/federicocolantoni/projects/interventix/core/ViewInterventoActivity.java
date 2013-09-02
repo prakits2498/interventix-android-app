@@ -19,10 +19,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentManager.BackStackEntry;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.Constants;
@@ -63,6 +66,33 @@ public class ViewInterventoActivity extends BaseActivity {
 	} catch (ExecutionException e) {
 	    e.printStackTrace();
 	}
+
+	SharedPreferences prefs = writeIntervAndIntervDetailsTemp(interv_temp);
+
+	String nominativo = prefs.getString(Constants.USER_NOMINATIVO, null);
+
+	getSupportActionBar().setTitle(nominativo);
+
+	FragmentManager manager = getSupportFragmentManager();
+	FragmentTransaction transaction = manager.beginTransaction();
+
+	OverViewInterventoFragment overView = new OverViewInterventoFragment();
+
+	Bundle bundle = new Bundle();
+	bundle.putString(Constants.USER_NOMINATIVO, nominativo);
+	bundle.putAll(extras);
+
+	overView.setArguments(bundle);
+
+	transaction.add(R.id.fragments_layout, overView,
+		Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+	transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+	transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	transaction.commit();
+    }
+
+    private SharedPreferences writeIntervAndIntervDetailsTemp(
+	    Intervento interv_temp) {
 
 	WriteIntervTemp writeIntervTemp = new WriteIntervTemp(this);
 
@@ -131,26 +161,7 @@ public class ViewInterventoActivity extends BaseActivity {
 	    }).start();
 	}
 
-	String nominativo = prefs.getString(Constants.USER_NOMINATIVO, null);
-
-	getSupportActionBar().setTitle(nominativo);
-
-	FragmentManager manager = getSupportFragmentManager();
-	FragmentTransaction transaction = manager.beginTransaction();
-
-	OverViewInterventoFragment overView = new OverViewInterventoFragment();
-
-	Bundle bundle = new Bundle();
-	bundle.putString(Constants.USER_NOMINATIVO, nominativo);
-	bundle.putAll(extras);
-
-	overView.setArguments(bundle);
-
-	transaction.add(R.id.fragments_layout, overView,
-		Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-	transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-	transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	transaction.commit();
+	return prefs;
     }
 
     @Override
@@ -305,14 +316,29 @@ public class ViewInterventoActivity extends BaseActivity {
 	}
     }
 
-    // @Override
-    // public boolean onCreateOptionsMenu(Menu menu) {
-    //
-    // final MenuInflater inflater = getSupportMenuInflater();
-    // inflater.inflate(R.menu.view_intervento, menu);
-    //
-    // return super.onCreateOptionsMenu(menu);
-    // }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+	final MenuInflater inflater = getSupportMenuInflater();
+
+	FragmentManager manager = getSupportFragmentManager();
+
+	int cont = manager.getBackStackEntryCount();
+
+	for (int i = 0; i < cont; i++) {
+	    BackStackEntry entry = manager.getBackStackEntryAt(i);
+
+	    if (entry.getName().equals(Constants.DETAILS_INTERVENTO_FRAGMENT)) {
+
+		inflater.inflate(R.menu.details_interve_menu, menu);
+	    } else {
+
+		inflater.inflate(R.menu.view_intervento, menu);
+	    }
+	}
+
+	return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
