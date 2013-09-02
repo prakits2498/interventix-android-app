@@ -4,8 +4,9 @@
     <string name="app_name">Interventix</string>
     <string name="menu_settings">Opzioni</string>
     <string name="menu_back">Indietro</string>
-    <string name="refresh_menu">Aggiorna Interventi</string>
-    <string name="add_menu">Aggiungi Intervento</string>
+    <string name="refresh_interventi_menu">Aggiorna Interventi</string>
+    <string name="add_intervento_menu">Aggiungi Intervento</string>
+    <string name="add_dettaglio_menu">Aggiungi Dettaglio</string>
     <string name="send_mail">Invia mail</string>
     <string name="pay">Salda</string>
     <string name="close_interv">Chiudi</string>
@@ -19,6 +20,8 @@
     <string name="logout_positive_btn">Logout</string>
     <string name="btn_cancel">Annulla</string>
     <string name="tipologia_title">Scegli una tipologia di intervento</string>
+    <string name="tipo_dett_title">Scegli il tipo di dettaglio</string>
+    <string name="oggetto_dett_title">Inserisci l\'oggetto del dettaglio</string>
 
     <string-array name="tipologia_choose">
         <item n="0">Su richiesta</item>

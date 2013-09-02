@@ -1,7 +1,8 @@
 package com.federicocolantoni.projects.interventix.utils;
 
 import java.util.Calendar;
-import java.util.Date;
+
+import org.joda.time.DateTime;
 
 import android.content.Context;
 import android.text.Editable;
@@ -21,8 +22,8 @@ import com.federicocolantoni.projects.interventix.R;
 public class DateTimePicker extends RelativeLayout {
 
     // DatePicker reference
-    private int startYear = 1900;
-    private int endYear = 3000;
+    private final int startYear = 1900;
+    private final int endYear = 3000;
 
     private View myPickerView;
 
@@ -390,7 +391,7 @@ public class DateTimePicker extends RelativeLayout {
 
     class InputFilterMinMax implements InputFilter {
 
-	private int min, max;
+	private final int min, max;
 
 	public InputFilterMinMax(int min, int max) {
 
@@ -411,9 +412,8 @@ public class DateTimePicker extends RelativeLayout {
 	    try {
 		int input = Integer.parseInt(dest.toString()
 			+ source.toString());
-		if (isInRange(min, max, input)) {
+		if (isInRange(min, max, input))
 		    return null;
-		}
 	    } catch (NumberFormatException nfe) {
 	    }
 	    return "";
@@ -433,9 +433,9 @@ public class DateTimePicker extends RelativeLayout {
 	sendToDisplay();
     }
 
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(DateTime dateTime) {
 
-	cal.setTime(dateTime);
+	cal.setTime(dateTime.toDate());
 	initFilterNumericDigit();
 
 	month_display.setText(months[cal.get(Calendar.MONTH)]);

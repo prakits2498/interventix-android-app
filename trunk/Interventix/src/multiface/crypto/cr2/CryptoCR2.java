@@ -80,6 +80,7 @@ public class CryptoCR2 {
 		f.format("\\u%04x", (int) c);
 	    }
 	}
+	f.close();
 	return b.toString();
     }
 
@@ -90,7 +91,7 @@ public class CryptoCR2 {
 	for (int i = 0; i < length; i++) {
 	    int high = Character.digit(hex[i * 2], 16);
 	    int low = Character.digit(hex[i * 2 + 1], 16);
-	    int value = (high << 4) | low;
+	    int value = high << 4 | low;
 	    if (value > 127) {
 		value -= 256;
 	    }
@@ -107,9 +108,9 @@ public class CryptoCR2 {
 
 	StringBuilder s = new StringBuilder(2 * b.length);
 
-	for (int i = 0; i < b.length; i++) {
+	for (byte element : b) {
 
-	    int v = b[i] & 0xff;
+	    int v = element & 0xff;
 
 	    s.append((char) Hexhars[v >> 4]);
 	    s.append((char) Hexhars[v & 0xf]);

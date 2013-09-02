@@ -34,6 +34,7 @@ public class DettaglioInterventoAdapter extends CursorAdapter {
 		.getTag(R.id.tv_object_detail_interv);
 
 	if (!mFoundIndexes) {
+
 	    mTipoDettaglioInterventoIndex = cursor
 		    .getColumnIndex(DettaglioInterventoDB.Fields.TIPO);
 	    mOggettoDettaglioInterventoIndex = cursor

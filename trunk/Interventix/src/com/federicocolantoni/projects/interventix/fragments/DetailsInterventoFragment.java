@@ -2,18 +2,20 @@ package com.federicocolantoni.projects.interventix.fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
@@ -30,6 +32,7 @@ public class DetailsInterventoFragment extends SherlockFragment implements
 
     private final String[] PROJECTION = new String[] {
 	    DettaglioInterventoDB.Fields._ID,
+	    DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
 	    DettaglioInterventoDB.Fields.TIPO,
 	    DettaglioInterventoDB.Fields.OGGETTO };
 
@@ -69,11 +72,6 @@ public class DetailsInterventoFragment extends SherlockFragment implements
 	tv_costs_intervento.setText("Dettagli Intervento "
 		+ bundle.getLong(Constants.NUMERO_INTERVENTO));
 
-	// ListDetailsIntervento details = (ListDetailsIntervento) bundle
-	// .getSerializable(Constants.LIST_DETAILS_INTERVENTO);
-
-	// List<DettaglioIntervento> listDetails = details.getListDetails();
-
 	ListView detailsList = (ListView) view
 		.findViewById(R.id.list_details_intervento);
 
@@ -81,18 +79,51 @@ public class DetailsInterventoFragment extends SherlockFragment implements
 
 	detailsList.setAdapter(mAdapter);
 
+	detailsList.setOnItemClickListener(new OnItemClickListener() {
+
+	    @Override
+	    public void onItemClick(AdapterView<?> adapter, View view,
+		    int position, long id) {
+
+		Bundle bundle = new Bundle();
+
+		Cursor cur = (Cursor) adapter.getItemAtPosition(position);
+
+		bundle.putLong(
+			Constants.ID_DETTAGLIO_INTERVENTO,
+			cur.getInt(cur
+				.getColumnIndex(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO)));
+
+		FragmentManager manager = getSherlockActivity()
+			.getSupportFragmentManager();
+		FragmentTransaction transaction = manager.beginTransaction();
+
+		DetailDettaglioIntervento dettInterv = new DetailDettaglioIntervento();
+		dettInterv.setArguments(bundle);
+
+		transaction.replace(R.id.fragments_layout, dettInterv,
+			Constants.DETAILS_DETTAGLIO_INTERVENTO_FRAGMENT);
+		transaction
+			.addToBackStack(Constants.INFORMATIONS_INTERVENTO_FRAGMENT);
+		transaction
+			.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
+		transaction.commit();
+	    }
+	});
+
 	getSherlockActivity().getSupportLoaderManager().initLoader(
 		MESSAGE_LOADER, null, this);
 
 	return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-	getSherlockActivity().getSupportMenuInflater().inflate(
-		R.menu.details_intervento, menu);
-    }
+    // @Override
+    // public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    //
+    // getSherlockActivity().getSupportMenuInflater().inflate(
+    // R.menu.details_interve_menu, menu);
+    // }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

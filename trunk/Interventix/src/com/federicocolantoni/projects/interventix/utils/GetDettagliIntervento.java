@@ -34,7 +34,8 @@ public class GetDettagliIntervento extends
 		DettaglioInterventoDB.Fields.OGGETTO,
 		DettaglioInterventoDB.Fields.TIPO,
 		DettaglioInterventoDB.Fields.INIZIO,
-		DettaglioInterventoDB.Fields.FINE };
+		DettaglioInterventoDB.Fields.FINE,
+		DettaglioInterventoDB.Fields.TECNICI };
 
 	String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND "
 		+ DettaglioInterventoDB.Fields.INTERVENTO + " = ?";
@@ -66,6 +67,24 @@ public class GetDettagliIntervento extends
 		    .getColumnIndex(DettaglioInterventoDB.Fields.INIZIO)));
 	    detailInterv.setmFine(cursor.getLong(cursor
 		    .getColumnIndex(DettaglioInterventoDB.Fields.FINE)));
+
+	    String tecnici = cursor.getString(cursor
+		    .getColumnIndex(DettaglioInterventoDB.Fields.TECNICI));
+
+	    if (tecnici.length() > 0) {
+		System.out.println("Tecnici dettaglio intervento: " + tecnici);
+
+		String[] split = tecnici.split(",");
+
+		List<Integer> listTecnici = new ArrayList<Integer>();
+
+		for (String element : split) {
+
+		    listTecnici.add(Integer.parseInt(element));
+		}
+
+		detailInterv.setmTecnici(listTecnici);
+	    }
 
 	    listaDettagliInterv.add(detailInterv);
 	}

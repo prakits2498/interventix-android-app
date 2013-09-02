@@ -75,11 +75,14 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	readPref.execute();
 
 	try {
+
 	    prefs = readPref.get();
 	} catch (InterruptedException e) {
+
 	    e.printStackTrace();
 	    BugSenseHandler.sendException(e);
 	} catch (ExecutionException e) {
+
 	    e.printStackTrace();
 	    BugSenseHandler.sendException(e);
 	}
@@ -109,11 +112,14 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	    public void onClick(View v) {
 
 		try {
+
 		    onLogin();
 		} catch (InterruptedException e) {
+
 		    e.printStackTrace();
 		    BugSenseHandler.sendException(e);
 		} catch (IOException e) {
+
 		    e.printStackTrace();
 		    BugSenseHandler.sendException(e);
 		}
@@ -342,6 +348,7 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 
 	    first_run_dialog.setTitle(R.string.welcome_title);
 	    first_run_dialog.setMessage(R.string.welcome_message);
+	    first_run_dialog.setIcon(R.drawable.ic_launcher);
 
 	    LayoutInflater inflater = getActivity().getLayoutInflater();
 	    View view = inflater.inflate(R.layout.first_run, null);
@@ -405,6 +412,7 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	    progress = new ProgressDialog(context);
 	    progress.setIndeterminate(true);
 	    progress.setTitle("Login in corso");
+	    progress.setIcon(R.drawable.ic_launcher);
 	    progress.setMessage("Attendere prego...");
 	    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 	    progress.setCancelable(false);
@@ -610,17 +618,11 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 
 	    // in this case, auto login's flag is true
 	    // check user's info directly on the DB
-	    else {
-
-		System.out.println("auto-login true");
-
-		/*
-		 * TODO make login checking that the username and password given
-		 * by user are already on the DB: - if presents, make login; -
-		 * otherwise, allow the user to choose to connect to the server.
-		 */
-
-	    }
+	    // else {
+	    //
+	    // System.out.println("auto-login true");
+	    //
+	    // }
 
 	    return result;
 	}

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#FFFFFF"
-    android:orientation="vertical" >
+    android:orientation="horizontal"
+    android:weightSum="1" >
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:paddingTop="2dp" >
@@ -20,14 +23,6 @@
             android:text="Pluto"
             android:textSize="18sp"
             android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="2dp"
-        android:paddingLeft="2dp"
-        android:paddingRight="2dp" >
 
         <TextView
             android:id="@+id/tv_object_detail_interv"
@@ -36,5 +31,13 @@
             android:text="fhgasjfgasg"
             android:textSize="14sp" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_signature_right_navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/content_right_nav"
+        android:src="@drawable/ic_navigation_next_item" />
 
 </LinearLayout>

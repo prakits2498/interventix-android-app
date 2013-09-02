@@ -138,6 +138,7 @@ public class InterventixDBContract {
 	    public static final String INTERVENTO = DATA[4];
 	    public static final String INIZIO = DATA[5];
 	    public static final String FINE = DATA[6];
+	    public static final String TECNICI = DATA[7];
 	    public static final String MODIFICATO = DATA[24];
 	}
     }
@@ -191,6 +192,7 @@ public class InterventixDBContract {
 	    public static final String INTERVENTO = DATA[4];
 	    public static final String INIZIO = DATA[5];
 	    public static final String FINE = DATA[6];
+	    public static final String TECNICI = DATA[7];
 	    public static final String MODIFICATO = DATA[24];
 	}
     }

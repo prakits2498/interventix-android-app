@@ -1,13 +1,12 @@
 package com.federicocolantoni.projects.interventix.fragments;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -51,8 +50,9 @@ public class InformationsInterventoFragment extends SherlockFragment {
     public static final int TOKEN_PRODOTTO = 4;
     public static final int TOKEN_MODALITA = 3;
     public static final int TOKEN_MOTIVO = 2;
+    public static final int TOKEN_DATA_ORA = 1;
 
-    public static long id_intervento;
+    public static long sId_Intervento;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,13 +72,13 @@ public class InformationsInterventoFragment extends SherlockFragment {
 
 	Bundle bundle = getArguments();
 
-	id_intervento = bundle.getLong(Constants.ID_INTERVENTO);
+	sId_Intervento = bundle.getLong(Constants.ID_INTERVENTO);
 
 	Intervento interv = null;
 
 	try {
 	    interv = new GetInformationsIntervento(getSherlockActivity())
-		    .execute(id_intervento).get();
+		    .execute(sId_Intervento).get();
 	} catch (InterruptedException e) {
 	    e.printStackTrace();
 	    BugSenseHandler.sendException(e);
@@ -185,16 +185,12 @@ public class InformationsInterventoFragment extends SherlockFragment {
 		final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView
 			.findViewById(R.id.DateTimePicker);
 
-		Date date = null;
-		try {
-		    date = new SimpleDateFormat("dd/MM/yyyy HH:mm",
-			    Locale.ITALY).parse(tv_date_interv.getText()
-			    .toString());
-		} catch (ParseException e) {
-		    e.printStackTrace();
-		}
+		DateTime dt = null;
 
-		dateTimePicker.setDateTime(date);
+		dt = DateTime.parse(tv_date_interv.getText().toString(),
+			DateTimeFormat.forPattern("dd/MM/yyyy HH:mm"));
+
+		dateTimePicker.setDateTime(dt);
 
 		dateTimePicker.setDateChangedListener(new DateWatcher() {
 
@@ -216,33 +212,32 @@ public class InformationsInterventoFragment extends SherlockFragment {
 					.getYear(), dateTimePicker.getMonth(),
 					dateTimePicker.getDay(), dateTimePicker
 						.getHour(), dateTimePicker
-						.getMinute());
+						.getMinute(), DateTimeZone
+						.forID("Europe/Rome"));
 
-				tv_date_interv.setText(dt.toString(
-					"dd/MM/yyyy HH:mm", Locale.ITALY));
+				tv_date_interv.setText(dt
+					.toString("dd/MM/yyyy HH:mm"));
 
-				SaveChangesIntervento saveChange = new SaveChangesIntervento(
+				SaveChangesIntervento saveChanges = new SaveChangesIntervento(
 					getSherlockActivity());
 
-				Date newDate = dt.toDate();
-
 				ContentValues values = new ContentValues();
-				values.put(InterventoDB.Fields.DATA_ORA,
-					newDate.getTime());
+				values.put(InterventoDB.Fields.DATA_ORA, dt
+					.toDate().getTime());
 				values.put(InterventoDB.Fields.MODIFICATO, "M");
 
-				String selection = Fields.TYPE + " = '"
-					+ InterventoDB.INTERVENTO_ITEM_TYPE
-					+ "' AND "
+				String selection = InterventoDB.Fields.TYPE
+					+ " = ? AND "
 					+ InterventoDB.Fields.ID_INTERVENTO
 					+ " = ?";
 
-				String[] selectionArgs = new String[] { ""
-					+ id_intervento };
+				String[] selectionArgs = new String[] {
+					InterventoDB.INTERVENTO_ITEM_TYPE,
+					"" + sId_Intervento };
 
-				saveChange.startUpdate(TOKEN_NOMINATIVO, null,
-					Data.CONTENT_URI, values, selection,
-					selectionArgs);
+				saveChanges.startUpdate(TOKEN_DATA_ORA, null,
+					InterventoDB.CONTENT_URI, values,
+					selection, selectionArgs);
 
 				SharedPreferences prefs = getSherlockActivity()
 					.getSharedPreferences(
@@ -285,17 +280,16 @@ public class InformationsInterventoFragment extends SherlockFragment {
 			    @Override
 			    public void onClick(View v) {
 
-				Date date = null;
-				try {
-				    date = new SimpleDateFormat(
-					    "dd/MM/yyyy HH:mm", Locale.ITALY)
-					    .parse(tv_date_interv.getText()
-						    .toString());
-				} catch (ParseException e) {
-				    e.printStackTrace();
-				}
+				DateTime dt = null;
 
-				dateTimePicker.setDateTime(date);
+				DateTimeFormatter fmt = DateTimeFormat
+					.forPattern("dd/MM/yyyy HH:mm");
+				fmt.withZone(DateTimeZone.forID("Europe/Rome"));
+
+				dt = fmt.parseDateTime(tv_date_interv.getText()
+					.toString());
+
+				dateTimePicker.setDateTime(dt);
 			    }
 			});
 
@@ -309,9 +303,10 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	TextView tv_date_interv = (TextView) date_interv
 		.findViewById(R.id.tv_row_date);
 
-	DateTime dt = new DateTime(interv.getmDataOra());
+	DateTime dt = new DateTime(interv.getmDataOra(),
+		DateTimeZone.forID("Europe/Rome"));
 
-	tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
+	tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
 
 	return view;
     }
@@ -379,7 +374,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 		    + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
 		    + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 
-	    String[] selectionArgs = new String[] { "" + id_intervento };
+	    String[] selectionArgs = new String[] { "" + sId_Intervento };
 
 	    saveChange.startUpdate(TOKEN_MODALITA, null, Data.CONTENT_URI,
 		    values, selection, selectionArgs);
@@ -459,7 +454,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 		    + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
 		    + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 
-	    String[] selectionArgs = new String[] { "" + id_intervento };
+	    String[] selectionArgs = new String[] { "" + sId_Intervento };
 
 	    saveChange.startUpdate(TOKEN_MODALITA, null, Data.CONTENT_URI,
 		    values, selection, selectionArgs);
@@ -484,11 +479,11 @@ public class InformationsInterventoFragment extends SherlockFragment {
 
 	    prodotto.setTitle(R.string.prodotto_title);
 
-	    TextView tv_prodotto = (TextView) getSherlockActivity()
+	    TextView tv_product = (TextView) getSherlockActivity()
 		    .findViewById(R.id.tv_row_product);
 
 	    mEdit_prodotto = new EditText(getSherlockActivity());
-	    mEdit_prodotto.setText(tv_prodotto.getText());
+	    mEdit_prodotto.setText(tv_product.getText());
 
 	    prodotto.setView(mEdit_prodotto);
 
@@ -505,7 +500,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 		    .findViewById(R.id.tv_row_product);
 	    tv_product.setText(mEdit_prodotto.getText());
 
-	    SaveChangesIntervento saveChange = new SaveChangesIntervento(
+	    SaveChangesIntervento saveChanges = new SaveChangesIntervento(
 		    getSherlockActivity());
 
 	    ContentValues values = new ContentValues();
@@ -517,9 +512,9 @@ public class InformationsInterventoFragment extends SherlockFragment {
 		    + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
 		    + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 
-	    String[] selectionArgs = new String[] { "" + id_intervento };
+	    String[] selectionArgs = new String[] { "" + sId_Intervento };
 
-	    saveChange.startUpdate(TOKEN_PRODOTTO, null, Data.CONTENT_URI,
+	    saveChanges.startUpdate(TOKEN_PRODOTTO, null, Data.CONTENT_URI,
 		    values, selection, selectionArgs);
 
 	    SharedPreferences prefs = getSherlockActivity()
@@ -595,7 +590,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 		    + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
 		    + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 
-	    String[] selectionArgs = new String[] { "" + id_intervento };
+	    String[] selectionArgs = new String[] { "" + sId_Intervento };
 
 	    saveChange.startUpdate(TOKEN_NOMINATIVO, null, Data.CONTENT_URI,
 		    values, selection, selectionArgs);
@@ -671,7 +666,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 		    + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND "
 		    + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 
-	    String[] selectionArgs = new String[] { "" + id_intervento };
+	    String[] selectionArgs = new String[] { "" + sId_Intervento };
 
 	    saveChange.startUpdate(TOKEN_MOTIVO, null, Data.CONTENT_URI,
 		    values, selection, selectionArgs);

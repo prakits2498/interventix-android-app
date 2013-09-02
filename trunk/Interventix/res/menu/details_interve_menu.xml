@@ -3,9 +3,8 @@
 
     <item
         android:id="@+id/add_detail_interv"
-        android:icon="@drawable/button_add"
-        android:title="@string/add_details_interv"
-        android:showAsAction="always">
-    </item>
+        android:icon="@drawable/content_new_5"
+        android:showAsAction="always"
+        android:title="@string/add_dettaglio_menu"/>
 
 </menu>
