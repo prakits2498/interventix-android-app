@@ -56,23 +56,24 @@ import com.bugsense.trace.BugSenseHandler;
 // ReportingInteractionMode.TOAST, forceCloseDialogAfterToast = false,
 // resToastText = R.string.crash_toast_report)
 public class Interventix extends Application {
-
+    
     @SuppressLint("NewApi")
     @Override
     public void onCreate() {
-
+	
 	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
-
+	
 	super.onCreate();
 	// ACRA.init(this);
 	loadAsyncTask();
     }
-
+    
     private void loadAsyncTask() {
-
+	
 	try {
 	    Class.forName("android.os.AsyncTask");
-	} catch (ClassNotFoundException e) {
+	}
+	catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
     }

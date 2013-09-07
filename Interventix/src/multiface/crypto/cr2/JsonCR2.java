@@ -22,7 +22,7 @@ import org.json.simple.parser.ParseException;
  * @author Diego Falcinelli Multiface - www.multiface.it
  */
 public class JsonCR2 {
-
+    
     /**
      * DEBUG di response
      */
@@ -32,7 +32,7 @@ public class JsonCR2 {
      */
     private static final boolean DEBUG_REQUEST = false;
     private static final boolean DEBUG_READ = false;
-
+    
     // -------------------------- READ --------------------------------
     /**
      * Decodifica di un richiesta JsonCR2 da una stringa criptata CR2
@@ -43,11 +43,11 @@ public class JsonCR2 {
      * @throws Exception
      */
     @Deprecated
-    public static JSONObject readRequest(String stringCR2)
-	    throws ParseException, Exception {
+    public static JSONObject
+	    readRequest(String stringCR2) throws ParseException, Exception {
 	return JsonCR2.read(stringCR2);
     }
-
+    
     /**
      * Decodifica di un richiesta JsonCR2 da una stringa criptata CR2
      * 
@@ -57,18 +57,18 @@ public class JsonCR2 {
      * @throws Exception
      */
     public static JSONObject read(String stringCR2) throws ParseException,
-	    Exception {
+						   Exception {
 	if (DEBUG_READ) {
 	    JSONObject json = (JSONObject) new JSONParser().parse(stringCR2);
 	    return json;
-	} else {
-	    JSONObject json = (JSONObject) new JSONParser().parse(CryptoCR2
-		    .decrypt(stringCR2));
+	}
+	else {
+	    JSONObject json = (JSONObject) new JSONParser().parse(CryptoCR2.decrypt(stringCR2));
 	    return json;
 	}
-
+	
     }
-
+    
     // -------------------------- CREATE REQUEST
     // --------------------------------
     /**
@@ -81,14 +81,16 @@ public class JsonCR2 {
      * @return Stringa della richiesta creata in JSON/CR2
      * @throws Exception
      */
-    public static String createRequestLogin(String username, String password)
-	    throws Exception {
+    public static
+	    String
+	    createRequestLogin(String username, String password)
+								throws Exception {
 	Map<String, Object> m = new HashMap<String, Object>();
 	m.put("username", username);
 	m.put("password", username);
 	return JsonCR2.createRequest("users", "login", m, -1);
     }
-
+    
     /**
      * Metodo per inviare una richiesta-JSON/CR2 ad un WebService di tipo
      * Json/CR2
@@ -105,44 +107,43 @@ public class JsonCR2 {
      * @return Stringa della richiesta creata in JSON/CR2
      * @throws Exception
      */
-    public static String createRequest(String section, String action,
-	    Map parameters, int iduser) throws Exception {
-
+    public static String
+	    createRequest(String section, String action, Map parameters,
+			  int iduser) throws Exception {
+	
 	// utile per Android
 	JSONObject json = new JSONObject();
 	Random random = new Random();
 	Date date = new Date();
-
+	
 	// Offuscatore nella richiesta JSON/CR2
-	json.put(
-		"obfuscator",
-		Long.toHexString(date.getTime() * date.hashCode()) + ""
-			+ Long.toHexString(Math.abs(random.nextLong())));
-
+	json.put("obfuscator", Long.toHexString(date.getTime() * date.hashCode()) + "" + Long.toHexString(Math.abs(random.nextLong())));
+	
 	// Identificativo Utente
 	json.put("iduser", iduser);
-
+	
 	// Datetime
 	json.put("datetime", date.getTime());
-
+	
 	// Sezione e azione della richiesta
 	json.put("section", section);
 	json.put("action", action);
-
+	
 	if (parameters != null) {
 	    if (parameters.size() > 0) {
 		json.put("parameters", parameters);
 	    }
 	}
-
+	
 	if (DEBUG_REQUEST) {
 	    return json.toJSONString();
-	} else {
+	}
+	else {
 	    return CryptoCR2.encrypt(json.toJSONString());
 	}
-
+	
     }
-
+    
     // -------------------------- CREATE RESPONSE
     // --------------------------------
     /**
@@ -167,26 +168,24 @@ public class JsonCR2 {
      * @return Stringa della risposta creata in JSON/CR2
      */
     public static String createResponse(String response, String section,
-	    String action, String code, String message, Object data) {
+					String action, String code,
+					String message, Object data) {
 	JSONObject json = new JSONObject();
 	json.put("response", response);
-
+	
 	Map<String, String> req = new HashMap<String, String>(2);
 	req.put("action", action);
 	req.put("section", section);
 	json.put("request", req);
-
+	
 	json.put("code", code);
-
+	
 	Random random = new Random();
 	Date date = new Date();
-
+	
 	// Offuncatore nella richiesta JSON/CR2
-	json.put(
-		"obfuscator",
-		Long.toHexString(date.getTime() * date.hashCode()) + ""
-			+ Long.toHexString(Math.abs(random.nextLong())));
-
+	json.put("obfuscator", Long.toHexString(date.getTime() * date.hashCode()) + "" + Long.toHexString(Math.abs(random.nextLong())));
+	
 	// Datetime
 	json.put("datetime", date.getTime());
 	if (message != null) {
@@ -198,17 +197,17 @@ public class JsonCR2 {
 	try {
 	    if (DEBUG_RESPONSE) {
 		return json.toJSONString();
-	    } else {
+	    }
+	    else {
 		return CryptoCR2.encrypt(json.toJSONString());
 	    }
-	} catch (Exception ex) {
-	    Logger.getLogger(JsonCR2.class.getName()).log(Level.SEVERE, null,
-		    ex);
-	    return JsonCR2.createResponseError(section, action,
-		    CodeResponse.SEND_REQUEST_FAILED, ex.getMessage());
+	}
+	catch (Exception ex) {
+	    Logger.getLogger(JsonCR2.class.getName()).log(Level.SEVERE, null, ex);
+	    return JsonCR2.createResponseError(section, action, CodeResponse.SEND_REQUEST_FAILED, ex.getMessage());
 	}
     }
-
+    
     /**
      * Crea una risposta di errore semplice
      * 
@@ -217,11 +216,10 @@ public class JsonCR2 {
      * @return
      */
     public static String createResponseError(String error_code,
-	    String error_message) {
-	return JsonCR2.createResponseError(null, null, error_code,
-		error_message, null);
+					     String error_message) {
+	return JsonCR2.createResponseError(null, null, error_code, error_message, null);
     }
-
+    
     /**
      * Crea una risposta di errore senza eccezione
      * 
@@ -238,11 +236,11 @@ public class JsonCR2 {
      * @return Stringa della risposta creata in JSON/CR2
      */
     public static String createResponseError(String section, String action,
-	    String error_code, String error_message) {
-	return JsonCR2.createResponseError(section, action, error_code,
-		error_message, null);
+					     String error_code,
+					     String error_message) {
+	return JsonCR2.createResponseError(section, action, error_code, error_message, null);
     }
-
+    
     /**
      * Crea una risposta di errore con l'eccezione
      * 
@@ -261,32 +259,31 @@ public class JsonCR2 {
      * @return Stringa della risposta creata in JSON/CR2
      */
     public static String createResponseError(String section, String action,
-	    String error_code, String error_message, Exception exception) {
-
+					     String error_code,
+					     String error_message,
+					     Exception exception) {
+	
 	JSONObject json = new JSONObject();
 	json.put("response", StaticResponse.ERROR);
-
+	
 	Map<String, String> req = new HashMap<String, String>();
 	if (section != null)
 	    req.put("action", action);
 	if (action != null)
 	    req.put("section", section);
-
+	
 	if (req.size() > 0)
 	    json.put("request", req);
 	json.put("code", error_code);
 	Random random = new Random();
 	Date date = new Date();
-
+	
 	// Offuncatore nella richiesta JSON/CR2
-	json.put(
-		"obfuscator",
-		Long.toHexString(date.getTime() * date.hashCode()) + ""
-			+ Long.toHexString(Math.abs(random.nextLong())));
-
+	json.put("obfuscator", Long.toHexString(date.getTime() * date.hashCode()) + "" + Long.toHexString(Math.abs(random.nextLong())));
+	
 	// Datetime
 	json.put("datetime", date.getTime());
-
+	
 	if (error_message != null && exception != null) {
 	    json.put("message", error_message + " - " + exception.getMessage());
 	}
@@ -296,22 +293,23 @@ public class JsonCR2 {
 	if (error_message == null && exception != null) {
 	    json.put("message", exception.getMessage());
 	}
-
+	
 	System.out.println("RESPONSE: " + json.toJSONString());
 	try {
 	    if (DEBUG_RESPONSE) {
 		return json.toJSONString();
-	    } else {
+	    }
+	    else {
 		return CryptoCR2.encrypt(json.toJSONString());
 	    }
-	} catch (Exception ex) {
-	    Logger.getLogger(JsonCR2.class.getName()).log(Level.SEVERE, null,
-		    ex);
+	}
+	catch (Exception ex) {
+	    Logger.getLogger(JsonCR2.class.getName()).log(Level.SEVERE, null, ex);
 	}
 	return CodeResponse.ERRCODE;
-
+	
     }
-
+    
     /**
      * Crea la risposta di successo
      * 
@@ -322,10 +320,9 @@ public class JsonCR2 {
      * @return Stringa della risposta creata in JSON/CR2
      */
     public static String createResponseSuccess(String section, String action) {
-	return JsonCR2.createResponse("success", section, action,
-		CodeResponse.SUCCESS, null, null);
+	return JsonCR2.createResponse("success", section, action, CodeResponse.SUCCESS, null, null);
     }
-
+    
     /**
      * Crea la risposta di successo
      * 
@@ -339,11 +336,10 @@ public class JsonCR2 {
      * @return Stringa della risposta creata in JSON/CR2
      */
     public static String createResponseSuccess(String section, String action,
-	    Object data) {
-	return JsonCR2.createResponse(StaticResponse.SUCCESS, section, action,
-		CodeResponse.SUCCESS, null, data);
+					       Object data) {
+	return JsonCR2.createResponse(StaticResponse.SUCCESS, section, action, CodeResponse.SUCCESS, null, data);
     }
-
+    
     /**
      * Crea una risposta di Accesso Consentito sull'output
      * 
@@ -357,13 +353,10 @@ public class JsonCR2 {
 	json.put("code", CodeResponse.SUCCESS);
 	Random random = new Random();
 	Date date = new Date();
-
+	
 	// Offuncatore nella richiesta JSON/CR2
-	json.put(
-		"obfuscator",
-		Long.toHexString(date.getTime() * date.hashCode()) + ""
-			+ Long.toHexString(Math.abs(random.nextLong())));
-
+	json.put("obfuscator", Long.toHexString(date.getTime() * date.hashCode()) + "" + Long.toHexString(Math.abs(random.nextLong())));
+	
 	// Datetime
 	json.put("datetime", date.getTime());
 	json.put("iduser", iduser);
@@ -371,24 +364,23 @@ public class JsonCR2 {
 	try {
 	    if (DEBUG_RESPONSE) {
 		return json.toJSONString();
-	    } else {
+	    }
+	    else {
 		return CryptoCR2.encrypt(json.toJSONString());
 	    }
-	} catch (Exception ex) {
-	    return JsonCR2.createResponseError(StaticResponse.LOGIN,
-		    StaticResponse.LOGIN, CodeResponse.GENERIC,
-		    MessageResponse.GENERIC, ex);
+	}
+	catch (Exception ex) {
+	    return JsonCR2.createResponseError(StaticResponse.LOGIN, StaticResponse.LOGIN, CodeResponse.GENERIC, MessageResponse.GENERIC, ex);
 	}
 	// return CodeResponse.ERRCODE;
     }
-
+    
     /**
      * Crea una risposta di Accesso Negato sull'output
      * 
      * @return Stringa della risposta creata in JSON/CR2
      */
     public static String createResponseLoginERROR() {
-	return createResponseError(StaticResponse.LOGIN, StaticResponse.LOGIN,
-		CodeResponse.ACCESS_DENIED, MessageResponse.ACCESS_DENIED);
+	return createResponseError(StaticResponse.LOGIN, StaticResponse.LOGIN, CodeResponse.ACCESS_DENIED, MessageResponse.ACCESS_DENIED);
     }
 }

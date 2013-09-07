@@ -1,16 +1,15 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * To change this template, choose Tools | Templates and open the template in
+ * the editor.
  */
 package multiface.crypto.cr2.response;
 
 /**
- * 
  * @author Diego64
  */
 public interface CodeResponse {
     public static final String ERRCODE = "-1";
-
+    
     public static final String SUCCESS = "0000";
     public static final String ACCESS_DENIED = "0001";
     public static final String GENERIC = "0002";
@@ -30,5 +29,5 @@ public interface CodeResponse {
     public static final String MOD_INTERVENT_USER_NOT_FOUND = "2500";
     public static final String MOD_INTERVENT_CLIENT_NOT_FOUND = "2550";
     public static final String CONFLICT_INTERVENTS = "3600";
-
+    
 }

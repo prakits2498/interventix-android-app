@@ -6,21 +6,21 @@ import java.util.List;
 import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
 
 public final class ListDetailsIntervento implements Serializable {
-
+    
     /**
 	 * 
 	 */
     private static final long serialVersionUID = 8314993257908959389L;
-
+    
     private List<DettaglioIntervento> listDetails;
-
+    
     /**
      * @return the listDetails
      */
     public List<DettaglioIntervento> getListDetails() {
 	return listDetails;
     }
-
+    
     /**
      * @param listDetails
      *            the listDetails to set

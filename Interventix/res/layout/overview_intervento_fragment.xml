@@ -32,7 +32,7 @@
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:layout_marginTop="1dp"
-                android:background="#FFFFFF"
+                android:background="@drawable/list_pressed_item"
                 android:orientation="horizontal"
                 android:weightSum="1" >
 
@@ -101,7 +101,7 @@
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:layout_marginTop="1dp"
-                android:background="#FFFFFF"
+                android:background="@drawable/list_pressed_item"
                 android:orientation="horizontal"
                 android:weightSum="1" >
 
@@ -109,19 +109,13 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:drawableRight="@drawable/ic_navigation_next_item"
                     android:gravity="left|center_vertical"
                     android:paddingLeft="4dp"
                     android:text="@string/row_informations"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/img_informations_right_navigation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/content_right_nav"
-                    android:src="@drawable/ic_navigation_next_item" />
             </LinearLayout>
 
             <LinearLayout
@@ -131,7 +125,7 @@
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:layout_marginTop="1dp"
-                android:background="#FFFFFF"
+                android:background="@drawable/list_pressed_item"
                 android:orientation="horizontal"
                 android:weightSum="1" >
 
@@ -171,7 +165,7 @@
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:layout_marginTop="1dp"
-                android:background="#FFFFFF"
+                android:background="@drawable/list_pressed_item"
                 android:orientation="horizontal"
                 android:weightSum="2" >
 
@@ -214,7 +208,7 @@
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:layout_marginTop="1dp"
-                android:background="#FFFFFF"
+                android:background="@drawable/list_pressed_item"
                 android:orientation="horizontal"
                 android:weightSum="2" >
 

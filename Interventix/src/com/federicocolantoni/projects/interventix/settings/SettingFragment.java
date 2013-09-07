@@ -12,10 +12,10 @@ import com.federicocolantoni.projects.interventix.R;
 
 @SuppressLint("NewApi")
 public class SettingFragment extends PreferenceFragment {
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+	
 	super.onCreate(savedInstanceState);
 	addPreferencesFromResource(R.xml.activity_preferences_options);
     }

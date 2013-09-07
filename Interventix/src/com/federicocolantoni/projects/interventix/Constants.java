@@ -1,10 +1,10 @@
 package com.federicocolantoni.projects.interventix;
 
 public final class Constants {
-
+    
     // *** API key BugSense ***\\
     public static final String API_KEY = "0ec355e8";
-
+    
     // *** costanti generali ***\\
     public static final String ACCESS_ALLOWED = "ACCESSO CONSENTITO";
     public static final String ACCESS_DINIED = "ACCESSO NEGATO";
@@ -24,7 +24,7 @@ public final class Constants {
     public static final String REVISION_INTERVENTIONS = "REVISION_INTERVENTIONS";
     public static final String REVISION_USERS = "REVISION_USERS";
     public static final String REVISION_CLIENTS = "REVISION_CLIENTS";
-
+    
     // *** costanti per le dialog ***\\
     public static final String FIRST_RUN_DIALOG_FRAGMENT = "FIRST_RUN_DIALOG_FRAGMENT";
     public static final String LOGOUT_DIALOG_FRAGMENT = "LOGOUT_DIALOG_FRAGMENT";
@@ -41,7 +41,7 @@ public final class Constants {
     public static final String TIPO_DETTAGLIO_DIALOG_FRAGMENT = "TIPO_DETTAGLIO_DIALOG_FRAGMENT";
     public static final String OGGETTO_DETTAGLIO_DIALOG_FRAGMENT = "OGGETTO_DETTAGLIO_DIALOG_FRAGMENT";
     public static final String DESCRIZIONE_DETTAGLIO_DIALOG_FRAGMENT = "DESCRIZIONE_DETTAGLIO_DIALOG_FRAGMENT";
-
+    
     // *** costanti dell'intervento ***\\
     public static final String INTERVENTO = "INTERVENTO";
     public static final String ID_INTERVENTO = "ID_INTERVENTO";
@@ -52,12 +52,12 @@ public final class Constants {
     // public static final int TOKEN_EDIT_MODE = 1;
     public static final String LIST_DETAILS_INTERVENTO = "LIST_DETAILS_INTERVENTO";
     public static final Double IVA = 0.21;
-
+    
     // *** costanti per la gesture swipe ***\\
     public static final int SWIPE_MIN_DISTANCE = 120;
     public static final int SWIPE_MAX_OFF_PATH = 250;
     public static final int SWIPE_THRESHOLD_VELOCITY = 200;
-
+    
     // *** costante per i dati di login ***\\
     public static final String LOGIN_DATA = "LOGIN_DATA";
     public static final String USERNAME = "USERNAME";
