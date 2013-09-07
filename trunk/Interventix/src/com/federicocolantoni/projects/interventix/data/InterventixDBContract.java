@@ -8,47 +8,47 @@ import android.provider.BaseColumns;
  * Created by federico on 19/05/13.
  */
 public class InterventixDBContract {
-
+    
     public final static String AUTHORITY = "com.federicocolantoni.projects.interventix";
     final static Uri BASE_URI = Uri.parse("content://" + AUTHORITY);
-
+    
     private InterventixDBContract() {
-
+	
     }
-
+    
     public static class Data {
-
+	
 	public static final String PATH = "interventix";
 	public static final String DB_TABLE = PATH;
-	public final static Uri CONTENT_URI = BASE_URI.buildUpon()
-		.appendPath(PATH).build();
+	public final static Uri CONTENT_URI = BASE_URI.buildUpon().appendPath(PATH).build();
 	final static String MIME_TYPE = "vnd.com.federicocolantoni." + PATH;
-	public final static String COLLECTION_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
-		+ "/" + MIME_TYPE;
-	public final static String SINGLE_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
-		+ "/" + MIME_TYPE;
-
+	public final static String COLLECTION_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + MIME_TYPE;
+	public final static String SINGLE_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + MIME_TYPE;
+	
 	public static class Fields {
-
+	    
 	    public final static String _ID = BaseColumns._ID;
 	    public final static String TYPE = "type";
 	    public final static String INDEX = "indexed";
-	    public final static String[] DATA = { "data0", "data1", "data2",
-		    "data3", "data4", "data5", "data6", "data7", "data8",
-		    "data9", "data10", "data11", "data12", "data13", "data14",
-		    "data15", "data16", "data17", "data18", "data19", "data20",
-		    "data21", "data22", "data23", "data24" };
-	    public final static String[] BLOB = { "blob0", "blob1", "blob2" };
+	    public final static String[] DATA = {
+		    "data0", "data1", "data2", "data3", "data4", "data5",
+		    "data6", "data7", "data8", "data9", "data10", "data11",
+		    "data12", "data13", "data14", "data15", "data16", "data17",
+		    "data18", "data19", "data20", "data21", "data22", "data23",
+		    "data24"
+	    };
+	    public final static String[] BLOB = {
+		    "blob0", "blob1", "blob2"
+	    };
 	}
     }
-
+    
     public static class UtenteDB extends Data {
-
-	public static final String UTENTE_ITEM_TYPE = Data.SINGLE_ITEM_TYPE
-		+ ".utente";
-
+	
+	public static final String UTENTE_ITEM_TYPE = Data.SINGLE_ITEM_TYPE + ".utente";
+	
 	public static class Fields extends Data.Fields {
-
+	    
 	    public static final String NOME = DATA[0];
 	    public static final String COGNOME = DATA[1];
 	    public static final String USERNAME = DATA[2];
@@ -62,14 +62,13 @@ public class InterventixDBContract {
 	    public static final String MODIFICATO = DATA[24];
 	}
     }
-
+    
     public static class ClienteDB extends Data {
-
-	public static final String CLIENTE_ITEM_TYPE = Data.SINGLE_ITEM_TYPE
-		+ ".cliente";
-
+	
+	public static final String CLIENTE_ITEM_TYPE = Data.SINGLE_ITEM_TYPE + ".cliente";
+	
 	public static class Fields extends Data.Fields {
-
+	    
 	    public static final String NOMINATIVO = DATA[0];
 	    public static final String PARTITAIVA = DATA[1];
 	    public static final String TELEFONO = DATA[2];
@@ -88,14 +87,13 @@ public class InterventixDBContract {
 	    public static final String MODIFICATO = DATA[24];
 	}
     }
-
+    
     public static class InterventoDB extends Data {
-
-	public static final String INTERVENTO_ITEM_TYPE = Data.SINGLE_ITEM_TYPE
-		+ ".intervento";
-
+	
+	public static final String INTERVENTO_ITEM_TYPE = Data.SINGLE_ITEM_TYPE + ".intervento";
+	
 	public static class Fields extends Data.Fields {
-
+	    
 	    public static final String TIPOLOGIA = DATA[0];
 	    public static final String PRODOTTO = DATA[1];
 	    public static final String MOTIVO = DATA[2];
@@ -123,14 +121,13 @@ public class InterventixDBContract {
 	    public static final String MODIFICATO = DATA[24];
 	}
     }
-
+    
     public static class DettaglioInterventoDB extends Data {
-
-	public static final String DETTAGLIO_INTERVENTO_ITEM_TYPE = Data.SINGLE_ITEM_TYPE
-		+ ".dettaglio_intervento";
-
+	
+	public static final String DETTAGLIO_INTERVENTO_ITEM_TYPE = Data.SINGLE_ITEM_TYPE + ".dettaglio_intervento";
+	
 	public static class Fields extends Data.Fields {
-
+	    
 	    public static final String ID_DETTAGLIO_INTERVENTO = DATA[0];
 	    public static final String TIPO = DATA[1];
 	    public static final String OGGETTO = DATA[2];
@@ -142,14 +139,13 @@ public class InterventixDBContract {
 	    public static final String MODIFICATO = DATA[24];
 	}
     }
-
+    
     public static class InterventoDBTemp extends Data {
-
-	public static final String INTERVENTO_TEMP_ITEM_TYPE = Data.SINGLE_ITEM_TYPE
-		+ ".intervento.temp";
-
+	
+	public static final String INTERVENTO_TEMP_ITEM_TYPE = Data.SINGLE_ITEM_TYPE + ".intervento.temp";
+	
 	public static class Fields extends Data.Fields {
-
+	    
 	    public static final String TIPOLOGIA = DATA[0];
 	    public static final String PRODOTTO = DATA[1];
 	    public static final String MOTIVO = DATA[2];
@@ -177,14 +173,13 @@ public class InterventixDBContract {
 	    public static final String MODIFICATO = DATA[24];
 	}
     }
-
+    
     public static class DettaglioInterventoDBTemp extends Data {
-
-	public static final String DETTAGLIO_INTERVENTO_TEMP_ITEM_TYPE = Data.SINGLE_ITEM_TYPE
-		+ ".dettaglio_intervento.temp";
-
+	
+	public static final String DETTAGLIO_INTERVENTO_TEMP_ITEM_TYPE = Data.SINGLE_ITEM_TYPE + ".dettaglio_intervento.temp";
+	
 	public static class Fields extends Data.Fields {
-
+	    
 	    public static final String ID_DETTAGLIO_INTERVENTO = DATA[0];
 	    public static final String TIPO = DATA[1];
 	    public static final String OGGETTO = DATA[2];
