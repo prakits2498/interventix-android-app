@@ -26,8 +26,7 @@ public class Login extends SherlockFragment implements OnClickListener {
     }
     
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			     Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	final View view = inflater.inflate(R.layout.login, container, false);

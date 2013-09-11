@@ -32,9 +32,7 @@ public class BaseActivity extends SherlockFragmentActivity {
 	}
     }
     
-    public static class ReadDefaultPreferences
-					      extends
-					      AsyncTask<Void, Void, SharedPreferences> {
+    public static class ReadDefaultPreferences extends AsyncTask<Void, Void, SharedPreferences> {
 	
 	private final Context context;
 	

@@ -19,4 +19,5 @@
 
 <resources>
     <color name="pressed_interventix">#CC33B5E5</color>
+    <color name="list_pressed_datetime">#FFCCCCCC</color>
 </resources>

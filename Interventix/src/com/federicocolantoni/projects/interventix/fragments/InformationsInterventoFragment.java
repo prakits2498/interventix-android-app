@@ -13,12 +13,8 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,29 +30,28 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.intervento.Intervento;
 import com.federicocolantoni.projects.interventix.task.GetInformationsInterventoAsyncTask;
+import com.federicocolantoni.projects.interventix.task.SaveChangesInterventoAsyncQueryHandler;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatcher;
-import com.federicocolantoni.projects.interventix.utils.SaveChangesIntervento;
 
 @SuppressLint("NewApi")
 public class InformationsInterventoFragment extends SherlockFragment {
     
-    public static final int TOKEN_NOMINATIVO = 5;
-    public static final int TOKEN_PRODOTTO = 4;
-    public static final int TOKEN_MODALITA = 3;
-    public static final int TOKEN_MOTIVO = 2;
-    public static final int TOKEN_DATA_ORA = 1;
+    public static final int TOKEN_INFO_TIPOLOGIA = 6;
+    public static final int TOKEN_INFO_NOMINATIVO = 5;
+    public static final int TOKEN_INFO_PRODOTTO = 4;
+    public static final int TOKEN_INFO_MODALITA = 3;
+    public static final int TOKEN_INFO_MOTIVO = 2;
+    public static final int TOKEN_INFO_DATA_ORA = 1;
     
     public static long sId_Intervento;
     
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			     Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 	BugSenseHandler.initAndStartSession(getSherlockActivity(), Constants.API_KEY);
 	
@@ -94,7 +89,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    @Override
 	    public void onClick(View v) {
 		
-		new SetTipologia().show(getFragmentManager(), Constants.TIPOLOGIA_DIALOG_FRAGMENT);
+		new SetTipologiaDialog().show(getFragmentManager(), Constants.TIPOLOGIA_DIALOG_FRAGMENT);
 	    }
 	});
 	
@@ -107,7 +102,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    @Override
 	    public void onClick(View v) {
 		
-		new SetModalita().show(getFragmentManager(), Constants.MODALITA_DIALOG_FRAGMENT);
+		new SetModalitaDialog().show(getFragmentManager(), Constants.MODALITA_DIALOG_FRAGMENT);
 	    }
 	});
 	
@@ -120,7 +115,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    @Override
 	    public void onClick(View v) {
 		
-		new SetProdotto().show(getFragmentManager(), Constants.PRODOTTO_DIALOG_FRAGMENT);
+		new SetProdottoDialog().show(getFragmentManager(), Constants.PRODOTTO_DIALOG_FRAGMENT);
 	    }
 	});
 	
@@ -146,7 +141,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    @Override
 	    public void onClick(View v) {
 		
-		new SetNominativo().show(getFragmentManager(), Constants.NOMINATIVO_DIALOG_FRAGMENT);
+		new SetNominativoDialog().show(getFragmentManager(), Constants.NOMINATIVO_DIALOG_FRAGMENT);
 	    }
 	});
 	
@@ -193,39 +188,26 @@ public class InformationsInterventoFragment extends SherlockFragment {
 			
 			tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
 			
-			SaveChangesIntervento saveChanges = new SaveChangesIntervento(getSherlockActivity());
+			SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getSherlockActivity());
 			
 			ContentValues values = new ContentValues();
 			values.put(InterventoDB.Fields.DATA_ORA, dt.toDate().getTime());
 			values.put(InterventoDB.Fields.MODIFICATO, "M");
 			
-			String selection = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+			String[] projectionQuery = new String[] {
+				InterventoDB.Fields._ID,
+				InterventoDB.Fields.ID_INTERVENTO,
+				InterventoDB.Fields.MODIFICATO
+			};
 			
-			String[] selectionArgs = new String[] {
+			String selectionQuery = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+			
+			String[] selectionArgsQuery = new String[] {
 				InterventoDB.INTERVENTO_ITEM_TYPE,
 				"" + sId_Intervento
 			};
 			
-			saveChanges.startUpdate(TOKEN_DATA_ORA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
-			
-			SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-			
-			final Editor edit = prefs.edit();
-			
-			edit.putBoolean(Constants.INTERV_MODIFIED, true);
-			
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			    edit.apply();
-			}
-			else {
-			    new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-				    edit.commit();
-				}
-			    }).start();
-			}
+			saveChange.startQuery(TOKEN_INFO_DATA_ORA, values, InterventoDB.CONTENT_URI, projectionQuery, selectionQuery, selectionArgsQuery, null);
 			
 			dateTimeDialog.dismiss();
 		    }
@@ -284,12 +266,11 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	super.onResume();
     }
     
-    public static class SetTipologia extends SherlockDialogFragment implements
-								   OnClickListener {
+    public static class SetTipologiaDialog extends SherlockDialogFragment implements OnClickListener {
 	
 	private String mTipologiaChanged;
 	
-	public SetTipologia() {
+	public SetTipologiaDialog() {
 	    
 	}
 	
@@ -319,49 +300,34 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    SaveChangesIntervento saveChange = new SaveChangesIntervento(getSherlockActivity());
+	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getSherlockActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(InterventoDB.Fields.TIPOLOGIA, mTipologiaChanged);
 	    values.put(InterventoDB.Fields.MODIFICATO, "M");
 	    
-	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
-	    
-	    String[] selectionArgs = new String[] {
-		"" + sId_Intervento
+	    String[] projectionQuery = new String[] {
+		    InterventoDB.Fields._ID, InterventoDB.Fields.ID_INTERVENTO,
+		    InterventoDB.Fields.MODIFICATO
 	    };
 	    
-	    saveChange.startUpdate(TOKEN_MODALITA, null, Data.CONTENT_URI, values, selection, selectionArgs);
+	    String selectionQuery = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    String[] selectionArgsQuery = new String[] {
+		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento
+	    };
 	    
-	    final Editor edit = prefs.edit();
-	    
-	    edit.putBoolean(Constants.INTERV_MODIFIED, true);
-	    
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-		edit.apply();
-	    }
-	    else {
-		new Thread(new Runnable() {
-		    
-		    @Override
-		    public void run() {
-			edit.commit();
-		    }
-		}).start();
-	    }
+	    saveChange.startQuery(TOKEN_INFO_TIPOLOGIA, values, InterventoDB.CONTENT_URI, projectionQuery, selectionQuery, selectionArgsQuery, null);
 	    
 	    dialog.dismiss();
 	}
     }
     
-    public static class SetModalita extends SherlockDialogFragment implements
-								  OnClickListener {
+    public static class SetModalitaDialog extends SherlockDialogFragment implements OnClickListener {
 	
 	private String mModalitaChanged;
 	
-	public SetModalita() {
+	public SetModalitaDialog() {
 	    
 	}
 	
@@ -392,30 +358,34 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    SaveChangesIntervento saveChange = new SaveChangesIntervento(getSherlockActivity());
+	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getSherlockActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(InterventoDB.Fields.MODALITA, mModalitaChanged);
 	    values.put(InterventoDB.Fields.MODIFICATO, "M");
 	    
-	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
-	    
-	    String[] selectionArgs = new String[] {
-		"" + sId_Intervento
+	    String[] projectionQuery = new String[] {
+		    InterventoDB.Fields._ID, InterventoDB.Fields.ID_INTERVENTO,
+		    InterventoDB.Fields.MODIFICATO
 	    };
 	    
-	    saveChange.startUpdate(TOKEN_MODALITA, null, Data.CONTENT_URI, values, selection, selectionArgs);
+	    String selectionQuery = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+	    
+	    String[] selectionArgsQuery = new String[] {
+		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento
+	    };
+	    
+	    saveChange.startQuery(TOKEN_INFO_MODALITA, values, InterventoDB.CONTENT_URI, projectionQuery, selectionQuery, selectionArgsQuery, null);
 	    
 	    dialog.dismiss();
 	}
     }
     
-    public static class SetProdotto extends SherlockDialogFragment implements
-								  OnClickListener {
+    public static class SetProdottoDialog extends SherlockDialogFragment implements OnClickListener {
 	
 	private EditText mEdit_prodotto;
 	
-	public SetProdotto() {
+	public SetProdottoDialog() {
 	    
 	}
 	
@@ -444,49 +414,34 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    TextView tv_product = (TextView) getSherlockActivity().findViewById(R.id.tv_row_product);
 	    tv_product.setText(mEdit_prodotto.getText());
 	    
-	    SaveChangesIntervento saveChanges = new SaveChangesIntervento(getSherlockActivity());
+	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getSherlockActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(InterventoDB.Fields.PRODOTTO, mEdit_prodotto.getText().toString());
 	    values.put(InterventoDB.Fields.MODIFICATO, "M");
 	    
-	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
-	    
-	    String[] selectionArgs = new String[] {
-		"" + sId_Intervento
+	    String[] projectionQuery = new String[] {
+		    InterventoDB.Fields._ID, InterventoDB.Fields.ID_INTERVENTO,
+		    InterventoDB.Fields.MODIFICATO
 	    };
 	    
-	    saveChanges.startUpdate(TOKEN_PRODOTTO, null, Data.CONTENT_URI, values, selection, selectionArgs);
+	    String selectionQuery = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    String[] selectionArgsQuery = new String[] {
+		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento
+	    };
 	    
-	    final Editor edit = prefs.edit();
-	    
-	    edit.putBoolean(Constants.INTERV_MODIFIED, true);
-	    
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-		edit.apply();
-	    }
-	    else {
-		new Thread(new Runnable() {
-		    
-		    @Override
-		    public void run() {
-			edit.commit();
-		    }
-		}).start();
-	    }
+	    saveChange.startQuery(TOKEN_INFO_PRODOTTO, values, InterventoDB.CONTENT_URI, projectionQuery, selectionQuery, selectionArgsQuery, null);
 	    
 	    dialog.dismiss();
 	}
     }
     
-    public static class SetNominativo extends SherlockDialogFragment implements
-								    OnClickListener {
+    public static class SetNominativoDialog extends SherlockDialogFragment implements OnClickListener {
 	
 	private EditText mEdit_nominativo;
 	
-	public SetNominativo() {
+	public SetNominativoDialog() {
 	    
 	}
 	
@@ -515,46 +470,30 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    TextView tv_name = (TextView) getSherlockActivity().findViewById(R.id.tv_row_name);
 	    tv_name.setText(mEdit_nominativo.getText());
 	    
-	    SaveChangesIntervento saveChange = new SaveChangesIntervento(getSherlockActivity());
+	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getSherlockActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(InterventoDB.Fields.NOMINATIVO, mEdit_nominativo.getText().toString());
 	    values.put(InterventoDB.Fields.MODIFICATO, "M");
 	    
-	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
-	    
-	    String[] selectionArgs = new String[] {
-		"" + sId_Intervento
+	    String[] projectionQuery = new String[] {
+		    InterventoDB.Fields._ID, InterventoDB.Fields.ID_INTERVENTO,
+		    InterventoDB.Fields.MODIFICATO
 	    };
 	    
-	    saveChange.startUpdate(TOKEN_NOMINATIVO, null, Data.CONTENT_URI, values, selection, selectionArgs);
+	    String selectionQuery = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    String[] selectionArgsQuery = new String[] {
+		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento
+	    };
 	    
-	    final Editor edit = prefs.edit();
-	    
-	    edit.putBoolean(Constants.INTERV_MODIFIED, true);
-	    
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-		edit.apply();
-	    }
-	    else {
-		new Thread(new Runnable() {
-		    
-		    @Override
-		    public void run() {
-			edit.commit();
-		    }
-		}).start();
-	    }
+	    saveChange.startQuery(TOKEN_INFO_NOMINATIVO, values, InterventoDB.CONTENT_URI, projectionQuery, selectionQuery, selectionArgsQuery, null);
 	    
 	    dialog.dismiss();
 	}
     }
     
-    public static class SetMotivationDialog extends SherlockDialogFragment
-									  implements
-									  OnClickListener {
+    public static class SetMotivationDialog extends SherlockDialogFragment implements OnClickListener {
 	
 	private EditText mEdit_motivo;
 	
@@ -586,38 +525,24 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    TextView tv_name = (TextView) getSherlockActivity().findViewById(R.id.tv_row_motivation);
 	    tv_name.setText(mEdit_motivo.getText());
 	    
-	    SaveChangesIntervento saveChange = new SaveChangesIntervento(getSherlockActivity());
+	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getSherlockActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(InterventoDB.Fields.MOTIVO, mEdit_motivo.getText().toString());
 	    values.put(InterventoDB.Fields.MODIFICATO, "M");
 	    
-	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
-	    
-	    String[] selectionArgs = new String[] {
-		"" + sId_Intervento
+	    String[] projectionQuery = new String[] {
+		    InterventoDB.Fields._ID, InterventoDB.Fields.ID_INTERVENTO,
+		    InterventoDB.Fields.MODIFICATO
 	    };
 	    
-	    saveChange.startUpdate(TOKEN_MOTIVO, null, Data.CONTENT_URI, values, selection, selectionArgs);
+	    String selectionQuery = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    String[] selectionArgsQuery = new String[] {
+		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento
+	    };
 	    
-	    final Editor edit = prefs.edit();
-	    
-	    edit.putBoolean(Constants.INTERV_MODIFIED, true);
-	    
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-		edit.apply();
-	    }
-	    else {
-		new Thread(new Runnable() {
-		    
-		    @Override
-		    public void run() {
-			edit.commit();
-		    }
-		}).start();
-	    }
+	    saveChange.startQuery(TOKEN_INFO_MOTIVO, values, InterventoDB.CONTENT_URI, projectionQuery, selectionQuery, selectionArgsQuery, null);
 	    
 	    dialog.dismiss();
 	}

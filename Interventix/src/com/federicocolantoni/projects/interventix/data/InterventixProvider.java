@@ -36,17 +36,15 @@ public class InterventixProvider extends ContentProvider {
     }
     
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
-			String[] selectionArgs, String sortOrder) {
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 	
 	String where = null;
 	final int match = MATCHER.match(uri);
 	if (match == SINGLE_ITEM) {
 	    where = Fields._ID + " = " + uri.getLastPathSegment();
 	}
-	else
-	    if (match != COLLECTION)
-		throw new UnsupportedOperationException("URI " + uri + " not supported!");
+	else if (match != COLLECTION)
+	    throw new UnsupportedOperationException("URI " + uri + " not supported!");
 	
 	SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 	queryBuilder.setTables(Data.DB_TABLE);
@@ -92,9 +90,8 @@ public class InterventixProvider extends ContentProvider {
 	if (match == SINGLE_ITEM) {
 	    selection = Fields._ID + " = " + uri.getLastPathSegment() + (TextUtils.isEmpty(selection) ? "" : "AND (" + selection + ")");
 	}
-	else
-	    if (match != COLLECTION)
-		throw new UnsupportedOperationException("URI " + uri + " not supported!");
+	else if (match != COLLECTION)
+	    throw new UnsupportedOperationException("URI " + uri + " not supported!");
 	
 	if (TextUtils.isEmpty(selection)) {
 	    selection = "1"; // no selection means we have to delete everything
@@ -111,15 +108,13 @@ public class InterventixProvider extends ContentProvider {
     }
     
     @Override
-    public int update(Uri uri, ContentValues contentValues, String selection,
-		      String[] selectionArgs) {
+    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
 	final int match = MATCHER.match(uri);
 	if (match == SINGLE_ITEM) {
 	    selection = Fields._ID + " = " + uri.getLastPathSegment() + (TextUtils.isEmpty(selection) ? "" : "AND (" + selection + ")");
 	}
-	else
-	    if (match != COLLECTION)
-		throw new UnsupportedOperationException("URI " + uri + " not supported!");
+	else if (match != COLLECTION)
+	    throw new UnsupportedOperationException("URI " + uri + " not supported!");
 	
 	SQLiteDatabase db = mDBHelper.getWritableDatabase();
 	final int updated = db.update(Data.DB_TABLE, contentValues, selection, selectionArgs);

@@ -21,22 +21,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#000000"
             android:orientation="vertical" >
 
             <LinearLayout
                 android:id="@+id/row_manodopera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#000000"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/list_pressed_item"
                 android:orientation="vertical" >
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginTop="1dp"
-                    android:background="#FFFFFF"
                     android:paddingLeft="4dp"
                     android:text="@string/row_manodopera"
                     android:textColor="@android:color/black"
@@ -47,9 +47,6 @@
                     android:id="@+id/tv_row_manodopera"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:background="#FFFFFF"
                     android:paddingLeft="4dp"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -58,16 +55,15 @@
                 android:id="@+id/row_componenti"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#000000"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/list_pressed_item"
                 android:orientation="vertical" >
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginTop="1dp"
-                    android:background="#FFFFFF"
                     android:paddingLeft="4dp"
                     android:text="@string/row_componenti"
                     android:textColor="@android:color/black"
@@ -78,9 +74,6 @@
                     android:id="@+id/tv_row_componenti"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:background="#FFFFFF"
                     android:paddingLeft="4dp"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -89,16 +82,15 @@
                 android:id="@+id/row_accessori"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#000000"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/list_pressed_item"
                 android:orientation="vertical" >
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginTop="1dp"
-                    android:background="#FFFFFF"
                     android:paddingLeft="4dp"
                     android:text="@string/row_accessori"
                     android:textColor="@android:color/black"
@@ -109,9 +101,6 @@
                     android:id="@+id/tv_row_accessori"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:background="#FFFFFF"
                     android:paddingLeft="4dp"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -120,15 +109,14 @@
                 android:id="@+id/row_importo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#000000"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp"
                 android:orientation="vertical" >
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginTop="1dp"
                     android:background="#FFCCCCCC"
                     android:paddingLeft="4dp"
                     android:text="@string/row_importo"
@@ -140,8 +128,6 @@
                     android:id="@+id/tv_row_importo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
                     android:background="#FFCCCCCC"
                     android:paddingLeft="4dp"
                     android:textSize="16sp" />
@@ -151,15 +137,14 @@
                 android:id="@+id/row_iva"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#000000"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp"
                 android:orientation="vertical" >
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginTop="1dp"
                     android:background="#FFCCCCCC"
                     android:paddingLeft="4dp"
                     android:text="@string/row_iva"
@@ -171,8 +156,6 @@
                     android:id="@+id/tv_row_iva"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
                     android:background="#FFCCCCCC"
                     android:paddingLeft="4dp"
                     android:textSize="16sp" />
@@ -182,15 +165,15 @@
                 android:id="@+id/row_totale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#000000"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp"
                 android:orientation="vertical" >
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginTop="1dp"
                     android:background="#FF4455"
                     android:paddingLeft="4dp"
                     android:text="@string/row_totale"
@@ -202,9 +185,6 @@
                     android:id="@+id/tv_row_totale"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
                     android:background="#FF4455"
                     android:paddingLeft="4dp"
                     android:textSize="16sp" />

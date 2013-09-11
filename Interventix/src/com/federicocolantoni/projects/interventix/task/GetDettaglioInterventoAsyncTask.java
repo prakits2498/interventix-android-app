@@ -12,9 +12,7 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Dat
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
 
-public class GetDettaglioInterventoAsyncTask
-					    extends
-					    AsyncTask<Long, Void, DettaglioIntervento> {
+public class GetDettaglioInterventoAsyncTask extends AsyncTask<Long, Void, DettaglioIntervento> {
     
     private final Context context;
     

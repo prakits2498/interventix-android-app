@@ -33,8 +33,7 @@ import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
 public class OverViewInterventoFragment extends SherlockFragment {
     
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			     Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 	BugSenseHandler.initAndStartSession(getSherlockActivity(), Constants.API_KEY);
 	

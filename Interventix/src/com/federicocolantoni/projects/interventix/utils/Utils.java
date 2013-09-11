@@ -19,15 +19,7 @@ import com.federicocolantoni.projects.interventix.Constants;
 
 public class Utils {
     
-    public static
-	    JSONObject
-	    connectionForURL(String json_req, final String url_string)
-								      throws MalformedURLException,
-								      IOException,
-								      ProtocolException,
-								      ParseException,
-								      Exception,
-								      UnsupportedEncodingException {
+    public static JSONObject connectionForURL(String json_req, final String url_string) throws MalformedURLException, IOException, ProtocolException, ParseException, Exception, UnsupportedEncodingException {
 	
 	URL url = new URL(url_string + "?DATA=" + json_req);
 	
@@ -51,9 +43,7 @@ public class Utils {
 	    return null;
     };
     
-    private static String
-	    readIt(InputStream stream, int len) throws IOException,
-					       UnsupportedEncodingException {
+    private static String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
 	
 	BufferedReader br = null;
 	StringBuilder sb = new StringBuilder();
