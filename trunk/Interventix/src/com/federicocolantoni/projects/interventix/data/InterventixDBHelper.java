@@ -50,8 +50,7 @@ public class InterventixDBHelper extends SQLiteOpenHelper {
     }
     
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion,
-			  int newVersion) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
 	
 	if (newVersion > oldVersion) {
 	    sqLiteDatabase.execSQL(DROP_TABLE);

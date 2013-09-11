@@ -70,15 +70,7 @@ public class GetOperationsToDo extends ManagedAsyncTask<Long, Void, Integer> {
 	
     }
     
-    private
-	    JSONObject
-	    connectionForURL(String json_req, final String url_string)
-								      throws MalformedURLException,
-								      IOException,
-								      ProtocolException,
-								      ParseException,
-								      Exception,
-								      UnsupportedEncodingException {
+    private JSONObject connectionForURL(String json_req, final String url_string) throws MalformedURLException, IOException, ProtocolException, ParseException, Exception, UnsupportedEncodingException {
 	
 	URL url = new URL(url_string + "?DATA=" + json_req);
 	
@@ -102,8 +94,7 @@ public class GetOperationsToDo extends ManagedAsyncTask<Long, Void, Integer> {
 	    return null;
     };
     
-    private String readIt(InputStream stream, int len) throws IOException,
-						      UnsupportedEncodingException {
+    private String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
 	
 	BufferedReader br = null;
 	StringBuilder sb = new StringBuilder();
@@ -134,10 +125,7 @@ public class GetOperationsToDo extends ManagedAsyncTask<Long, Void, Integer> {
 	return sb.toString();
     }
     
-    private int
-	    usersSyncro(final SharedPreferences prefsLocal,
-			int maxProgressRange,
-			Map<String, Object> parametersUsers, Long... params) {
+    private int usersSyncro(final SharedPreferences prefsLocal, int maxProgressRange, Map<String, Object> parametersUsers, Long... params) {
 	String json_req;
 	try {
 	    
@@ -190,10 +178,7 @@ public class GetOperationsToDo extends ManagedAsyncTask<Long, Void, Integer> {
 	return maxProgressRange;
     }
     
-    private int clientsSyncro(SharedPreferences prefsLocal,
-			      int maxProgressRange,
-			      Map<String, Object> parametersClients,
-			      Long[] params) {
+    private int clientsSyncro(SharedPreferences prefsLocal, int maxProgressRange, Map<String, Object> parametersClients, Long[] params) {
 	
 	String json_req;
 	try {
@@ -247,10 +232,7 @@ public class GetOperationsToDo extends ManagedAsyncTask<Long, Void, Integer> {
 	return maxProgressRange;
     }
     
-    private int interventionsSyncro(final SharedPreferences prefsLocal,
-				    int maxProgressRange,
-				    Map<String, Object> parametersInterv,
-				    Long... params) {
+    private int interventionsSyncro(final SharedPreferences prefsLocal, int maxProgressRange, Map<String, Object> parametersInterv, Long... params) {
 	String json_req;
 	long iduser = params[0];
 	

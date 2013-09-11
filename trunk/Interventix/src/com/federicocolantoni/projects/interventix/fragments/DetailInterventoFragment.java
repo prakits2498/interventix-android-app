@@ -14,11 +14,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,30 +32,27 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.task.GetDettaglioInterventoAsyncTask;
+import com.federicocolantoni.projects.interventix.task.SaveChangesDettaglioInterventoAsyncQueryHandler;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatcher;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
-import com.federicocolantoni.projects.interventix.utils.SaveChangesDettaglioIntervento;
 
 @SuppressLint("NewApi")
 public class DetailInterventoFragment extends SherlockFragment {
     
-    private static final int TOKEN_TIPO_DETTAGLIO = 0;
-    private static final int TOKEN_OGGETTO_DETTAGLIO = 1;
-    private static final int TOKEN_DESCRIZIONE_DETTAGLIO = 2;
-    private static final int TOKEN_ORA_INIZIO = 3;
-    private static final int TOKEN_ORA_FINE = 4;
+    public static final int TOKEN_TIPO_DETTAGLIO = 0;
+    public static final int TOKEN_OGGETTO_DETTAGLIO = 1;
+    public static final int TOKEN_DESCRIZIONE_DETTAGLIO = 2;
+    public static final int TOKEN_ORA_INIZIO_DETTAGLIO = 3;
+    public static final int TOKEN_ORA_FINE_DETTAGLIO = 4;
     
     private static long sId_Dettaglio_Intervento;
     
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			     Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 	BugSenseHandler.initAndStartSession(getSherlockActivity(), Constants.API_KEY);
 	
@@ -187,9 +180,8 @@ public class DetailInterventoFragment extends SherlockFragment {
 			
 			dt_fine = fmt.parseDateTime(tv_dett_fine.getText().toString());
 			
-			if (dt_fine.toDate().getTime() < dt_inizio.toDate().getTime()) {
+			if (dt_fine.toDate().getTime() < dt_inizio.toDate().getTime())
 			    InterventixToast.makeToast(getSherlockActivity(), "Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
-			}
 			else {
 			    
 			    tv_row_inizio_dett.setText(dt_inizio.toString("dd/MM/yyyy HH:mm"));
@@ -198,39 +190,61 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    
 			    tv_dett_ore_tot.setText(dt_tot_ore.toString("HH:mm"));
 			    
-			    SaveChangesDettaglioIntervento saveChanges = new SaveChangesDettaglioIntervento(getSherlockActivity());
+			    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getSherlockActivity());
 			    
 			    ContentValues values = new ContentValues();
 			    values.put(DettaglioInterventoDB.Fields.INIZIO, dt_inizio.toDate().getTime());
 			    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
 			    
-			    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+			    String[] projectionQuery = new String[] {
+				    DettaglioInterventoDB.Fields._ID,
+				    DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
+				    DettaglioInterventoDB.Fields.MODIFICATO
+			    };
 			    
-			    String[] selectionArgs = new String[] {
+			    String selectionQuery = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+			    
+			    String[] selectionArgsQuery = new String[] {
 				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
 				    "" + sId_Dettaglio_Intervento
 			    };
 			    
-			    saveChanges.startUpdate(TOKEN_ORA_INIZIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
+			    saveChanges.startQuery(TOKEN_ORA_INIZIO_DETTAGLIO, values, DettaglioInterventoDB.CONTENT_URI, projectionQuery, selectionQuery, selectionArgsQuery, null);
 			    
-			    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-			    
-			    final Editor edit = prefs.edit();
-			    
-			    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
-			    
-			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-				edit.apply();
-			    }
-			    else {
-				new Thread(new Runnable() {
-				    
-				    @Override
-				    public void run() {
-					edit.commit();
-				    }
-				}).start();
-			    }
+			    // String selection =
+			    // DettaglioInterventoDB.Fields.TYPE + " = ? AND " +
+			    // DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO
+			    // + " = ?";
+			    //
+			    // String[] selectionArgs = new String[] {
+			    // DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
+			    // "" + sId_Dettaglio_Intervento
+			    // };
+			    //
+			    // saveChanges.startUpdate(TOKEN_ORA_INIZIO, null,
+			    // DettaglioInterventoDB.CONTENT_URI, values,
+			    // selection, selectionArgs);
+			    //
+			    // SharedPreferences prefs =
+			    // getSherlockActivity().getSharedPreferences(Constants.PREFERENCES,
+			    // Context.MODE_PRIVATE);
+			    //
+			    // final Editor edit = prefs.edit();
+			    //
+			    // edit.putBoolean(Constants.DETT_INTERV_MODIFIED,
+			    // true);
+			    //
+			    // if (Build.VERSION.SDK_INT >=
+			    // Build.VERSION_CODES.GINGERBREAD)
+			    // edit.apply();
+			    // else
+			    // new Thread(new Runnable() {
+			    //
+			    // @Override
+			    // public void run() {
+			    // edit.commit();
+			    // }
+			    // }).start();
 			}
 			
 			dateTimeDialog.dismiss();
@@ -323,9 +337,8 @@ public class DetailInterventoFragment extends SherlockFragment {
 			
 			dt_inizio = fmt.parseDateTime(tv_dett_inizio.getText().toString());
 			
-			if (dt_fine.toDate().getTime() < dt_inizio.toDate().getTime()) {
+			if (dt_fine.toDate().getTime() < dt_inizio.toDate().getTime())
 			    InterventixToast.makeToast(getSherlockActivity(), "Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
-			}
 			else {
 			    
 			    tv_row_fine_dett.setText(dt_fine.toString("dd/MM/yyyy HH:mm"));
@@ -334,39 +347,61 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    
 			    tv_dett_ore_tot.setText(dt_tot_ore.toString("HH:mm"));
 			    
-			    SaveChangesDettaglioIntervento saveChanges = new SaveChangesDettaglioIntervento(getSherlockActivity());
+			    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getSherlockActivity());
 			    
 			    ContentValues values = new ContentValues();
 			    values.put(DettaglioInterventoDB.Fields.FINE, dt_fine.toDate().getTime());
 			    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
 			    
-			    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+			    String[] projectionQuery = new String[] {
+				    DettaglioInterventoDB.Fields._ID,
+				    DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
+				    DettaglioInterventoDB.Fields.MODIFICATO
+			    };
 			    
-			    String[] selectionArgs = new String[] {
+			    String selectionQuery = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+			    
+			    String[] selectionArgsQuery = new String[] {
 				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
 				    "" + sId_Dettaglio_Intervento
 			    };
 			    
-			    saveChanges.startUpdate(TOKEN_ORA_FINE, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
+			    saveChanges.startQuery(TOKEN_ORA_FINE_DETTAGLIO, values, DettaglioInterventoDB.CONTENT_URI, projectionQuery, selectionQuery, selectionArgsQuery, null);
 			    
-			    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-			    
-			    final Editor edit = prefs.edit();
-			    
-			    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
-			    
-			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-				edit.apply();
-			    }
-			    else {
-				new Thread(new Runnable() {
-				    
-				    @Override
-				    public void run() {
-					edit.commit();
-				    }
-				}).start();
-			    }
+			    // String selection =
+			    // DettaglioInterventoDB.Fields.TYPE + " = ? AND " +
+			    // DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO
+			    // + " = ?";
+			    //
+			    // String[] selectionArgs = new String[] {
+			    // DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
+			    // "" + sId_Dettaglio_Intervento
+			    // };
+			    //
+			    // saveChanges.startUpdate(TOKEN_ORA_FINE, null,
+			    // DettaglioInterventoDB.CONTENT_URI, values,
+			    // selection, selectionArgs);
+			    //
+			    // SharedPreferences prefs =
+			    // getSherlockActivity().getSharedPreferences(Constants.PREFERENCES,
+			    // Context.MODE_PRIVATE);
+			    //
+			    // final Editor edit = prefs.edit();
+			    //
+			    // edit.putBoolean(Constants.DETT_INTERV_MODIFIED,
+			    // true);
+			    //
+			    // if (Build.VERSION.SDK_INT >=
+			    // Build.VERSION_CODES.GINGERBREAD)
+			    // edit.apply();
+			    // else
+			    // new Thread(new Runnable() {
+			    //
+			    // @Override
+			    // public void run() {
+			    // edit.commit();
+			    // }
+			    // }).start();
 			}
 			
 			dateTimeDialog.dismiss();
@@ -422,9 +457,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	return view;
     }
     
-    public static class SetTipo extends SherlockDialogFragment
-							      implements
-							      DialogInterface.OnClickListener {
+    public static class SetTipo extends SherlockDialogFragment implements DialogInterface.OnClickListener {
 	
 	private EditText mEdit_tipo_dett;
 	
@@ -457,47 +490,64 @@ public class DetailInterventoFragment extends SherlockFragment {
 	    TextView tv_tipo_dett = (TextView) getSherlockActivity().findViewById(R.id.tv_row_tipo_dettaglio);
 	    tv_tipo_dett.setText(mEdit_tipo_dett.getText());
 	    
-	    SaveChangesDettaglioIntervento saveChanges = new SaveChangesDettaglioIntervento(getSherlockActivity());
+	    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getSherlockActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(DettaglioInterventoDB.Fields.TIPO, mEdit_tipo_dett.getText().toString());
 	    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
 	    
-	    String selection = Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+	    String[] projectionQuery = new String[] {
+		    DettaglioInterventoDB.Fields._ID,
+		    DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
+		    DettaglioInterventoDB.Fields.MODIFICATO
+	    };
 	    
-	    String[] selectionArgs = new String[] {
+	    String selectionQuery = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+	    
+	    String[] selectionArgsQuery = new String[] {
 		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
 		    "" + sId_Dettaglio_Intervento
 	    };
 	    
-	    saveChanges.startUpdate(TOKEN_TIPO_DETTAGLIO, null, Data.CONTENT_URI, values, selection, selectionArgs);
+	    saveChanges.startQuery(TOKEN_TIPO_DETTAGLIO, values, DettaglioInterventoDB.CONTENT_URI, projectionQuery, selectionQuery, selectionArgsQuery, null);
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    // String selection = Fields.TYPE + " = ? AND " +
+	    // DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+	    //
+	    // String[] selectionArgs = new String[] {
+	    // DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
+	    // "" + sId_Dettaglio_Intervento
+	    // };
+	    //
+	    // saveChanges.startUpdate(TOKEN_TIPO_DETTAGLIO, null,
+	    // Data.CONTENT_URI, values, selection, selectionArgs);
 	    
-	    final Editor edit = prefs.edit();
-	    
-	    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
-	    
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-		edit.apply();
-	    }
-	    else {
-		new Thread(new Runnable() {
-		    
-		    @Override
-		    public void run() {
-			edit.commit();
-		    }
-		}).start();
-	    }
+	    // SharedPreferences prefs =
+	    // getSherlockActivity().getSharedPreferences(Constants.PREFERENCES,
+	    // Context.MODE_PRIVATE);
+	    //
+	    // final Editor edit = prefs.edit();
+	    //
+	    // edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
+	    //
+	    // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+	    // edit.apply();
+	    // }
+	    // else {
+	    // new Thread(new Runnable() {
+	    //
+	    // @Override
+	    // public void run() {
+	    // edit.commit();
+	    // }
+	    // }).start();
+	    // }
 	    
 	    dialog.dismiss();
 	}
     }
     
-    public static class SetOggetto extends SherlockDialogFragment
-								 implements
-								 DialogInterface.OnClickListener {
+    public static class SetOggetto extends SherlockDialogFragment implements DialogInterface.OnClickListener {
 	
 	private EditText mEdit_oggetto_dett;
 	
@@ -530,47 +580,62 @@ public class DetailInterventoFragment extends SherlockFragment {
 	    TextView tv_oggetto_dett = (TextView) getSherlockActivity().findViewById(R.id.tv_row_oggetto_dettaglio);
 	    tv_oggetto_dett.setText(mEdit_oggetto_dett.getText());
 	    
-	    SaveChangesDettaglioIntervento saveChanges = new SaveChangesDettaglioIntervento(getSherlockActivity());
+	    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getSherlockActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(DettaglioInterventoDB.Fields.OGGETTO, mEdit_oggetto_dett.getText().toString());
 	    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
 	    
-	    String selection = Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+	    String[] projectionQuery = new String[] {
+		    DettaglioInterventoDB.Fields._ID,
+		    DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
+		    DettaglioInterventoDB.Fields.MODIFICATO
+	    };
 	    
-	    String[] selectionArgs = new String[] {
+	    String selectionQuery = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+	    
+	    String[] selectionArgsQuery = new String[] {
 		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
 		    "" + sId_Dettaglio_Intervento
 	    };
 	    
-	    saveChanges.startUpdate(TOKEN_OGGETTO_DETTAGLIO, null, Data.CONTENT_URI, values, selection, selectionArgs);
+	    saveChanges.startQuery(TOKEN_OGGETTO_DETTAGLIO, values, DettaglioInterventoDB.CONTENT_URI, projectionQuery, selectionQuery, selectionArgsQuery, null);
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-	    
-	    final Editor edit = prefs.edit();
-	    
-	    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
-	    
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-		edit.apply();
-	    }
-	    else {
-		new Thread(new Runnable() {
-		    
-		    @Override
-		    public void run() {
-			edit.commit();
-		    }
-		}).start();
-	    }
+	    // String selection = Fields.TYPE + " = ? AND " +
+	    // DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+	    //
+	    // String[] selectionArgs = new String[] {
+	    // DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
+	    // "" + sId_Dettaglio_Intervento
+	    // };
+	    //
+	    // saveChanges.startUpdate(TOKEN_OGGETTO_DETTAGLIO, null,
+	    // Data.CONTENT_URI, values, selection, selectionArgs);
+	    //
+	    // SharedPreferences prefs =
+	    // getSherlockActivity().getSharedPreferences(Constants.PREFERENCES,
+	    // Context.MODE_PRIVATE);
+	    //
+	    // final Editor edit = prefs.edit();
+	    //
+	    // edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
+	    //
+	    // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+	    // edit.apply();
+	    // else
+	    // new Thread(new Runnable() {
+	    //
+	    // @Override
+	    // public void run() {
+	    // edit.commit();
+	    // }
+	    // }).start();
 	    
 	    dialog.dismiss();
 	}
     }
     
-    public static class SetDecrizione extends SherlockDialogFragment
-								    implements
-								    DialogInterface.OnClickListener {
+    public static class SetDecrizione extends SherlockDialogFragment implements DialogInterface.OnClickListener {
 	
 	private EditText mEdit_descrizione_dett;
 	
@@ -603,39 +668,56 @@ public class DetailInterventoFragment extends SherlockFragment {
 	    TextView tv_descrizione_dett = (TextView) getSherlockActivity().findViewById(R.id.tv_row_descrizione_dettaglio);
 	    tv_descrizione_dett.setText(mEdit_descrizione_dett.getText());
 	    
-	    SaveChangesDettaglioIntervento saveChanges = new SaveChangesDettaglioIntervento(getSherlockActivity());
+	    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getSherlockActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, mEdit_descrizione_dett.getText().toString());
 	    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
 	    
-	    String selection = Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+	    String[] projectionQuery = new String[] {
+		    DettaglioInterventoDB.Fields._ID,
+		    DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
+		    DettaglioInterventoDB.Fields.MODIFICATO
+	    };
 	    
-	    String[] selectionArgs = new String[] {
+	    String selectionQuery = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+	    
+	    String[] selectionArgsQuery = new String[] {
 		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
 		    "" + sId_Dettaglio_Intervento
 	    };
 	    
-	    saveChanges.startUpdate(TOKEN_DESCRIZIONE_DETTAGLIO, null, Data.CONTENT_URI, values, selection, selectionArgs);
+	    saveChanges.startQuery(TOKEN_DESCRIZIONE_DETTAGLIO, values, DettaglioInterventoDB.CONTENT_URI, projectionQuery, selectionQuery, selectionArgsQuery, null);
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-	    
-	    final Editor edit = prefs.edit();
-	    
-	    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
-	    
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-		edit.apply();
-	    }
-	    else {
-		new Thread(new Runnable() {
-		    
-		    @Override
-		    public void run() {
-			edit.commit();
-		    }
-		}).start();
-	    }
+	    // String selection = Fields.TYPE + " = ? AND " +
+	    // DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+	    //
+	    // String[] selectionArgs = new String[] {
+	    // DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
+	    // "" + sId_Dettaglio_Intervento
+	    // };
+	    //
+	    // saveChanges.startUpdate(TOKEN_DESCRIZIONE_DETTAGLIO, null,
+	    // Data.CONTENT_URI, values, selection, selectionArgs);
+	    //
+	    // SharedPreferences prefs =
+	    // getSherlockActivity().getSharedPreferences(Constants.PREFERENCES,
+	    // Context.MODE_PRIVATE);
+	    //
+	    // final Editor edit = prefs.edit();
+	    //
+	    // edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
+	    //
+	    // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+	    // edit.apply();
+	    // else
+	    // new Thread(new Runnable() {
+	    //
+	    // @Override
+	    // public void run() {
+	    // edit.commit();
+	    // }
+	    // }).start();
 	    
 	    dialog.dismiss();
 	}

@@ -43,8 +43,7 @@ public class JsonCR2 {
      * @throws Exception
      */
     @Deprecated
-    public static JSONObject
-	    readRequest(String stringCR2) throws ParseException, Exception {
+    public static JSONObject readRequest(String stringCR2) throws ParseException, Exception {
 	return JsonCR2.read(stringCR2);
     }
     
@@ -56,8 +55,7 @@ public class JsonCR2 {
      * @throws ParseException
      * @throws Exception
      */
-    public static JSONObject read(String stringCR2) throws ParseException,
-						   Exception {
+    public static JSONObject read(String stringCR2) throws ParseException, Exception {
 	if (DEBUG_READ) {
 	    JSONObject json = (JSONObject) new JSONParser().parse(stringCR2);
 	    return json;
@@ -81,10 +79,7 @@ public class JsonCR2 {
      * @return Stringa della richiesta creata in JSON/CR2
      * @throws Exception
      */
-    public static
-	    String
-	    createRequestLogin(String username, String password)
-								throws Exception {
+    public static String createRequestLogin(String username, String password) throws Exception {
 	Map<String, Object> m = new HashMap<String, Object>();
 	m.put("username", username);
 	m.put("password", username);
@@ -107,9 +102,7 @@ public class JsonCR2 {
      * @return Stringa della richiesta creata in JSON/CR2
      * @throws Exception
      */
-    public static String
-	    createRequest(String section, String action, Map parameters,
-			  int iduser) throws Exception {
+    public static String createRequest(String section, String action, Map parameters, int iduser) throws Exception {
 	
 	// utile per Android
 	JSONObject json = new JSONObject();
@@ -167,9 +160,7 @@ public class JsonCR2 {
      *            oppure null se non si vuole nessun dato di risposta
      * @return Stringa della risposta creata in JSON/CR2
      */
-    public static String createResponse(String response, String section,
-					String action, String code,
-					String message, Object data) {
+    public static String createResponse(String response, String section, String action, String code, String message, Object data) {
 	JSONObject json = new JSONObject();
 	json.put("response", response);
 	
@@ -215,8 +206,7 @@ public class JsonCR2 {
      * @param error_message
      * @return
      */
-    public static String createResponseError(String error_code,
-					     String error_message) {
+    public static String createResponseError(String error_code, String error_message) {
 	return JsonCR2.createResponseError(null, null, error_code, error_message, null);
     }
     
@@ -235,9 +225,7 @@ public class JsonCR2 {
      *            non avere nessun messaggio
      * @return Stringa della risposta creata in JSON/CR2
      */
-    public static String createResponseError(String section, String action,
-					     String error_code,
-					     String error_message) {
+    public static String createResponseError(String section, String action, String error_code, String error_message) {
 	return JsonCR2.createResponseError(section, action, error_code, error_message, null);
     }
     
@@ -258,10 +246,7 @@ public class JsonCR2 {
      *            Eccezione generata oppure null per nessuna eccezione
      * @return Stringa della risposta creata in JSON/CR2
      */
-    public static String createResponseError(String section, String action,
-					     String error_code,
-					     String error_message,
-					     Exception exception) {
+    public static String createResponseError(String section, String action, String error_code, String error_message, Exception exception) {
 	
 	JSONObject json = new JSONObject();
 	json.put("response", StaticResponse.ERROR);
@@ -335,8 +320,7 @@ public class JsonCR2 {
      *            oppure null se non si vuole nessun dato di risposta
      * @return Stringa della risposta creata in JSON/CR2
      */
-    public static String createResponseSuccess(String section, String action,
-					       Object data) {
+    public static String createResponseSuccess(String section, String action, Object data) {
 	return JsonCR2.createResponse(StaticResponse.SUCCESS, section, action, CodeResponse.SUCCESS, null, data);
     }
     

@@ -23,9 +23,7 @@ import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.DettaglioInterventoAdapter;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 
-public class DetailsInterventoFragment extends SherlockFragment
-							       implements
-							       LoaderCallbacks<Cursor> {
+public class DetailsInterventoFragment extends SherlockFragment implements LoaderCallbacks<Cursor> {
     
     private final static int MESSAGE_LOADER = 1;
     
@@ -45,8 +43,7 @@ public class DetailsInterventoFragment extends SherlockFragment
     private DettaglioInterventoAdapter mAdapter;
     
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			     Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 	BugSenseHandler.initAndStartSession(getSherlockActivity(), Constants.API_KEY);
 	
@@ -78,8 +75,7 @@ public class DetailsInterventoFragment extends SherlockFragment
 	detailsList.setOnItemClickListener(new OnItemClickListener() {
 	    
 	    @Override
-	    public void onItemClick(AdapterView<?> adapter, View view,
-				    int position, long id) {
+	    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 		
 		Bundle bundle = new Bundle();
 		

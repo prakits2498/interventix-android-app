@@ -15,8 +15,7 @@ public class TabBarFragment extends Fragment implements OnClickListener {
     private OnMenuBarListener mListener;
     
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			     Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	final View v = inflater.inflate(R.layout.menu_bar_fragment, container);

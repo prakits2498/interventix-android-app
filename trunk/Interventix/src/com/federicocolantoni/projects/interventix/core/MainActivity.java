@@ -87,20 +87,17 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	    BugSenseHandler.sendException(e);
 	}
 	
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
 	    if (prefs.getString(getResources().getString(R.string.prefs_key_url), "").isEmpty()) {
 		
 		FirstRunDialog dialog = new FirstRunDialog();
 		dialog.show(getSupportFragmentManager(), "first_run");
 	    }
-	    else {
-		if (prefs.getString(getResources().getString(R.string.prefs_key_url), "").length() == 0) {
-		    
-		    FirstRunDialog dialog = new FirstRunDialog();
-		    dialog.show(getSupportFragmentManager(), Constants.FIRST_RUN_DIALOG_FRAGMENT);
-		}
+	    else if (prefs.getString(getResources().getString(R.string.prefs_key_url), "").length() == 0) {
+		
+		FirstRunDialog dialog = new FirstRunDialog();
+		dialog.show(getSupportFragmentManager(), Constants.FIRST_RUN_DIALOG_FRAGMENT);
 	    }
-	}
 	
 	findViewById(R.id.btn_login).setOnClickListener(new OnClickListener() {
 	    
@@ -136,19 +133,18 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	EditText username = (EditText) findViewById(R.id.field_username);
 	EditText password = (EditText) findViewById(R.id.field_password);
 	
-	if (username.getText().toString().length() == 0 || password.getText().toString().length() == 0) {
+	if (username.getText().toString().length() == 0 || password.getText().toString().length() == 0)
 	    InterventixToast.makeToast(this, "Devi riempire i campi \"Username\" e \"Password\"", Toast.LENGTH_SHORT);
-	}
 	else {
 	    
 	    String json_req = new String();
 	    
-	    if (info != null) {
+	    if (info != null)
 		switch (info.getType()) {
 		
 		    case ConnectivityManager.TYPE_WIFI:
 			
-			if (info.isAvailable() && info.isConnected()) {
+			if (info.isAvailable() && info.isConnected())
 			    try {
 				HashMap<String, String> parameters = new HashMap<String, String>();
 				
@@ -164,13 +160,12 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 				e.printStackTrace();
 				BugSenseHandler.sendException(e);
 			    }
-			}
 			else {
 			    
 			    String usrnm = prefs.getString(Constants.USERNAME, null);
 			    String psswrd = prefs.getString(Constants.PASSWORD, null);
 			    
-			    if (usrnm != null && psswrd != null) {
+			    if (usrnm != null && psswrd != null)
 				if (usrnm.equals(username.getText().toString()) && psswrd.equals(password.getText().toString())) {
 				    
 				    password.setText("");
@@ -179,14 +174,13 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 				    
 				    startActivity(new Intent(MainActivity.this, HomeActivity.class));
 				}
-			    }
 			}
 			
 			break;
 		    
 		    case ConnectivityManager.TYPE_MOBILE:
 			
-			if (info.isAvailable() && info.isConnected()) {
+			if (info.isAvailable() && info.isConnected())
 			    try {
 				HashMap<String, String> parameters = new HashMap<String, String>();
 				
@@ -202,13 +196,12 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 				e.printStackTrace();
 				BugSenseHandler.sendException(e);
 			    }
-			}
 			else {
 			    
 			    String usrnm = prefs.getString(Constants.USERNAME, null);
 			    String psswrd = prefs.getString(Constants.PASSWORD, null);
 			    
-			    if (usrnm != null && psswrd != null) {
+			    if (usrnm != null && psswrd != null)
 				if (usrnm.equals(username.getText().toString()) && psswrd.equals(password.getText().toString())) {
 				    
 				    password.setText("");
@@ -217,12 +210,10 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 				    
 				    startActivity(new Intent(MainActivity.this, HomeActivity.class));
 				}
-			    }
 			}
 			
 			break;
 		}
-	    }
 	    else {
 		
 		AlertDialog.Builder connUnavailable = new Builder(this);
@@ -284,12 +275,10 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	switch (item.getItemId()) {
 	    case id.menu_options:
 		
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
 		    startActivity(new Intent(this, SettingActivity.class));
-		}
-		else {
+		else
 		    startActivity(new Intent(this, SettingSupportActivity.class));
-		}
 		return true;
 	    default:
 		if (super.onOptionsItemSelected(item))
@@ -299,8 +288,7 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 	}
     }
     
-    public static class FirstRunDialog extends SherlockDialogFragment implements
-								     OnClickListener {
+    public static class FirstRunDialog extends SherlockDialogFragment implements OnClickListener {
 	
 	private EditText input_url;
 	private Button save_url;
@@ -340,10 +328,9 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getSherlockActivity());
 			final Editor editor = prefs.edit();
 			
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			    editor.putString(getResources().getString(R.string.prefs_key_url), "http://" + input_url.getText().toString() + "/Interventix/connector").apply();
-			}
-			else {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+			    editor.putString(getResources().getString(R.string.prefs_key_url), "http://" + input_url.getText().toString() + "/interventix/connector").apply();
+			else
 			    new Thread(new Runnable() {
 				
 				@Override
@@ -352,7 +339,6 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 				    editor.putString(getResources().getString(R.string.prefs_key_url), input_url.getText().toString()).commit();
 				}
 			    }).start();
-			}
 			
 			dismiss();
 		    }
@@ -447,9 +433,8 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 			    
 			    SharedPreferences localPrefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 			    
-			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
 				localPrefs.edit().putLong(Constants.USER_ID, (Long) data.get("idutente")).apply();
-			    }
 			    else {
 				Editor editor = localPrefs.edit();
 				editor.putLong(Constants.USER_ID, (Long) data.get("idutente")).commit();
@@ -461,12 +446,10 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 			    
 			    progress.dismiss();
 			    
-			    if (!cursor.isClosed()) {
+			    if (!cursor.isClosed())
 				cursor.close();
-			    }
-			    else {
+			    else
 				System.out.println("Cursor for GetLogin - UPDATE MODE is closed");
-			    }
 			}
 			else {
 			    
@@ -491,12 +474,10 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 			    EditText username = (EditText) findViewById(R.id.field_username);
 			    EditText password = (EditText) findViewById(R.id.field_password);
 			    
-			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
 				localPrefs.edit().putLong(Constants.USER_ID, (Long) data.get("idutente")).putString(Constants.USERNAME, username.getText().toString()).putString(Constants.PASSWORD, password.getText().toString()).apply();
-			    }
-			    else {
+			    else
 				localPrefs.edit().putLong(Constants.USER_ID, (Long) data.get("idutente")).putString(Constants.USERNAME, username.getText().toString()).putString(Constants.PASSWORD, password.getText().toString()).commit();
-			    }
 			    
 			    System.out.println("INSERT USER DONE");
 			    
@@ -504,12 +485,10 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 			    
 			    progress.dismiss();
 			    
-			    if (!cursor.isClosed()) {
+			    if (!cursor.isClosed())
 				cursor.close();
-			    }
-			    else {
+			    else
 				System.out.println("Cursor for GetLogin - INSERT MODE is closed");
-			    }
 			    
 			}
 		    }
@@ -536,14 +515,6 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 		}
 	    }
 	    
-	    // in this case, auto login's flag is true
-	    // check user's info directly on the DB
-	    // else {
-	    //
-	    // System.out.println("auto-login true");
-	    //
-	    // }
-	    
 	    return result;
 	}
 	
@@ -558,10 +529,8 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 		
 		startActivity(new Intent(context, HomeActivity.class));
 	    }
-	    else {
-		
-		InterventixToast.makeToast(context, "Si è verificato un errore nel login.\n" + Constants.ACCESS_DINIED, Toast.LENGTH_SHORT);
-	    }
+	    else
+		InterventixToast.makeToast(context, "Si è verificato un errore nel login.", Toast.LENGTH_LONG);
 	}
     }
 }

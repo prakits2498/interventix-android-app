@@ -8,8 +8,7 @@ import android.os.AsyncTask;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
 import com.federicocolantoni.projects.interventix.intervento.Cliente;
 
-public class GetNominativoClienteAsyncTask extends
-					  AsyncTask<Long, Void, Cliente> {
+public class GetNominativoClienteAsyncTask extends AsyncTask<Long, Void, Cliente> {
     
     private Context context;
     

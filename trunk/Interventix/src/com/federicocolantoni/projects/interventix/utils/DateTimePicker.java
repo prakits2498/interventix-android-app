@@ -417,8 +417,7 @@ public class DateTimePicker extends RelativeLayout {
 	}
 	
 	@Override
-	public CharSequence filter(CharSequence source, int start, int end,
-				   Spanned dest, int dstart, int dend) {
+	public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
 	    
 	    try {
 		int input = Integer.parseInt(dest.toString() + source.toString());
@@ -484,14 +483,12 @@ public class DateTimePicker extends RelativeLayout {
     TextWatcher hour_watcher = new TextWatcher() {
 	
 	@Override
-	public void onTextChanged(CharSequence s, int start, int before,
-				  int count) {
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
 	    
 	}
 	
 	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count,
-				      int after) {
+	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 	    
 	}
 	
@@ -514,14 +511,12 @@ public class DateTimePicker extends RelativeLayout {
     TextWatcher min_watcher = new TextWatcher() {
 	
 	@Override
-	public void onTextChanged(CharSequence s, int start, int before,
-				  int count) {
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
 	    
 	}
 	
 	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count,
-				      int after) {
+	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 	    
 	}
 	
@@ -591,14 +586,12 @@ public class DateTimePicker extends RelativeLayout {
     TextWatcher date_watcher = new TextWatcher() {
 	
 	@Override
-	public void onTextChanged(CharSequence s, int start, int before,
-				  int count) {
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
 	    
 	}
 	
 	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count,
-				      int after) {
+	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 	    
 	}
 	
@@ -628,14 +621,12 @@ public class DateTimePicker extends RelativeLayout {
     TextWatcher year_watcher = new TextWatcher() {
 	
 	@Override
-	public void onTextChanged(CharSequence s, int start, int before,
-				  int count) {
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
 	    
 	}
 	
 	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count,
-				      int after) {
+	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 	    
 	}
 	
@@ -649,13 +640,12 @@ public class DateTimePicker extends RelativeLayout {
 		    if (year > endYear) {
 			cal.set(Calendar.YEAR, endYear);
 		    }
-		    else
-			if (year < startYear) {
-			    cal.set(Calendar.YEAR, startYear);
-			}
-			else {
-			    cal.set(Calendar.YEAR, year);
-			}
+		    else if (year < startYear) {
+			cal.set(Calendar.YEAR, startYear);
+		    }
+		    else {
+			cal.set(Calendar.YEAR, year);
+		    }
 		}
 		
 		sendToListener();

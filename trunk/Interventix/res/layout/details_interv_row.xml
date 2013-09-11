@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_pressed_item"
     android:orientation="horizontal"
     android:weightSum="1" >
 
@@ -10,7 +9,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="#FFFFFF"
+        android:background="@drawable/list_pressed_item"
         android:orientation="vertical"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
@@ -20,7 +19,6 @@
             android:id="@+id/tv_type_detail_interv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pluto"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -28,7 +26,6 @@
             android:id="@+id/tv_object_detail_interv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="fhgasjfgasg"
             android:textSize="14sp" />
     </LinearLayout>
 

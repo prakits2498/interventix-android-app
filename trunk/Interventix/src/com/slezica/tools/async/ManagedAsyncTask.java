@@ -97,9 +97,7 @@ public abstract class ManagedAsyncTask<Params, Progress, Result> {
 	return mTask.get();
     }
     
-    public Result get(long timeout, TimeUnit unit) throws InterruptedException,
-						  ExecutionException,
-						  TimeoutException {
+    public Result get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 	
 	return mTask.get(timeout, unit);
     }
@@ -109,8 +107,7 @@ public abstract class ManagedAsyncTask<Params, Progress, Result> {
 	return mTask.getStatus();
     }
     
-    protected class InternalAsyncTask extends
-				     AsyncTask<Params, Progress, Result> {
+    protected class InternalAsyncTask extends AsyncTask<Params, Progress, Result> {
 	
 	@Override
 	protected void onPreExecute() {
