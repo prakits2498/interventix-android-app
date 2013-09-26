@@ -56,7 +56,8 @@ import com.federicocolantoni.projects.interventix.utils.Utils;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
-public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
+public class HomeActivity extends BaseActivity implements
+					      LoaderCallbacks<Cursor> {
     
     private final static int MESSAGE_LOADER = 1;
     
@@ -66,7 +67,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 	    InterventoDB.Fields.DATA_ORA
     };
     
-    static final String SELECTION = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.CHIUSO + " = ?";
+    static final String SELECTION = InterventoDB.Fields.TYPE + " =? AND " + InterventoDB.Fields.CHIUSO + " =?";
     
     static final String[] SELECTION_ARGS = new String[] {
 	    InterventoDB.INTERVENTO_ITEM_TYPE, "0"
@@ -83,8 +84,6 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 	
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	
-	BugSenseHandler.initAndStartSession(HomeActivity.this, Constants.API_KEY);
 	
 	setContentView(R.layout.activity_home);
 	
@@ -104,7 +103,8 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 	listOpen.setOnItemClickListener(new OnItemClickListener() {
 	    
 	    @Override
-	    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+	    public void onItemClick(AdapterView<?> adapter, View view,
+				    int position, long id) {
 		
 		Bundle bundle = new Bundle();
 		
@@ -142,7 +142,8 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 	logout.show(getSupportFragmentManager(), Constants.LOGOUT_DIALOG_FRAGMENT);
     }
     
-    public static class LogoutDialog extends SherlockDialogFragment implements OnClickListener {
+    public static class LogoutDialog extends SherlockDialogFragment implements
+								   OnClickListener {
 	
 	public LogoutDialog() {
 	    
@@ -171,8 +172,9 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 		dialog.dismiss();
 		getSherlockActivity().finish();
 	    }
-	    else
+	    else {
 		dialog.dismiss();
+	    }
 	}
     }
     
@@ -217,14 +219,17 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 	if (optionsMenu != null) {
 	    final MenuItem refreshItem = optionsMenu.findItem(R.id.refresh_menu);
 	    if (refreshItem != null)
-		if (refreshing)
+		if (refreshing) {
 		    refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
-		else
+		}
+		else {
 		    refreshItem.setActionView(null);
+		}
 	}
     }
     
-    private String setNominativo() throws InterruptedException, ExecutionException {
+    private String setNominativo() throws InterruptedException,
+				  ExecutionException {
 	
 	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
@@ -256,10 +261,12 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 		    res = cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.NOME)) + " " + cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.COGNOME));
 		}
 		
-		if (!cursor.isClosed())
+		if (!cursor.isClosed()) {
 		    cursor.close();
-		else
+		}
+		else {
 		    System.out.println("Cursor for setNominativo is closed");
+		}
 		
 		return res;
 	    }
@@ -321,9 +328,10 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 			
 			editor.putLong(Constants.REVISION_USERS, (Long) data.get("revision"));
 			
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			    editor.apply();
-			else
+			}
+			else {
 			    new Thread(new Runnable() {
 				
 				@Override
@@ -332,6 +340,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 				    editor.commit();
 				}
 			    });
+			}
 			
 			JSONArray usersMOD = (JSONArray) data.get("mod");
 			JSONArray usersDEL = (JSONArray) data.get("del");
@@ -360,7 +369,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 			    }
 			}
 			
-			if (usersDEL.size() > 0)
+			if (usersDEL.size() > 0) {
 			    for (int k = 0; k < usersDEL.size(); k++) {
 				
 				String where = UtenteDB.Fields.ID_UTENTE + " = ? AND " + Fields.TYPE + " = ?";
@@ -373,13 +382,16 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 				cr.delete(UtenteDB.CONTENT_URI, where, selectionArgs);
 				
 			    }
-			else
+			}
+			else {
 			    System.out.println("DEL USERS EMPTY");
+			}
 			
 			result = Activity.RESULT_OK;
 		    }
-		    else
+		    else {
 			result = Activity.RESULT_CANCELED;
+		    }
 		    
 		}
 		catch (Exception e) {
@@ -393,8 +405,9 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 	    @Override
 	    protected void onPostExecute(Integer result) {
 		
-		if (result == Activity.RESULT_OK)
+		if (result == Activity.RESULT_OK) {
 		    getClientsSyncro();
+		}
 		else {
 		    
 		    InterventixToast.makeToast(HomeActivity.this, "Si è verificato un errore nella sincronizzazione degli utenti.", Toast.LENGTH_LONG);
@@ -456,9 +469,10 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 			
 			editor.putLong(Constants.REVISION_CLIENTS, (Long) data.get("revision"));
 			
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			    editor.apply();
-			else
+			}
+			else {
 			    new Thread(new Runnable() {
 				
 				@Override
@@ -467,6 +481,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 				    editor.commit();
 				}
 			    });
+			}
 			
 			JSONArray clientsMOD = (JSONArray) data.get("mod");
 			JSONArray clientsDEL = (JSONArray) data.get("del");
@@ -486,8 +501,9 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 			    
 			    cursorCliente = cr.query(ClienteDB.CONTENT_URI, null, selectionCliente, selectionClienteArgs, null);
 			    
-			    if (cursorCliente.getCount() > 0)
+			    if (cursorCliente.getCount() > 0) {
 				cursorCliente.close();
+			    }
 			    else {
 				
 				// *** INSERT CLIENTE ***\\\
@@ -532,8 +548,9 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 			
 			result = Activity.RESULT_OK;
 		    }
-		    else
+		    else {
 			result = Activity.RESULT_CANCELED;
+		    }
 		}
 		catch (Exception e) {
 		    e.printStackTrace();
@@ -545,8 +562,9 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 	    
 	    @Override
 	    protected void onPostExecute(Integer result) {
-		if (result == Activity.RESULT_OK)
+		if (result == Activity.RESULT_OK) {
 		    getInterventionsSyncro();
+		}
 		else {
 		    
 		    InterventixToast.makeToast(HomeActivity.this, "Si è verificato un errore nella sincronizzazione dei clienti.", Toast.LENGTH_LONG);
@@ -605,9 +623,10 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 			
 			editor.putLong(Constants.REVISION_INTERVENTIONS, (Long) data.get("revision"));
 			
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			    editor.apply();
-			else
+			}
+			else {
 			    new Thread(new Runnable() {
 				
 				@Override
@@ -616,6 +635,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 				    editor.commit();
 				}
 			    });
+			}
 			
 			JSONArray intervMOD = (JSONArray) data.get("mod");
 			JSONArray intervDEL = (JSONArray) data.get("del");
@@ -623,13 +643,15 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 			
 			int cont = 0;
 			
-			if (intervMOD.size() > 0)
-			    for (int i = 0; i < intervMOD.size(); ++i)
+			if (intervMOD.size() > 0) {
+			    for (int i = 0; i < intervMOD.size(); ++i) {
 				addInterventions((JSONObject) intervMOD.get(i), cont);
+			    }
+			}
 			
 			// *** deleting interventions that not belong anymore to
 			// the current responsible ***\\
-			if (intervDEL.size() > 0)
+			if (intervDEL.size() > 0) {
 			    for (int i = 0; i < intervDEL.size(); ++i) {
 				
 				long intervID = (Long) intervDEL.get(i);
@@ -646,6 +668,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 				System.out.println("Eliminato l'intervento " + intervID);
 				
 			    }
+			}
 			
 			for (int k = 0; k < interventions.size(); ++k) {
 			    
@@ -653,8 +676,9 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 			
 			result = Activity.RESULT_OK;
 		    }
-		    else
+		    else {
 			result = Activity.RESULT_CANCELED;
+		    }
 		    
 		}
 		catch (Exception e) {
@@ -665,7 +689,8 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 		return result;
 	    }
 	    
-	    private void addInterventions(JSONObject responseIntervs, int contProg) {
+	    private void addInterventions(JSONObject responseIntervs,
+					  int contProg) {
 		
 		ContentResolver cr = getContentResolver();
 		ContentValues values = new ContentValues();
@@ -752,18 +777,30 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 				values.put(DettaglioInterventoDB.Fields.INIZIO, (Long) dettInterv.get("inizio"));
 				values.put(DettaglioInterventoDB.Fields.FINE, (Long) dettInterv.get("fine"));
 				
-				JSONArray tecnici = (JSONArray) dettInterv.get("tecniciintervento");
+				// JSONArray tecnici = (JSONArray)
+				// dettInterv.get("tecniciintervento");
+				//
+				// System.out.println("TECNICI INTERVENTO: \n" +
+				// tecnici.toJSONString());
 				
-				String tecniciInterv = new String();
+				// org.json.JSONArray array=new
+				// org.json.JSONArray(tecnici.toJSONString());
+				//
+				// Integer[] tecArray = (Integer[])
+				// tecnici.toArray();
 				
-				for (int i = 0; i < tecnici.size(); i++) {
-				    tecniciInterv += "" + tecnici.get(i);
-				    
-				    if (i < tecnici.size())
-					tecniciInterv += ",";
-				}
-				
-				values.put(DettaglioInterventoDB.Fields.TECNICI, tecniciInterv);
+				// String tecniciInterv = new String();
+				//
+				// for (int i = 0; i < tecnici.size(); i++) {
+				// tecniciInterv += "" + tecnici.get(i);
+				//
+				// if (i < tecnici.size()) {
+				// tecniciInterv += ",";
+				// }
+				// }
+				//
+				// values.put(DettaglioInterventoDB.Fields.TECNICI,
+				// tecniciInterv);
 				
 				cr.insert(DettaglioInterventoDB.CONTENT_URI, values);
 				
@@ -787,6 +824,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 			values.put(InterventoDB.Fields.IMPORTO, (Double) responseIntervs.get("importo"));
 			values.put(InterventoDB.Fields.IVA, (Double) responseIntervs.get("iva"));
 			values.put(InterventoDB.Fields.MODALITA, (String) responseIntervs.get("modalita"));
+			values.put(InterventoDB.Fields.MODIFICATO, "N");
 			values.put(InterventoDB.Fields.MOTIVO, (String) responseIntervs.get("motivo"));
 			values.put(InterventoDB.Fields.NOMINATIVO, (String) responseIntervs.get("nominativo"));
 			values.put(InterventoDB.Fields.NOTE, (String) responseIntervs.get("note"));
@@ -826,6 +864,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 			    values.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, (Long) dettInterv.get("iddettagliointervento"));
 			    values.put(DettaglioInterventoDB.Fields.INTERVENTO, (Long) responseIntervs.get("idintervento"));
 			    values.put(DettaglioInterventoDB.Fields.OGGETTO, (String) dettInterv.get("oggetto"));
+			    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "N");
 			    values.put(DettaglioInterventoDB.Fields.TIPO, (String) dettInterv.get("tipo"));
 			    values.put(DettaglioInterventoDB.Fields.INIZIO, (Long) dettInterv.get("inizio"));
 			    values.put(DettaglioInterventoDB.Fields.FINE, (Long) dettInterv.get("fine"));
@@ -861,9 +900,10 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 			edit.putString(Constants.USER_NOMINATIVO, nominativo);
 			getSupportActionBar().setTitle(nominativo);
 			
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			    edit.apply();
-			else
+			}
+			else {
 			    new Thread(new Runnable() {
 				
 				@Override
@@ -872,6 +912,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 				    edit.commit();
 				}
 			    }).start();
+			}
 			
 			setRefreshActionButtonState(false);
 		    }

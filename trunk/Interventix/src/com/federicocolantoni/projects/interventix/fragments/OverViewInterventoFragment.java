@@ -33,7 +33,8 @@ import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
 public class OverViewInterventoFragment extends SherlockFragment {
     
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			     Bundle savedInstanceState) {
 	
 	BugSenseHandler.initAndStartSession(getSherlockActivity(), Constants.API_KEY);
 	
@@ -63,35 +64,10 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	getSherlockActivity().getSupportActionBar().setSubtitle("Intervento " + bundle.getLong(Constants.NUMERO_INTERVENTO));
 	
 	TextView summary = (TextView) view.findViewById(R.id.tv_summary_intervention);
-	// new DateFormat();
 	
 	DateTime dt_interv = new DateTime(interv.getmDataOra(), DateTimeZone.forID("Europe/Rome"));
 	
-	summary.setText("Interv. " + bundle.getLong(Constants.NUMERO_INTERVENTO) + " del " + /*
-											      * new
-											      * SimpleDateFormat
-											      * (
-											      * "dd/MM/yyyy HH:mm"
-											      * ,
-											      * Locale
-											      * .
-											      * ITALY
-											      * )
-											      * .
-											      * format
-											      * (
-											      * new
-											      * Date
-											      * (
-											      * interv
-											      * .
-											      * getmDataOra
-											      * (
-											      * )
-											      * )
-											      * )
-											      * +
-											      */dt_interv.toString("dd/MM/yyyy HH:mm"));
+	summary.setText("Interv. " + bundle.getLong(Constants.NUMERO_INTERVENTO) + " del " + dt_interv.toString("dd/MM/yyyy HH:mm"));
 	
 	View rowCliente = view.findViewById(R.id.row_client);
 	rowCliente.setOnClickListener(new OnClickListener() {
@@ -154,6 +130,7 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	ListDetailsIntervento listaDetailsInterv = null;
 	
 	try {
+	    
 	    listaDetailsInterv = new GetDettagliInterventoAsyncTask(getSherlockActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
 	}
 	catch (InterruptedException e) {

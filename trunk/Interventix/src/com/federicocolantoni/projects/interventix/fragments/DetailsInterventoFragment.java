@@ -16,34 +16,36 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.DettaglioInterventoAdapter;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 
-public class DetailsInterventoFragment extends SherlockFragment implements LoaderCallbacks<Cursor> {
+public class DetailsInterventoFragment extends SherlockFragment
+							       implements
+							       LoaderCallbacks<Cursor> {
     
     private final static int MESSAGE_LOADER = 1;
     
     private long mId_intervento;
     
-    private final String[] PROJECTION = new String[] {
+    static final String[] PROJECTION = new String[] {
 	    DettaglioInterventoDB.Fields._ID,
 	    DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
 	    DettaglioInterventoDB.Fields.TIPO,
 	    DettaglioInterventoDB.Fields.OGGETTO
     };
     
-    private final String SELECTION = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.INTERVENTO + " = ?";
+    static final String SELECTION = DettaglioInterventoDB.Fields.TYPE + " =? AND " + DettaglioInterventoDB.Fields.INTERVENTO + " =?";
     
     private String[] SELECTION_ARGS;
     
     private DettaglioInterventoAdapter mAdapter;
     
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			     Bundle savedInstanceState) {
 	
 	BugSenseHandler.initAndStartSession(getSherlockActivity(), Constants.API_KEY);
 	
@@ -57,6 +59,8 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 	Bundle bundle = getArguments();
 	
 	mId_intervento = bundle.getLong(Constants.ID_INTERVENTO);
+	
+	System.out.println("LISTA DETTAGLI - ID INTERVENTO " + mId_intervento);
 	
 	SELECTION_ARGS = new String[] {
 		DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
@@ -75,7 +79,8 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 	detailsList.setOnItemClickListener(new OnItemClickListener() {
 	    
 	    @Override
-	    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+	    public void onItemClick(AdapterView<?> adapter, View view,
+				    int position, long id) {
 		
 		Bundle bundle = new Bundle();
 		
@@ -89,7 +94,7 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 		DetailInterventoFragment dettInterv = new DetailInterventoFragment();
 		dettInterv.setArguments(bundle);
 		
-		transaction.replace(R.id.fragments_layout, dettInterv, Constants.DETAILS_DETTAGLIO_INTERVENTO_FRAGMENT);
+		transaction.replace(R.id.fragments_layout, dettInterv, Constants.DETAILS_DETTAGLIO_FRAGMENT);
 		transaction.addToBackStack(Constants.INFORMATIONS_INTERVENTO_FRAGMENT);
 		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		
@@ -105,20 +110,26 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
     // @Override
     // public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     //
-    // getSherlockActivity().getSupportMenuInflater().inflate(
-    // R.menu.details_interve_menu, menu);
+    // getSherlockActivity().getSupportMenuInflater().inflate(R.menu.details_interv_menu,
+    // menu);
     // }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-	
-	return super.onOptionsItemSelected(item);
-    }
+    //
+    // @Override
+    // public boolean onOptionsItemSelected(MenuItem item) {
+    //
+    // switch (item.getItemId()) {
+    // case R.id.add_detail_interv:
+    //
+    // break;
+    // }
+    //
+    // return true;
+    // }
     
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
 	
-	Loader<Cursor> loader = new CursorLoader(getSherlockActivity(), DettaglioInterventoDB.CONTENT_URI, PROJECTION, SELECTION, SELECTION_ARGS, null);
+	Loader<Cursor> loader = new CursorLoader(getSherlockActivity(), DettaglioInterventoDB.CONTENT_URI, DetailsInterventoFragment.PROJECTION, DetailsInterventoFragment.SELECTION, SELECTION_ARGS, null);
 	
 	return loader;
     }

@@ -20,6 +20,7 @@ public class DettaglioInterventoAdapter extends CursorAdapter {
     private int mOggettoDettaglioInterventoIndex;
     
     public DettaglioInterventoAdapter(Context context, Cursor c) {
+	
 	super(context, c, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 	mInflater = LayoutInflater.from(context);
 	mFoundIndexes = false;

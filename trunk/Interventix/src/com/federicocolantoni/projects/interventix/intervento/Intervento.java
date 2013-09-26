@@ -12,9 +12,9 @@ public class Intervento implements Serializable {
     
     private Long mIdIntervento;
     private String mTipologia, mProdotto, mMotivo, mNominativo, mRifFattura,
-	    mRifScontrino, mNote, mModalita;
+	    mRifScontrino, mNote, mModalita, mModificato;
     private byte[] mFirma;
-    private boolean mSaldato, mCancellato, mChiuso, mModificato;
+    private boolean mSaldato, mCancellato, mChiuso;
     private Long mDataOra;
     private Long mIdCliente;
     private Long mIdTecnico;
@@ -424,7 +424,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mModificato
      */
-    public boolean isModificato() {
+    public String getmModificato() {
 	return mModificato;
     }
     
@@ -432,7 +432,7 @@ public class Intervento implements Serializable {
      * @param mModificato
      *            the mModificato to set
      */
-    public void setModificato(boolean mModificato) {
+    public void setmModificato(String mModificato) {
 	this.mModificato = mModificato;
     }
 }

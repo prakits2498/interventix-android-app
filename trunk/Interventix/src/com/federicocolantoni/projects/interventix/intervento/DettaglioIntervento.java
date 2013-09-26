@@ -5,13 +5,19 @@ import java.util.List;
 public class DettaglioIntervento {
     
     private Long mIdDettaglioIntervento;
-    private String mTipo, mOggetto, mDescrizione;
+    private String mTipo, mOggetto, mDescrizione, mModificato;
     private Long mIntervento;
     private Long mInizio, mFine;
     private List<Integer> mTecnici;
-    private boolean mModificato;
     
     public DettaglioIntervento() {
+	
+    }
+    
+    @Override
+    public String toString() {
+	
+	return "Dettaglio " + mIdDettaglioIntervento + "\nOggetto: " + mOggetto + "\nDescrizione: " + mDescrizione + "\nTipo: " + mTipo + "\nIntervento: " + mIntervento;
 	
     }
     
@@ -139,7 +145,7 @@ public class DettaglioIntervento {
     /**
      * @return the mModificato
      */
-    public boolean ismModificato() {
+    public String getmModificato() {
 	return mModificato;
     }
     
@@ -147,7 +153,7 @@ public class DettaglioIntervento {
      * @param mModificato
      *            the mModificato to set
      */
-    public void setmModificato(boolean mModificato) {
+    public void setmModificato(String mModificato) {
 	this.mModificato = mModificato;
     }
 }

@@ -5,6 +5,7 @@
         android:id="@+id/add_detail_interv"
         android:icon="@drawable/content_new_5"
         android:showAsAction="always"
+        android:visible="false"
         android:title="@string/add_dettaglio_menu"/>
 
 </menu>
