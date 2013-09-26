@@ -1,8 +1,5 @@
 package com.federicocolantoni.projects.interventix.task;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,7 +9,9 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Dat
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
 
-public class GetDettaglioInterventoAsyncTask extends AsyncTask<Long, Void, DettaglioIntervento> {
+public class GetDettaglioInterventoAsyncTask
+					    extends
+					    AsyncTask<Long, Void, DettaglioIntervento> {
     
     private final Context context;
     
@@ -31,8 +30,7 @@ public class GetDettaglioInterventoAsyncTask extends AsyncTask<Long, Void, Detta
 		DettaglioInterventoDB.Fields.FINE,
 		DettaglioInterventoDB.Fields.INIZIO,
 		DettaglioInterventoDB.Fields.OGGETTO,
-		DettaglioInterventoDB.Fields.TIPO,
-		DettaglioInterventoDB.Fields.TECNICI
+		DettaglioInterventoDB.Fields.TIPO
 	};
 	
 	String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
@@ -54,19 +52,20 @@ public class GetDettaglioInterventoAsyncTask extends AsyncTask<Long, Void, Detta
 	    dettInterv.setmOggetto(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.OGGETTO)));
 	    dettInterv.setmTipo(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TIPO)));
 	    
-	    String tecnici = cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TECNICI));
-	    
-	    List<Integer> listTecnici = new ArrayList<Integer>();
-	    
-	    if (tecnici.length() > 0) {
-		String[] idTecnici = tecnici.split(",");
-		
-		for (String element : idTecnici) {
-		    listTecnici.add(Integer.parseInt(element));
-		}
-	    }
-	    
-	    dettInterv.setmTecnici(listTecnici);
+	    // String tecnici =
+	    // cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TECNICI));
+	    //
+	    // List<Integer> listTecnici = new ArrayList<Integer>();
+	    //
+	    // if (tecnici.length() > 0) {
+	    // String[] idTecnici = tecnici.split(",");
+	    //
+	    // for (String element : idTecnici) {
+	    // listTecnici.add(Integer.parseInt(element));
+	    // }
+	    // }
+	    //
+	    // dettInterv.setmTecnici(listTecnici);
 	}
 	
 	if (!cursor.isClosed()) {

@@ -69,7 +69,7 @@ public class GetInterventoAsyncTask extends AsyncTask<Long, Void, Intervento> {
 	    intervento.setmIdIntervento(cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.ID_INTERVENTO)));
 	    intervento.setmIva(BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(InterventoDB.Fields.IVA))));
 	    intervento.setmModalita(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.MODALITA)));
-	    intervento.setModificato(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.MODIFICATO)).equals("M") ? true : false);
+	    intervento.setmModificato(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.MODIFICATO)));
 	    intervento.setmMotivo(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.MOTIVO)));
 	    intervento.setmNominativo(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.NOMINATIVO)));
 	    intervento.setmNote(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.NOTE)));

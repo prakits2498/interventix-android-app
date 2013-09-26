@@ -14,7 +14,7 @@ public final class Constants {
     public static final String USER_NOMINATIVO = "USER_NOMINATIVO";
     public static final int CONNECTION_TIMEOUT = 16000;
     public static final String DETAILS_INTERVENTO_FRAGMENT = "DETAILS_INTERVENTO_FRAGMENT";
-    public static final String DETAILS_DETTAGLIO_INTERVENTO_FRAGMENT = "DETAILS_DETTAGLIO_INTERVENTO_FRAGMENT";
+    public static final String DETAILS_DETTAGLIO_FRAGMENT = "DETAILS_DETTAGLIO_FRAGMENT";
     public static final String COSTS_INTERVENTO_FRAGMENT = "COSTS_INTERVENTO_FRAGMENT";
     public static final String OVERVIEW_INTERVENTO_FRAGMENT = "OVERVIEW_INTERVENTO";
     public static final String INFORMATIONS_INTERVENTO_FRAGMENT = "INFORMATIONS_INTERVENTO";
@@ -49,9 +49,27 @@ public final class Constants {
     public static final String NUMERO_INTERVENTO = "NUMERO_INTERVENTO";
     public static final String NOMINATIVO = "NOMINATIVO";
     public static final String CLIENTE = "CLIENTE";
-    // public static final int TOKEN_EDIT_MODE = 1;
     public static final String LIST_DETAILS_INTERVENTO = "LIST_DETAILS_INTERVENTO";
     public static final Double IVA = 0.21;
+    
+    // *** costanti per il token delle AsyncQueryHandler *** \\\
+    public static final int WRITE_INTERV_TOKEN = 0;
+    public static final int WRITE_DETT_INTERV_TOKEN = 1;
+    public static final int TOKEN_TIPO_DETTAGLIO = 2;
+    public static final int TOKEN_OGGETTO_DETTAGLIO = 3;
+    public static final int TOKEN_DESCRIZIONE_DETTAGLIO = 4;
+    public static final int TOKEN_ORA_INIZIO_DETTAGLIO = 5;
+    public static final int TOKEN_ORA_FINE_DETTAGLIO = 6;
+    // public static final int TOKEN_TECNICI_DETTAGLIO = 7;
+    public static final int TOKEN_INFO_TIPOLOGIA = 8;
+    public static final int TOKEN_INFO_NOMINATIVO = 9;
+    public static final int TOKEN_INFO_PRODOTTO = 10;
+    public static final int TOKEN_INFO_MODALITA = 11;
+    public static final int TOKEN_INFO_MOTIVO = 12;
+    public static final int TOKEN_INFO_DATA_ORA = 12;
+    public static final int TOKEN_COSTO_MANODOPERA = 14;
+    public static final int TOKEN_COSTO_COMPONENTI = 15;
+    public static final int TOKEN_COSTO_ACCESSORI = 16;
     
     // *** costanti per la gesture swipe ***\\
     public static final int SWIPE_MIN_DISTANCE = 120;
@@ -62,4 +80,6 @@ public final class Constants {
     public static final String LOGIN_DATA = "LOGIN_DATA";
     public static final String USERNAME = "USERNAME";
     public static final String PASSWORD = "PASSWORD";
+    
+    public static final String INTERVENTO_OLD = "INTERVENTO_OLD";
 }
