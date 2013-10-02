@@ -18,7 +18,7 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Int
 import com.federicocolantoni.projects.interventix.intervento.Cliente;
 import com.federicocolantoni.projects.interventix.task.GetNominativoClienteAsyncTask;
 
-public class InterventionsAdapter extends CursorAdapter {
+public class InterventiAdapter extends CursorAdapter {
     
     private final LayoutInflater mInflater;
     private boolean mFoundIndexes;
@@ -27,7 +27,7 @@ public class InterventionsAdapter extends CursorAdapter {
     private int mClienteInterventoIndex;
     private int mDataInterventoIndex;
     
-    public InterventionsAdapter(Context context, Cursor c) {
+    public InterventiAdapter(Context context, Cursor c) {
 	
 	super(context, c, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 	mInflater = LayoutInflater.from(context);

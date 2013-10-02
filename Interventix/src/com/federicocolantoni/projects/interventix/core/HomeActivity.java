@@ -45,7 +45,7 @@ import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.R.string;
-import com.federicocolantoni.projects.interventix.adapter.InterventionsAdapter;
+import com.federicocolantoni.projects.interventix.adapter.InterventiAdapter;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
@@ -56,24 +56,21 @@ import com.federicocolantoni.projects.interventix.utils.Utils;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
-public class HomeActivity extends BaseActivity implements
-					      LoaderCallbacks<Cursor> {
+public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
     
     private final static int MESSAGE_LOADER = 1;
     
     static final String[] PROJECTION = new String[] {
-	    InterventoDB.Fields._ID, InterventoDB.Fields.NUMERO_INTERVENTO,
-	    InterventoDB.Fields.CLIENTE, InterventoDB.Fields.ID_INTERVENTO,
-	    InterventoDB.Fields.DATA_ORA
+    InterventoDB.Fields._ID, InterventoDB.Fields.NUMERO_INTERVENTO, InterventoDB.Fields.CLIENTE, InterventoDB.Fields.ID_INTERVENTO, InterventoDB.Fields.DATA_ORA
     };
     
     static final String SELECTION = InterventoDB.Fields.TYPE + " =? AND " + InterventoDB.Fields.CHIUSO + " =?";
     
     static final String[] SELECTION_ARGS = new String[] {
-	    InterventoDB.INTERVENTO_ITEM_TYPE, "0"
+    InterventoDB.INTERVENTO_ITEM_TYPE, "0"
     };
     
-    private InterventionsAdapter mAdapter;
+    private InterventiAdapter mAdapter;
     
     private Menu optionsMenu;
     
@@ -91,7 +88,7 @@ public class HomeActivity extends BaseActivity implements
 	
 	ListView listOpen = (ListView) findViewById(R.id.list_interv_open);
 	
-	mAdapter = new InterventionsAdapter(this, null);
+	mAdapter = new InterventiAdapter(this, null);
 	
 	listOpen.setAdapter(mAdapter);
 	
@@ -103,8 +100,7 @@ public class HomeActivity extends BaseActivity implements
 	listOpen.setOnItemClickListener(new OnItemClickListener() {
 	    
 	    @Override
-	    public void onItemClick(AdapterView<?> adapter, View view,
-				    int position, long id) {
+	    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 		
 		Bundle bundle = new Bundle();
 		
@@ -142,8 +138,7 @@ public class HomeActivity extends BaseActivity implements
 	logout.show(getSupportFragmentManager(), Constants.LOGOUT_DIALOG_FRAGMENT);
     }
     
-    public static class LogoutDialog extends SherlockDialogFragment implements
-								   OnClickListener {
+    public static class LogoutDialog extends SherlockDialogFragment implements OnClickListener {
 	
 	public LogoutDialog() {
 	    
@@ -228,8 +223,7 @@ public class HomeActivity extends BaseActivity implements
 	}
     }
     
-    private String setNominativo() throws InterruptedException,
-				  ExecutionException {
+    private String setNominativo() throws InterruptedException, ExecutionException {
 	
 	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
@@ -243,14 +237,13 @@ public class HomeActivity extends BaseActivity implements
 		ContentResolver cr = getContentResolver();
 		
 		String[] projection = new String[] {
-			UtenteDB.Fields._ID, UtenteDB.Fields.NOME,
-			UtenteDB.Fields.COGNOME
+		UtenteDB.Fields._ID, UtenteDB.Fields.NOME, UtenteDB.Fields.COGNOME
 		};
 		
 		String selection = UtenteDB.Fields.TYPE + " = ? AND " + UtenteDB.Fields.ID_UTENTE + " = ?";
 		
 		String[] selectionArgs = new String[] {
-			UtenteDB.UTENTE_ITEM_TYPE, "" + params[0]
+		UtenteDB.UTENTE_ITEM_TYPE, "" + params[0]
 		};
 		
 		Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection, selection, selectionArgs, null);
@@ -375,8 +368,7 @@ public class HomeActivity extends BaseActivity implements
 				String where = UtenteDB.Fields.ID_UTENTE + " = ? AND " + Fields.TYPE + " = ?";
 				
 				String[] selectionArgs = new String[] {
-					"" + usersDEL.get(k),
-					UtenteDB.UTENTE_ITEM_TYPE
+				"" + usersDEL.get(k), UtenteDB.UTENTE_ITEM_TYPE
 				};
 				
 				cr.delete(UtenteDB.CONTENT_URI, where, selectionArgs);
@@ -495,8 +487,7 @@ public class HomeActivity extends BaseActivity implements
 			    String selectionCliente = ClienteDB.Fields.TYPE + " = ? AND " + ClienteDB.Fields.ID_CLIENTE + " = ?";
 			    
 			    String[] selectionClienteArgs = new String[] {
-				    ClienteDB.CLIENTE_ITEM_TYPE,
-				    "" + cliente.get("idcliente")
+			    ClienteDB.CLIENTE_ITEM_TYPE, "" + cliente.get("idcliente")
 			    };
 			    
 			    cursorCliente = cr.query(ClienteDB.CONTENT_URI, null, selectionCliente, selectionClienteArgs, null);
@@ -538,8 +529,7 @@ public class HomeActivity extends BaseActivity implements
 			    String where = ClienteDB.Fields.ID_CLIENTE + " = ? AND " + ClienteDB.Fields.TYPE + " = ?";
 			    
 			    String[] selectionArgs = new String[] {
-				    "" + clientsDEL.get(k),
-				    ClienteDB.CLIENTE_ITEM_TYPE
+			    "" + clientsDEL.get(k), ClienteDB.CLIENTE_ITEM_TYPE
 			    };
 			    
 			    cr.delete(ClienteDB.CONTENT_URI, where, selectionArgs);
@@ -659,8 +649,7 @@ public class HomeActivity extends BaseActivity implements
 				String where = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 				
 				String[] selectionArgs = new String[] {
-					InterventoDB.INTERVENTO_ITEM_TYPE,
-					"" + intervID
+				InterventoDB.INTERVENTO_ITEM_TYPE, "" + intervID
 				};
 				
 				cr.delete(InterventoDB.CONTENT_URI, where, selectionArgs);
@@ -689,8 +678,7 @@ public class HomeActivity extends BaseActivity implements
 		return result;
 	    }
 	    
-	    private void addInterventions(JSONObject responseIntervs,
-					  int contProg) {
+	    private void addInterventions(JSONObject responseIntervs, int contProg) {
 		
 		ContentResolver cr = getContentResolver();
 		ContentValues values = new ContentValues();
@@ -703,8 +691,7 @@ public class HomeActivity extends BaseActivity implements
 		    String selection = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 		    
 		    String[] selectionArgs = new String[] {
-			    InterventoDB.INTERVENTO_ITEM_TYPE,
-			    "" + responseIntervs.get("idintervento")
+		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + responseIntervs.get("idintervento")
 		    };
 		    
 		    cursorIntervento = cr.query(InterventoDB.CONTENT_URI, null, selection, selectionArgs, null);
@@ -752,8 +739,7 @@ public class HomeActivity extends BaseActivity implements
 			    String selectionDettaglioIntervento = Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 			    
 			    String[] selectionDettIntervArgs = new String[] {
-				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
-				    "" + dettInterv.get("iddettagliointervento")
+			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettInterv.get("iddettagliointervento")
 			    };
 			    
 			    cursorDettaglioIntervento = cr.query(DettaglioInterventoDB.CONTENT_URI, null, selectionDettaglioIntervento, selectionDettIntervArgs, null);
@@ -776,31 +762,7 @@ public class HomeActivity extends BaseActivity implements
 				values.put(DettaglioInterventoDB.Fields.TIPO, (String) dettInterv.get("tipo"));
 				values.put(DettaglioInterventoDB.Fields.INIZIO, (Long) dettInterv.get("inizio"));
 				values.put(DettaglioInterventoDB.Fields.FINE, (Long) dettInterv.get("fine"));
-				
-				// JSONArray tecnici = (JSONArray)
-				// dettInterv.get("tecniciintervento");
-				//
-				// System.out.println("TECNICI INTERVENTO: \n" +
-				// tecnici.toJSONString());
-				
-				// org.json.JSONArray array=new
-				// org.json.JSONArray(tecnici.toJSONString());
-				//
-				// Integer[] tecArray = (Integer[])
-				// tecnici.toArray();
-				
-				// String tecniciInterv = new String();
-				//
-				// for (int i = 0; i < tecnici.size(); i++) {
-				// tecniciInterv += "" + tecnici.get(i);
-				//
-				// if (i < tecnici.size()) {
-				// tecniciInterv += ",";
-				// }
-				// }
-				//
-				// values.put(DettaglioInterventoDB.Fields.TECNICI,
-				// tecniciInterv);
+				values.put(DettaglioInterventoDB.Fields.TECNICI, ((JSONArray) dettInterv.get("tecniciintervento")).toJSONString());
 				
 				cr.insert(DettaglioInterventoDB.CONTENT_URI, values);
 				
@@ -849,8 +811,7 @@ public class HomeActivity extends BaseActivity implements
 			    String selectionDettaglioIntervento = Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 			    
 			    String[] selectionDettIntervArgs = new String[] {
-				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
-				    "" + dettInterv.get("iddettagliointervento")
+			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettInterv.get("iddettagliointervento")
 			    };
 			    
 			    // *** UPDATE DETTAGLIO INTERVENTO ***\\\
@@ -868,6 +829,7 @@ public class HomeActivity extends BaseActivity implements
 			    values.put(DettaglioInterventoDB.Fields.TIPO, (String) dettInterv.get("tipo"));
 			    values.put(DettaglioInterventoDB.Fields.INIZIO, (Long) dettInterv.get("inizio"));
 			    values.put(DettaglioInterventoDB.Fields.FINE, (Long) dettInterv.get("fine"));
+			    values.put(DettaglioInterventoDB.Fields.TECNICI, ((JSONArray) dettInterv.get("tecniciintervento")).toJSONString());
 			    
 			    cr.update(DettaglioInterventoDB.CONTENT_URI, values, selectionDettaglioIntervento, selectionDettIntervArgs);
 			    

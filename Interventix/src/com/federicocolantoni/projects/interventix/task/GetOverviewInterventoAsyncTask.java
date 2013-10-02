@@ -27,15 +27,13 @@ public class GetOverviewInterventoAsyncTask extends AsyncTask<Long, Void, Interv
 	ContentResolver cr = mContext.getContentResolver();
 	
 	String[] projection = new String[] {
-		Fields._ID, InterventoDB.Fields.CLIENTE,
-		InterventoDB.Fields.DATA_ORA, InterventoDB.Fields.FIRMA,
-		InterventoDB.Fields.TOTALE
+	Fields._ID, InterventoDB.Fields.CLIENTE, InterventoDB.Fields.DATA_ORA, InterventoDB.Fields.FIRMA, InterventoDB.Fields.TOTALE
 	};
 	
 	String selection = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	
 	String[] selectionArgs = new String[] {
-		InterventoDB.INTERVENTO_ITEM_TYPE, "" + params[0]
+	InterventoDB.INTERVENTO_ITEM_TYPE, "" + params[0]
 	};
 	
 	Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);

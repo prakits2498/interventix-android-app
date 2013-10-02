@@ -50,8 +50,7 @@ public class DetailInterventoFragment extends SherlockFragment {
     private static long sId_Dettaglio_Intervento;
     
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			     Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 	BugSenseHandler.initAndStartSession(getSherlockActivity(), Constants.API_KEY);
 	
@@ -201,8 +200,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 			    
 			    String[] selectionArgs = new String[] {
-				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
-				    "" + sId_Dettaglio_Intervento
+			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 			    };
 			    
 			    saveChanges.startUpdate(Constants.TOKEN_ORA_INIZIO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -337,8 +335,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 			    
 			    String[] selectionArgs = new String[] {
-				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
-				    "" + sId_Dettaglio_Intervento
+			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 			    };
 			    
 			    saveChanges.startUpdate(Constants.TOKEN_ORA_FINE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -416,9 +413,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	return view;
     }
     
-    public static class SetTipo extends SherlockDialogFragment
-							      implements
-							      DialogInterface.OnClickListener {
+    public static class SetTipo extends SherlockDialogFragment implements DialogInterface.OnClickListener {
 	
 	private EditText mEdit_tipo_dett;
 	
@@ -460,8 +455,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
-		    "" + sId_Dettaglio_Intervento
+	    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 	    };
 	    
 	    saveChanges.startUpdate(Constants.TOKEN_TIPO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -489,9 +483,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	}
     }
     
-    public static class SetOggetto extends SherlockDialogFragment
-								 implements
-								 DialogInterface.OnClickListener {
+    public static class SetOggetto extends SherlockDialogFragment implements DialogInterface.OnClickListener {
 	
 	private EditText mEdit_oggetto_dett;
 	
@@ -533,8 +525,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
-		    "" + sId_Dettaglio_Intervento
+	    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 	    };
 	    
 	    saveChanges.startUpdate(Constants.TOKEN_OGGETTO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -562,9 +553,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	}
     }
     
-    public static class SetDecrizione extends SherlockDialogFragment
-								    implements
-								    DialogInterface.OnClickListener {
+    public static class SetDecrizione extends SherlockDialogFragment implements DialogInterface.OnClickListener {
 	
 	private EditText mEdit_descrizione_dett;
 	
@@ -606,8 +595,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
-		    "" + sId_Dettaglio_Intervento
+	    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 	    };
 	    
 	    saveChanges.startUpdate(Constants.TOKEN_DESCRIZIONE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);

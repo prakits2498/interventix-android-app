@@ -12,9 +12,7 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Det
 import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
 
-public class GetDettagliInterventoAsyncTask
-					   extends
-					   AsyncTask<Long, Void, ListDetailsIntervento> {
+public class GetDettagliInterventoAsyncTask extends AsyncTask<Long, Void, ListDetailsIntervento> {
     
     private final Context mContext;
     
@@ -28,22 +26,13 @@ public class GetDettagliInterventoAsyncTask
 	ContentResolver cr = mContext.getContentResolver();
 	
 	String[] projection = new String[] {
-		DettaglioInterventoDB.Fields._ID,
-		DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
-		DettaglioInterventoDB.Fields.INTERVENTO,
-		DettaglioInterventoDB.Fields.DESCRIZIONE,
-		DettaglioInterventoDB.Fields.OGGETTO,
-		DettaglioInterventoDB.Fields.TIPO,
-		DettaglioInterventoDB.Fields.INIZIO,
-		DettaglioInterventoDB.Fields.FINE,
-		DettaglioInterventoDB.Fields.MODIFICATO
+	DettaglioInterventoDB.Fields._ID, DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, DettaglioInterventoDB.Fields.INTERVENTO, DettaglioInterventoDB.Fields.DESCRIZIONE, DettaglioInterventoDB.Fields.OGGETTO, DettaglioInterventoDB.Fields.TIPO, DettaglioInterventoDB.Fields.INIZIO, DettaglioInterventoDB.Fields.FINE, DettaglioInterventoDB.Fields.MODIFICATO
 	};
 	
 	String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.INTERVENTO + " = ?";
 	
 	String[] selectionArgs = new String[] {
-		DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
-		"" + params[0]
+	DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + params[0]
 	};
 	
 	Cursor cursor = cr.query(DettaglioInterventoDB.CONTENT_URI, projection, selection, selectionArgs, null);

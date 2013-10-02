@@ -57,20 +57,6 @@
 			android:authorities="com.federicocolantoni.projects.interventix"
 			android:exported="false" >
 		</provider>
-
-		<service
-			android:name="InterventixAuthenticatorService"
-			android:exported="true" >
-			<intent-filter>
-				<action android:name="android.accounts.AccountAuthenticator" >
-				</action>
-			</intent-filter>
-
-			<meta-data
-				android:name="android.accounts.AccountAuthenticator"
-				android:resource="@xml/authenticator" >
-			</meta-data>
-		</service>
 	</application>
 
 </manifest>

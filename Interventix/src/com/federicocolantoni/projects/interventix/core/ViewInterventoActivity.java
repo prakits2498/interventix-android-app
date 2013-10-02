@@ -2,10 +2,16 @@ package com.federicocolantoni.projects.interventix.core;
 
 import java.util.concurrent.ExecutionException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -23,15 +29,21 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.RipristinoInterventoDB;
 import com.federicocolantoni.projects.interventix.fragments.OverViewInterventoFragment;
+import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.intervento.Intervento;
 import com.federicocolantoni.projects.interventix.task.GetDettagliInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
+import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
 public class ViewInterventoActivity extends BaseActivity {
@@ -61,12 +73,83 @@ public class ViewInterventoActivity extends BaseActivity {
 	    interv_old = new GetInterventoAsyncTask(this).execute(id_intervento).get();
 	    
 	    listaDettagliIntervento_old = new GetDettagliInterventoAsyncTask(this).execute(id_intervento).get();
+	    
+	    JSONObject intervento = new JSONObject();
+	    
+	    intervento.put(InterventoDB.Fields.ID_INTERVENTO.toString(), interv_old.getmIdIntervento());
+	    intervento.put(InterventoDB.Fields.CANCELLATO.toString(), interv_old.ismCancellato());
+	    intervento.put(InterventoDB.Fields.CHIUSO.toString(), interv_old.ismChiuso());
+	    intervento.put(InterventoDB.Fields.CLIENTE.toString(), interv_old.getmIdCliente());
+	    intervento.put(InterventoDB.Fields.COSTO_ACCESSORI.toString(), interv_old.getmCostoAccessori().doubleValue());
+	    intervento.put(InterventoDB.Fields.COSTO_COMPONENTI.toString(), interv_old.getmCostoComponenti().doubleValue());
+	    intervento.put(InterventoDB.Fields.COSTO_MANODOPERA.toString(), interv_old.getmCostoManodopera().doubleValue());
+	    intervento.put(InterventoDB.Fields.DATA_ORA.toString(), interv_old.getmDataOra());
+	    intervento.put(InterventoDB.Fields.FIRMA.toString(), interv_old.getmFirma());
+	    intervento.put(InterventoDB.Fields.IMPORTO.toString(), interv_old.getmImporto().doubleValue());
+	    intervento.put(InterventoDB.Fields.IVA.toString(), interv_old.getmIva().doubleValue());
+	    intervento.put(InterventoDB.Fields.MODALITA.toString(), interv_old.getmModalita());
+	    intervento.put(InterventoDB.Fields.MODIFICATO.toString(), interv_old.getmModificato());
+	    intervento.put(InterventoDB.Fields.MOTIVO.toString(), interv_old.getmMotivo());
+	    intervento.put(InterventoDB.Fields.NOMINATIVO.toString(), interv_old.getmNominativo());
+	    intervento.put(InterventoDB.Fields.NOTE.toString(), interv_old.getmNote());
+	    intervento.put(InterventoDB.Fields.NUMERO_INTERVENTO.toString(), interv_old.getmNumeroIntervento());
+	    intervento.put(InterventoDB.Fields.PRODOTTO.toString(), interv_old.getmProdotto());
+	    intervento.put(InterventoDB.Fields.RIFERIMENTO_FATTURA.toString(), interv_old.getmRifFattura());
+	    intervento.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO.toString(), interv_old.getmRifScontrino());
+	    intervento.put(InterventoDB.Fields.SALDATO.toString(), interv_old.ismSaldato());
+	    intervento.put(InterventoDB.Fields.TECNICO.toString(), interv_old.getmIdTecnico());
+	    intervento.put(InterventoDB.Fields.TOTALE.toString(), interv_old.getmTotale().doubleValue());
+	    intervento.put(InterventoDB.Fields.TIPOLOGIA.toString(), interv_old.getmTipologia());
+	    
+	    JSONArray arrayDettagli = new JSONArray();
+	    
+	    for (DettaglioIntervento dettaglio : listaDettagliIntervento_old.getListDetails()) {
+		
+		JSONObject dettaglioIntervento = new JSONObject();
+		dettaglioIntervento.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO.toString(), dettaglio.getmIdDettaglioIntervento());
+		dettaglioIntervento.put(DettaglioInterventoDB.Fields.DESCRIZIONE.toString(), dettaglio.getmDescrizione());
+		dettaglioIntervento.put(DettaglioInterventoDB.Fields.FINE.toString(), dettaglio.getmFine());
+		dettaglioIntervento.put(DettaglioInterventoDB.Fields.INIZIO.toString(), dettaglio.getmInizio());
+		dettaglioIntervento.put(DettaglioInterventoDB.Fields.INTERVENTO.toString(), dettaglio.getmIntervento());
+		dettaglioIntervento.put(DettaglioInterventoDB.Fields.MODIFICATO.toString(), dettaglio.getmModificato());
+		dettaglioIntervento.put(DettaglioInterventoDB.Fields.OGGETTO.toString(), dettaglio.getmOggetto());
+		dettaglioIntervento.put(DettaglioInterventoDB.Fields.TIPO.toString(), dettaglio.getmTipo());
+		
+		arrayDettagli.put(dettaglioIntervento);
+	    }
+	    
+	    intervento.put("arrayDettagli", arrayDettagli);
+	    
+	    new ManagedAsyncTask<JSONObject, Void, Integer>(this) {
+		
+		@Override
+		protected Integer doInBackground(JSONObject... params) {
+		    
+		    int result = 0;
+		    
+		    ContentResolver cr = getContentResolver();
+		    
+		    ContentValues values = new ContentValues();
+		    
+		    values.put(RipristinoInterventoDB.Field.BACKUP_INTERVENTO, params[0].toString());
+		    
+		    cr.insert(RipristinoInterventoDB.CONTENT_URI, values);
+		    
+		    return result;
+		}
+	    };
 	}
 	catch (InterruptedException e) {
 	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
 	}
 	catch (ExecutionException e) {
 	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
+	}
+	catch (JSONException e) {
+	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
 	}
 	
 	String nominativo = prefs.getString(Constants.USER_NOMINATIVO, null);
@@ -174,8 +257,7 @@ public class ViewInterventoActivity extends BaseActivity {
 	}
     }
     
-    public static class ExitIntervento extends SherlockDialogFragment implements
-								     OnClickListener {
+    public static class ExitIntervento extends SherlockDialogFragment implements OnClickListener {
 	
 	public ExitIntervento() {
 	    
