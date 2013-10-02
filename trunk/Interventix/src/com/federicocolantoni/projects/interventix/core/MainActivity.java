@@ -93,11 +93,12 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 		FirstRunDialog dialog = new FirstRunDialog();
 		dialog.show(getSupportFragmentManager(), "first_run");
 	    }
-	    else if (prefs.getString(getResources().getString(R.string.prefs_key_url), "").length() == 0) {
-		
-		FirstRunDialog dialog = new FirstRunDialog();
-		dialog.show(getSupportFragmentManager(), Constants.FIRST_RUN_DIALOG_FRAGMENT);
-	    }
+	    else
+		if (prefs.getString(getResources().getString(R.string.prefs_key_url), "").length() == 0) {
+		    
+		    FirstRunDialog dialog = new FirstRunDialog();
+		    dialog.show(getSupportFragmentManager(), Constants.FIRST_RUN_DIALOG_FRAGMENT);
+		}
 	
 	findViewById(R.id.btn_login).setOnClickListener(new OnClickListener() {
 	    
@@ -404,7 +405,7 @@ public class MainActivity extends BaseActivity implements OnLoginListener {
 			String selection = Fields.TYPE + " = ? AND " + UtenteDB.Fields.USERNAME + " = ?";
 			
 			String[] selectionArgs = new String[] {
-				UtenteDB.UTENTE_ITEM_TYPE, strings[1]
+			UtenteDB.UTENTE_ITEM_TYPE, strings[1]
 			};
 			
 			Cursor cursor = cr.query(UtenteDB.CONTENT_URI, null, selection, selectionArgs, null);

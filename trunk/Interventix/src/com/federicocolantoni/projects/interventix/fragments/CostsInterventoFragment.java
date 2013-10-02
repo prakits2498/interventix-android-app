@@ -47,8 +47,7 @@ public class CostsInterventoFragment extends SherlockFragment {
     private static Double sTotale;
     
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			     Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 	BugSenseHandler.initAndStartSession(getSherlockActivity(), Constants.API_KEY);
 	
@@ -142,9 +141,7 @@ public class CostsInterventoFragment extends SherlockFragment {
 	return view;
     }
     
-    public static class SetCostoManodopera extends SherlockDialogFragment
-									 implements
-									 android.content.DialogInterface.OnClickListener {
+    public static class SetCostoManodopera extends SherlockDialogFragment implements android.content.DialogInterface.OnClickListener {
 	
 	private EditText mEdit_manodopera;
 	
@@ -237,9 +234,7 @@ public class CostsInterventoFragment extends SherlockFragment {
 	}
     }
     
-    public static class SetCostoComponenti extends SherlockDialogFragment
-									 implements
-									 android.content.DialogInterface.OnClickListener {
+    public static class SetCostoComponenti extends SherlockDialogFragment implements android.content.DialogInterface.OnClickListener {
 	
 	private EditText mEdit_Componenti;
 	
@@ -332,9 +327,7 @@ public class CostsInterventoFragment extends SherlockFragment {
 	}
     }
     
-    public static class SetCostoAccessori extends SherlockDialogFragment
-									implements
-									android.content.DialogInterface.OnClickListener {
+    public static class SetCostoAccessori extends SherlockDialogFragment implements android.content.DialogInterface.OnClickListener {
 	
 	private EditText mEdit_Accessori;
 	

@@ -1,6 +1,6 @@
 package com.federicocolantoni.projects.interventix.intervento;
 
-import java.util.List;
+import org.json.JSONArray;
 
 public class DettaglioIntervento {
     
@@ -8,7 +8,7 @@ public class DettaglioIntervento {
     private String mTipo, mOggetto, mDescrizione, mModificato;
     private Long mIntervento;
     private Long mInizio, mFine;
-    private List<Integer> mTecnici;
+    private JSONArray mTecnici;
     
     public DettaglioIntervento() {
 	
@@ -130,7 +130,7 @@ public class DettaglioIntervento {
     /**
      * @return the mTecnici
      */
-    public List<Integer> getmTecnici() {
+    public JSONArray getmTecnici() {
 	return mTecnici;
     }
     
@@ -138,7 +138,7 @@ public class DettaglioIntervento {
      * @param mTecnici
      *            the mTecnici to set
      */
-    public void setmTecnici(List<Integer> mTecnici) {
+    public void setmTecnici(JSONArray mTecnici) {
 	this.mTecnici = mTecnici;
     }
     

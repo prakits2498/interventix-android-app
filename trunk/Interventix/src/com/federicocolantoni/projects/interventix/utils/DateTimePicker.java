@@ -253,8 +253,7 @@ public class DateTimePicker extends RelativeLayout {
     };
     
     String[] months = {
-	    "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11",
-	    "12"
+    "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"
     };
     
     View.OnClickListener month_plus_listener = new View.OnClickListener() {
@@ -640,12 +639,13 @@ public class DateTimePicker extends RelativeLayout {
 		    if (year > endYear) {
 			cal.set(Calendar.YEAR, endYear);
 		    }
-		    else if (year < startYear) {
-			cal.set(Calendar.YEAR, startYear);
-		    }
-		    else {
-			cal.set(Calendar.YEAR, year);
-		    }
+		    else
+			if (year < startYear) {
+			    cal.set(Calendar.YEAR, startYear);
+			}
+			else {
+			    cal.set(Calendar.YEAR, year);
+			}
 		}
 		
 		sendToListener();

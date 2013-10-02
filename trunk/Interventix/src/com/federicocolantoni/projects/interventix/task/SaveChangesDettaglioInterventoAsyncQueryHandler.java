@@ -5,8 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-public class SaveChangesDettaglioInterventoAsyncQueryHandler extends
-							    AsyncQueryHandler {
+public class SaveChangesDettaglioInterventoAsyncQueryHandler extends AsyncQueryHandler {
     
     public SaveChangesDettaglioInterventoAsyncQueryHandler(Context context) {
 	super(context.getContentResolver());

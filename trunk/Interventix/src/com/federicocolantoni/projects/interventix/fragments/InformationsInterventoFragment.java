@@ -48,8 +48,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
     public static long sId_Intervento;
     
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			     Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 	BugSenseHandler.initAndStartSession(getSherlockActivity(), Constants.API_KEY);
 	
@@ -195,8 +194,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 			String selection = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 			
 			String[] selectionArgs = new String[] {
-				InterventoDB.INTERVENTO_ITEM_TYPE,
-				"" + sId_Intervento
+			InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento
 			};
 			
 			saveChange.startUpdate(Constants.TOKEN_INFO_DATA_ORA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -277,9 +275,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	super.onResume();
     }
     
-    public static class SetTipologiaDialog extends SherlockDialogFragment
-									 implements
-									 OnClickListener {
+    public static class SetTipologiaDialog extends SherlockDialogFragment implements OnClickListener {
 	
 	private String mTipologiaChanged;
 	
@@ -350,9 +346,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	}
     }
     
-    public static class SetModalitaDialog extends SherlockDialogFragment
-									implements
-									OnClickListener {
+    public static class SetModalitaDialog extends SherlockDialogFragment implements OnClickListener {
 	
 	private String mModalitaChanged;
 	
@@ -424,9 +418,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	}
     }
     
-    public static class SetProdottoDialog extends SherlockDialogFragment
-									implements
-									OnClickListener {
+    public static class SetProdottoDialog extends SherlockDialogFragment implements OnClickListener {
 	
 	private EditText mEdit_prodotto;
 	
@@ -496,9 +488,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	}
     }
     
-    public static class SetNominativoDialog extends SherlockDialogFragment
-									  implements
-									  OnClickListener {
+    public static class SetNominativoDialog extends SherlockDialogFragment implements OnClickListener {
 	
 	private EditText mEdit_nominativo;
 	
@@ -568,9 +558,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	}
     }
     
-    public static class SetMotivationDialog extends SherlockDialogFragment
-									  implements
-									  OnClickListener {
+    public static class SetMotivationDialog extends SherlockDialogFragment implements OnClickListener {
 	
 	private EditText mEdit_motivo;
 	
