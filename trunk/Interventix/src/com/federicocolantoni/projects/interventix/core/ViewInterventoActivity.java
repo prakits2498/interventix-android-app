@@ -7,9 +7,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -17,6 +19,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -84,7 +88,7 @@ public class ViewInterventoActivity extends BaseActivity {
 	    intervento.put(InterventoDB.Fields.COSTO_COMPONENTI.toString(), interv_old.getmCostoComponenti().doubleValue());
 	    intervento.put(InterventoDB.Fields.COSTO_MANODOPERA.toString(), interv_old.getmCostoManodopera().doubleValue());
 	    intervento.put(InterventoDB.Fields.DATA_ORA.toString(), interv_old.getmDataOra());
-	    intervento.put(InterventoDB.Fields.FIRMA.toString(), interv_old.getmFirma());
+	    intervento.put(InterventoDB.Fields.FIRMA.toString(), new String(interv_old.getmFirma()));
 	    intervento.put(InterventoDB.Fields.IMPORTO.toString(), interv_old.getmImporto().doubleValue());
 	    intervento.put(InterventoDB.Fields.IVA.toString(), interv_old.getmIva().doubleValue());
 	    intervento.put(InterventoDB.Fields.MODALITA.toString(), interv_old.getmModalita());
@@ -133,9 +137,27 @@ public class ViewInterventoActivity extends BaseActivity {
 		    
 		    values.put(RipristinoInterventoDB.Field.BACKUP_INTERVENTO, params[0].toString());
 		    
-		    cr.insert(RipristinoInterventoDB.CONTENT_URI, values);
+		    Uri newRow = cr.insert(RipristinoInterventoDB.CONTENT_URI, values);
+		    
+		    if (newRow != null) {
+			result = Activity.RESULT_OK;
+		    }
+		    else {
+			result = RESULT_CANCELED;
+		    }
 		    
 		    return result;
+		}
+		
+		@Override
+		protected void onPostExecute(Integer result) {
+		    
+		    if (result == Activity.RESULT_OK) {
+			System.out.println("Salvataggio dell'intervento di ripristino avvenuto con successo");
+		    }
+		    else {
+			System.out.println("Errore nel salvataggio dell'intervento di ripristino");
+		    }
 		}
 	    };
 	}
@@ -259,8 +281,11 @@ public class ViewInterventoActivity extends BaseActivity {
     
     public static class ExitIntervento extends SherlockDialogFragment implements OnClickListener {
 	
+	Cursor cursorReadDB;
+	
 	public ExitIntervento() {
 	    
+	    cursorReadDB = null;
 	}
 	
 	@Override
@@ -290,6 +315,41 @@ public class ViewInterventoActivity extends BaseActivity {
 		    
 		    dialog.dismiss();
 		    
+		    AsyncQueryHandler writeDB = new AsyncQueryHandler(getActivity().getContentResolver()) {
+			
+			@Override
+			protected void onDeleteComplete(int token, Object cookie, int result) {
+			    
+			    switch (token) {
+				case Constants.TOKEN_RIPRISTINO_INTERVENTO:
+				    
+				    System.out.println("Cancellazione dell'intervento di ripristino avvenuta con successo");
+				    
+				    break;
+				
+				default:
+				    break;
+			    }
+			}
+			
+			@Override
+			protected void onInsertComplete(int token, Object cookie, Uri uri) {
+			    super.onInsertComplete(token, cookie, uri);
+			}
+			
+			@Override
+			protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+			    super.onQueryComplete(token, cookie, cursor);
+			}
+			
+			@Override
+			protected void onUpdateComplete(int token, Object cookie, int result) {
+			    super.onUpdateComplete(token, cookie, result);
+			}
+		    };
+		    
+		    writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, null, null);
+		    
 		    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, false);
 		    edit.putBoolean(Constants.INTERV_MODIFIED, false);
 		    
@@ -312,6 +372,83 @@ public class ViewInterventoActivity extends BaseActivity {
 		case DialogInterface.BUTTON_NEGATIVE:
 		    
 		    dialog.dismiss();
+		    
+		    // TODO implementare il ripristino dell'intervento
+		    
+		    AsyncQueryHandler readDB = new AsyncQueryHandler(getActivity().getContentResolver()) {
+			
+			@Override
+			protected void onDeleteComplete(int token, Object cookie, int result) {
+			    super.onDeleteComplete(token, cookie, result);
+			}
+			
+			@Override
+			protected void onInsertComplete(int token, Object cookie, Uri uri) {
+			    super.onInsertComplete(token, cookie, uri);
+			}
+			
+			@Override
+			protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+			    
+			    switch (token) {
+				case Constants.TOKEN_RIPRISTINO_INTERVENTO:
+				    
+				    System.out.println("Lettura dell'intervento di ripristino avvenuta con successo");
+				    cursorReadDB = cursor;
+				    
+				    break;
+				
+				default:
+				    break;
+			    }
+			}
+			
+			@Override
+			protected void onUpdateComplete(int token, Object cookie, int result) {
+			    super.onUpdateComplete(token, cookie, result);
+			}
+		    };
+		    
+		    readDB.startQuery(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, new String[] {
+			    RipristinoInterventoDB.Field._ID, RipristinoInterventoDB.Field.BACKUP_INTERVENTO
+		    }, null, null, null);
+		    
+		    boolean first = cursorReadDB.moveToFirst();
+		    
+		    if (first) {
+			try {
+			    JSONObject intervRipristino = new JSONObject(cursorReadDB.getString(cursorReadDB.getColumnIndex(RipristinoInterventoDB.Field.BACKUP_INTERVENTO)));
+			    
+			    ContentValues valuesIntervento = new ContentValues();
+			    
+			    valuesIntervento.put(InterventoDB.Fields.ID_INTERVENTO, intervRipristino.getLong(InterventoDB.Fields.ID_INTERVENTO.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.CANCELLATO, intervRipristino.getBoolean(InterventoDB.Fields.CANCELLATO.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.CHIUSO, intervRipristino.getBoolean(InterventoDB.Fields.CHIUSO.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.CLIENTE, intervRipristino.getLong(InterventoDB.Fields.CLIENTE.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.COSTO_ACCESSORI, intervRipristino.getDouble(InterventoDB.Fields.COSTO_ACCESSORI.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.COSTO_COMPONENTI, intervRipristino.getDouble(InterventoDB.Fields.COSTO_COMPONENTI.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.COSTO_MANODOPERA, intervRipristino.getDouble(InterventoDB.Fields.COSTO_MANODOPERA.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.DATA_ORA, intervRipristino.getLong(InterventoDB.Fields.DATA_ORA.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.FIRMA, intervRipristino.getString(InterventoDB.Fields.FIRMA.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.IMPORTO, intervRipristino.getDouble(InterventoDB.Fields.IMPORTO.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.IVA, intervRipristino.getDouble(InterventoDB.Fields.IVA.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.MODALITA, intervRipristino.getString(InterventoDB.Fields.MODALITA.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.MODIFICATO, intervRipristino.getString(InterventoDB.Fields.MODIFICATO.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.MOTIVO, intervRipristino.getString(InterventoDB.Fields.MOTIVO.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.NOMINATIVO, intervRipristino.getString(InterventoDB.Fields.NOMINATIVO.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.NOTE, intervRipristino.getString(InterventoDB.Fields.NOTE.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.NUMERO_INTERVENTO, intervRipristino.getInt(InterventoDB.Fields.NUMERO_INTERVENTO.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.PRODOTTO, intervRipristino.getString(InterventoDB.Fields.PRODOTTO.toString()));
+			    valuesIntervento.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, intervRipristino.getString(InterventoDB.Fields.RIFERIMENTO_FATTURA.toString()));
+			    
+			    // readDB.startUpdate(token, cookie, uri, values,
+			    // selection, selectionArgs);
+			}
+			catch (JSONException e) {
+			    e.printStackTrace();
+			    BugSenseHandler.sendException(e);
+			}
+		    }
 		    
 		    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, false);
 		    edit.putBoolean(Constants.INTERV_MODIFIED, false);
