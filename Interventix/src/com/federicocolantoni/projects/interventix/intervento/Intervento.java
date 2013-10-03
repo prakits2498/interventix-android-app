@@ -13,7 +13,7 @@ public class Intervento implements Serializable {
     private Long mIdIntervento;
     private String mTipologia, mProdotto, mMotivo, mNominativo, mRifFattura,
 	    mRifScontrino, mNote, mModalita, mModificato;
-    private byte[] mFirma;
+    private String mFirma;
     private boolean mSaldato, mCancellato, mChiuso;
     private Long mDataOra;
     private Long mIdCliente;
@@ -171,7 +171,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mFirma
      */
-    public byte[] getmFirma() {
+    public String getmFirma() {
 	
 	return mFirma;
     }
@@ -180,7 +180,7 @@ public class Intervento implements Serializable {
      * @param mFirma
      *            the mFirma to set
      */
-    public void setmFirma(byte[] mFirma) {
+    public void setmFirma(String mFirma) {
 	
 	this.mFirma = mFirma;
     }

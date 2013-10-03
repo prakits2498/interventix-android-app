@@ -60,7 +60,7 @@ public final class Constants {
     public static final int TOKEN_DESCRIZIONE_DETTAGLIO = 4;
     public static final int TOKEN_ORA_INIZIO_DETTAGLIO = 5;
     public static final int TOKEN_ORA_FINE_DETTAGLIO = 6;
-    // public static final int TOKEN_TECNICI_DETTAGLIO = 7;
+    public static final int TOKEN_RIPRISTINO_INTERVENTO = 7;
     public static final int TOKEN_INFO_TIPOLOGIA = 8;
     public static final int TOKEN_INFO_NOMINATIVO = 9;
     public static final int TOKEN_INFO_PRODOTTO = 10;
@@ -82,4 +82,5 @@ public final class Constants {
     public static final String PASSWORD = "PASSWORD";
     
     public static final String INTERVENTO_OLD = "INTERVENTO_OLD";
+    
 }

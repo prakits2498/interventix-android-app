@@ -111,12 +111,10 @@ public class DetailInterventoFragment extends SherlockFragment {
 	TextView tv_row_oggetto_dett = (TextView) row_oggetto_dett.findViewById(R.id.tv_row_oggetto_dettaglio);
 	tv_row_oggetto_dett.setText(dettInterv.getmOggetto());
 	
-	// View row_tecnici_dett =
-	// view.findViewById(R.id.row_tecnici_dettaglio);
+	View row_tecnici_dett = view.findViewById(R.id.row_tecnici_dettaglio);
 	
-	// TextView tv_row_tecnici_dett = (TextView)
-	// row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
-	// tv_row_tecnici_dett.setText("" + dettInterv.getmTecnici().size());
+	TextView tv_row_tecnici_dett = (TextView) row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
+	tv_row_tecnici_dett.setText("" + dettInterv.getmTecnici().length());
 	
 	View row_descrizione_dett = view.findViewById(R.id.row_descrizione_dettaglio);
 	
