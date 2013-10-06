@@ -3,20 +3,24 @@ package com.federicocolantoni.projects.interventix.task;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
 
-public class GetDettagliInterventoAsyncTask extends AsyncTask<Long, Void, ListDetailsIntervento> {
+public class GetListaDettagliInterventoAsyncTask extends AsyncTask<Long, Void, ListDetailsIntervento> {
     
     private final Context mContext;
     
-    public GetDettagliInterventoAsyncTask(Context context) {
+    public GetListaDettagliInterventoAsyncTask(Context context) {
 	mContext = context.getApplicationContext();
     }
     
@@ -26,13 +30,22 @@ public class GetDettagliInterventoAsyncTask extends AsyncTask<Long, Void, ListDe
 	ContentResolver cr = mContext.getContentResolver();
 	
 	String[] projection = new String[] {
-	DettaglioInterventoDB.Fields._ID, DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, DettaglioInterventoDB.Fields.INTERVENTO, DettaglioInterventoDB.Fields.DESCRIZIONE, DettaglioInterventoDB.Fields.OGGETTO, DettaglioInterventoDB.Fields.TIPO, DettaglioInterventoDB.Fields.INIZIO, DettaglioInterventoDB.Fields.FINE, DettaglioInterventoDB.Fields.MODIFICATO
+		DettaglioInterventoDB.Fields._ID,
+		DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
+		DettaglioInterventoDB.Fields.INTERVENTO,
+		DettaglioInterventoDB.Fields.DESCRIZIONE,
+		DettaglioInterventoDB.Fields.OGGETTO,
+		DettaglioInterventoDB.Fields.TIPO,
+		DettaglioInterventoDB.Fields.INIZIO,
+		DettaglioInterventoDB.Fields.FINE,
+		DettaglioInterventoDB.Fields.MODIFICATO,
+		DettaglioInterventoDB.Fields.TECNICI
 	};
 	
 	String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.INTERVENTO + " = ?";
 	
 	String[] selectionArgs = new String[] {
-	DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + params[0]
+		DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + params[0]
 	};
 	
 	Cursor cursor = cr.query(DettaglioInterventoDB.CONTENT_URI, projection, selection, selectionArgs, null);
@@ -51,6 +64,13 @@ public class GetDettagliInterventoAsyncTask extends AsyncTask<Long, Void, ListDe
 	    detailInterv.setmInizio(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.INIZIO)));
 	    detailInterv.setmFine(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.FINE)));
 	    detailInterv.setmModificato(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.MODIFICATO)));
+	    try {
+		detailInterv.setmTecnici(new JSONArray(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TECNICI))));
+	    }
+	    catch (JSONException e) {
+		e.printStackTrace();
+		BugSenseHandler.sendException(e);
+	    }
 	    
 	    listaDettagliInterv.add(detailInterv);
 	}
@@ -66,10 +86,5 @@ public class GetDettagliInterventoAsyncTask extends AsyncTask<Long, Void, ListDe
 	listDetails.setListDetails(listaDettagliInterv);
 	
 	return listDetails;
-    }
-    
-    @Override
-    protected void onPostExecute(ListDetailsIntervento result) {
-	
     }
 }

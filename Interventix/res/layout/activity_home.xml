@@ -1,11 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/default_vertical_margin"
+    android:layout_marginLeft="@dimen/default_horizontal_margin"
+    android:layout_marginRight="@dimen/default_horizontal_margin"
+    android:layout_marginTop="@dimen/default_vertical_margin"
     android:background="#FFFFFF" >
 
     <ImageView
         android:id="@+id/view_logo"
-        android:layout_width="159dp"
+        android:layout_width="160dp"
         android:layout_height="60dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -13,7 +17,7 @@
         android:contentDescription="@string/logo_"
         android:longClickable="false"
         android:maxHeight="60dp"
-        android:maxWidth="159dp"
+        android:maxWidth="160dp"
         android:src="@drawable/logo_ix" />
 
     <TextView
@@ -24,30 +28,25 @@
         android:layout_marginTop="8dp"
         android:background="#00FF00"
         android:gravity="center_horizontal"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
         android:textColor="@android:color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/list_header_open"
-        android:layout_margin="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:background="#FFFFFF" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="#000000" >
 
             <ListView
                 android:id="@+id/list_interv_open"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="1dp"
-                android:layout_marginRight="1dp"
-                android:layout_marginTop="1dp"
+                android:layout_height="match_parent"
                 android:background="#FFFFFF"
                 android:divider="@android:color/black"
                 android:dividerHeight="1dp"

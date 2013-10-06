@@ -24,7 +24,7 @@ import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.intervento.Cliente;
 import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.intervento.Intervento;
-import com.federicocolantoni.projects.interventix.task.GetDettagliInterventoAsyncTask;
+import com.federicocolantoni.projects.interventix.task.GetListaDettagliInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetNominativoClienteAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetOverviewInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
@@ -130,7 +130,7 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	
 	try {
 	    
-	    listaDetailsInterv = new GetDettagliInterventoAsyncTask(getSherlockActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
+	    listaDetailsInterv = new GetListaDettagliInterventoAsyncTask(getSherlockActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
 	}
 	catch (InterruptedException e) {
 	    e.printStackTrace();

@@ -29,7 +29,7 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
     private long mId_intervento;
     
     static final String[] PROJECTION = new String[] {
-    DettaglioInterventoDB.Fields._ID, DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, DettaglioInterventoDB.Fields.TIPO, DettaglioInterventoDB.Fields.OGGETTO
+	    DettaglioInterventoDB.Fields._ID, DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, DettaglioInterventoDB.Fields.TIPO, DettaglioInterventoDB.Fields.OGGETTO
     };
     
     static final String SELECTION = DettaglioInterventoDB.Fields.TYPE + " =? AND " + DettaglioInterventoDB.Fields.INTERVENTO + " =?";
@@ -57,7 +57,7 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 	System.out.println("LISTA DETTAGLI - ID INTERVENTO " + mId_intervento);
 	
 	SELECTION_ARGS = new String[] {
-	DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + mId_intervento
+		DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + mId_intervento
 	};
 	
 	TextView tv_costs_intervento = (TextView) view.findViewById(R.id.tv_details_intervention);

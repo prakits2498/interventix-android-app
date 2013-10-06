@@ -185,7 +185,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    
 			    tv_row_inizio_dett.setText(dt_inizio.toString("dd/MM/yyyy HH:mm"));
 			    
-			    DateTime dt_tot_ore = new DateTime(dt_fine.toDate().getTime() - dt_inizio.toDate().getTime(), DateTimeZone.forID("Europe/Rome"));
+			    DateTime dt_tot_ore = dt_fine.minus(dt_inizio.toDate().getTime());
 			    
 			    tv_dett_ore_tot.setText(dt_tot_ore.toString("HH:mm"));
 			    
@@ -198,7 +198,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 			    
 			    String[] selectionArgs = new String[] {
-			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
+				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 			    };
 			    
 			    saveChanges.startUpdate(Constants.TOKEN_ORA_INIZIO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -320,7 +320,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    
 			    tv_row_fine_dett.setText(dt_fine.toString("dd/MM/yyyy HH:mm"));
 			    
-			    DateTime dt_tot_ore = new DateTime(dt_fine.toDate().getTime() - dt_inizio.toDate().getTime(), DateTimeZone.forID("Europe/Rome"));
+			    DateTime dt_tot_ore = dt_fine.minus(dt_inizio.toDate().getTime());
 			    
 			    tv_dett_ore_tot.setText(dt_tot_ore.toString("HH:mm"));
 			    
@@ -333,7 +333,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 			    
 			    String[] selectionArgs = new String[] {
-			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
+				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 			    };
 			    
 			    saveChanges.startUpdate(Constants.TOKEN_ORA_FINE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -453,7 +453,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-	    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
+		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 	    };
 	    
 	    saveChanges.startUpdate(Constants.TOKEN_TIPO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -523,7 +523,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-	    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
+		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 	    };
 	    
 	    saveChanges.startUpdate(Constants.TOKEN_OGGETTO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -593,7 +593,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-	    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
+		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 	    };
 	    
 	    saveChanges.startUpdate(Constants.TOKEN_DESCRIZIONE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);

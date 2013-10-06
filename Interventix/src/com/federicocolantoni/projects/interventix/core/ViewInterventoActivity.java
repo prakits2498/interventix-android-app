@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.app.SearchManager;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -33,6 +34,7 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.Constants;
@@ -43,8 +45,8 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Rip
 import com.federicocolantoni.projects.interventix.fragments.OverViewInterventoFragment;
 import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.intervento.Intervento;
-import com.federicocolantoni.projects.interventix.task.GetDettagliInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetInterventoAsyncTask;
+import com.federicocolantoni.projects.interventix.task.GetListaDettagliInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
 import com.slezica.tools.async.ManagedAsyncTask;
@@ -54,6 +56,8 @@ public class ViewInterventoActivity extends BaseActivity {
     
     private static long id_intervento;
     
+    private Menu menu;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	
@@ -62,7 +66,7 @@ public class ViewInterventoActivity extends BaseActivity {
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	
-	setContentView(R.layout.view_intervento);
+	setContentView(R.layout.activity_view_intervento);
 	
 	Bundle extras = getIntent().getExtras();
 	
@@ -76,10 +80,11 @@ public class ViewInterventoActivity extends BaseActivity {
 	try {
 	    interv_old = new GetInterventoAsyncTask(this).execute(id_intervento).get();
 	    
-	    listaDettagliIntervento_old = new GetDettagliInterventoAsyncTask(this).execute(id_intervento).get();
+	    listaDettagliIntervento_old = new GetListaDettagliInterventoAsyncTask(this).execute(id_intervento).get();
 	    
 	    JSONObject intervento = new JSONObject();
 	    
+	    intervento.put(InterventoDB.Fields.TYPE, InterventoDB.INTERVENTO_ITEM_TYPE);
 	    intervento.put(InterventoDB.Fields.ID_INTERVENTO.toString(), interv_old.getmIdIntervento());
 	    intervento.put(InterventoDB.Fields.CANCELLATO.toString(), interv_old.ismCancellato());
 	    intervento.put(InterventoDB.Fields.CHIUSO.toString(), interv_old.ismChiuso());
@@ -110,6 +115,8 @@ public class ViewInterventoActivity extends BaseActivity {
 	    for (DettaglioIntervento dettaglio : listaDettagliIntervento_old.getListDetails()) {
 		
 		JSONObject dettaglioIntervento = new JSONObject();
+		
+		dettaglioIntervento.put(DettaglioInterventoDB.Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
 		dettaglioIntervento.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO.toString(), dettaglio.getmIdDettaglioIntervento());
 		dettaglioIntervento.put(DettaglioInterventoDB.Fields.DESCRIZIONE.toString(), dettaglio.getmDescrizione());
 		dettaglioIntervento.put(DettaglioInterventoDB.Fields.FINE.toString(), dettaglio.getmFine());
@@ -118,11 +125,12 @@ public class ViewInterventoActivity extends BaseActivity {
 		dettaglioIntervento.put(DettaglioInterventoDB.Fields.MODIFICATO.toString(), dettaglio.getmModificato());
 		dettaglioIntervento.put(DettaglioInterventoDB.Fields.OGGETTO.toString(), dettaglio.getmOggetto());
 		dettaglioIntervento.put(DettaglioInterventoDB.Fields.TIPO.toString(), dettaglio.getmTipo());
+		dettaglioIntervento.put(DettaglioInterventoDB.Fields.TECNICI.toString(), dettaglio.getmTecnici());
 		
 		arrayDettagli.put(dettaglioIntervento);
 	    }
 	    
-	    intervento.put("arrayDettagli", arrayDettagli);
+	    intervento.put(Constants.ARRAY_DETTAGLI, arrayDettagli);
 	    
 	    new ManagedAsyncTask<JSONObject, Void, Integer>(this) {
 		
@@ -135,11 +143,15 @@ public class ViewInterventoActivity extends BaseActivity {
 		    
 		    ContentValues values = new ContentValues();
 		    
+		    values.put(RipristinoInterventoDB.Field.TYPE, RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE);
 		    values.put(RipristinoInterventoDB.Field.BACKUP_INTERVENTO, params[0].toString());
 		    
 		    Uri newRow = cr.insert(RipristinoInterventoDB.CONTENT_URI, values);
 		    
 		    if (newRow != null) {
+			
+			System.out.println("Uri ripristino intervento: " + newRow.toString());
+			
 			result = Activity.RESULT_OK;
 		    }
 		    else {
@@ -159,7 +171,7 @@ public class ViewInterventoActivity extends BaseActivity {
 			System.out.println("Errore nel salvataggio dell'intervento di ripristino");
 		    }
 		}
-	    };
+	    }.execute(intervento);
 	}
 	catch (InterruptedException e) {
 	    e.printStackTrace();
@@ -237,6 +249,40 @@ public class ViewInterventoActivity extends BaseActivity {
 		
 		if (!interv_modified && !dett_interv_modified) {
 		    
+		    AsyncQueryHandler writeDB = new AsyncQueryHandler(getContentResolver()) {
+			
+			@Override
+			protected void onDeleteComplete(int token, Object cookie, int result) {
+			    
+			    switch (token) {
+				case Constants.TOKEN_RIPRISTINO_INTERVENTO:
+				    
+				    System.out.println("Delete Result: " + result + "\nCancellazione dell'intervento di ripristino avvenuta con successo");
+				    
+				    break;
+			    }
+			}
+			
+			@Override
+			protected void onInsertComplete(int token, Object cookie, Uri uri) {
+			    super.onInsertComplete(token, cookie, uri);
+			}
+			
+			@Override
+			protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+			    super.onQueryComplete(token, cookie, cursor);
+			}
+			
+			@Override
+			protected void onUpdateComplete(int token, Object cookie, int result) {
+			    super.onUpdateComplete(token, cookie, result);
+			}
+		    };
+		    
+		    writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
+			    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+		    });
+		    
 		    finish();
 		}
 		else {
@@ -267,6 +313,40 @@ public class ViewInterventoActivity extends BaseActivity {
 	    
 	    if (!interv_modified && !dett_interv_modified) {
 		
+		AsyncQueryHandler writeDB = new AsyncQueryHandler(getContentResolver()) {
+		    
+		    @Override
+		    protected void onDeleteComplete(int token, Object cookie, int result) {
+			
+			switch (token) {
+			    case Constants.TOKEN_RIPRISTINO_INTERVENTO:
+				
+				System.out.println("Delete Result: " + result + "\nCancellazione dell'intervento di ripristino avvenuta con successo");
+				
+				break;
+			}
+		    }
+		    
+		    @Override
+		    protected void onInsertComplete(int token, Object cookie, Uri uri) {
+			super.onInsertComplete(token, cookie, uri);
+		    }
+		    
+		    @Override
+		    protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+			super.onQueryComplete(token, cookie, cursor);
+		    }
+		    
+		    @Override
+		    protected void onUpdateComplete(int token, Object cookie, int result) {
+			super.onUpdateComplete(token, cookie, result);
+		    }
+		};
+		
+		writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
+			RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+		});
+		
 		finish();
 	    }
 	    else {
@@ -281,11 +361,8 @@ public class ViewInterventoActivity extends BaseActivity {
     
     public static class ExitIntervento extends SherlockDialogFragment implements OnClickListener {
 	
-	Cursor cursorReadDB;
-	
 	public ExitIntervento() {
 	    
-	    cursorReadDB = null;
 	}
 	
 	@Override
@@ -323,11 +400,8 @@ public class ViewInterventoActivity extends BaseActivity {
 			    switch (token) {
 				case Constants.TOKEN_RIPRISTINO_INTERVENTO:
 				    
-				    System.out.println("Cancellazione dell'intervento di ripristino avvenuta con successo");
+				    System.out.println("Delete Result: " + result + "\nCancellazione dell'intervento di ripristino avvenuta con successo");
 				    
-				    break;
-				
-				default:
 				    break;
 			    }
 			}
@@ -348,7 +422,9 @@ public class ViewInterventoActivity extends BaseActivity {
 			}
 		    };
 		    
-		    writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, null, null);
+		    writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
+			    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+		    });
 		    
 		    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, false);
 		    edit.putBoolean(Constants.INTERV_MODIFIED, false);
@@ -373,13 +449,20 @@ public class ViewInterventoActivity extends BaseActivity {
 		    
 		    dialog.dismiss();
 		    
-		    // TODO implementare il ripristino dell'intervento
+		    Cursor cursorDB = null;
 		    
-		    AsyncQueryHandler readDB = new AsyncQueryHandler(getActivity().getContentResolver()) {
+		    AsyncQueryHandler queryHandlerDB = new AsyncQueryHandler(getActivity().getContentResolver()) {
 			
 			@Override
 			protected void onDeleteComplete(int token, Object cookie, int result) {
-			    super.onDeleteComplete(token, cookie, result);
+			    
+			    switch (token) {
+				case Constants.TOKEN_RIPRISTINO_INTERVENTO:
+				    
+				    System.out.println("Delete Result: " + result + "\nCancellazione dell'intervento di ripristino avvenuta con successo");
+				    
+				    break;
+			    }
 			}
 			
 			@Override
@@ -389,18 +472,7 @@ public class ViewInterventoActivity extends BaseActivity {
 			
 			@Override
 			protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
-			    
-			    switch (token) {
-				case Constants.TOKEN_RIPRISTINO_INTERVENTO:
-				    
-				    System.out.println("Lettura dell'intervento di ripristino avvenuta con successo");
-				    cursorReadDB = cursor;
-				    
-				    break;
-				
-				default:
-				    break;
-			    }
+			    super.onQueryComplete(token, cookie, cursor);
 			}
 			
 			@Override
@@ -409,45 +481,128 @@ public class ViewInterventoActivity extends BaseActivity {
 			}
 		    };
 		    
-		    readDB.startQuery(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, new String[] {
-			    RipristinoInterventoDB.Field._ID, RipristinoInterventoDB.Field.BACKUP_INTERVENTO
-		    }, null, null, null);
+		    try {
+			cursorDB = new ManagedAsyncTask<String, Void, Cursor>(getSherlockActivity()) {
+			    
+			    @Override
+			    protected Cursor doInBackground(String... params) {
+				
+				Cursor cursor = null;
+				
+				ContentResolver cr = getSherlockActivity().getContentResolver();
+				
+				cursor = cr.query(RipristinoInterventoDB.CONTENT_URI, new String[] {
+					RipristinoInterventoDB.Field._ID,
+					RipristinoInterventoDB.Field.BACKUP_INTERVENTO
+				}, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
+					params[0]
+				}, null);
+				
+				return cursor;
+			    }
+			    
+			    @Override
+			    protected void onPostExecute(Cursor result) {
+				
+				if (result != null)
+				    System.out.println("Lettura dell'intervento di ripristino avvenuta con successo");
+				else
+				    System.out.println("Errore nel recupero dell'intervento di ripristino");
+				
+			    }
+			}.execute(RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE).get();
+		    }
+		    catch (InterruptedException e) {
+			e.printStackTrace();
+			BugSenseHandler.sendException(e);
+		    }
+		    catch (ExecutionException e) {
+			e.printStackTrace();
+			BugSenseHandler.sendException(e);
+		    }
 		    
-		    boolean first = cursorReadDB.moveToFirst();
-		    
-		    if (first) {
-			try {
-			    JSONObject intervRipristino = new JSONObject(cursorReadDB.getString(cursorReadDB.getColumnIndex(RipristinoInterventoDB.Field.BACKUP_INTERVENTO)));
-			    
-			    ContentValues valuesIntervento = new ContentValues();
-			    
-			    valuesIntervento.put(InterventoDB.Fields.ID_INTERVENTO, intervRipristino.getLong(InterventoDB.Fields.ID_INTERVENTO.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.CANCELLATO, intervRipristino.getBoolean(InterventoDB.Fields.CANCELLATO.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.CHIUSO, intervRipristino.getBoolean(InterventoDB.Fields.CHIUSO.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.CLIENTE, intervRipristino.getLong(InterventoDB.Fields.CLIENTE.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.COSTO_ACCESSORI, intervRipristino.getDouble(InterventoDB.Fields.COSTO_ACCESSORI.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.COSTO_COMPONENTI, intervRipristino.getDouble(InterventoDB.Fields.COSTO_COMPONENTI.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.COSTO_MANODOPERA, intervRipristino.getDouble(InterventoDB.Fields.COSTO_MANODOPERA.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.DATA_ORA, intervRipristino.getLong(InterventoDB.Fields.DATA_ORA.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.FIRMA, intervRipristino.getString(InterventoDB.Fields.FIRMA.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.IMPORTO, intervRipristino.getDouble(InterventoDB.Fields.IMPORTO.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.IVA, intervRipristino.getDouble(InterventoDB.Fields.IVA.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.MODALITA, intervRipristino.getString(InterventoDB.Fields.MODALITA.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.MODIFICATO, intervRipristino.getString(InterventoDB.Fields.MODIFICATO.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.MOTIVO, intervRipristino.getString(InterventoDB.Fields.MOTIVO.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.NOMINATIVO, intervRipristino.getString(InterventoDB.Fields.NOMINATIVO.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.NOTE, intervRipristino.getString(InterventoDB.Fields.NOTE.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.NUMERO_INTERVENTO, intervRipristino.getInt(InterventoDB.Fields.NUMERO_INTERVENTO.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.PRODOTTO, intervRipristino.getString(InterventoDB.Fields.PRODOTTO.toString()));
-			    valuesIntervento.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, intervRipristino.getString(InterventoDB.Fields.RIFERIMENTO_FATTURA.toString()));
-			    
-			    // readDB.startUpdate(token, cookie, uri, values,
-			    // selection, selectionArgs);
+		    if (cursorDB != null) {
+			boolean first = cursorDB.moveToFirst();
+			
+			if (first) {
+			    try {
+				JSONObject intervRipristino = new JSONObject(cursorDB.getString(cursorDB.getColumnIndex(RipristinoInterventoDB.Field.BACKUP_INTERVENTO)));
+				
+				ContentValues valuesIntervento = new ContentValues();
+				
+				valuesIntervento.put(InterventoDB.Fields.CANCELLATO, intervRipristino.getBoolean(InterventoDB.Fields.CANCELLATO.toString()));
+				valuesIntervento.put(InterventoDB.Fields.CHIUSO, intervRipristino.getBoolean(InterventoDB.Fields.CHIUSO.toString()));
+				valuesIntervento.put(InterventoDB.Fields.CLIENTE, intervRipristino.getLong(InterventoDB.Fields.CLIENTE.toString()));
+				valuesIntervento.put(InterventoDB.Fields.COSTO_ACCESSORI, intervRipristino.getDouble(InterventoDB.Fields.COSTO_ACCESSORI.toString()));
+				valuesIntervento.put(InterventoDB.Fields.COSTO_COMPONENTI, intervRipristino.getDouble(InterventoDB.Fields.COSTO_COMPONENTI.toString()));
+				valuesIntervento.put(InterventoDB.Fields.COSTO_MANODOPERA, intervRipristino.getDouble(InterventoDB.Fields.COSTO_MANODOPERA.toString()));
+				valuesIntervento.put(InterventoDB.Fields.DATA_ORA, intervRipristino.getLong(InterventoDB.Fields.DATA_ORA.toString()));
+				valuesIntervento.put(InterventoDB.Fields.FIRMA, intervRipristino.getString(InterventoDB.Fields.FIRMA.toString()));
+				valuesIntervento.put(InterventoDB.Fields.IMPORTO, intervRipristino.getDouble(InterventoDB.Fields.IMPORTO.toString()));
+				valuesIntervento.put(InterventoDB.Fields.IVA, intervRipristino.getDouble(InterventoDB.Fields.IVA.toString()));
+				valuesIntervento.put(InterventoDB.Fields.MODALITA, intervRipristino.getString(InterventoDB.Fields.MODALITA.toString()));
+				valuesIntervento.put(InterventoDB.Fields.MODIFICATO, intervRipristino.getString(InterventoDB.Fields.MODIFICATO.toString()));
+				valuesIntervento.put(InterventoDB.Fields.MOTIVO, intervRipristino.getString(InterventoDB.Fields.MOTIVO.toString()));
+				valuesIntervento.put(InterventoDB.Fields.NOMINATIVO, intervRipristino.getString(InterventoDB.Fields.NOMINATIVO.toString()));
+				valuesIntervento.put(InterventoDB.Fields.NOTE, intervRipristino.getString(InterventoDB.Fields.NOTE.toString()));
+				valuesIntervento.put(InterventoDB.Fields.NUMERO_INTERVENTO, intervRipristino.getInt(InterventoDB.Fields.NUMERO_INTERVENTO.toString()));
+				valuesIntervento.put(InterventoDB.Fields.PRODOTTO, intervRipristino.getString(InterventoDB.Fields.PRODOTTO.toString()));
+				valuesIntervento.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, intervRipristino.getString(InterventoDB.Fields.RIFERIMENTO_FATTURA.toString()));
+				valuesIntervento.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO, intervRipristino.getString(InterventoDB.Fields.RIFERIMENTO_SCONTRINO.toString()));
+				valuesIntervento.put(InterventoDB.Fields.SALDATO, intervRipristino.getBoolean(InterventoDB.Fields.SALDATO.toString()));
+				valuesIntervento.put(InterventoDB.Fields.TECNICO, intervRipristino.getLong(InterventoDB.Fields.TECNICO.toString()));
+				valuesIntervento.put(InterventoDB.Fields.TIPOLOGIA, intervRipristino.getString(InterventoDB.Fields.TIPOLOGIA.toString()));
+				valuesIntervento.put(InterventoDB.Fields.TOTALE, intervRipristino.getDouble(InterventoDB.Fields.TOTALE.toString()));
+				
+				queryHandlerDB.startUpdate(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, InterventoDB.CONTENT_URI, valuesIntervento,
+					InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?", new String[] {
+						InterventoDB.INTERVENTO_ITEM_TYPE, "" + intervRipristino.getLong(InterventoDB.Fields.ID_INTERVENTO.toString())
+					});
+				
+				JSONArray dettagliIntervento = intervRipristino.getJSONArray(Constants.ARRAY_DETTAGLI);
+				
+				for (int i = 0; i < dettagliIntervento.length(); i++) {
+				    
+				    JSONObject dettaglio = dettagliIntervento.getJSONObject(i);
+				    
+				    ContentValues valuesDettaglio = new ContentValues();
+				    
+				    valuesDettaglio.put(DettaglioInterventoDB.Fields.DESCRIZIONE, dettaglio.getString(DettaglioInterventoDB.Fields.DESCRIZIONE.toString()));
+				    valuesDettaglio.put(DettaglioInterventoDB.Fields.FINE, dettaglio.getLong(DettaglioInterventoDB.Fields.FINE.toString()));
+				    valuesDettaglio.put(DettaglioInterventoDB.Fields.INIZIO, dettaglio.getLong(DettaglioInterventoDB.Fields.INIZIO.toString()));
+				    valuesDettaglio.put(DettaglioInterventoDB.Fields.INTERVENTO, dettaglio.getLong(DettaglioInterventoDB.Fields.INTERVENTO.toString()));
+				    valuesDettaglio.put(DettaglioInterventoDB.Fields.MODIFICATO, dettaglio.getString(DettaglioInterventoDB.Fields.MODIFICATO.toString()));
+				    valuesDettaglio.put(DettaglioInterventoDB.Fields.OGGETTO, dettaglio.getString(DettaglioInterventoDB.Fields.OGGETTO.toString()));
+				    valuesDettaglio.put(DettaglioInterventoDB.Fields.TECNICI, dettaglio.getJSONArray(DettaglioInterventoDB.Fields.TECNICI.toString()).toString());
+				    valuesDettaglio.put(DettaglioInterventoDB.Fields.TIPO, dettaglio.getString(DettaglioInterventoDB.Fields.TIPO.toString()));
+				    
+				    queryHandlerDB.startUpdate(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, DettaglioInterventoDB.CONTENT_URI, valuesDettaglio,
+					    DettaglioInterventoDB.Fields.TYPE + "=? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?", new String[] {
+						    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettaglio.getLong(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO.toString())
+					    });
+				}
+				
+				queryHandlerDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
+					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+				});
+			    }
+			    catch (JSONException e) {
+				e.printStackTrace();
+				BugSenseHandler.sendException(e);
+			    }
+			    finally {
+				
+				queryHandlerDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
+					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+				});
+			    }
 			}
-			catch (JSONException e) {
-			    e.printStackTrace();
-			    BugSenseHandler.sendException(e);
-			}
+			
+			cursorDB.close();
+		    }
+		    else {
+			
+			System.out.println("Errore nel recupero dell'intervento di ripristino");
 		    }
 		    
 		    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, false);
@@ -476,9 +631,18 @@ public class ViewInterventoActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 	
+	super.onCreateOptionsMenu(menu);
+	
 	final MenuInflater inflater = getSupportMenuInflater();
 	
-	inflater.inflate(R.menu.view_intervento, menu);
+	inflater.inflate(R.menu.menu_view_intervento, menu);
+	
+	this.menu = menu;
+	
+	return true;
+    }
+    
+    public void updateOptionsMenu() {
 	
 	FragmentManager manager = getSupportFragmentManager();
 	
@@ -489,11 +653,32 @@ public class ViewInterventoActivity extends BaseActivity {
 	    
 	    if (entry.getName().equals(Constants.DETAILS_INTERVENTO_FRAGMENT)) {
 		
-		MenuItem item = menu.findItem(R.id.add_detail_interv);
+		MenuItem itemAddDetails = menu.findItem(R.id.add_detail_interv);
+		itemAddDetails.setEnabled(true);
+	    }
+	    else if (entry.getName().equals(Constants.TECHNICIANS_DETAIL_FRAGMENT) || entry.getName().equals(Constants.CLIENTS_INTERVENTO_FRAGMENT)) {
 		
-		item.setVisible(true);
+		MenuItem itemSearch = menu.findItem(R.id.search);
+		itemSearch.setVisible(true);
+		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+		    SearchManager searchManager =
+			    (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		    SearchView searchView =
+			    (SearchView) menu.findItem(R.id.search).getActionView();
+		    searchView.setSearchableInfo(
+			    searchManager.getSearchableInfo(getComponentName()));
+		}
 	    }
 	}
+    }
+    
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+	
+	super.onPrepareOptionsMenu(menu);
+	
+	updateOptionsMenu();
 	
 	return true;
     }
@@ -505,7 +690,53 @@ public class ViewInterventoActivity extends BaseActivity {
 	
 	    case android.R.id.home:
 		
-		finish();
+		SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+		
+		boolean interv_modified = prefs.getBoolean(Constants.INTERV_MODIFIED, false);
+		boolean dett_interv_modified = prefs.getBoolean(Constants.DETT_INTERV_MODIFIED, false);
+		
+		if (!interv_modified && !dett_interv_modified) {
+		    
+		    AsyncQueryHandler writeDB = new AsyncQueryHandler(getContentResolver()) {
+			
+			@Override
+			protected void onDeleteComplete(int token, Object cookie, int result) {
+			    
+			    switch (token) {
+				case Constants.TOKEN_RIPRISTINO_INTERVENTO:
+				    
+				    System.out.println("Delete Result: " + result + "\nCancellazione dell'intervento di ripristino avvenuta con successo");
+				    
+				    break;
+			    }
+			}
+			
+			@Override
+			protected void onInsertComplete(int token, Object cookie, Uri uri) {
+			    super.onInsertComplete(token, cookie, uri);
+			}
+			
+			@Override
+			protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+			    super.onQueryComplete(token, cookie, cursor);
+			}
+			
+			@Override
+			protected void onUpdateComplete(int token, Object cookie, int result) {
+			    super.onUpdateComplete(token, cookie, result);
+			}
+		    };
+		    
+		    writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
+			    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+		    });
+		    
+		    finish();
+		}
+		else {
+		    
+		    new ExitIntervento().show(getSupportFragmentManager(), Constants.EXIT_INTERVENTO_DIALOG_FRAGMENT);
+		}
 		
 		break;
 	    

@@ -18,7 +18,8 @@ public final class Constants {
     public static final String COSTS_INTERVENTO_FRAGMENT = "COSTS_INTERVENTO_FRAGMENT";
     public static final String OVERVIEW_INTERVENTO_FRAGMENT = "OVERVIEW_INTERVENTO";
     public static final String INFORMATIONS_INTERVENTO_FRAGMENT = "INFORMATIONS_INTERVENTO";
-    public static final String VIEW_INTERVENTO_TRANSACTION = "VIEW_INTERVENTO_TRANSACTION";
+    public static final String TECHNICIANS_DETAIL_FRAGMENT = "TECHNICIANS_DETAIL_FRAGMENT";
+    public static final String CLIENTS_INTERVENTO_FRAGMENT = "CLIENTS_INTERVENTO_FRAGMENT";
     public static final String INTERV_MODIFIED = "INTERV_MODIFIED";
     public static final String DETT_INTERV_MODIFIED = "DETT_INTERV_MODIFIED";
     public static final String REVISION_INTERVENTIONS = "REVISION_INTERVENTIONS";
@@ -71,16 +72,10 @@ public final class Constants {
     public static final int TOKEN_COSTO_COMPONENTI = 15;
     public static final int TOKEN_COSTO_ACCESSORI = 16;
     
-    // *** costanti per la gesture swipe ***\\
-    public static final int SWIPE_MIN_DISTANCE = 120;
-    public static final int SWIPE_MAX_OFF_PATH = 250;
-    public static final int SWIPE_THRESHOLD_VELOCITY = 200;
+    public static final String ARRAY_DETTAGLI = "arrayDettagli";
     
     // *** costante per i dati di login ***\\
     public static final String LOGIN_DATA = "LOGIN_DATA";
     public static final String USERNAME = "USERNAME";
     public static final String PASSWORD = "PASSWORD";
-    
-    public static final String INTERVENTO_OLD = "INTERVENTO_OLD";
-    
 }

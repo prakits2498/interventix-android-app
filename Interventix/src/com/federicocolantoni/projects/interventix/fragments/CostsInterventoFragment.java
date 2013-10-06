@@ -28,7 +28,6 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.intervento.Intervento;
 import com.federicocolantoni.projects.interventix.task.GetCostsInterventoAsyncTask;
@@ -203,10 +202,10 @@ public class CostsInterventoFragment extends SherlockFragment {
 	    values.put(InterventoDB.Fields.TOTALE, sTotale);
 	    values.put(InterventoDB.Fields.MODIFICATO, "M");
 	    
-	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+	    String selection = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		"" + sId_intervento
+		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_COSTO_MANODOPERA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -296,10 +295,10 @@ public class CostsInterventoFragment extends SherlockFragment {
 	    values.put(InterventoDB.Fields.TOTALE, sTotale);
 	    values.put(InterventoDB.Fields.MODIFICATO, "M");
 	    
-	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+	    String selection = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		"" + sId_intervento
+		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_COSTO_COMPONENTI, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -389,10 +388,10 @@ public class CostsInterventoFragment extends SherlockFragment {
 	    values.put(InterventoDB.Fields.TOTALE, sTotale);
 	    values.put(InterventoDB.Fields.MODIFICATO, "M");
 	    
-	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+	    String selection = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		"" + sId_intervento
+		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_COSTO_ACCESSORI, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);

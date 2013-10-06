@@ -6,8 +6,8 @@ import java.util.concurrent.ExecutionException;
 
 import multiface.crypto.cr2.JsonCR2;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -61,13 +61,13 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
     private final static int MESSAGE_LOADER = 1;
     
     static final String[] PROJECTION = new String[] {
-    InterventoDB.Fields._ID, InterventoDB.Fields.NUMERO_INTERVENTO, InterventoDB.Fields.CLIENTE, InterventoDB.Fields.ID_INTERVENTO, InterventoDB.Fields.DATA_ORA
+	    InterventoDB.Fields._ID, InterventoDB.Fields.NUMERO_INTERVENTO, InterventoDB.Fields.CLIENTE, InterventoDB.Fields.ID_INTERVENTO, InterventoDB.Fields.DATA_ORA
     };
     
     static final String SELECTION = InterventoDB.Fields.TYPE + " =? AND " + InterventoDB.Fields.CHIUSO + " =?";
     
     static final String[] SELECTION_ARGS = new String[] {
-    InterventoDB.INTERVENTO_ITEM_TYPE, "0"
+	    InterventoDB.INTERVENTO_ITEM_TYPE, "0"
     };
     
     private InterventiAdapter mAdapter;
@@ -177,7 +177,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
     public boolean onCreateOptionsMenu(Menu menu) {
 	
 	optionsMenu = menu;
-	getSupportMenuInflater().inflate(R.menu.activity_home, menu);
+	getSupportMenuInflater().inflate(R.menu.menu_home, menu);
 	
 	setRefreshActionButtonState(true);
 	
@@ -237,13 +237,13 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 		ContentResolver cr = getContentResolver();
 		
 		String[] projection = new String[] {
-		UtenteDB.Fields._ID, UtenteDB.Fields.NOME, UtenteDB.Fields.COGNOME
+			UtenteDB.Fields._ID, UtenteDB.Fields.NOME, UtenteDB.Fields.COGNOME
 		};
 		
 		String selection = UtenteDB.Fields.TYPE + " = ? AND " + UtenteDB.Fields.ID_UTENTE + " = ?";
 		
 		String[] selectionArgs = new String[] {
-		UtenteDB.UTENTE_ITEM_TYPE, "" + params[0]
+			UtenteDB.UTENTE_ITEM_TYPE, "" + params[0]
 		};
 		
 		Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection, selection, selectionArgs, null);
@@ -308,18 +308,20 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 		    
 		    final String url_string = prefsDefault.getString(prefs_url, null);
 		    
-		    JSONObject json_resp = Utils.connectionForURL(json_req, url_string);
+		    JSONObject response = new org.json.JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
+		    // JSONObject json_resp = Utils.connectionForURL(json_req,
+		    // url_string);
 		    
-		    System.out.println("RESPONSE SYNCRO USERS:\n" + json_resp.toJSONString());
+		    System.out.println("RESPONSE SYNCRO USERS:\n" + response.toString());
 		    
-		    if (json_resp != null && json_resp.get("response").toString().equalsIgnoreCase("success")) {
-			JSONObject data = (JSONObject) json_resp.get("data");
+		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
+			JSONObject data = response.getJSONObject("data");
 			
-			System.out.println("REVISIONE UTENTI " + data.get("revision"));
+			System.out.println("REVISIONE UTENTI " + data.getLong("revision"));
 			
 			final Editor editor = prefsLocal.edit();
 			
-			editor.putLong(Constants.REVISION_USERS, (Long) data.get("revision"));
+			editor.putLong(Constants.REVISION_USERS, data.getLong("revision"));
 			
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			    editor.apply();
@@ -332,43 +334,43 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 				    
 				    editor.commit();
 				}
-			    });
+			    }).start();
 			}
 			
-			JSONArray usersMOD = (JSONArray) data.get("mod");
-			JSONArray usersDEL = (JSONArray) data.get("del");
+			JSONArray usersMOD = data.getJSONArray("mod");
+			JSONArray usersDEL = data.getJSONArray("del");
 			
 			ContentValues values = new ContentValues();
 			
-			for (int i = 0; i < usersMOD.size(); i++) {
-			    JSONObject obj = (JSONObject) usersMOD.get(i);
+			for (int i = 0; i < usersMOD.length(); i++) {
+			    JSONObject obj = usersMOD.getJSONObject(i);
 			    
 			    System.out.println("INSERT MOD USERS");
 			    
-			    if ((Long) obj.get("idutente") != params[0]) {
+			    if (obj.getLong("idutente") != params[0]) {
 				
-				values.put(UtenteDB.Fields.ID_UTENTE, (Long) obj.get("idutente"));
+				values.put(UtenteDB.Fields.ID_UTENTE, obj.getLong("idutente"));
 				values.put(Fields.TYPE, UtenteDB.UTENTE_ITEM_TYPE);
-				values.put(UtenteDB.Fields.NOME, (String) obj.get("nome"));
-				values.put(UtenteDB.Fields.COGNOME, (String) obj.get("cognome"));
-				values.put(UtenteDB.Fields.USERNAME, (String) obj.get("username"));
-				values.put(UtenteDB.Fields.CANCELLATO, (Boolean) obj.get("cancellato"));
-				values.put(UtenteDB.Fields.REVISIONE, (Long) obj.get("revisione"));
-				values.put(UtenteDB.Fields.EMAIL, (String) obj.get("email"));
-				values.put(UtenteDB.Fields.TIPO, (String) obj.get("tipo"));
-				values.put(UtenteDB.Fields.CESTINATO, (Boolean) obj.get("cestinato"));
+				values.put(UtenteDB.Fields.NOME, obj.getString("nome"));
+				values.put(UtenteDB.Fields.COGNOME, obj.getString("cognome"));
+				values.put(UtenteDB.Fields.USERNAME, obj.getString("username"));
+				values.put(UtenteDB.Fields.CANCELLATO, obj.getBoolean("cancellato"));
+				values.put(UtenteDB.Fields.REVISIONE, (Long) obj.getLong("revisione"));
+				values.put(UtenteDB.Fields.EMAIL, obj.getString("email"));
+				values.put(UtenteDB.Fields.TIPO, obj.getString("tipo"));
+				values.put(UtenteDB.Fields.CESTINATO, obj.getBoolean("cestinato"));
 				
 				cr.insert(UtenteDB.CONTENT_URI, values);
 			    }
 			}
 			
-			if (usersDEL.size() > 0) {
-			    for (int k = 0; k < usersDEL.size(); k++) {
+			if (usersDEL.length() > 0) {
+			    for (int k = 0; k < usersDEL.length(); k++) {
 				
 				String where = UtenteDB.Fields.ID_UTENTE + " = ? AND " + Fields.TYPE + " = ?";
 				
 				String[] selectionArgs = new String[] {
-				"" + usersDEL.get(k), UtenteDB.UTENTE_ITEM_TYPE
+					"" + usersDEL.getLong(k), UtenteDB.UTENTE_ITEM_TYPE
 				};
 				
 				cr.delete(UtenteDB.CONTENT_URI, where, selectionArgs);
@@ -447,19 +449,22 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 		    
 		    final String url_string = prefsDefault.getString(prefs_url, null);
 		    
-		    JSONObject json_resp = Utils.connectionForURL(json_req, url_string);
+		    JSONObject response = new JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
+		    
+		    // JSONObject json_resp = Utils.connectionForURL(json_req,
+		    // url_string);
 		    
 		    // System.out.println("Response syncro clients: \n"
 		    // + json_resp.toJSONString());
 		    
-		    if (json_resp != null && json_resp.get("response").toString().equalsIgnoreCase("success")) {
-			JSONObject data = (JSONObject) json_resp.get("data");
+		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
+			JSONObject data = response.getJSONObject("data");
 			
-			System.out.println("REVISIONE CLIENTI " + data.get("revision"));
+			System.out.println("REVISIONE CLIENTI " + data.getLong("revision"));
 			
 			final Editor editor = prefsLocal.edit();
 			
-			editor.putLong(Constants.REVISION_CLIENTS, (Long) data.get("revision"));
+			editor.putLong(Constants.REVISION_CLIENTS, data.getLong("revision"));
 			
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			    editor.apply();
@@ -472,27 +477,50 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 				    
 				    editor.commit();
 				}
-			    });
+			    }).start();
 			}
 			
-			JSONArray clientsMOD = (JSONArray) data.get("mod");
-			JSONArray clientsDEL = (JSONArray) data.get("del");
+			JSONArray clientsMOD = data.getJSONArray("mod");
+			JSONArray clientsDEL = data.getJSONArray("del");
 			
 			Cursor cursorCliente = null;
 			
-			for (int i = 0; i < clientsMOD.size(); i++) {
+			for (int i = 0; i < clientsMOD.length(); i++) {
 			    
-			    JSONObject cliente = (JSONObject) clientsMOD.get(i);
+			    JSONObject cliente = clientsMOD.getJSONObject(i);
 			    
 			    String selectionCliente = ClienteDB.Fields.TYPE + " = ? AND " + ClienteDB.Fields.ID_CLIENTE + " = ?";
 			    
 			    String[] selectionClienteArgs = new String[] {
-			    ClienteDB.CLIENTE_ITEM_TYPE, "" + cliente.get("idcliente")
+				    ClienteDB.CLIENTE_ITEM_TYPE, "" + cliente.getLong("idcliente")
 			    };
 			    
 			    cursorCliente = cr.query(ClienteDB.CONTENT_URI, null, selectionCliente, selectionClienteArgs, null);
 			    
 			    if (cursorCliente.getCount() > 0) {
+				
+				// *** UPDATE CLIENTE ***\\\
+				ContentValues values = new ContentValues();
+				
+				values.put(ClienteDB.Fields.CITTA, cliente.getString("citta"));
+				values.put(ClienteDB.Fields.CODICE_FISCALE, cliente.getString("codicefiscale"));
+				values.put(ClienteDB.Fields.EMAIL, cliente.getString("email"));
+				values.put(ClienteDB.Fields.FAX, cliente.getString("fax"));
+				values.put(ClienteDB.Fields.INDIRIZZO, cliente.getString("indirizzo"));
+				values.put(ClienteDB.Fields.INTERNO, cliente.getString("interno"));
+				values.put(ClienteDB.Fields.NOMINATIVO, cliente.getString("nominativo"));
+				values.put(ClienteDB.Fields.NOTE, cliente.getString("note"));
+				values.put(ClienteDB.Fields.PARTITAIVA, cliente.getString("partitaiva"));
+				values.put(ClienteDB.Fields.REFERENTE, cliente.getString("referente"));
+				values.put(ClienteDB.Fields.REVISIONE, cliente.getLong("revisione"));
+				values.put(ClienteDB.Fields.TELEFONO, cliente.getString("telefono"));
+				values.put(ClienteDB.Fields.UFFICIO, cliente.getString("ufficio"));
+				
+				cr.update(ClienteDB.CONTENT_URI, values,
+					ClienteDB.Fields.TYPE + "=? AND " + ClienteDB.Fields.ID_CLIENTE + "=?", new String[] {
+						ClienteDB.CLIENTE_ITEM_TYPE, "" + cliente.getLong("idcliente")
+					});
+				
 				cursorCliente.close();
 			    }
 			    else {
@@ -500,22 +528,21 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 				// *** INSERT CLIENTE ***\\\
 				ContentValues values = new ContentValues();
 				
+				values.put(ClienteDB.Fields.ID_CLIENTE, cliente.getLong("idcliente"));
 				values.put(Fields.TYPE, ClienteDB.CLIENTE_ITEM_TYPE);
-				values.put(ClienteDB.Fields.CANCELLATO, (Boolean) cliente.get("cancellato"));
-				values.put(ClienteDB.Fields.CITTA, (String) cliente.get("citta"));
-				values.put(ClienteDB.Fields.CODICE_FISCALE, (String) cliente.get("codicefiscale"));
-				values.put(ClienteDB.Fields.EMAIL, (String) cliente.get("email"));
-				values.put(ClienteDB.Fields.FAX, (String) cliente.get("fax"));
-				values.put(ClienteDB.Fields.ID_CLIENTE, (Long) cliente.get("idcliente"));
-				values.put(ClienteDB.Fields.INDIRIZZO, (String) cliente.get("indirizzo"));
-				values.put(ClienteDB.Fields.INTERNO, (String) cliente.get("interno"));
-				values.put(ClienteDB.Fields.NOMINATIVO, (String) cliente.get("nominativo"));
-				values.put(ClienteDB.Fields.NOTE, (String) cliente.get("note"));
-				values.put(ClienteDB.Fields.PARTITAIVA, (String) cliente.get("partitaiva"));
-				values.put(ClienteDB.Fields.REFERENTE, (String) cliente.get("referente"));
-				values.put(ClienteDB.Fields.REVISIONE, (Long) cliente.get("revisione"));
-				values.put(ClienteDB.Fields.TELEFONO, (String) cliente.get("telefono"));
-				values.put(ClienteDB.Fields.UFFICIO, (String) cliente.get("ufficio"));
+				values.put(ClienteDB.Fields.CITTA, cliente.getString("citta"));
+				values.put(ClienteDB.Fields.CODICE_FISCALE, cliente.getString("codicefiscale"));
+				values.put(ClienteDB.Fields.EMAIL, cliente.getString("email"));
+				values.put(ClienteDB.Fields.FAX, cliente.getString("fax"));
+				values.put(ClienteDB.Fields.INDIRIZZO, cliente.getString("indirizzo"));
+				values.put(ClienteDB.Fields.INTERNO, cliente.getString("interno"));
+				values.put(ClienteDB.Fields.NOMINATIVO, cliente.getString("nominativo"));
+				values.put(ClienteDB.Fields.NOTE, cliente.getString("note"));
+				values.put(ClienteDB.Fields.PARTITAIVA, cliente.getString("partitaiva"));
+				values.put(ClienteDB.Fields.REFERENTE, cliente.getString("referente"));
+				values.put(ClienteDB.Fields.REVISIONE, cliente.getLong("revisione"));
+				values.put(ClienteDB.Fields.TELEFONO, cliente.getString("telefono"));
+				values.put(ClienteDB.Fields.UFFICIO, cliente.getString("ufficio"));
 				
 				cr.insert(ClienteDB.CONTENT_URI, values);
 				
@@ -524,12 +551,12 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 			    }
 			}
 			
-			for (int k = 0; k < clientsDEL.size(); k++) {
+			for (int k = 0; k < clientsDEL.length(); k++) {
 			    
 			    String where = ClienteDB.Fields.ID_CLIENTE + " = ? AND " + ClienteDB.Fields.TYPE + " = ?";
 			    
 			    String[] selectionArgs = new String[] {
-			    "" + clientsDEL.get(k), ClienteDB.CLIENTE_ITEM_TYPE
+				    "" + clientsDEL.getLong(k), ClienteDB.CLIENTE_ITEM_TYPE
 			    };
 			    
 			    cr.delete(ClienteDB.CONTENT_URI, where, selectionArgs);
@@ -601,17 +628,20 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 		    
 		    final String url_string = prefsDefault.getString(prefs_url, null);
 		    
-		    JSONObject json_resp = Utils.connectionForURL(json_req, url_string);
+		    JSONObject response = new JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
 		    
-		    if (json_resp != null && json_resp.get("response").toString().equalsIgnoreCase("success")) {
+		    // JSONObject json_resp = Utils.connectionForURL(json_req,
+		    // url_string);
+		    
+		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
 			
-			JSONObject data = (JSONObject) json_resp.get("data");
+			JSONObject data = response.getJSONObject("data");
 			
-			System.out.println("REVISIONE INTERVENTI " + data.get("revision"));
+			System.out.println("REVISIONE INTERVENTI " + data.getLong("revision"));
 			
 			final Editor editor = prefsLocal.edit();
 			
-			editor.putLong(Constants.REVISION_INTERVENTIONS, (Long) data.get("revision"));
+			editor.putLong(Constants.REVISION_INTERVENTIONS, data.getLong("revision"));
 			
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			    editor.apply();
@@ -624,32 +654,33 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 				    
 				    editor.commit();
 				}
-			    });
+			    }).start();
 			}
 			
-			JSONArray intervMOD = (JSONArray) data.get("mod");
-			JSONArray intervDEL = (JSONArray) data.get("del");
-			JSONArray interventions = (JSONArray) data.get("intervents");
+			JSONArray intervMOD = data.getJSONArray("mod");
+			JSONArray intervDEL = data.getJSONArray("del");
+			JSONArray interventions = data.getJSONArray("intervents");
 			
 			int cont = 0;
 			
-			if (intervMOD.size() > 0) {
-			    for (int i = 0; i < intervMOD.size(); ++i) {
+			// *** adding interventions that belong to
+			// the current responsible ***\\
+			if (intervMOD.length() > 0)
+			    for (int i = 0; i < intervMOD.length(); ++i) {
 				addInterventions((JSONObject) intervMOD.get(i), cont);
 			    }
-			}
 			
 			// *** deleting interventions that not belong anymore to
 			// the current responsible ***\\
-			if (intervDEL.size() > 0) {
-			    for (int i = 0; i < intervDEL.size(); ++i) {
+			if (intervDEL.length() > 0)
+			    for (int i = 0; i < intervDEL.length(); ++i) {
 				
-				long intervID = (Long) intervDEL.get(i);
+				long intervID = intervDEL.getLong(i);
 				
-				String where = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+				String where = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 				
 				String[] selectionArgs = new String[] {
-				InterventoDB.INTERVENTO_ITEM_TYPE, "" + intervID
+					InterventoDB.INTERVENTO_ITEM_TYPE, "" + intervID
 				};
 				
 				cr.delete(InterventoDB.CONTENT_URI, where, selectionArgs);
@@ -657,11 +688,11 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 				System.out.println("Eliminato l'intervento " + intervID);
 				
 			    }
-			}
 			
-			for (int k = 0; k < interventions.size(); ++k) {
-			    
-			}
+			if (interventions.length() > 0)
+			    for (int k = 0; k < interventions.length(); ++k) {
+				
+			    }
 			
 			result = Activity.RESULT_OK;
 		    }
@@ -684,152 +715,137 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 		ContentValues values = new ContentValues();
 		
 		Cursor cursorIntervento = null;
-		Cursor cursorDettaglioIntervento = null;
 		
 		try {
 		    
-		    String selection = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+		    String selection = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 		    
 		    String[] selectionArgs = new String[] {
-		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + responseIntervs.get("idintervento")
+			    InterventoDB.INTERVENTO_ITEM_TYPE, "" + responseIntervs.getLong("idintervento")
 		    };
 		    
 		    cursorIntervento = cr.query(InterventoDB.CONTENT_URI, null, selection, selectionArgs, null);
 		    
 		    if (cursorIntervento.getCount() == 0) {
 			
-			JSONArray dettagli_intervento = (JSONArray) responseIntervs.get("dettagliintervento");
-			
 			// *** INSERT INTERVENTO ***\\
 			
-			System.out.println("Inserimento intervento " + responseIntervs.get("idintervento"));
+			System.out.println("Inserimento intervento " + responseIntervs.getLong("idintervento"));
 			
+			values.put(InterventoDB.Fields.ID_INTERVENTO, responseIntervs.getLong("idintervento"));
 			values.put(Fields.TYPE, InterventoDB.INTERVENTO_ITEM_TYPE);
-			values.put(InterventoDB.Fields.ID_INTERVENTO, (Long) responseIntervs.get("idintervento"));
-			values.put(InterventoDB.Fields.CANCELLATO, (Boolean) responseIntervs.get("cancellato"));
-			values.put(InterventoDB.Fields.COSTO_ACCESSORI, (Double) responseIntervs.get("costoaccessori"));
-			values.put(InterventoDB.Fields.COSTO_COMPONENTI, (Double) responseIntervs.get("costocomponenti"));
-			values.put(InterventoDB.Fields.COSTO_MANODOPERA, (Double) responseIntervs.get("costomanodopera"));
-			values.put(InterventoDB.Fields.DATA_ORA, (Long) responseIntervs.get("dataora"));
-			values.put(InterventoDB.Fields.FIRMA, (String) responseIntervs.get("firma"));
-			values.put(InterventoDB.Fields.CLIENTE, (Long) responseIntervs.get("cliente"));
-			values.put(InterventoDB.Fields.IMPORTO, (Double) responseIntervs.get("importo"));
-			values.put(InterventoDB.Fields.IVA, (Double) responseIntervs.get("iva"));
-			values.put(InterventoDB.Fields.MODALITA, (String) responseIntervs.get("modalita"));
+			values.put(InterventoDB.Fields.CANCELLATO, responseIntervs.getBoolean("cancellato"));
+			values.put(InterventoDB.Fields.COSTO_ACCESSORI, responseIntervs.getDouble("costoaccessori"));
+			values.put(InterventoDB.Fields.COSTO_COMPONENTI, responseIntervs.getDouble("costocomponenti"));
+			values.put(InterventoDB.Fields.COSTO_MANODOPERA, responseIntervs.getDouble("costomanodopera"));
+			values.put(InterventoDB.Fields.DATA_ORA, (Long) responseIntervs.getLong("dataora"));
+			values.put(InterventoDB.Fields.FIRMA, responseIntervs.getString("firma"));
+			values.put(InterventoDB.Fields.CLIENTE, responseIntervs.getLong("cliente"));
+			values.put(InterventoDB.Fields.IMPORTO, responseIntervs.getDouble("importo"));
+			values.put(InterventoDB.Fields.IVA, responseIntervs.getDouble("iva"));
+			values.put(InterventoDB.Fields.MODALITA, responseIntervs.getString("modalita"));
 			values.put(InterventoDB.Fields.MODIFICATO, "N");
-			values.put(InterventoDB.Fields.MOTIVO, (String) responseIntervs.get("motivo"));
-			values.put(InterventoDB.Fields.NOMINATIVO, (String) responseIntervs.get("nominativo"));
-			values.put(InterventoDB.Fields.NOTE, (String) responseIntervs.get("note"));
-			values.put(InterventoDB.Fields.NUMERO_INTERVENTO, (Long) responseIntervs.get("numero"));
-			values.put(InterventoDB.Fields.PRODOTTO, (String) responseIntervs.get("prodotto"));
-			values.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, (String) responseIntervs.get("riffattura"));
-			values.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO, (String) responseIntervs.get("rifscontrino"));
-			values.put(InterventoDB.Fields.SALDATO, (Boolean) responseIntervs.get("saldato"));
-			values.put(InterventoDB.Fields.TIPOLOGIA, (String) responseIntervs.get("tipologia"));
-			values.put(InterventoDB.Fields.TOTALE, (Double) responseIntervs.get("totale"));
-			values.put(InterventoDB.Fields.CHIUSO, (Boolean) responseIntervs.get("chiuso"));
-			values.put(InterventoDB.Fields.TECNICO, (Long) responseIntervs.get("tecnico"));
+			values.put(InterventoDB.Fields.MOTIVO, responseIntervs.getString("motivo"));
+			values.put(InterventoDB.Fields.NOMINATIVO, responseIntervs.getString("nominativo"));
+			values.put(InterventoDB.Fields.NOTE, responseIntervs.getString("note"));
+			values.put(InterventoDB.Fields.NUMERO_INTERVENTO, responseIntervs.getLong("numero"));
+			values.put(InterventoDB.Fields.PRODOTTO, responseIntervs.getString("prodotto"));
+			values.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, responseIntervs.getString("riffattura"));
+			values.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO, responseIntervs.getString("rifscontrino"));
+			values.put(InterventoDB.Fields.SALDATO, responseIntervs.getBoolean("saldato"));
+			values.put(InterventoDB.Fields.TIPOLOGIA, responseIntervs.getString("tipologia"));
+			values.put(InterventoDB.Fields.TOTALE, responseIntervs.getDouble("totale"));
+			values.put(InterventoDB.Fields.CHIUSO, responseIntervs.getBoolean("chiuso"));
+			values.put(InterventoDB.Fields.TECNICO, responseIntervs.getLong("tecnico"));
 			
 			cr.insert(InterventoDB.CONTENT_URI, values);
 			
-			for (int cont = 0; cont < dettagli_intervento.size(); cont++) {
+			JSONArray dettagli_intervento = responseIntervs.getJSONArray("dettagliintervento");
+			
+			for (int cont = 0; cont < dettagli_intervento.length(); cont++) {
 			    
-			    JSONObject dettInterv = (JSONObject) dettagli_intervento.get(cont);
+			    JSONObject dettInterv = dettagli_intervento.getJSONObject(cont);
 			    
-			    String selectionDettaglioIntervento = Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+			    // *** INSERT DETTAGLIO INTERVENTO *** \\
 			    
-			    String[] selectionDettIntervArgs = new String[] {
-			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettInterv.get("iddettagliointervento")
-			    };
+			    values = new ContentValues();
 			    
-			    cursorDettaglioIntervento = cr.query(DettaglioInterventoDB.CONTENT_URI, null, selectionDettaglioIntervento, selectionDettIntervArgs, null);
+			    // System.out.println("Dettaglio intervento n° "
+			    // + cont + " inserito");
 			    
-			    if (cursorDettaglioIntervento.getCount() == 0) {
-				
-				// *** INSERT DETTAGLIO INTERVENTO ***\\\
-				
-				values = new ContentValues();
-				
-				// System.out.println("Dettaglio intervento n° "
-				// + cont + " inserito");
-				
-				values.put(Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
-				values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, (String) dettInterv.get("descrizione"));
-				values.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, (Long) dettInterv.get("iddettagliointervento"));
-				values.put(DettaglioInterventoDB.Fields.INTERVENTO, (Long) responseIntervs.get("idintervento"));
-				values.put(DettaglioInterventoDB.Fields.MODIFICATO, "N");
-				values.put(DettaglioInterventoDB.Fields.OGGETTO, (String) dettInterv.get("oggetto"));
-				values.put(DettaglioInterventoDB.Fields.TIPO, (String) dettInterv.get("tipo"));
-				values.put(DettaglioInterventoDB.Fields.INIZIO, (Long) dettInterv.get("inizio"));
-				values.put(DettaglioInterventoDB.Fields.FINE, (Long) dettInterv.get("fine"));
-				values.put(DettaglioInterventoDB.Fields.TECNICI, ((JSONArray) dettInterv.get("tecniciintervento")).toJSONString());
-				
-				cr.insert(DettaglioInterventoDB.CONTENT_URI, values);
-				
-				cursorDettaglioIntervento.close();
-			    }
+			    values.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, dettInterv.getLong("iddettagliointervento"));
+			    values.put(DettaglioInterventoDB.Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
+			    values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, dettInterv.getString("descrizione"));
+			    values.put(DettaglioInterventoDB.Fields.INTERVENTO, responseIntervs.getLong("idintervento"));
+			    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "N");
+			    values.put(DettaglioInterventoDB.Fields.OGGETTO, dettInterv.getString("oggetto"));
+			    values.put(DettaglioInterventoDB.Fields.TIPO, dettInterv.getString("tipo"));
+			    values.put(DettaglioInterventoDB.Fields.INIZIO, dettInterv.getLong("inizio"));
+			    values.put(DettaglioInterventoDB.Fields.FINE, dettInterv.getLong("fine"));
+			    values.put(DettaglioInterventoDB.Fields.TECNICI, dettInterv.getJSONArray("tecniciintervento").toString());
+			    
+			    cr.insert(DettaglioInterventoDB.CONTENT_URI, values);
 			}
 		    }
 		    else {
 			
-			JSONArray dettagli_intervento = (JSONArray) responseIntervs.get("dettagliintervento");
+			// *** UPDATE INTERVENTO *** \\
 			
-			// *** UPDATE INTERVENTO ***\\
-			
-			values.put(InterventoDB.Fields.CANCELLATO, (Boolean) responseIntervs.get("cancellato"));
-			values.put(InterventoDB.Fields.COSTO_ACCESSORI, (Double) responseIntervs.get("costoaccessori"));
-			values.put(InterventoDB.Fields.COSTO_COMPONENTI, (Double) responseIntervs.get("costocomponenti"));
-			values.put(InterventoDB.Fields.COSTO_MANODOPERA, (Double) responseIntervs.get("costomanodopera"));
-			values.put(InterventoDB.Fields.DATA_ORA, (Long) responseIntervs.get("dataora"));
-			values.put(InterventoDB.Fields.FIRMA, (String) responseIntervs.get("firma"));
-			values.put(InterventoDB.Fields.CLIENTE, (Long) responseIntervs.get("cliente"));
-			values.put(InterventoDB.Fields.IMPORTO, (Double) responseIntervs.get("importo"));
-			values.put(InterventoDB.Fields.IVA, (Double) responseIntervs.get("iva"));
-			values.put(InterventoDB.Fields.MODALITA, (String) responseIntervs.get("modalita"));
+			values.put(InterventoDB.Fields.CANCELLATO, responseIntervs.getBoolean("cancellato"));
+			values.put(InterventoDB.Fields.COSTO_ACCESSORI, responseIntervs.getDouble("costoaccessori"));
+			values.put(InterventoDB.Fields.COSTO_COMPONENTI, responseIntervs.getDouble("costocomponenti"));
+			values.put(InterventoDB.Fields.COSTO_MANODOPERA, responseIntervs.getDouble("costomanodopera"));
+			values.put(InterventoDB.Fields.DATA_ORA, responseIntervs.getLong("dataora"));
+			values.put(InterventoDB.Fields.FIRMA, responseIntervs.getString("firma"));
+			values.put(InterventoDB.Fields.CLIENTE, responseIntervs.getLong("cliente"));
+			values.put(InterventoDB.Fields.IMPORTO, responseIntervs.getDouble("importo"));
+			values.put(InterventoDB.Fields.IVA, responseIntervs.getDouble("iva"));
+			values.put(InterventoDB.Fields.MODALITA, responseIntervs.getString("modalita"));
 			values.put(InterventoDB.Fields.MODIFICATO, "N");
-			values.put(InterventoDB.Fields.MOTIVO, (String) responseIntervs.get("motivo"));
-			values.put(InterventoDB.Fields.NOMINATIVO, (String) responseIntervs.get("nominativo"));
-			values.put(InterventoDB.Fields.NOTE, (String) responseIntervs.get("note"));
-			values.put(InterventoDB.Fields.NUMERO_INTERVENTO, (Long) responseIntervs.get("numero"));
-			values.put(InterventoDB.Fields.PRODOTTO, (String) responseIntervs.get("prodotto"));
-			values.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, (String) responseIntervs.get("riffattura"));
-			values.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO, (String) responseIntervs.get("rifscontrino"));
-			values.put(InterventoDB.Fields.SALDATO, (Boolean) responseIntervs.get("saldato"));
-			values.put(InterventoDB.Fields.TIPOLOGIA, (String) responseIntervs.get("tipologia"));
-			values.put(InterventoDB.Fields.TOTALE, (Double) responseIntervs.get("totale"));
-			values.put(InterventoDB.Fields.CHIUSO, (Boolean) responseIntervs.get("chiuso"));
-			values.put(InterventoDB.Fields.TECNICO, (Long) responseIntervs.get("tecnico"));
+			values.put(InterventoDB.Fields.MOTIVO, responseIntervs.getString("motivo"));
+			values.put(InterventoDB.Fields.NOMINATIVO, responseIntervs.getString("nominativo"));
+			values.put(InterventoDB.Fields.NOTE, responseIntervs.getString("note"));
+			values.put(InterventoDB.Fields.NUMERO_INTERVENTO, responseIntervs.getLong("numero"));
+			values.put(InterventoDB.Fields.PRODOTTO, responseIntervs.getString("prodotto"));
+			values.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, responseIntervs.getString("riffattura"));
+			values.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO, responseIntervs.getString("rifscontrino"));
+			values.put(InterventoDB.Fields.SALDATO, responseIntervs.getBoolean("saldato"));
+			values.put(InterventoDB.Fields.TIPOLOGIA, responseIntervs.getString("tipologia"));
+			values.put(InterventoDB.Fields.TOTALE, responseIntervs.getDouble("totale"));
+			values.put(InterventoDB.Fields.CHIUSO, responseIntervs.getBoolean("chiuso"));
+			values.put(InterventoDB.Fields.TECNICO, responseIntervs.getLong("tecnico"));
 			
 			String where = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 			
 			cr.update(InterventoDB.CONTENT_URI, values, where, selectionArgs);
 			
-			for (int cont = 0; cont < dettagli_intervento.size(); cont++) {
+			JSONArray dettagli_intervento = responseIntervs.getJSONArray("dettagliintervento");
+			
+			for (int cont = 0; cont < dettagli_intervento.length(); cont++) {
 			    
-			    JSONObject dettInterv = (JSONObject) dettagli_intervento.get(cont);
+			    JSONObject dettInterv = dettagli_intervento.getJSONObject(cont);
 			    
-			    String selectionDettaglioIntervento = Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
-			    
-			    String[] selectionDettIntervArgs = new String[] {
-			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettInterv.get("iddettagliointervento")
-			    };
-			    
-			    // *** UPDATE DETTAGLIO INTERVENTO ***\\\
+			    // *** UPDATE DETTAGLIO INTERVENTO *** \\
 			    
 			    values = new ContentValues();
 			    
-			    System.out.println("Dettaglio intervento n° " + cont + " inserito");
+			    // System.out.println("Dettaglio intervento n° " +
+			    // cont + " inserito");
 			    
-			    values.put(Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
-			    values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, (String) dettInterv.get("descrizione"));
-			    values.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, (Long) dettInterv.get("iddettagliointervento"));
-			    values.put(DettaglioInterventoDB.Fields.INTERVENTO, (Long) responseIntervs.get("idintervento"));
-			    values.put(DettaglioInterventoDB.Fields.OGGETTO, (String) dettInterv.get("oggetto"));
+			    values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, dettInterv.getString("descrizione"));
+			    values.put(DettaglioInterventoDB.Fields.INTERVENTO, responseIntervs.getLong("idintervento"));
 			    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "N");
-			    values.put(DettaglioInterventoDB.Fields.TIPO, (String) dettInterv.get("tipo"));
-			    values.put(DettaglioInterventoDB.Fields.INIZIO, (Long) dettInterv.get("inizio"));
-			    values.put(DettaglioInterventoDB.Fields.FINE, (Long) dettInterv.get("fine"));
-			    values.put(DettaglioInterventoDB.Fields.TECNICI, ((JSONArray) dettInterv.get("tecniciintervento")).toJSONString());
+			    values.put(DettaglioInterventoDB.Fields.OGGETTO, dettInterv.getString("oggetto"));
+			    values.put(DettaglioInterventoDB.Fields.TIPO, dettInterv.getString("tipo"));
+			    values.put(DettaglioInterventoDB.Fields.INIZIO, dettInterv.getLong("inizio"));
+			    values.put(DettaglioInterventoDB.Fields.FINE, dettInterv.getLong("fine"));
+			    values.put(DettaglioInterventoDB.Fields.TECNICI, dettInterv.getJSONArray("tecniciintervento").toString());
+			    
+			    String selectionDettaglioIntervento = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+			    
+			    String[] selectionDettIntervArgs = new String[] {
+				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettInterv.getLong("iddettagliointervento")
+			    };
 			    
 			    cr.update(DettaglioInterventoDB.CONTENT_URI, values, selectionDettaglioIntervento, selectionDettIntervArgs);
 			    
@@ -854,16 +870,16 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 		    
 		    final SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 		    
-		    final Editor edit = prefs.edit();
+		    final Editor editor = prefs.edit();
 		    
 		    try {
 			nominativo = setNominativo();
 			
-			edit.putString(Constants.USER_NOMINATIVO, nominativo);
+			editor.putString(Constants.USER_NOMINATIVO, nominativo);
 			getSupportActionBar().setTitle(nominativo);
 			
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			    edit.apply();
+			    editor.apply();
 			}
 			else {
 			    new Thread(new Runnable() {
@@ -871,7 +887,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 				@Override
 				public void run() {
 				    
-				    edit.commit();
+				    editor.commit();
 				}
 			    }).start();
 			}
