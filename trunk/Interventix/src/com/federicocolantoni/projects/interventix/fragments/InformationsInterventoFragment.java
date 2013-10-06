@@ -194,7 +194,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 			String selection = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 			
 			String[] selectionArgs = new String[] {
-			InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento
+				InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento
 			};
 			
 			saveChange.startUpdate(Constants.TOKEN_INFO_DATA_ORA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -318,7 +318,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		"" + sId_Intervento
+		    "" + sId_Intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_TIPOLOGIA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -390,7 +390,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		"" + sId_Intervento
+		    "" + sId_Intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_MODALITA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -460,7 +460,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		"" + sId_Intervento
+		    "" + sId_Intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_PRODOTTO, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -530,7 +530,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		"" + sId_Intervento
+		    "" + sId_Intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_NOMINATIVO, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -599,7 +599,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		"" + sId_Intervento
+		    "" + sId_Intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_MOTIVO, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);

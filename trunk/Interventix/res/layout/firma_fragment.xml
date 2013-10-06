@@ -13,7 +13,7 @@
 		android:longClickable="false"
 		android:maxHeight="60dp"
 		android:maxWidth="159dp"
-		android:src="@drawable/logo_ix" />
+		android:src="@drawable/logo_home_page_ix" />
 	<FrameLayout
 		android:id="@+id/frame_for_signature"
 		android:layout_width="match_parent"

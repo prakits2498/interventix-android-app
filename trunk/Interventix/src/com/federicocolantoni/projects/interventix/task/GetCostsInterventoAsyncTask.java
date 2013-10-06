@@ -27,13 +27,13 @@ public class GetCostsInterventoAsyncTask extends AsyncTask<Long, Void, Intervent
 	ContentResolver cr = mContext.getContentResolver();
 	
 	String[] projection = new String[] {
-	Fields._ID, InterventoDB.Fields.COSTO_MANODOPERA, InterventoDB.Fields.COSTO_COMPONENTI, InterventoDB.Fields.COSTO_ACCESSORI, InterventoDB.Fields.IMPORTO, InterventoDB.Fields.IVA, InterventoDB.Fields.TOTALE
+		Fields._ID, InterventoDB.Fields.COSTO_MANODOPERA, InterventoDB.Fields.COSTO_COMPONENTI, InterventoDB.Fields.COSTO_ACCESSORI, InterventoDB.Fields.IMPORTO, InterventoDB.Fields.IVA, InterventoDB.Fields.TOTALE
 	};
 	
 	String selection = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	
 	String[] selectionArgs = new String[] {
-	InterventoDB.INTERVENTO_ITEM_TYPE, "" + params[0]
+		InterventoDB.INTERVENTO_ITEM_TYPE, "" + params[0]
 	};
 	
 	Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);

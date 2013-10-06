@@ -143,17 +143,17 @@ public class DateTimePicker extends RelativeLayout {
 	
 	try {
 	    day_display.setFilters(new InputFilter[] {
-		new InputFilterMinMax(1, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
+		    new InputFilterMinMax(1, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
 	    });
 	    
 	    InputFilter[] filterArray_year = new InputFilter[1];
 	    filterArray_year[0] = new InputFilter.LengthFilter(4);
 	    year_display.setFilters(filterArray_year);
 	    hour_display.setFilters(new InputFilter[] {
-		new InputFilterMinMax(0, 23)
+		    new InputFilterMinMax(0, 23)
 	    });
 	    min_display.setFilters(new InputFilter[] {
-		new InputFilterMinMax(0, 59)
+		    new InputFilterMinMax(0, 59)
 	    });
 	}
 	catch (Exception e) {
@@ -166,7 +166,7 @@ public class DateTimePicker extends RelativeLayout {
 	try {
 	    
 	    day_display.setFilters(new InputFilter[] {
-		new InputFilterMinMax(1, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
+		    new InputFilterMinMax(1, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
 	    });
 	}
 	catch (Exception e) {
@@ -253,7 +253,7 @@ public class DateTimePicker extends RelativeLayout {
     };
     
     String[] months = {
-    "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"
+	    "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"
     };
     
     View.OnClickListener month_plus_listener = new View.OnClickListener() {
@@ -640,12 +640,12 @@ public class DateTimePicker extends RelativeLayout {
 			cal.set(Calendar.YEAR, endYear);
 		    }
 		    else
-			if (year < startYear) {
-			    cal.set(Calendar.YEAR, startYear);
-			}
-			else {
-			    cal.set(Calendar.YEAR, year);
-			}
+		    if (year < startYear) {
+			cal.set(Calendar.YEAR, startYear);
+		    }
+		    else {
+			cal.set(Calendar.YEAR, year);
+		    }
 		}
 		
 		sendToListener();

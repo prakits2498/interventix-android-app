@@ -28,13 +28,13 @@ public class InterventixDBHelper extends SQLiteOpenHelper {
     }
     
     private final static String[] CREATE_INDEXES = {
-    "CREATE INDEX " + InterventixDBContract.Data.Fields.INDEX + " ON " + InterventixDBContract.Data.DB_TABLE + "(" + InterventixDBContract.Data.Fields.INDEX + ")", "CREATE INDEX " + InterventixDBContract.Data.Fields.TYPE + " ON " + InterventixDBContract.Data.DB_TABLE + "(" + InterventixDBContract.Data.Fields.TYPE + ")"
+	    "CREATE INDEX " + InterventixDBContract.Data.Fields.INDEX + " ON " + InterventixDBContract.Data.DB_TABLE + "(" + InterventixDBContract.Data.Fields.INDEX + ")", "CREATE INDEX " + InterventixDBContract.Data.Fields.TYPE + " ON " + InterventixDBContract.Data.DB_TABLE + "(" + InterventixDBContract.Data.Fields.TYPE + ")"
     };
     
     private final static String DROP_TABLE = "DROP TABLE IF EXISTS " + InterventixDBContract.Data.DB_TABLE;
     
     private final static String[] DROP_INDEXES = {
-    "DROP INDEX " + InterventixDBContract.Data.Fields.INDEX, "DROP INDEX " + InterventixDBContract.Data.Fields.TYPE
+	    "DROP INDEX " + InterventixDBContract.Data.Fields.INDEX, "DROP INDEX " + InterventixDBContract.Data.Fields.TYPE
     };
     
     @Override

@@ -22,8 +22,8 @@ public class InterventixDBContract {
 	public static final String DB_TABLE = PATH;
 	public final static Uri CONTENT_URI = BASE_URI.buildUpon().appendPath(PATH).build();
 	final static String MIME_TYPE = "vnd.com.federicocolantoni." + PATH;
-	public final static String COLLECTION_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + MIME_TYPE;
-	public final static String SINGLE_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + MIME_TYPE;
+	public final static String COLLECTION_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "\\" + MIME_TYPE;
+	public final static String SINGLE_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "\\" + MIME_TYPE;
 	
 	public static class Fields {
 	    
@@ -31,10 +31,10 @@ public class InterventixDBContract {
 	    public final static String TYPE = "type";
 	    public final static String INDEX = "indexed";
 	    public final static String[] DATA = {
-	    "data0", "data1", "data2", "data3", "data4", "data5", "data6", "data7", "data8", "data9", "data10", "data11", "data12", "data13", "data14", "data15", "data16", "data17", "data18", "data19", "data20", "data21", "data22", "data23", "data24"
+		    "data0", "data1", "data2", "data3", "data4", "data5", "data6", "data7", "data8", "data9", "data10", "data11", "data12", "data13", "data14", "data15", "data16", "data17", "data18", "data19", "data20", "data21", "data22", "data23", "data24"
 	    };
 	    public final static String[] BLOB = {
-	    "blob0", "blob1", "blob2"
+		    "blob0", "blob1", "blob2"
 	    };
 	}
     }
@@ -110,10 +110,9 @@ public class InterventixDBContract {
 	    public static final String IMPORTO = DATA[16];
 	    public static final String TOTALE = DATA[17];
 	    public static final String IVA = DATA[18];
-	    // public static final String ORE = DATA[19];
-	    public static final String CHIUSO = DATA[20];
-	    public static final String ID_INTERVENTO = DATA[21];
-	    public static final String MODALITA = DATA[22];
+	    public static final String CHIUSO = DATA[19];
+	    public static final String ID_INTERVENTO = DATA[20];
+	    public static final String MODALITA = DATA[21];
 	    public static final String MODIFICATO = DATA[24];
 	}
     }
@@ -137,11 +136,10 @@ public class InterventixDBContract {
     }
     
     public static class RipristinoInterventoDB extends Data {
-	public static final String RIPRISTINO_INTERVENTO = Data.SINGLE_ITEM_TYPE + ".ripristino_intervento";
+	public static final String RIPRISTINO_INTERVENTO_ITEM_TYPE = Data.SINGLE_ITEM_TYPE + ".ripristino_intervento";
 	
 	public static class Field extends Data.Fields {
 	    
-	    // public static final String TIPO = DATA[1];
 	    public static final String BACKUP_INTERVENTO = DATA[0];
 	}
     }
