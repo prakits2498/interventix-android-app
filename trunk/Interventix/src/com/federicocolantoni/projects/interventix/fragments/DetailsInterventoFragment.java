@@ -144,10 +144,6 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 		
 		transaction.commit();
 		
-		// InterventixToast.makeToast(getSherlockActivity(),
-		// "Aggiungere un dettaglio all'intervento?",
-		// Toast.LENGTH_SHORT);
-		
 		break;
 	    
 	    case R.id.pay:
