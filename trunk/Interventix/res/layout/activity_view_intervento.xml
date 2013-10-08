@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/default_vertical_margin"
-    android:layout_marginLeft="@dimen/default_horizontal_margin"
-    android:layout_marginRight="@dimen/default_horizontal_margin"
-    android:layout_marginTop="@dimen/default_vertical_margin"
-    android:background="#FFFFFF"
-    android:orientation="vertical" >
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_marginBottom="@dimen/default_vertical_margin"
+	android:layout_marginLeft="@dimen/default_horizontal_margin"
+	android:layout_marginRight="@dimen/default_horizontal_margin"
+	android:layout_marginTop="@dimen/default_vertical_margin"
+	android:background="#FFFFFF"
+	android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/view_logo"
-        android:layout_width="160dp"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:clickable="false"
-        android:contentDescription="@string/logo_"
-        android:longClickable="false"
-        android:maxHeight="60dp"
-        android:maxWidth="160dp"
-        android:src="@drawable/logo_ix" />
+	<ImageView
+		android:id="@+id/view_logo"
+		android:layout_width="160dp"
+		android:layout_height="60dp"
+		android:layout_alignParentTop="true"
+		android:layout_centerHorizontal="true"
+		android:clickable="false"
+		android:contentDescription="@string/logo_"
+		android:longClickable="false"
+		android:maxHeight="60dp"
+		android:maxWidth="160dp"
+		android:src="@drawable/logo_ix" />
 
-    <FrameLayout
-        android:id="@+id/fragments_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_logo"
-        android:layout_marginTop="8dp" >
-    </FrameLayout>
+	<FrameLayout
+		android:id="@+id/fragments_layout"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/view_logo"
+		android:layout_marginTop="8dp" >
+	</FrameLayout>
 
 </RelativeLayout>

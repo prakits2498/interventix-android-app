@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
@@ -41,6 +43,8 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	
 	getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
 	getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	
+	setHasOptionsMenu(true);
 	
 	Bundle bundle = getArguments();
 	
@@ -143,6 +147,7 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	    
 	    @Override
 	    public void onClick(View v) {
+		
 		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		
@@ -221,5 +226,13 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	}
 	
 	return view;
+    }
+    
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	
+	super.onCreateOptionsMenu(menu, inflater);
+	
+	inflater.inflate(R.menu.menu_view_intervento, menu);
     }
 }

@@ -14,13 +14,18 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.DettaglioInterventoAdapter;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
+import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
 public class DetailsInterventoFragment extends SherlockFragment implements LoaderCallbacks<Cursor> {
     
@@ -29,7 +34,10 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
     private long mId_intervento;
     
     static final String[] PROJECTION = new String[] {
-	    DettaglioInterventoDB.Fields._ID, DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, DettaglioInterventoDB.Fields.TIPO, DettaglioInterventoDB.Fields.OGGETTO
+	    DettaglioInterventoDB.Fields._ID,
+	    DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
+	    DettaglioInterventoDB.Fields.TIPO,
+	    DettaglioInterventoDB.Fields.OGGETTO
     };
     
     static final String SELECTION = DettaglioInterventoDB.Fields.TYPE + " =? AND " + DettaglioInterventoDB.Fields.INTERVENTO + " =?";
@@ -47,6 +55,8 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 	
 	getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
 	getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	
+	setHasOptionsMenu(true);
 	
 	final View view = inflater.inflate(R.layout.details_intervento_fragment, container, false);
 	
@@ -86,8 +96,8 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 		DetailInterventoFragment dettInterv = new DetailInterventoFragment();
 		dettInterv.setArguments(bundle);
 		
-		transaction.replace(R.id.fragments_layout, dettInterv, Constants.DETAILS_DETTAGLIO_FRAGMENT);
-		transaction.addToBackStack(Constants.INFORMATIONS_INTERVENTO_FRAGMENT);
+		transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
+		transaction.addToBackStack(Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
 		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		
 		transaction.commit();
@@ -97,6 +107,53 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 	getSherlockActivity().getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
 	
 	return view;
+    }
+    
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	
+	super.onCreateOptionsMenu(menu, inflater);
+	
+	inflater.inflate(R.menu.menu_view_intervento, menu);
+	
+	MenuItem itemAddDetail = menu.findItem(R.id.add_detail_interv);
+	itemAddDetail.setVisible(true);
+	itemAddDetail.setEnabled(true);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	
+	switch (item.getItemId()) {
+	
+	    case R.id.add_detail_interv:
+		
+		// FragmentManager manager =
+		// getSherlockActivity().getSupportFragmentManager();
+		//
+		// FragmentTransaction transaction = manager.beginTransaction();
+		//
+		// DetailInterventoFragment newDetail = new
+		// DetailInterventoFragment();
+		//
+		// Bundle bundle = new Bundle();
+		// bundle.putInt(Constants.ID_DETTAGLIO_INTERVENTO, -1);
+		//
+		// newDetail.setArguments(bundle);
+		//
+		// transaction.replace(R.id.fragments_layout, newDetail,
+		// Constants.NEW_DETAIL_INTERVENTO_FRAGMENT);
+		// transaction.addToBackStack(Constants.NEW_DETAIL_INTERVENTO_FRAGMENT);
+		// transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		//
+		// transaction.commit();
+		
+		InterventixToast.makeToast(getSherlockActivity(), "Aggiungi dettaglio intervento", Toast.LENGTH_SHORT);
+		
+		break;
+	}
+	
+	return super.onOptionsItemSelected(item);
     }
     
     @Override
