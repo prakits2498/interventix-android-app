@@ -4,9 +4,9 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.federicocolantoni.projects.interventix.BaseActivity;
+import com.actionbarsherlock.app.SherlockListActivity;
 
-public class SearchResultsActivity extends BaseActivity {
+public class SearchResultsActivity extends SherlockListActivity {
     
     protected void onCreate(Bundle savedInstanceState) {
 	
@@ -26,6 +26,11 @@ public class SearchResultsActivity extends BaseActivity {
 	
 	if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 	    String query = intent.getStringExtra(SearchManager.QUERY);
+	    search(query);
 	}
+    }
+    
+    private void search(String query) {
+	
     }
 }
