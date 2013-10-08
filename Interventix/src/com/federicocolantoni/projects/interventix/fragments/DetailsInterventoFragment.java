@@ -118,7 +118,6 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 	
 	MenuItem itemAddDetail = menu.findItem(R.id.add_detail_interv);
 	itemAddDetail.setVisible(true);
-	itemAddDetail.setEnabled(true);
     }
     
     @Override
@@ -128,32 +127,49 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 	
 	    case R.id.add_detail_interv:
 		
-		// FragmentManager manager =
-		// getSherlockActivity().getSupportFragmentManager();
-		//
-		// FragmentTransaction transaction = manager.beginTransaction();
-		//
-		// DetailInterventoFragment newDetail = new
-		// DetailInterventoFragment();
-		//
-		// Bundle bundle = new Bundle();
-		// bundle.putInt(Constants.ID_DETTAGLIO_INTERVENTO, -1);
-		//
-		// newDetail.setArguments(bundle);
-		//
-		// transaction.replace(R.id.fragments_layout, newDetail,
-		// Constants.NEW_DETAIL_INTERVENTO_FRAGMENT);
-		// transaction.addToBackStack(Constants.NEW_DETAIL_INTERVENTO_FRAGMENT);
-		// transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		//
-		// transaction.commit();
+		FragmentManager manager = getSherlockActivity().getSupportFragmentManager();
 		
-		InterventixToast.makeToast(getSherlockActivity(), "Aggiungi dettaglio intervento", Toast.LENGTH_SHORT);
+		FragmentTransaction transaction = manager.beginTransaction();
+		
+		DetailInterventoFragment newDetail = new DetailInterventoFragment();
+		
+		Bundle bundle = new Bundle();
+		bundle.putLong(Constants.ID_DETTAGLIO_INTERVENTO, -1l);
+		
+		newDetail.setArguments(bundle);
+		
+		transaction.replace(R.id.fragments_layout, newDetail, Constants.NEW_DETAIL_INTERVENTO_FRAGMENT);
+		transaction.addToBackStack(Constants.NEW_DETAIL_INTERVENTO_FRAGMENT);
+		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		
+		transaction.commit();
+		
+		// InterventixToast.makeToast(getSherlockActivity(),
+		// "Aggiungere un dettaglio all'intervento?",
+		// Toast.LENGTH_SHORT);
+		
+		break;
+	    
+	    case R.id.pay:
+		
+		InterventixToast.makeToast(getSherlockActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
+		
+		break;
+	    
+	    case R.id.send_mail:
+		
+		InterventixToast.makeToast(getSherlockActivity(), "Inviare email?", Toast.LENGTH_SHORT);
+		
+		break;
+	    
+	    case R.id.close:
+		
+		InterventixToast.makeToast(getSherlockActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
 		
 		break;
 	}
 	
-	return super.onOptionsItemSelected(item);
+	return true;
     }
     
     @Override

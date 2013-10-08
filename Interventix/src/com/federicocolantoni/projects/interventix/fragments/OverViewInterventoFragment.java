@@ -16,10 +16,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
@@ -29,6 +31,7 @@ import com.federicocolantoni.projects.interventix.intervento.Intervento;
 import com.federicocolantoni.projects.interventix.task.GetListaDettagliInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetNominativoClienteAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetOverviewInterventoAsyncTask;
+import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
 
 @SuppressLint("NewApi")
@@ -234,5 +237,35 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	super.onCreateOptionsMenu(menu, inflater);
 	
 	inflater.inflate(R.menu.menu_view_intervento, menu);
+	
+	MenuItem itemAddDetail = menu.findItem(R.id.add_detail_interv);
+	itemAddDetail.setEnabled(false);
+	itemAddDetail.setVisible(true);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	
+	switch (item.getItemId()) {
+	    case R.id.pay:
+		
+		InterventixToast.makeToast(getSherlockActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
+		
+		break;
+	    
+	    case R.id.send_mail:
+		
+		InterventixToast.makeToast(getSherlockActivity(), "Inviare email?", Toast.LENGTH_SHORT);
+		
+		break;
+	    
+	    case R.id.close:
+		
+		InterventixToast.makeToast(getSherlockActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
+		
+		break;
+	}
+	
+	return true;
     }
 }

@@ -26,11 +26,16 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
@@ -41,6 +46,7 @@ import com.federicocolantoni.projects.interventix.task.GetInformationsIntervento
 import com.federicocolantoni.projects.interventix.task.SaveChangesInterventoAsyncQueryHandler;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatcher;
+import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
 @SuppressLint("NewApi")
 public class InformationsInterventoFragment extends SherlockFragment {
@@ -56,6 +62,8 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	
 	getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
 	getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	
+	setHasOptionsMenu(true);
 	
 	final View view = inflater.inflate(R.layout.information_intervento_fragment, container, false);
 	
@@ -260,6 +268,24 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	
 	tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
 	
+	LinearLayout row_references = (LinearLayout) view.findViewById(R.id.row_references);
+	row_references.setOnClickListener(new View.OnClickListener() {
+	    
+	    @Override
+	    public void onClick(View v) {
+		
+	    }
+	});
+	
+	LinearLayout row_notes = (LinearLayout) view.findViewById(R.id.row_notes);
+	row_notes.setOnClickListener(new View.OnClickListener() {
+	    
+	    @Override
+	    public void onClick(View v) {
+		
+	    }
+	});
+	
 	return view;
     }
     
@@ -273,6 +299,44 @@ public class InformationsInterventoFragment extends SherlockFragment {
     public void onResume() {
 	
 	super.onResume();
+    }
+    
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	
+	super.onCreateOptionsMenu(menu, inflater);
+	
+	inflater.inflate(R.menu.menu_view_intervento, menu);
+	
+	MenuItem itemAddDetail = menu.findItem(R.id.add_detail_interv);
+	itemAddDetail.setVisible(true);
+	itemAddDetail.setEnabled(false);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	
+	switch (item.getItemId()) {
+	    case R.id.pay:
+		
+		InterventixToast.makeToast(getSherlockActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
+		
+		break;
+	    
+	    case R.id.send_mail:
+		
+		InterventixToast.makeToast(getSherlockActivity(), "Inviare email?", Toast.LENGTH_SHORT);
+		
+		break;
+	    
+	    case R.id.close:
+		
+		InterventixToast.makeToast(getSherlockActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
+		
+		break;
+	}
+	
+	return true;
     }
     
     public static class SetTipologiaDialog extends SherlockDialogFragment implements OnClickListener {
