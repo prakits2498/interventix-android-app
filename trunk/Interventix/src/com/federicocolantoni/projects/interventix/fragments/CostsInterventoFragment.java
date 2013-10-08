@@ -22,9 +22,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
@@ -32,6 +36,7 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Int
 import com.federicocolantoni.projects.interventix.intervento.Intervento;
 import com.federicocolantoni.projects.interventix.task.GetCostsInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.SaveChangesInterventoAsyncQueryHandler;
+import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
 @SuppressLint("NewApi")
 public class CostsInterventoFragment extends SherlockFragment {
@@ -54,6 +59,8 @@ public class CostsInterventoFragment extends SherlockFragment {
 	
 	getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
 	getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	
+	setHasOptionsMenu(true);
 	
 	final View view = inflater.inflate(R.layout.costs_intervento_fragment, container, false);
 	
@@ -138,6 +145,44 @@ public class CostsInterventoFragment extends SherlockFragment {
 	tv_row_totale.setText(formatter.format(sTotale) + " €");
 	
 	return view;
+    }
+    
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	
+	super.onCreateOptionsMenu(menu, inflater);
+	
+	inflater.inflate(R.menu.menu_view_intervento, menu);
+	
+	MenuItem itemAddDetail = menu.findItem(R.id.add_detail_interv);
+	itemAddDetail.setVisible(true);
+	itemAddDetail.setEnabled(false);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	
+	switch (item.getItemId()) {
+	    case R.id.pay:
+		
+		InterventixToast.makeToast(getSherlockActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
+		
+		break;
+	    
+	    case R.id.send_mail:
+		
+		InterventixToast.makeToast(getSherlockActivity(), "Inviare email?", Toast.LENGTH_SHORT);
+		
+		break;
+	    
+	    case R.id.close:
+		
+		InterventixToast.makeToast(getSherlockActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
+		
+		break;
+	}
+	
+	return true;
     }
     
     public static class SetCostoManodopera extends SherlockDialogFragment implements android.content.DialogInterface.OnClickListener {
