@@ -19,6 +19,7 @@ public final class Constants {
     public static final String COSTS_INTERVENTO_FRAGMENT = "COSTS_INTERVENTO_FRAGMENT";
     public static final String OVERVIEW_INTERVENTO_FRAGMENT = "OVERVIEW_INTERVENTO";
     public static final String INFORMATIONS_INTERVENTO_FRAGMENT = "INFORMATIONS_INTERVENTO";
+    public static final String ADD_USERS_TO_DETAIL_FRAGMENT = "ADD_USERS_TO_DETAIL_FRAGMENT";
     public static final String TECHNICIANS_DETAIL_FRAGMENT = "TECHNICIANS_DETAIL_FRAGMENT";
     public static final String CLIENTS_INTERVENTO_FRAGMENT = "CLIENTS_INTERVENTO_FRAGMENT";
     public static final String INTERV_MODIFIED = "INTERV_MODIFIED";
