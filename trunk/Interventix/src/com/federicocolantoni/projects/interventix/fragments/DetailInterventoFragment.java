@@ -20,6 +20,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -126,6 +128,16 @@ public class DetailInterventoFragment extends SherlockFragment {
 		@Override
 		public void onClick(View v) {
 		    
+		    FragmentManager manager = getSherlockActivity().getSupportFragmentManager();
+		    FragmentTransaction transaction = manager.beginTransaction();
+		    
+		    AddUserToDetailFragment dettInterv = new AddUserToDetailFragment();
+		    
+		    transaction.replace(R.id.fragments_layout, dettInterv, Constants.ADD_USERS_TO_DETAIL_FRAGMENT);
+		    transaction.addToBackStack(Constants.ADD_USERS_TO_DETAIL_FRAGMENT);
+		    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		    
+		    transaction.commit();
 		}
 	    });
 	    

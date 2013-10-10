@@ -20,7 +20,6 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.DettaglioInterventoAdapter;
@@ -33,14 +32,14 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
     
     private long mId_intervento;
     
-    static final String[] PROJECTION = new String[] {
+    private static final String[] PROJECTION = new String[] {
 	    DettaglioInterventoDB.Fields._ID,
 	    DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
 	    DettaglioInterventoDB.Fields.TIPO,
 	    DettaglioInterventoDB.Fields.OGGETTO
     };
     
-    static final String SELECTION = DettaglioInterventoDB.Fields.TYPE + " =? AND " + DettaglioInterventoDB.Fields.INTERVENTO + " =?";
+    private static final String SELECTION = DettaglioInterventoDB.Fields.TYPE + " =? AND " + DettaglioInterventoDB.Fields.INTERVENTO + " =?";
     
     private String[] SELECTION_ARGS;
     
@@ -48,8 +47,6 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	
-	BugSenseHandler.initAndStartSession(getSherlockActivity(), Constants.API_KEY);
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
