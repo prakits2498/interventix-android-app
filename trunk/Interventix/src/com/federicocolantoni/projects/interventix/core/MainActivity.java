@@ -35,6 +35,10 @@ import com.federicocolantoni.projects.interventix.modules.login.Login;
 import com.federicocolantoni.projects.interventix.settings.SettingActivity;
 import com.federicocolantoni.projects.interventix.settings.SettingSupportActivity;
 
+/**
+ * @author federico.colantoni
+ *         Questa classe è la classe iniziale dell'app
+ */
 @SuppressLint("NewApi")
 public class MainActivity extends BaseActivity {
     
