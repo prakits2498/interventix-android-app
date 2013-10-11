@@ -20,7 +20,12 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -31,11 +36,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
@@ -49,19 +49,19 @@ import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatch
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
 @SuppressLint("NewApi")
-public class InformationsInterventoFragment extends SherlockFragment {
+public class InformationsInterventoFragment extends Fragment {
     
     public static long sId_Intervento;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
-	BugSenseHandler.initAndStartSession(getSherlockActivity(), Constants.API_KEY);
+	BugSenseHandler.initAndStartSession(getActivity(), Constants.API_KEY);
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
-	getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	getActivity().getActionBar().setHomeButtonEnabled(true);
+	getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	setHasOptionsMenu(true);
 	
@@ -74,7 +74,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	Intervento interv = null;
 	
 	try {
-	    interv = new GetInformationsInterventoAsyncTask(getSherlockActivity()).execute(sId_Intervento).get();
+	    interv = new GetInformationsInterventoAsyncTask(getActivity()).execute(sId_Intervento).get();
 	}
 	catch (InterruptedException e) {
 	    e.printStackTrace();
@@ -162,9 +162,9 @@ public class InformationsInterventoFragment extends SherlockFragment {
 		
 		final TextView tv_date_interv = (TextView) date_interv.findViewById(R.id.tv_row_date);
 		
-		final Dialog dateTimeDialog = new Dialog(getSherlockActivity());
+		final Dialog dateTimeDialog = new Dialog(getActivity());
 		
-		final RelativeLayout dateTimeDialogView = (RelativeLayout) getSherlockActivity().getLayoutInflater().inflate(R.layout.date_time_dialog, null);
+		final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.date_time_dialog, null);
 		
 		final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
 		
@@ -193,7 +193,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 			
 			tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
 			
-			SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getSherlockActivity());
+			SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getActivity());
 			
 			ContentValues values = new ContentValues();
 			values.put(InterventoDB.Fields.DATA_ORA, dt.toDate().getTime());
@@ -207,7 +207,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 			
 			saveChange.startUpdate(Constants.TOKEN_INFO_DATA_ORA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
 			
-			SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+			SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 			
 			final Editor edit = prefs.edit();
 			
@@ -319,19 +319,19 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	switch (item.getItemId()) {
 	    case R.id.pay:
 		
-		InterventixToast.makeToast(getSherlockActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
+		InterventixToast.makeToast(getActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
 		
 		break;
 	    
 	    case R.id.send_mail:
 		
-		InterventixToast.makeToast(getSherlockActivity(), "Inviare email?", Toast.LENGTH_SHORT);
+		InterventixToast.makeToast(getActivity(), "Inviare email?", Toast.LENGTH_SHORT);
 		
 		break;
 	    
 	    case R.id.close:
 		
-		InterventixToast.makeToast(getSherlockActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
+		InterventixToast.makeToast(getActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
 		
 		break;
 	}
@@ -339,7 +339,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	return true;
     }
     
-    public static class SetTipologiaDialog extends SherlockDialogFragment implements OnClickListener {
+    public static class SetTipologiaDialog extends DialogFragment implements OnClickListener {
 	
 	private String mTipologiaChanged;
 	
@@ -350,7 +350,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    
-	    AlertDialog.Builder tipologia = new Builder(getSherlockActivity());
+	    AlertDialog.Builder tipologia = new Builder(getActivity());
 	    
 	    tipologia.setTitle(getResources().getString(R.string.tipologia_title));
 	    final String[] choices = getResources().getStringArray(R.array.tipologia_choose);
@@ -359,7 +359,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 		    
-		    TextView tv_tipology = (TextView) getSherlockActivity().findViewById(R.id.tv_row_tipology);
+		    TextView tv_tipology = (TextView) getActivity().findViewById(R.id.tv_row_tipology);
 		    tv_tipology.setText(choices[which]);
 		    mTipologiaChanged = choices[which];
 		}
@@ -373,7 +373,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getSherlockActivity());
+	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(InterventoDB.Fields.TIPOLOGIA, mTipologiaChanged);
@@ -387,7 +387,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_TIPOLOGIA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	    
 	    final Editor edit = prefs.edit();
 	    
@@ -410,7 +410,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	}
     }
     
-    public static class SetModalitaDialog extends SherlockDialogFragment implements OnClickListener {
+    public static class SetModalitaDialog extends DialogFragment implements OnClickListener {
 	
 	private String mModalitaChanged;
 	
@@ -421,7 +421,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    
-	    AlertDialog.Builder modalita = new Builder(getSherlockActivity());
+	    AlertDialog.Builder modalita = new Builder(getActivity());
 	    
 	    modalita.setTitle(getResources().getString(R.string.modalita_title));
 	    final String[] choices = getResources().getStringArray(R.array.modalita_choose);
@@ -431,7 +431,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 		    
-		    TextView tv_mode = (TextView) getSherlockActivity().findViewById(R.id.tv_row_mode);
+		    TextView tv_mode = (TextView) getActivity().findViewById(R.id.tv_row_mode);
 		    tv_mode.setText(choices[which]);
 		    mModalitaChanged = choices[which];
 		}
@@ -445,7 +445,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getSherlockActivity());
+	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(InterventoDB.Fields.MODALITA, mModalitaChanged);
@@ -459,7 +459,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_MODALITA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	    
 	    final Editor edit = prefs.edit();
 	    
@@ -482,7 +482,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	}
     }
     
-    public static class SetProdottoDialog extends SherlockDialogFragment implements OnClickListener {
+    public static class SetProdottoDialog extends DialogFragment implements OnClickListener {
 	
 	private EditText mEdit_prodotto;
 	
@@ -493,13 +493,13 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    
-	    AlertDialog.Builder prodotto = new Builder(getSherlockActivity());
+	    AlertDialog.Builder prodotto = new Builder(getActivity());
 	    
 	    prodotto.setTitle(R.string.prodotto_title);
 	    
-	    TextView tv_product = (TextView) getSherlockActivity().findViewById(R.id.tv_row_product);
+	    TextView tv_product = (TextView) getActivity().findViewById(R.id.tv_row_product);
 	    
-	    mEdit_prodotto = new EditText(getSherlockActivity());
+	    mEdit_prodotto = new EditText(getActivity());
 	    mEdit_prodotto.setText(tv_product.getText());
 	    
 	    prodotto.setView(mEdit_prodotto);
@@ -512,10 +512,10 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    TextView tv_product = (TextView) getSherlockActivity().findViewById(R.id.tv_row_product);
+	    TextView tv_product = (TextView) getActivity().findViewById(R.id.tv_row_product);
 	    tv_product.setText(mEdit_prodotto.getText());
 	    
-	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getSherlockActivity());
+	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(InterventoDB.Fields.PRODOTTO, mEdit_prodotto.getText().toString());
@@ -529,7 +529,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_PRODOTTO, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	    
 	    final Editor edit = prefs.edit();
 	    
@@ -552,7 +552,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	}
     }
     
-    public static class SetNominativoDialog extends SherlockDialogFragment implements OnClickListener {
+    public static class SetNominativoDialog extends DialogFragment implements OnClickListener {
 	
 	private EditText mEdit_nominativo;
 	
@@ -563,13 +563,13 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    
-	    AlertDialog.Builder nominativo = new Builder(getSherlockActivity());
+	    AlertDialog.Builder nominativo = new Builder(getActivity());
 	    
 	    nominativo.setTitle(R.string.nominativo_title);
 	    
-	    TextView tv_nominativo = (TextView) getSherlockActivity().findViewById(R.id.tv_row_name);
+	    TextView tv_nominativo = (TextView) getActivity().findViewById(R.id.tv_row_name);
 	    
-	    mEdit_nominativo = new EditText(getSherlockActivity());
+	    mEdit_nominativo = new EditText(getActivity());
 	    mEdit_nominativo.setText(tv_nominativo.getText());
 	    
 	    nominativo.setView(mEdit_nominativo);
@@ -582,10 +582,10 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    TextView tv_name = (TextView) getSherlockActivity().findViewById(R.id.tv_row_name);
+	    TextView tv_name = (TextView) getActivity().findViewById(R.id.tv_row_name);
 	    tv_name.setText(mEdit_nominativo.getText());
 	    
-	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getSherlockActivity());
+	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(InterventoDB.Fields.NOMINATIVO, mEdit_nominativo.getText().toString());
@@ -599,7 +599,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_NOMINATIVO, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	    
 	    final Editor edit = prefs.edit();
 	    
@@ -622,7 +622,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	}
     }
     
-    public static class SetMotivationDialog extends SherlockDialogFragment implements OnClickListener {
+    public static class SetMotivationDialog extends DialogFragment implements OnClickListener {
 	
 	private EditText mEdit_motivo;
 	
@@ -633,13 +633,13 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    
-	    AlertDialog.Builder motivo = new Builder(getSherlockActivity());
+	    AlertDialog.Builder motivo = new Builder(getActivity());
 	    
 	    motivo.setTitle(R.string.motivation_title);
 	    
-	    TextView tv_motivo = (TextView) getSherlockActivity().findViewById(R.id.tv_row_motivation);
+	    TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_motivation);
 	    
-	    mEdit_motivo = new EditText(getSherlockActivity());
+	    mEdit_motivo = new EditText(getActivity());
 	    mEdit_motivo.setText(tv_motivo.getText());
 	    
 	    motivo.setView(mEdit_motivo);
@@ -651,10 +651,10 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-	    TextView tv_name = (TextView) getSherlockActivity().findViewById(R.id.tv_row_motivation);
+	    TextView tv_name = (TextView) getActivity().findViewById(R.id.tv_row_motivation);
 	    tv_name.setText(mEdit_motivo.getText());
 	    
-	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getSherlockActivity());
+	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(InterventoDB.Fields.MOTIVO, mEdit_motivo.getText().toString());
@@ -668,7 +668,7 @@ public class InformationsInterventoFragment extends SherlockFragment {
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_MOTIVO, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	    
 	    final Editor edit = prefs.edit();
 	    

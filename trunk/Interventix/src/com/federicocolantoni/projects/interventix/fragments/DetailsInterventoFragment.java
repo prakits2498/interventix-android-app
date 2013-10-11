@@ -1,13 +1,18 @@
 package com.federicocolantoni.projects.interventix.fragments;
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -16,17 +21,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.DettaglioInterventoAdapter;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
-public class DetailsInterventoFragment extends SherlockFragment implements LoaderCallbacks<Cursor> {
+@SuppressLint("NewApi")
+public class DetailsInterventoFragment extends Fragment implements LoaderCallbacks<Cursor> {
     
     private final static int MESSAGE_LOADER = 1;
     
@@ -50,8 +52,8 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
-	getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	getActivity().getActionBar().setHomeButtonEnabled(true);
+	getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	setHasOptionsMenu(true);
 	
@@ -72,7 +74,7 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 	
 	ListView detailsList = (ListView) view.findViewById(R.id.list_details_intervento);
 	
-	mAdapter = new DettaglioInterventoAdapter(getSherlockActivity(), null);
+	mAdapter = new DettaglioInterventoAdapter(getActivity(), null);
 	
 	detailsList.setAdapter(mAdapter);
 	
@@ -87,7 +89,7 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 		
 		bundle.putLong(Constants.ID_DETTAGLIO_INTERVENTO, cur.getInt(cur.getColumnIndex(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO)));
 		
-		FragmentManager manager = getSherlockActivity().getSupportFragmentManager();
+		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		
 		DetailInterventoFragment dettInterv = new DetailInterventoFragment();
@@ -101,7 +103,7 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 	    }
 	});
 	
-	getSherlockActivity().getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
+	getActivity().getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
 	
 	return view;
     }
@@ -124,7 +126,7 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 	
 	    case R.id.add_detail_interv:
 		
-		FragmentManager manager = getSherlockActivity().getSupportFragmentManager();
+		FragmentManager manager = getActivity().getSupportFragmentManager();
 		
 		FragmentTransaction transaction = manager.beginTransaction();
 		
@@ -145,19 +147,19 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
 	    
 	    case R.id.pay:
 		
-		InterventixToast.makeToast(getSherlockActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
+		InterventixToast.makeToast(getActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
 		
 		break;
 	    
 	    case R.id.send_mail:
 		
-		InterventixToast.makeToast(getSherlockActivity(), "Inviare email?", Toast.LENGTH_SHORT);
+		InterventixToast.makeToast(getActivity(), "Inviare email?", Toast.LENGTH_SHORT);
 		
 		break;
 	    
 	    case R.id.close:
 		
-		InterventixToast.makeToast(getSherlockActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
+		InterventixToast.makeToast(getActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
 		
 		break;
 	}
@@ -168,7 +170,7 @@ public class DetailsInterventoFragment extends SherlockFragment implements Loade
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
 	
-	Loader<Cursor> loader = new CursorLoader(getSherlockActivity(), DettaglioInterventoDB.CONTENT_URI, DetailsInterventoFragment.PROJECTION, DetailsInterventoFragment.SELECTION, SELECTION_ARGS, null);
+	Loader<Cursor> loader = new CursorLoader(getActivity(), DettaglioInterventoDB.CONTENT_URI, DetailsInterventoFragment.PROJECTION, DetailsInterventoFragment.SELECTION, SELECTION_ARGS, null);
 	
 	return loader;
     }

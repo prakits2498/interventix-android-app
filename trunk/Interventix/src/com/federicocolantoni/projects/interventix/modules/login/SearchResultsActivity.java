@@ -1,12 +1,11 @@
 package com.federicocolantoni.projects.interventix.modules.login;
 
+import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.actionbarsherlock.app.SherlockListActivity;
-
-public class SearchResultsActivity extends SherlockListActivity {
+public class SearchResultsActivity extends ListActivity {
     
     protected void onCreate(Bundle savedInstanceState) {
 	

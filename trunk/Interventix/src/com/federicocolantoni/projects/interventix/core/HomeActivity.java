@@ -26,10 +26,13 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -37,9 +40,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.Constants;
@@ -138,7 +138,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 	logout.show(getSupportFragmentManager(), Constants.LOGOUT_DIALOG_FRAGMENT);
     }
     
-    public static class LogoutDialog extends SherlockDialogFragment implements OnClickListener {
+    public static class LogoutDialog extends DialogFragment implements OnClickListener {
 	
 	public LogoutDialog() {
 	    
@@ -147,7 +147,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    
-	    AlertDialog.Builder logout_dialog = new Builder(getSherlockActivity());
+	    AlertDialog.Builder logout_dialog = new Builder(getActivity());
 	    
 	    logout_dialog.setTitle(getResources().getString(R.string.logout_title));
 	    logout_dialog.setMessage(getResources().getString(R.string.logout_message));
@@ -165,7 +165,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 	    if (DialogInterface.BUTTON_POSITIVE == which) {
 		
 		dialog.dismiss();
-		getSherlockActivity().finish();
+		getActivity().finish();
 	    }
 	    else {
 		dialog.dismiss();
@@ -177,7 +177,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
     public boolean onCreateOptionsMenu(Menu menu) {
 	
 	optionsMenu = menu;
-	getSupportMenuInflater().inflate(R.menu.menu_home, menu);
+	getMenuInflater().inflate(R.menu.menu_home, menu);
 	
 	setRefreshActionButtonState(true);
 	
