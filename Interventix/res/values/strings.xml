@@ -12,6 +12,8 @@
     <string name="pay">Salda</string>
     <string name="close_interv">Chiudi</string>
     <string name="prefs_key_url">PREFS_KEY_URL</string>
+    <!-- aggiunta questa riga -->
+
     <string name="first_run">first_run</string>
     <string name="prefs_url_title">Inserisci l\'indirizzo del sito che ti e\' stato fornito nel contratto</string>
     <string name="prefs_url_hint">http://azienda.interventix.com</string>
