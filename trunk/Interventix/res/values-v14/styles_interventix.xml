@@ -20,37 +20,37 @@
 
 <resources>
 
-    <style name="Theme.Interventix" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:actionBarItemBackground">@drawable/selectable_background_interventix</item>
-        <item name="android:popupMenuStyle">@style/PopupMenu.Interventix</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Interventix</item>
-        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Interventix</item>
-        <item name="android:actionDropDownStyle">@style/DropDownNav.Interventix</item>
-        <item name="android:actionBarStyle">@style/ActionBar.Solid.Interventix</item>
-        <item name="android:actionModeBackground">@drawable/cab_background_top_interventix</item>
-        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_interventix</item>
-        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Interventix</item>
+	<style name="Theme.Interventix" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+		<item name="actionBarItemBackground">@drawable/selectable_background_interventix</item>
+		<item name="popupMenuStyle">@style/PopupMenu.Interventix</item>
+		<item name="dropDownListViewStyle">@style/DropDownListView.Interventix</item>
+		<item name="actionBarTabStyle">@style/ActionBarTabStyle.Interventix</item>
+		<item name="actionDropDownStyle">@style/DropDownNav.Interventix</item>
+		<item name="actionBarStyle">@style/ActionBar.Solid.Interventix</item>
+		<item name="actionModeBackground">@drawable/cab_background_top_interventix</item>
+		<item name="actionModeSplitBackground">@drawable/cab_background_bottom_interventix</item>
+		<item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Interventix</item>
 
-        <!-- Light.DarkActionBar specific -->
-        <item name="android:actionBarWidgetTheme">@style/Theme.Interventix.Widget</item>
-    </style>
+		<!-- Light.DarkActionBar specific -->
+		<item name="actionBarWidgetTheme">@style/Theme.Interventix.Widget</item>
+	</style>
 
-    <style name="ActionBar.Solid.Interventix" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/ab_solid_interventix</item>
-        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_interventix</item>
-        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_interventix</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Interventix</item>
-    </style>
+	<style name="ActionBar.Solid.Interventix" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+		<item name="background">@drawable/ab_solid_interventix</item>
+		<item name="backgroundStacked">@drawable/ab_stacked_solid_interventix</item>
+		<item name="backgroundSplit">@drawable/ab_bottom_solid_interventix</item>
+		<item name="progressBarStyle">@style/ProgressBar.Interventix</item>
+	</style>
 
-    <style name="ActionBar.Transparent.Interventix" parent="@style/Widget.AppCompat.ActionBar">
-        <item name="android:background">@drawable/ab_transparent_interventix</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Interventix</item>
-    </style>
+	<style name="ActionBar.Transparent.Interventix" parent="@style/Widget.AppCompat.ActionBar">
+		<item name="background">@drawable/ab_transparent_interventix</item>
+		<item name="progressBarStyle">@style/ProgressBar.Interventix</item>
+	</style>
 
-    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Interventix.Widget" parent="@style/Theme.AppCompat">
-        <item name="android:popupMenuStyle">@style/PopupMenu.Interventix</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Interventix</item>
-    </style>
+	<!-- this style is only referenced in a Light.DarkActionBar based theme -->
+	<style name="Theme.Interventix.Widget" parent="@style/Theme.AppCompat">
+		<item name="popupMenuStyle">@style/PopupMenu.Interventix</item>
+		<item name="dropDownListViewStyle">@style/DropDownListView.Interventix</item>
+	</style>
 
 </resources>

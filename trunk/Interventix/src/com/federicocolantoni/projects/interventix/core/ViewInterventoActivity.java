@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -435,6 +436,7 @@ public class ViewInterventoActivity extends BaseActivity {
 			    }
 			}).start();
 		    }
+		    
 		    getActivity().finish();
 		    
 		    break;
@@ -680,7 +682,7 @@ public class ViewInterventoActivity extends BaseActivity {
 			    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 		    });
 		    
-		    finish();
+		    NavUtils.navigateUpFromSameTask(this);
 		}
 		else {
 		    

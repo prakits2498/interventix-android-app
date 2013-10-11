@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,7 +41,7 @@ import com.federicocolantoni.projects.interventix.settings.SettingSupportActivit
  *         Questa classe è la classe iniziale dell'app
  */
 @SuppressLint("NewApi")
-public class MainActivity extends BaseActivity {
+public class MainActivity extends ActionBarActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class MainActivity extends BaseActivity {
 	
 	SharedPreferences prefs = null;
 	
-	ReadDefaultPreferences readPref = new ReadDefaultPreferences(MainActivity.this);
+	BaseActivity.ReadDefaultPreferences readPref = new BaseActivity.ReadDefaultPreferences(MainActivity.this);
 	readPref.execute();
 	
 	try {
@@ -158,7 +159,6 @@ public class MainActivity extends BaseActivity {
 	    
 	    first_run_dialog.setView(view);
 	    
-	    input_url = (EditText) view.findViewById(R.id.input_first_run);
 	    save_url = (Button) view.findViewById(R.id.save_prefs_url);
 	    save_url.setOnClickListener(this);
 	    

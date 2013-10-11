@@ -42,6 +42,7 @@ public class ListUsersAdapter extends CursorAdapter {
     private int mTipoUtente;
     
     public ListUsersAdapter(Context context, Cursor cursor) {
+	
 	super(context, cursor, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 	mInflater = LayoutInflater.from(context);
 	mFoundIndexes = false;
