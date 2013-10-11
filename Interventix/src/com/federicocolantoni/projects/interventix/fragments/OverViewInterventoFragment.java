@@ -44,8 +44,8 @@ public class OverViewInterventoFragment extends Fragment {
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	getActivity().getActionBar().setHomeButtonEnabled(true);
-	getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+	// getActivity().getActionBar().setHomeButtonEnabled(true);
+	// getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	setHasOptionsMenu(true);
 	

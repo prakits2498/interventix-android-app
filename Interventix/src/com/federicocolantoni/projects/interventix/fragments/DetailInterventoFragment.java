@@ -22,8 +22,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -58,8 +56,8 @@ public class DetailInterventoFragment extends Fragment {
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	getActivity().getActionBar().setHomeButtonEnabled(true);
-	getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+	// getActivity().getActionBar().setHomeButtonEnabled(true);
+	// getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	final View view = inflater.inflate(R.layout.detail_dett_intervento_fragment, container, false);
 	
@@ -128,16 +126,20 @@ public class DetailInterventoFragment extends Fragment {
 		@Override
 		public void onClick(View v) {
 		    
-		    FragmentManager manager = getActivity().getSupportFragmentManager();
-		    FragmentTransaction transaction = manager.beginTransaction();
-		    
-		    AddUserToDetailFragment dettInterv = new AddUserToDetailFragment();
-		    
-		    transaction.replace(R.id.fragments_layout, dettInterv, Constants.ADD_USERS_TO_DETAIL_FRAGMENT);
-		    transaction.addToBackStack(Constants.ADD_USERS_TO_DETAIL_FRAGMENT);
-		    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		    
-		    transaction.commit();
+		    // FragmentManager manager =
+		    // getActivity().getSupportFragmentManager();
+		    // FragmentTransaction transaction =
+		    // manager.beginTransaction();
+		    //
+		    // AddUserToDetailFragment dettInterv = new
+		    // AddUserToDetailFragment();
+		    //
+		    // transaction.replace(R.id.fragments_layout, dettInterv,
+		    // Constants.ADD_USERS_TO_DETAIL_FRAGMENT);
+		    // transaction.addToBackStack(Constants.ADD_USERS_TO_DETAIL_FRAGMENT);
+		    // transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		    //
+		    // transaction.commit();
 		}
 	    });
 	    

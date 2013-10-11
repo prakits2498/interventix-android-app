@@ -52,8 +52,8 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	getActivity().getActionBar().setHomeButtonEnabled(true);
-	getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+	// getActivity().getActionBar().setHomeButtonEnabled(true);
+	// getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	setHasOptionsMenu(true);
 	

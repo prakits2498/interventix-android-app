@@ -21,10 +21,11 @@
         android:src="@drawable/logo_home_page_ix" />
 
     <FrameLayout
-        android:id="@+id/frag_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" >
+    	android:id="@+id/frag_login"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="8dp" >
+
     </FrameLayout>
 
 </LinearLayout>
