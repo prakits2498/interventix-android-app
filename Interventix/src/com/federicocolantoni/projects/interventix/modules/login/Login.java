@@ -26,6 +26,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,7 +34,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
@@ -45,7 +45,7 @@ import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
 
 @SuppressLint("NewApi")
-public class Login extends SherlockFragment implements OnClickListener {
+public class Login extends Fragment implements OnClickListener {
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,16 +61,16 @@ public class Login extends SherlockFragment implements OnClickListener {
     @Override
     public void onClick(View v) {
 	
-	ConnectivityManager connMgr = (ConnectivityManager) getSherlockActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+	ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 	NetworkInfo info = connMgr.getActiveNetworkInfo();
 	
-	SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
-	EditText username = (EditText) getSherlockActivity().findViewById(R.id.field_username);
-	EditText password = (EditText) getSherlockActivity().findViewById(R.id.field_password);
+	EditText username = (EditText) getActivity().findViewById(R.id.field_username);
+	EditText password = (EditText) getActivity().findViewById(R.id.field_password);
 	
 	if (username.getText().toString().length() == 0 || password.getText().toString().length() == 0)
-	    InterventixToast.makeToast(getSherlockActivity(), "Devi riempire i campi \"Username\" e \"Password\"", Toast.LENGTH_SHORT);
+	    InterventixToast.makeToast(getActivity(), "Devi riempire i campi \"Username\" e \"Password\"", Toast.LENGTH_SHORT);
 	else {
 	    
 	    String json_req = new String();
@@ -90,7 +90,7 @@ public class Login extends SherlockFragment implements OnClickListener {
 				
 				json_req = JsonCR2.createRequest("users", "login", parameters, -1);
 				
-				new GetLogin(getSherlockActivity()).execute(json_req, username.getText().toString(), password.getText().toString());
+				new GetLogin(getActivity()).execute(json_req, username.getText().toString(), password.getText().toString());
 			    }
 			    catch (Exception e) {
 				e.printStackTrace();
@@ -106,9 +106,9 @@ public class Login extends SherlockFragment implements OnClickListener {
 				    
 				    password.setText("");
 				    
-				    InterventixToast.makeToast(getSherlockActivity(), "Accesso in modalità offline", Toast.LENGTH_LONG);
+				    InterventixToast.makeToast(getActivity(), "Accesso in modalità offline", Toast.LENGTH_LONG);
 				    
-				    startActivity(new Intent(getSherlockActivity(), HomeActivity.class));
+				    startActivity(new Intent(getActivity(), HomeActivity.class));
 				}
 			}
 			
@@ -126,7 +126,7 @@ public class Login extends SherlockFragment implements OnClickListener {
 				
 				json_req = JsonCR2.createRequest("users", "login", parameters, -1);
 				
-				new GetLogin(getSherlockActivity()).execute(json_req, username.getText().toString(), password.getText().toString());
+				new GetLogin(getActivity()).execute(json_req, username.getText().toString(), password.getText().toString());
 			    }
 			    catch (Exception e) {
 				e.printStackTrace();
@@ -142,9 +142,9 @@ public class Login extends SherlockFragment implements OnClickListener {
 				    
 				    password.setText("");
 				    
-				    InterventixToast.makeToast(getSherlockActivity(), "Accesso in modalità offline", Toast.LENGTH_LONG);
+				    InterventixToast.makeToast(getActivity(), "Accesso in modalità offline", Toast.LENGTH_LONG);
 				    
-				    startActivity(new Intent(getSherlockActivity(), HomeActivity.class));
+				    startActivity(new Intent(getActivity(), HomeActivity.class));
 				}
 			}
 			
@@ -152,7 +152,7 @@ public class Login extends SherlockFragment implements OnClickListener {
 		}
 	    else {
 		
-		AlertDialog.Builder connUnavailable = new Builder(getSherlockActivity());
+		AlertDialog.Builder connUnavailable = new Builder(getActivity());
 		
 		connUnavailable.setTitle("Nessuna connessione attiva");
 		connUnavailable.setMessage(R.string.conn_unavailable_text);
@@ -245,7 +245,7 @@ public class Login extends SherlockFragment implements OnClickListener {
 			
 			JSONObject data = response.getJSONObject("data");
 			
-			ContentResolver cr = getSherlockActivity().getContentResolver();
+			ContentResolver cr = getActivity().getContentResolver();
 			ContentValues values;
 			
 			String selection = Fields.TYPE + " = ? AND " + UtenteDB.Fields.USERNAME + " = ?";
@@ -278,7 +278,7 @@ public class Login extends SherlockFragment implements OnClickListener {
 			    
 			    cr.update(UtenteDB.CONTENT_URI, values, selectionUpdate, selectionUpdateArgs);
 			    
-			    SharedPreferences localPrefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+			    SharedPreferences localPrefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 			    
 			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
 				localPrefs.edit().putLong(Constants.USER_ID, data.getLong("idutente")).apply();
@@ -316,10 +316,10 @@ public class Login extends SherlockFragment implements OnClickListener {
 			    
 			    cr.insert(UtenteDB.CONTENT_URI, values);
 			    
-			    SharedPreferences localPrefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+			    SharedPreferences localPrefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 			    
-			    EditText username = (EditText) getSherlockActivity().findViewById(R.id.field_username);
-			    EditText password = (EditText) getSherlockActivity().findViewById(R.id.field_password);
+			    EditText username = (EditText) getActivity().findViewById(R.id.field_username);
+			    EditText password = (EditText) getActivity().findViewById(R.id.field_password);
 			    
 			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
 				localPrefs.edit().putLong(Constants.USER_ID, data.getLong("idutente")).putString(Constants.USERNAME, username.getText().toString()).putString(Constants.PASSWORD, password.getText().toString()).apply();
@@ -366,7 +366,7 @@ public class Login extends SherlockFragment implements OnClickListener {
 	    
 	    if (result == Activity.RESULT_OK) {
 		
-		EditText password = (EditText) getSherlockActivity().findViewById(R.id.field_password);
+		EditText password = (EditText) getActivity().findViewById(R.id.field_password);
 		
 		password.setText("");
 		

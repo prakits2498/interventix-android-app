@@ -23,13 +23,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.Constants;
@@ -274,7 +274,7 @@ public class ViewInterventoActivity extends BaseActivity {
 		    };
 		    
 		    writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+			    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 		    });
 		    
 		    finish();
@@ -338,7 +338,7 @@ public class ViewInterventoActivity extends BaseActivity {
 		};
 		
 		writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-				    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+			RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 		});
 		
 		finish();
@@ -353,7 +353,7 @@ public class ViewInterventoActivity extends BaseActivity {
 	}
     }
     
-    public static class ExitIntervento extends SherlockDialogFragment implements OnClickListener {
+    public static class ExitIntervento extends DialogFragment implements OnClickListener {
 	
 	public ExitIntervento() {
 	    
@@ -362,7 +362,7 @@ public class ViewInterventoActivity extends BaseActivity {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    
-	    AlertDialog.Builder exit_dialog = new Builder(getSherlockActivity());
+	    AlertDialog.Builder exit_dialog = new Builder(getActivity());
 	    
 	    exit_dialog.setTitle(R.string.interv_mod_title);
 	    exit_dialog.setMessage(R.string.interv_mod_text);
@@ -376,7 +376,7 @@ public class ViewInterventoActivity extends BaseActivity {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	    
 	    final Editor edit = prefs.edit();
 	    
@@ -417,7 +417,7 @@ public class ViewInterventoActivity extends BaseActivity {
 		    };
 		    
 		    writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+			    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 		    });
 		    
 		    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, false);
@@ -435,7 +435,7 @@ public class ViewInterventoActivity extends BaseActivity {
 			    }
 			}).start();
 		    }
-		    getSherlockActivity().finish();
+		    getActivity().finish();
 		    
 		    break;
 		
@@ -476,20 +476,20 @@ public class ViewInterventoActivity extends BaseActivity {
 		    };
 		    
 		    try {
-			cursorDB = new ManagedAsyncTask<String, Void, Cursor>(getSherlockActivity()) {
+			cursorDB = new ManagedAsyncTask<String, Void, Cursor>(getActivity()) {
 			    
 			    @Override
 			    protected Cursor doInBackground(String... params) {
 				
 				Cursor cursor = null;
 				
-				ContentResolver cr = getSherlockActivity().getContentResolver();
+				ContentResolver cr = getActivity().getContentResolver();
 				
 				cursor = cr.query(RipristinoInterventoDB.CONTENT_URI, new String[] {
 					RipristinoInterventoDB.Field._ID,
 					RipristinoInterventoDB.Field.BACKUP_INTERVENTO
 				}, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-						  params[0]
+					params[0]
 				}, null);
 				
 				return cursor;
@@ -551,9 +551,9 @@ public class ViewInterventoActivity extends BaseActivity {
 				valuesIntervento.put(InterventoDB.Fields.TOTALE, intervRipristino.getDouble(InterventoDB.Fields.TOTALE.toString()));
 				
 				queryHandlerDB.startUpdate(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, InterventoDB.CONTENT_URI, valuesIntervento,
-							   InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?", new String[] {
-								   InterventoDB.INTERVENTO_ITEM_TYPE, "" + intervRipristino.getLong(InterventoDB.Fields.ID_INTERVENTO.toString())
-							   });
+					InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?", new String[] {
+						InterventoDB.INTERVENTO_ITEM_TYPE, "" + intervRipristino.getLong(InterventoDB.Fields.ID_INTERVENTO.toString())
+					});
 				
 				JSONArray dettagliIntervento = intervRipristino.getJSONArray(Constants.ARRAY_DETTAGLI);
 				
@@ -573,13 +573,13 @@ public class ViewInterventoActivity extends BaseActivity {
 				    valuesDettaglio.put(DettaglioInterventoDB.Fields.TIPO, dettaglio.getString(DettaglioInterventoDB.Fields.TIPO.toString()));
 				    
 				    queryHandlerDB.startUpdate(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, DettaglioInterventoDB.CONTENT_URI, valuesDettaglio,
-							       DettaglioInterventoDB.Fields.TYPE + "=? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?", new String[] {
-								       DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettaglio.getLong(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO.toString())
-							       });
+					    DettaglioInterventoDB.Fields.TYPE + "=? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?", new String[] {
+						    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettaglio.getLong(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO.toString())
+					    });
 				}
 				
 				queryHandlerDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-							   RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 				});
 			    }
 			    catch (JSONException e) {
@@ -589,7 +589,7 @@ public class ViewInterventoActivity extends BaseActivity {
 			    finally {
 				
 				queryHandlerDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-							   RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 				});
 			    }
 			}
@@ -617,7 +617,7 @@ public class ViewInterventoActivity extends BaseActivity {
 			}).start();
 		    }
 		    
-		    getSherlockActivity().finish();
+		    getActivity().finish();
 		    
 		    break;
 	    }
@@ -677,7 +677,7 @@ public class ViewInterventoActivity extends BaseActivity {
 		    };
 		    
 		    writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+			    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 		    });
 		    
 		    finish();

@@ -20,6 +20,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -33,8 +35,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
@@ -47,19 +47,19 @@ import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatch
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
 @SuppressLint("NewApi")
-public class DetailInterventoFragment extends SherlockFragment {
+public class DetailInterventoFragment extends Fragment {
     
     private static long sId_Dettaglio_Intervento;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
-	BugSenseHandler.initAndStartSession(getSherlockActivity(), Constants.API_KEY);
+	BugSenseHandler.initAndStartSession(getActivity(), Constants.API_KEY);
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
-	getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	getActivity().getActionBar().setHomeButtonEnabled(true);
+	getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	final View view = inflater.inflate(R.layout.detail_dett_intervento_fragment, container, false);
 	
@@ -75,7 +75,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	    DettaglioIntervento dettInterv = null;
 	    
 	    try {
-		dettInterv = new GetDettaglioInterventoAsyncTask(getSherlockActivity()).execute(sId_Dettaglio_Intervento).get();
+		dettInterv = new GetDettaglioInterventoAsyncTask(getActivity()).execute(sId_Dettaglio_Intervento).get();
 	    }
 	    catch (InterruptedException e) {
 		e.printStackTrace();
@@ -128,7 +128,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 		@Override
 		public void onClick(View v) {
 		    
-		    FragmentManager manager = getSherlockActivity().getSupportFragmentManager();
+		    FragmentManager manager = getActivity().getSupportFragmentManager();
 		    FragmentTransaction transaction = manager.beginTransaction();
 		    
 		    AddUserToDetailFragment dettInterv = new AddUserToDetailFragment();
@@ -164,9 +164,9 @@ public class DetailInterventoFragment extends SherlockFragment {
 		    
 		    final TextView tv_row_inizio_dett = (TextView) row_inizio_dett.findViewById(R.id.tv_row_inizio_dettaglio);
 		    
-		    final Dialog dateTimeDialog = new Dialog(getSherlockActivity());
+		    final Dialog dateTimeDialog = new Dialog(getActivity());
 		    
-		    final RelativeLayout dateTimeDialogView = (RelativeLayout) getSherlockActivity().getLayoutInflater().inflate(R.layout.date_time_dialog, null);
+		    final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.date_time_dialog, null);
 		    
 		    final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
 		    
@@ -193,8 +193,8 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    
 			    DateTime dt_inizio = new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone.forID("Europe/Rome"));
 			    
-			    TextView tv_dett_ore_tot = (TextView) getSherlockActivity().findViewById(R.id.tv_row_tot_ore_dettaglio);
-			    TextView tv_dett_fine = (TextView) getSherlockActivity().findViewById(R.id.tv_row_fine_dettaglio);
+			    TextView tv_dett_ore_tot = (TextView) getActivity().findViewById(R.id.tv_row_tot_ore_dettaglio);
+			    TextView tv_dett_fine = (TextView) getActivity().findViewById(R.id.tv_row_fine_dettaglio);
 			    
 			    DateTime dt_fine = null;
 			    
@@ -204,7 +204,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    dt_fine = fmt.parseDateTime(tv_dett_fine.getText().toString());
 			    
 			    if (dt_fine.toDate().getTime() < dt_inizio.toDate().getTime()) {
-				InterventixToast.makeToast(getSherlockActivity(), "Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
+				InterventixToast.makeToast(getActivity(), "Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
 			    }
 			    else {
 				
@@ -214,7 +214,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 				
 				tv_dett_ore_tot.setText(dt_tot_ore.toString("HH:mm"));
 				
-				SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getSherlockActivity());
+				SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
 				
 				ContentValues values = new ContentValues();
 				values.put(DettaglioInterventoDB.Fields.INIZIO, dt_inizio.toDate().getTime());
@@ -228,7 +228,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 				
 				saveChanges.startUpdate(Constants.TOKEN_ORA_INIZIO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
 				
-				SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+				SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 				
 				final Editor edit = prefs.edit();
 				
@@ -299,9 +299,9 @@ public class DetailInterventoFragment extends SherlockFragment {
 		    
 		    final TextView tv_row_fine_dett = (TextView) row_fine_dett.findViewById(R.id.tv_row_fine_dettaglio);
 		    
-		    final Dialog dateTimeDialog = new Dialog(getSherlockActivity());
+		    final Dialog dateTimeDialog = new Dialog(getActivity());
 		    
-		    final RelativeLayout dateTimeDialogView = (RelativeLayout) getSherlockActivity().getLayoutInflater().inflate(R.layout.date_time_dialog, null);
+		    final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.date_time_dialog, null);
 		    
 		    final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
 		    
@@ -328,8 +328,8 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    
 			    DateTime dt_fine = new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone.forID("Europe/Rome"));
 			    
-			    TextView tv_dett_ore_tot = (TextView) getSherlockActivity().findViewById(R.id.tv_row_tot_ore_dettaglio);
-			    TextView tv_dett_inizio = (TextView) getSherlockActivity().findViewById(R.id.tv_row_inizio_dettaglio);
+			    TextView tv_dett_ore_tot = (TextView) getActivity().findViewById(R.id.tv_row_tot_ore_dettaglio);
+			    TextView tv_dett_inizio = (TextView) getActivity().findViewById(R.id.tv_row_inizio_dettaglio);
 			    
 			    DateTime dt_inizio = null;
 			    
@@ -339,7 +339,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    dt_inizio = fmt.parseDateTime(tv_dett_inizio.getText().toString());
 			    
 			    if (dt_fine.toDate().getTime() < dt_inizio.toDate().getTime()) {
-				InterventixToast.makeToast(getSherlockActivity(), "Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
+				InterventixToast.makeToast(getActivity(), "Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
 			    }
 			    else {
 				
@@ -349,7 +349,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 				
 				tv_dett_ore_tot.setText(dt_tot_ore.toString("HH:mm"));
 				
-				SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getSherlockActivity());
+				SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
 				
 				ContentValues values = new ContentValues();
 				values.put(DettaglioInterventoDB.Fields.FINE, dt_fine.toDate().getTime());
@@ -363,7 +363,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 				
 				saveChanges.startUpdate(Constants.TOKEN_ORA_FINE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
 				
-				SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+				SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 				
 				final Editor edit = prefs.edit();
 				
@@ -435,7 +435,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	}
 	else {
 	    
-	    // InterventixToast.makeToast(getSherlockActivity(),
+	    // InterventixToast.makeToast(getActivity(),
 	    // "Creazione nuovo dettaglio per l'intervento",
 	    // Toast.LENGTH_SHORT);
 	    
@@ -515,9 +515,9 @@ public class DetailInterventoFragment extends SherlockFragment {
 		
 		final TextView tv_row_inizio_dett = (TextView) row_inizio_dett.findViewById(R.id.tv_row_inizio_dettaglio);
 		
-		final Dialog dateTimeDialog = new Dialog(getSherlockActivity());
+		final Dialog dateTimeDialog = new Dialog(getActivity());
 		
-		final RelativeLayout dateTimeDialogView = (RelativeLayout) getSherlockActivity().getLayoutInflater().inflate(R.layout.date_time_dialog, null);
+		final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.date_time_dialog, null);
 		
 		final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
 		
@@ -544,8 +544,8 @@ public class DetailInterventoFragment extends SherlockFragment {
 			
 			DateTime dt_inizio = new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone.forID("Europe/Rome"));
 			
-			TextView tv_dett_ore_tot = (TextView) getSherlockActivity().findViewById(R.id.tv_row_tot_ore_dettaglio);
-			TextView tv_dett_fine = (TextView) getSherlockActivity().findViewById(R.id.tv_row_fine_dettaglio);
+			TextView tv_dett_ore_tot = (TextView) getActivity().findViewById(R.id.tv_row_tot_ore_dettaglio);
+			TextView tv_dett_fine = (TextView) getActivity().findViewById(R.id.tv_row_fine_dettaglio);
 			
 			DateTime dt_fine = null;
 			
@@ -555,7 +555,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 			dt_fine = fmt.parseDateTime(tv_dett_fine.getText().toString());
 			
 			if (dt_fine.toDate().getTime() < dt_inizio.toDate().getTime()) {
-			    InterventixToast.makeToast(getSherlockActivity(), "Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
+			    InterventixToast.makeToast(getActivity(), "Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
 			}
 			else {
 			    
@@ -565,7 +565,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    
 			    tv_dett_ore_tot.setText(dt_tot_ore.toString("HH:mm"));
 			    
-			    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getSherlockActivity());
+			    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
 			    
 			    ContentValues values = new ContentValues();
 			    values.put(DettaglioInterventoDB.Fields.INIZIO, dt_inizio.toDate().getTime());
@@ -579,7 +579,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    
 			    saveChanges.startUpdate(Constants.TOKEN_ORA_INIZIO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
 			    
-			    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+			    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 			    
 			    final Editor edit = prefs.edit();
 			    
@@ -650,9 +650,9 @@ public class DetailInterventoFragment extends SherlockFragment {
 		
 		final TextView tv_row_fine_dett = (TextView) row_fine_dett.findViewById(R.id.tv_row_fine_dettaglio);
 		
-		final Dialog dateTimeDialog = new Dialog(getSherlockActivity());
+		final Dialog dateTimeDialog = new Dialog(getActivity());
 		
-		final RelativeLayout dateTimeDialogView = (RelativeLayout) getSherlockActivity().getLayoutInflater().inflate(R.layout.date_time_dialog, null);
+		final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.date_time_dialog, null);
 		
 		final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
 		
@@ -679,8 +679,8 @@ public class DetailInterventoFragment extends SherlockFragment {
 			
 			DateTime dt_fine = new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone.forID("Europe/Rome"));
 			
-			TextView tv_dett_ore_tot = (TextView) getSherlockActivity().findViewById(R.id.tv_row_tot_ore_dettaglio);
-			TextView tv_dett_inizio = (TextView) getSherlockActivity().findViewById(R.id.tv_row_inizio_dettaglio);
+			TextView tv_dett_ore_tot = (TextView) getActivity().findViewById(R.id.tv_row_tot_ore_dettaglio);
+			TextView tv_dett_inizio = (TextView) getActivity().findViewById(R.id.tv_row_inizio_dettaglio);
 			
 			DateTime dt_inizio = null;
 			
@@ -690,7 +690,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 			dt_inizio = fmt.parseDateTime(tv_dett_inizio.getText().toString());
 			
 			if (dt_fine.toDate().getTime() < dt_inizio.toDate().getTime()) {
-			    InterventixToast.makeToast(getSherlockActivity(), "Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
+			    InterventixToast.makeToast(getActivity(), "Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
 			}
 			else {
 			    
@@ -700,7 +700,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    
 			    tv_dett_ore_tot.setText(dt_tot_ore.toString("HH:mm"));
 			    
-			    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getSherlockActivity());
+			    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
 			    
 			    ContentValues values = new ContentValues();
 			    values.put(DettaglioInterventoDB.Fields.FINE, dt_fine.toDate().getTime());
@@ -714,7 +714,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 			    
 			    saveChanges.startUpdate(Constants.TOKEN_ORA_FINE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
 			    
-			    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+			    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 			    
 			    final Editor edit = prefs.edit();
 			    
@@ -785,7 +785,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	tv_row_tot_ore_dett.setText(dt_tot_ore.toString(DateTimeFormat.forPattern("HH:mm")));
     }
     
-    public static class SetTipo extends SherlockDialogFragment implements DialogInterface.OnClickListener {
+    public static class SetTipo extends DialogFragment implements DialogInterface.OnClickListener {
 	
 	private EditText mEdit_tipo_dett;
 	
@@ -796,13 +796,13 @@ public class DetailInterventoFragment extends SherlockFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    
-	    AlertDialog.Builder tipo_dett = new Builder(getSherlockActivity());
+	    AlertDialog.Builder tipo_dett = new Builder(getActivity());
 	    
 	    tipo_dett.setTitle(R.string.tipo_dett_title);
 	    
-	    TextView tv_tipo_dett = (TextView) getSherlockActivity().findViewById(R.id.tv_row_tipo_dettaglio);
+	    TextView tv_tipo_dett = (TextView) getActivity().findViewById(R.id.tv_row_tipo_dettaglio);
 	    
-	    mEdit_tipo_dett = new EditText(getSherlockActivity());
+	    mEdit_tipo_dett = new EditText(getActivity());
 	    mEdit_tipo_dett.setText(tv_tipo_dett.getText());
 	    
 	    tipo_dett.setView(mEdit_tipo_dett);
@@ -815,10 +815,10 @@ public class DetailInterventoFragment extends SherlockFragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    TextView tv_tipo_dett = (TextView) getSherlockActivity().findViewById(R.id.tv_row_tipo_dettaglio);
+	    TextView tv_tipo_dett = (TextView) getActivity().findViewById(R.id.tv_row_tipo_dettaglio);
 	    tv_tipo_dett.setText(mEdit_tipo_dett.getText());
 	    
-	    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getSherlockActivity());
+	    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(DettaglioInterventoDB.Fields.TIPO, mEdit_tipo_dett.getText().toString());
@@ -832,7 +832,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	    
 	    saveChanges.startUpdate(Constants.TOKEN_TIPO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	    
 	    final Editor edit = prefs.edit();
 	    
@@ -855,7 +855,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	}
     }
     
-    public static class SetOggetto extends SherlockDialogFragment implements DialogInterface.OnClickListener {
+    public static class SetOggetto extends DialogFragment implements DialogInterface.OnClickListener {
 	
 	private EditText mEdit_oggetto_dett;
 	
@@ -866,13 +866,13 @@ public class DetailInterventoFragment extends SherlockFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    
-	    AlertDialog.Builder oggetto_dett = new Builder(getSherlockActivity());
+	    AlertDialog.Builder oggetto_dett = new Builder(getActivity());
 	    
 	    oggetto_dett.setTitle(R.string.oggetto_dett_title);
 	    
-	    TextView tv_oggetto_dett = (TextView) getSherlockActivity().findViewById(R.id.tv_row_oggetto_dettaglio);
+	    TextView tv_oggetto_dett = (TextView) getActivity().findViewById(R.id.tv_row_oggetto_dettaglio);
 	    
-	    mEdit_oggetto_dett = new EditText(getSherlockActivity());
+	    mEdit_oggetto_dett = new EditText(getActivity());
 	    mEdit_oggetto_dett.setText(tv_oggetto_dett.getText());
 	    
 	    oggetto_dett.setView(mEdit_oggetto_dett);
@@ -885,10 +885,10 @@ public class DetailInterventoFragment extends SherlockFragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    TextView tv_oggetto_dett = (TextView) getSherlockActivity().findViewById(R.id.tv_row_oggetto_dettaglio);
+	    TextView tv_oggetto_dett = (TextView) getActivity().findViewById(R.id.tv_row_oggetto_dettaglio);
 	    tv_oggetto_dett.setText(mEdit_oggetto_dett.getText());
 	    
-	    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getSherlockActivity());
+	    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(DettaglioInterventoDB.Fields.OGGETTO, mEdit_oggetto_dett.getText().toString());
@@ -902,7 +902,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	    
 	    saveChanges.startUpdate(Constants.TOKEN_OGGETTO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	    
 	    final Editor edit = prefs.edit();
 	    
@@ -925,7 +925,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	}
     }
     
-    public static class SetDecrizione extends SherlockDialogFragment implements DialogInterface.OnClickListener {
+    public static class SetDecrizione extends android.support.v4.app.DialogFragment implements DialogInterface.OnClickListener {
 	
 	private EditText mEdit_descrizione_dett;
 	
@@ -936,13 +936,13 @@ public class DetailInterventoFragment extends SherlockFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    
-	    AlertDialog.Builder decrizione_dett = new Builder(getSherlockActivity());
+	    AlertDialog.Builder decrizione_dett = new Builder(getActivity());
 	    
 	    decrizione_dett.setTitle(R.string.oggetto_dett_title);
 	    
-	    TextView tv_descrizione_dett = (TextView) getSherlockActivity().findViewById(R.id.tv_row_descrizione_dettaglio);
+	    TextView tv_descrizione_dett = (TextView) getActivity().findViewById(R.id.tv_row_descrizione_dettaglio);
 	    
-	    mEdit_descrizione_dett = new EditText(getSherlockActivity());
+	    mEdit_descrizione_dett = new EditText(getActivity());
 	    mEdit_descrizione_dett.setText(tv_descrizione_dett.getText());
 	    
 	    decrizione_dett.setView(mEdit_descrizione_dett);
@@ -955,10 +955,10 @@ public class DetailInterventoFragment extends SherlockFragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    TextView tv_descrizione_dett = (TextView) getSherlockActivity().findViewById(R.id.tv_row_descrizione_dettaglio);
+	    TextView tv_descrizione_dett = (TextView) getActivity().findViewById(R.id.tv_row_descrizione_dettaglio);
 	    tv_descrizione_dett.setText(mEdit_descrizione_dett.getText());
 	    
-	    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getSherlockActivity());
+	    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
 	    
 	    ContentValues values = new ContentValues();
 	    values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, mEdit_descrizione_dett.getText().toString());
@@ -972,7 +972,7 @@ public class DetailInterventoFragment extends SherlockFragment {
 	    
 	    saveChanges.startUpdate(Constants.TOKEN_DESCRIZIONE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
 	    
-	    SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	    
 	    final Editor edit = prefs.edit();
 	    

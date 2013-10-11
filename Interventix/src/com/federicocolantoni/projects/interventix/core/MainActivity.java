@@ -14,19 +14,18 @@ import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.Constants;
@@ -50,7 +49,7 @@ public class MainActivity extends BaseActivity {
 	
 	FragmentManager manager = getSupportFragmentManager();
 	
-	final SherlockFragment fragLogin = new Login();
+	final Login fragLogin = new Login();
 	
 	final FragmentTransaction transaction = manager.beginTransaction();
 	
@@ -90,7 +89,7 @@ public class MainActivity extends BaseActivity {
 	    if (prefs.getString(getResources().getString(R.string.prefs_key_url), "").isEmpty()) {
 		
 		FirstRunDialog dialog = new FirstRunDialog();
-		dialog.show(getSupportFragmentManager(), "first_run");
+		dialog.show(getSupportFragmentManager(), getString(R.string.first_run));
 	    }
 	    else
 	    if (prefs.getString(getResources().getString(R.string.prefs_key_url), "").length() == 0) {
@@ -105,7 +104,7 @@ public class MainActivity extends BaseActivity {
 	
 	super.onCreateOptionsMenu(menu);
 	
-	final MenuInflater inflater = getSupportMenuInflater();
+	final MenuInflater inflater = getMenuInflater();
 	inflater.inflate(R.menu.menu_main, menu);
 	
 	return true;
@@ -132,7 +131,7 @@ public class MainActivity extends BaseActivity {
 	}
     }
     
-    public static class FirstRunDialog extends SherlockDialogFragment implements OnClickListener {
+    public static class FirstRunDialog extends DialogFragment implements OnClickListener {
 	
 	private EditText input_url;
 	private Button save_url;
@@ -169,7 +168,7 @@ public class MainActivity extends BaseActivity {
 		case R.id.save_prefs_url:
 		    
 		    if (input_url.getText().toString().length() != 0) {
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getSherlockActivity());
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 			final Editor editor = prefs.edit();
 			
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)

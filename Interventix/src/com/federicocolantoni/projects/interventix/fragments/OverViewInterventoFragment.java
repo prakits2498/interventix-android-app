@@ -9,19 +9,19 @@ import org.joda.time.DateTimeZone;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
@@ -35,17 +35,17 @@ import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
 
 @SuppressLint("NewApi")
-public class OverViewInterventoFragment extends SherlockFragment {
+public class OverViewInterventoFragment extends Fragment {
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
-	BugSenseHandler.initAndStartSession(getSherlockActivity(), Constants.API_KEY);
+	BugSenseHandler.initAndStartSession(getActivity(), Constants.API_KEY);
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
-	getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	getActivity().getActionBar().setHomeButtonEnabled(true);
+	getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	setHasOptionsMenu(true);
 	
@@ -56,7 +56,7 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	Intervento interv = null;
 	
 	try {
-	    interv = new GetOverviewInterventoAsyncTask(getSherlockActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
+	    interv = new GetOverviewInterventoAsyncTask(getActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
 	}
 	catch (InterruptedException e) {
 	    e.printStackTrace();
@@ -67,7 +67,7 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	    BugSenseHandler.sendException(e);
 	}
 	
-	getSherlockActivity().getSupportActionBar().setSubtitle("Intervento " + bundle.getLong(Constants.NUMERO_INTERVENTO));
+	getActivity().getActionBar().setSubtitle("Intervento " + bundle.getLong(Constants.NUMERO_INTERVENTO));
 	
 	TextView summary = (TextView) view.findViewById(R.id.tv_summary_intervention);
 	
@@ -89,7 +89,7 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	Cliente cliente = null;
 	
 	try {
-	    cliente = new GetNominativoClienteAsyncTask(getSherlockActivity()).execute(interv.getmIdCliente()).get();
+	    cliente = new GetNominativoClienteAsyncTask(getActivity()).execute(interv.getmIdCliente()).get();
 	}
 	catch (InterruptedException e) {
 	    e.printStackTrace();
@@ -117,7 +117,7 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	    @Override
 	    public void onClick(View v) {
 		
-		FragmentManager manager = getSherlockActivity().getSupportFragmentManager();
+		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		
 		InformationsInterventoFragment infoInterv = new InformationsInterventoFragment();
@@ -137,7 +137,7 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	
 	try {
 	    
-	    listaDetailsInterv = new GetListaDettagliInterventoAsyncTask(getSherlockActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
+	    listaDetailsInterv = new GetListaDettagliInterventoAsyncTask(getActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
 	}
 	catch (InterruptedException e) {
 	    e.printStackTrace();
@@ -249,19 +249,19 @@ public class OverViewInterventoFragment extends SherlockFragment {
 	switch (item.getItemId()) {
 	    case R.id.pay:
 		
-		InterventixToast.makeToast(getSherlockActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
+		InterventixToast.makeToast(getActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
 		
 		break;
 	    
 	    case R.id.send_mail:
 		
-		InterventixToast.makeToast(getSherlockActivity(), "Inviare email?", Toast.LENGTH_SHORT);
+		InterventixToast.makeToast(getActivity(), "Inviare email?", Toast.LENGTH_SHORT);
 		
 		break;
 	    
 	    case R.id.close:
 		
-		InterventixToast.makeToast(getSherlockActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
+		InterventixToast.makeToast(getActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
 		
 		break;
 	}

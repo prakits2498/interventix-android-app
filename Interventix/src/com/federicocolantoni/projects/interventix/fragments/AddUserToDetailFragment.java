@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.json.JSONArray;
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -18,12 +20,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.ListUsersAdapter;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
 
-public class AddUserToDetailFragment extends SherlockFragment implements LoaderCallbacks<Cursor>, OnItemClickListener {
+@SuppressLint("NewApi")
+public class AddUserToDetailFragment extends Fragment implements LoaderCallbacks<Cursor>, OnItemClickListener {
     
     private final static int MESSAGE_LOADER = 1;
     
@@ -47,8 +49,8 @@ public class AddUserToDetailFragment extends SherlockFragment implements LoaderC
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
-	getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	getActivity().getActionBar().setHomeButtonEnabled(true);
+	getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	setHasOptionsMenu(true);
 	
@@ -59,12 +61,12 @@ public class AddUserToDetailFragment extends SherlockFragment implements LoaderC
 	// lista tecnici
 	ListView listUsers = (ListView) view.findViewById(R.id.list_users);
 	
-	mUserAdapter = new ListUsersAdapter(getSherlockActivity(), null);
+	mUserAdapter = new ListUsersAdapter(getActivity(), null);
 	
 	listUsers.setAdapter(mUserAdapter);
 	listUsers.setOnItemClickListener(this);
 	
-	getSherlockActivity().getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
+	getActivity().getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
 	
 	return view;
     }
@@ -105,7 +107,7 @@ public class AddUserToDetailFragment extends SherlockFragment implements LoaderC
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
 	
-	Loader<Cursor> loader = new CursorLoader(getSherlockActivity(), UtenteDB.CONTENT_URI, PROJECTION, SELECTION, SELECTION_ARGS, ORDER_BY);
+	Loader<Cursor> loader = new CursorLoader(getActivity(), UtenteDB.CONTENT_URI, PROJECTION, SELECTION, SELECTION_ARGS, ORDER_BY);
 	
 	return loader;
     }

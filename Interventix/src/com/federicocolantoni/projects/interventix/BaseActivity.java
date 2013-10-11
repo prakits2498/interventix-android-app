@@ -6,12 +6,12 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.bugsense.trace.BugSenseHandler;
 
 @SuppressLint("NewApi")
-public class BaseActivity extends SherlockFragmentActivity {
+public class BaseActivity extends ActionBarActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
