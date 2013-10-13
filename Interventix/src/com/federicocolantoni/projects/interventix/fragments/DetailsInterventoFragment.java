@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -52,8 +53,8 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	// getActivity().getActionBar().setHomeButtonEnabled(true);
-	// getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	setHasOptionsMenu(true);
 	

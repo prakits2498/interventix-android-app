@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -26,13 +25,12 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.bugsense.trace.BugSenseHandler;
-import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
@@ -47,21 +45,19 @@ import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
-public class ViewInterventoActivity extends BaseActivity {
+public class ViewInterventoActivity extends ActionBarActivity {
     
     private static long id_intervento;
-    
-    // private Menu menu;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	
 	super.onCreate(savedInstanceState);
 	
+	setContentView(R.layout.activity_view_intervento);
+	
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	
-	setContentView(R.layout.activity_view_intervento);
 	
 	Bundle extras = getIntent().getExtras();
 	
@@ -147,7 +143,7 @@ public class ViewInterventoActivity extends BaseActivity {
 			
 			System.out.println("Uri ripristino intervento: " + newRow.toString());
 			
-			result = Activity.RESULT_OK;
+			result = RESULT_OK;
 		    }
 		    else {
 			result = RESULT_CANCELED;
@@ -159,7 +155,7 @@ public class ViewInterventoActivity extends BaseActivity {
 		@Override
 		protected void onPostExecute(Integer result) {
 		    
-		    if (result == Activity.RESULT_OK) {
+		    if (result == RESULT_OK) {
 			System.out.println("Salvataggio dell'intervento di ripristino avvenuto con successo");
 		    }
 		    else {
@@ -682,7 +678,7 @@ public class ViewInterventoActivity extends BaseActivity {
 			    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 		    });
 		    
-		    NavUtils.navigateUpFromSameTask(this);
+		    finish();
 		}
 		else {
 		    

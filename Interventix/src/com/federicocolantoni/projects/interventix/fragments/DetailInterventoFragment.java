@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,8 +57,8 @@ public class DetailInterventoFragment extends Fragment {
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	// getActivity().getActionBar().setHomeButtonEnabled(true);
-	// getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	final View view = inflater.inflate(R.layout.detail_dett_intervento_fragment, container, false);
 	
