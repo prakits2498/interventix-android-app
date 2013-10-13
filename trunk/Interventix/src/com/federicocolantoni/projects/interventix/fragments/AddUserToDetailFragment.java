@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,8 +50,8 @@ public class AddUserToDetailFragment extends Fragment implements LoaderCallbacks
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	getActivity().getActionBar().setHomeButtonEnabled(true);
-	getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	setHasOptionsMenu(true);
 	

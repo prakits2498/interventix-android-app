@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,8 +45,8 @@ public class OverViewInterventoFragment extends Fragment {
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	// getActivity().getActionBar().setHomeButtonEnabled(true);
-	// getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	setHasOptionsMenu(true);
 	
@@ -67,7 +68,7 @@ public class OverViewInterventoFragment extends Fragment {
 	    BugSenseHandler.sendException(e);
 	}
 	
-	getActivity().getActionBar().setSubtitle("Intervento " + bundle.getLong(Constants.NUMERO_INTERVENTO));
+	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Intervento " + bundle.getLong(Constants.NUMERO_INTERVENTO));
 	
 	TextView summary = (TextView) view.findViewById(R.id.tv_summary_intervention);
 	

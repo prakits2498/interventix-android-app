@@ -10,10 +10,8 @@ import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -25,21 +23,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.bugsense.trace.BugSenseHandler;
-import com.federicocolantoni.projects.interventix.BaseActivity;
+import com.federicocolantoni.projects.interventix.BuildConfig;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.R.id;
 import com.federicocolantoni.projects.interventix.modules.login.Login;
 import com.federicocolantoni.projects.interventix.settings.SettingActivity;
 import com.federicocolantoni.projects.interventix.settings.SettingSupportActivity;
+import com.federicocolantoni.projects.interventix.task.ReadDefaultPreferences;
 
-/**
- * @author federico.colantoni
- *         Questa classe è la classe iniziale dell'app
- */
 @SuppressLint("NewApi")
 public class MainActivity extends ActionBarActivity {
     
@@ -48,9 +42,9 @@ public class MainActivity extends ActionBarActivity {
 	
 	super.onCreate(savedInstanceState);
 	
-	BugSenseHandler.initAndStartSession(MainActivity.this, Constants.API_KEY);
-	
 	setContentView(R.layout.activity_main);
+	
+	BugSenseHandler.initAndStartSession(MainActivity.this, Constants.API_KEY);
 	
 	FragmentManager manager = getSupportFragmentManager();
 	
@@ -72,7 +66,7 @@ public class MainActivity extends ActionBarActivity {
 	
 	SharedPreferences prefs = null;
 	
-	BaseActivity.ReadDefaultPreferences readPref = new BaseActivity.ReadDefaultPreferences(MainActivity.this);
+	ReadDefaultPreferences readPref = new ReadDefaultPreferences(MainActivity.this);
 	readPref.execute();
 	
 	try {
@@ -90,18 +84,26 @@ public class MainActivity extends ActionBarActivity {
 	    BugSenseHandler.sendException(e);
 	}
 	
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-	    if (prefs.getString(getResources().getString(R.string.prefs_key_url), "").isEmpty()) {
-		
-		FirstRunDialog dialog = new FirstRunDialog();
-		dialog.show(getSupportFragmentManager(), getString(R.string.first_run));
-	    }
-	    else
-	    if (prefs.getString(getResources().getString(R.string.prefs_key_url), "").length() == 0) {
-		
-		FirstRunDialog dialog = new FirstRunDialog();
-		dialog.show(getSupportFragmentManager(), Constants.FIRST_RUN_DIALOG_FRAGMENT);
-	    }
+	System.out.println("DEFAULT URL: " + prefs.getString(getResources().getString(R.string.prefs_key_url), ""));
+	
+	// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+	// if (prefs.getString(getResources().getString(R.string.prefs_key_url),
+	// "").isEmpty()) {
+	//
+	// FirstRunDialog dialog = new FirstRunDialog();
+	// dialog.show(getSupportFragmentManager(),
+	// getString(R.string.first_run));
+	// }
+	// }
+	// else {
+	// if (prefs.getString(getResources().getString(R.string.prefs_key_url),
+	// "").length() == 0) {
+	//
+	// FirstRunDialog dialog = new FirstRunDialog();
+	// dialog.show(getSupportFragmentManager(),
+	// Constants.FIRST_RUN_DIALOG_FRAGMENT);
+	// }
+	// }
     }
     
     @Override
@@ -138,7 +140,6 @@ public class MainActivity extends ActionBarActivity {
     
     public static class FirstRunDialog extends DialogFragment implements OnClickListener {
 	
-	private EditText input_url;
 	private Button save_url;
 	
 	public FirstRunDialog() {
@@ -171,26 +172,17 @@ public class MainActivity extends ActionBarActivity {
 	    switch (v.getId()) {
 		case R.id.save_prefs_url:
 		    
-		    if (input_url.getText().toString().length() != 0) {
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-			final Editor editor = prefs.edit();
-			
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-			    editor.putString(getResources().getString(R.string.prefs_key_url), "http://" + input_url.getText().toString() + "/interventix/connector").apply();
-			else
-			    new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-				    
-				    editor.putString(getResources().getString(R.string.prefs_key_url), input_url.getText().toString()).commit();
-				}
-			    }).start();
-			
-			dismiss();
-		    }
+		    dismiss();
 		    break;
 	    }
+	}
+    }
+    
+    @Override
+    protected void onDestroy() {
+	super.onDestroy();
+	if (BuildConfig.DEBUG) {
+	    System.gc();
 	}
     }
 }

@@ -10,7 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -30,6 +29,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,7 +42,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
-import com.federicocolantoni.projects.interventix.BaseActivity;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.R.string;
@@ -56,7 +56,7 @@ import com.federicocolantoni.projects.interventix.utils.Utils;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
-public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
+public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<Cursor> {
     
     private final static int MESSAGE_LOADER = 1;
     
@@ -79,10 +79,10 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 	
 	super.onCreate(savedInstanceState);
 	
+	setContentView(R.layout.activity_home);
+	
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	
-	setContentView(R.layout.activity_home);
 	
 	getUsersSyncro();
 	
@@ -212,7 +212,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
     
     private void setRefreshActionButtonState(final boolean refreshing) {
 	if (optionsMenu != null) {
-	    final MenuItem refreshItem = optionsMenu.findItem(R.id.refresh_menu);
+	    final MenuItemImpl refreshItem = (MenuItemImpl) optionsMenu.findItem(R.id.refresh_menu);
 	    if (refreshItem != null)
 		if (refreshing) {
 		    refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
@@ -381,10 +381,10 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 			    System.out.println("DEL USERS EMPTY");
 			}
 			
-			result = Activity.RESULT_OK;
+			result = RESULT_OK;
 		    }
 		    else {
-			result = Activity.RESULT_CANCELED;
+			result = RESULT_CANCELED;
 		    }
 		    
 		}
@@ -399,7 +399,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 	    @Override
 	    protected void onPostExecute(Integer result) {
 		
-		if (result == Activity.RESULT_OK) {
+		if (result == RESULT_OK) {
 		    getClientsSyncro();
 		}
 		else {
@@ -563,10 +563,10 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 			    
 			}
 			
-			result = Activity.RESULT_OK;
+			result = RESULT_OK;
 		    }
 		    else {
-			result = Activity.RESULT_CANCELED;
+			result = RESULT_CANCELED;
 		    }
 		}
 		catch (Exception e) {
@@ -579,7 +579,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 	    
 	    @Override
 	    protected void onPostExecute(Integer result) {
-		if (result == Activity.RESULT_OK) {
+		if (result == RESULT_OK) {
 		    getInterventionsSyncro();
 		}
 		else {
@@ -694,10 +694,10 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 				
 			    }
 			
-			result = Activity.RESULT_OK;
+			result = RESULT_OK;
 		    }
 		    else {
-			result = Activity.RESULT_CANCELED;
+			result = RESULT_CANCELED;
 		    }
 		    
 		}
@@ -864,7 +864,7 @@ public class HomeActivity extends BaseActivity implements LoaderCallbacks<Cursor
 	    @Override
 	    protected void onPostExecute(Integer result) {
 		
-		if (result == Activity.RESULT_OK) {
+		if (result == RESULT_OK) {
 		    
 		    String nominativo = null;
 		    
