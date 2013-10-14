@@ -30,15 +30,24 @@ public class AddUserToDetailFragment extends Fragment implements LoaderCallbacks
     
     private final static int MESSAGE_LOADER = 1;
     
+    public final static String ITEM_TITLE = "TITLE";
+    public final static String ITEM_CAPTION = "CAPTION";
+    
     private final String[] PROJECTION = new String[] {
-	    UtenteDB.Fields._ID, UtenteDB.Fields.TIPO, UtenteDB.Fields.ID_UTENTE, UtenteDB.Fields.NOME, UtenteDB.Fields.COGNOME
+	    UtenteDB.Fields._ID,
+	    UtenteDB.Fields.TIPO,
+	    UtenteDB.Fields.ID_UTENTE,
+	    UtenteDB.Fields.NOME,
+	    UtenteDB.Fields.COGNOME
     };
+    
     private final String SELECTION = UtenteDB.Fields.TYPE + "=?";
+    
     private final String[] SELECTION_ARGS = new String[] {
 	    UtenteDB.UTENTE_ITEM_TYPE
     };
     
-    private final String ORDER_BY = UtenteDB.Fields.TIPO;
+    private final String ORDER_BY = UtenteDB.Fields.TIPO + " asc";
     
     private JSONArray mArrayTecnici;
     private List<Integer> mListTecnici;
@@ -60,7 +69,7 @@ public class AddUserToDetailFragment extends Fragment implements LoaderCallbacks
 	View view = inflater.inflate(R.layout.add_user_to_detail, container, false);
 	
 	// lista tecnici
-	ListView listUsers = (ListView) view.findViewById(R.id.list_users);
+	ListView listUsers = (ListView) view.findViewById(R.id.list_users_entry);
 	
 	mUserAdapter = new ListUsersAdapter(getActivity(), null);
 	
@@ -79,7 +88,7 @@ public class AddUserToDetailFragment extends Fragment implements LoaderCallbacks
 	
 	switch (view.getId()) {
 	
-	    case R.id.list_users:
+	    case R.id.list_users_entry:
 		
 		CheckedTextView tv_admins_row = (CheckedTextView) view.findViewById(R.id.users_nth);
 		
