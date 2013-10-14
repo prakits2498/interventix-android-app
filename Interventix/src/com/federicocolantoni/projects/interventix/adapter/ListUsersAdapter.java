@@ -14,25 +14,6 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Ute
 
 public class ListUsersAdapter extends CursorAdapter {
     
-    /**
-     * State of ListView item that has never been determined.
-     */
-    private static final int STATE_UNKNOWN = 0;
-    
-    /**
-     * State of a ListView item that is sectioned. A sectioned item must
-     * display the separator.
-     */
-    private static final int STATE_SECTIONED_CELL = 1;
-    
-    /**
-     * State of a ListView item that is not sectioned and therefore does not
-     * display the separator.
-     */
-    private static final int STATE_REGULAR_CELL = 2;
-    
-    private int[] mCellStates;
-    
     private final LayoutInflater mInflater;
     private boolean mFoundIndexes;
     
@@ -41,11 +22,14 @@ public class ListUsersAdapter extends CursorAdapter {
     private int mIdUtente;
     private int mTipoUtente;
     
+    private boolean separator;
+    
     public ListUsersAdapter(Context context, Cursor cursor) {
 	
 	super(context, cursor, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 	mInflater = LayoutInflater.from(context);
 	mFoundIndexes = false;
+	separator = false;
     }
     
     @Override
@@ -54,51 +38,6 @@ public class ListUsersAdapter extends CursorAdapter {
 	TextView separator = (TextView) row.findViewById(R.id.separator);
 	CheckedTextView user = (CheckedTextView) row.getTag(R.id.users_nth);
 	TextView id_user = (TextView) row.getTag(R.id.users_nth_id);
-	
-	/*
-	 * Separator
-	 */
-	boolean needSeparator = false;
-	
-	mCellStates = cursor == null ? null : new int[cursor.getCount()];
-	
-	final int position = cursor.getPosition();
-	
-	switch (mCellStates[position]) {
-	    case STATE_SECTIONED_CELL:
-		
-		needSeparator = true;
-		
-		break;
-	    
-	    case STATE_REGULAR_CELL:
-		
-		needSeparator = false;
-		
-		break;
-	    
-	    case STATE_UNKNOWN:
-		
-		break;
-	    
-	    default:
-		
-		// A separator is needed if it's the first itemview of the
-		// ListView or if the group of the current cell is different
-		// from the previous itemview.
-		
-		if (position == 0) {
-		    needSeparator = true;
-		}
-		else {
-		    
-		    cursor.moveToPosition(position);
-		}
-		
-		mCellStates[position] = needSeparator ? STATE_SECTIONED_CELL : STATE_REGULAR_CELL;
-		
-		break;
-	}
 	
 	if (!mFoundIndexes) {
 	    
@@ -110,14 +49,6 @@ public class ListUsersAdapter extends CursorAdapter {
 	    mFoundIndexes = true;
 	}
 	
-	if (needSeparator) {
-	    separator.setText(cursor.getString(mTipoUtente).equalsIgnoreCase(context.getString(R.string.add_user_list_users)) ? context.getString(R.string.add_user_list_users) : context.getString(R.string.add_user_list_admin));
-	    separator.setVisibility(View.VISIBLE);
-	}
-	else {
-	    separator.setVisibility(View.GONE);
-	}
-	
 	String utente = cursor.getString(mNomeUserIndex) + " " + cursor.getString(mCognomeUserIndex);
 	user.setText(utente);
 	id_user.setText("" + cursor.getLong(mIdUtente));
@@ -126,7 +57,7 @@ public class ListUsersAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 	
-	View view = mInflater.inflate(R.layout.add_users_to_detail_user_row, parent, false);
+	View view = mInflater.inflate(R.layout.add_user_to_detail_user_row, parent, false);
 	
 	TextView separator = (TextView) view.findViewById(R.id.separator);
 	CheckedTextView user = (CheckedTextView) view.findViewById(R.id.users_nth);
