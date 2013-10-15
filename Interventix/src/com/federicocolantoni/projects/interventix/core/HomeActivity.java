@@ -10,14 +10,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -25,7 +20,6 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -123,55 +117,55 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	if (keyCode == KeyEvent.KEYCODE_BACK) {
 	    
-	    LogoutDialog logout = new LogoutDialog();
-	    logout.show(getSupportFragmentManager(), Constants.LOGOUT_DIALOG_FRAGMENT);
-	    return true;
+	    finish();
 	}
 	
-	return super.onKeyDown(keyCode, event);
+	return true;
     }
     
     @Override
     public void onBackPressed() {
 	
-	LogoutDialog logout = new LogoutDialog();
-	logout.show(getSupportFragmentManager(), Constants.LOGOUT_DIALOG_FRAGMENT);
+	finish();
     }
     
-    public static class LogoutDialog extends DialogFragment implements OnClickListener {
-	
-	public LogoutDialog() {
-	    
-	}
-	
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
-	    AlertDialog.Builder logout_dialog = new Builder(getActivity());
-	    
-	    logout_dialog.setTitle(getResources().getString(R.string.logout_title));
-	    logout_dialog.setMessage(getResources().getString(R.string.logout_message));
-	    logout_dialog.setIcon(R.drawable.ic_launcher);
-	    
-	    logout_dialog.setPositiveButton(getResources().getString(R.string.logout_positive_btn), this);
-	    logout_dialog.setNegativeButton(getResources().getString(R.string.btn_cancel), this);
-	    
-	    return logout_dialog.create();
-	}
-	
-	@Override
-	public void onClick(DialogInterface dialog, int which) {
-	    
-	    if (DialogInterface.BUTTON_POSITIVE == which) {
-		
-		dialog.dismiss();
-		getActivity().finish();
-	    }
-	    else {
-		dialog.dismiss();
-	    }
-	}
-    }
+    // public static class LogoutDialog extends DialogFragment implements
+    // OnClickListener {
+    //
+    // public LogoutDialog() {
+    //
+    // }
+    //
+    // @Override
+    // public Dialog onCreateDialog(Bundle savedInstanceState) {
+    //
+    // AlertDialog.Builder logout_dialog = new Builder(getActivity());
+    //
+    // logout_dialog.setTitle(getResources().getString(R.string.logout_title));
+    // logout_dialog.setMessage(getResources().getString(R.string.logout_message));
+    // logout_dialog.setIcon(R.drawable.ic_launcher);
+    //
+    // logout_dialog.setPositiveButton(getResources().getString(R.string.logout_positive_btn),
+    // this);
+    // logout_dialog.setNegativeButton(getResources().getString(R.string.btn_cancel),
+    // this);
+    //
+    // return logout_dialog.create();
+    // }
+    //
+    // @Override
+    // public void onClick(DialogInterface dialog, int which) {
+    //
+    // if (DialogInterface.BUTTON_POSITIVE == which) {
+    //
+    // dialog.dismiss();
+    // getActivity().finish();
+    // }
+    // else {
+    // dialog.dismiss();
+    // }
+    // }
+    // }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -191,8 +185,12 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	    case android.R.id.home:
 		
-		LogoutDialog logout = new LogoutDialog();
-		logout.show(getSupportFragmentManager(), Constants.LOGOUT_DIALOG_FRAGMENT);
+		// LogoutDialog logout = new LogoutDialog();
+		// logout.show(getSupportFragmentManager(),
+		// Constants.LOGOUT_DIALOG_FRAGMENT);
+		
+		finish();
+		
 		break;
 	    
 	    case R.id.refresh_menu:
@@ -212,14 +210,29 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     private void setRefreshActionButtonState(final boolean refreshing) {
 	if (optionsMenu != null) {
-	    final MenuItemImpl refreshItem = (MenuItemImpl) optionsMenu.findItem(R.id.refresh_menu);
-	    if (refreshItem != null)
-		if (refreshing) {
-		    refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
-		}
-		else {
-		    refreshItem.setActionView(null);
-		}
+	    
+	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+		final MenuItem refreshItem = optionsMenu.findItem(R.id.refresh_menu);
+		
+		if (refreshItem != null)
+		    if (refreshing) {
+			refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+		    }
+		    else {
+			refreshItem.setActionView(null);
+		    }
+	    }
+	    else {
+		final MenuItemImpl refreshItem = (MenuItemImpl) optionsMenu.findItem(R.id.refresh_menu);
+		
+		if (refreshItem != null)
+		    if (refreshing) {
+			refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+		    }
+		    else {
+			refreshItem.setActionView(null);
+		    }
+	    }
 	}
     }
     

@@ -3,5 +3,6 @@
 
     <dimen name="default_vertical_margin">16dp</dimen>
     <dimen name="default_horizontal_margin">16dp</dimen>
+    <dimen name="listPreferredItemHeightSmall">48dp</dimen>
 
 </resources>

@@ -85,25 +85,6 @@ public class MainActivity extends ActionBarActivity {
 	}
 	
 	System.out.println("DEFAULT URL: " + prefs.getString(getResources().getString(R.string.prefs_key_url), ""));
-	
-	// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-	// if (prefs.getString(getResources().getString(R.string.prefs_key_url),
-	// "").isEmpty()) {
-	//
-	// FirstRunDialog dialog = new FirstRunDialog();
-	// dialog.show(getSupportFragmentManager(),
-	// getString(R.string.first_run));
-	// }
-	// }
-	// else {
-	// if (prefs.getString(getResources().getString(R.string.prefs_key_url),
-	// "").length() == 0) {
-	//
-	// FirstRunDialog dialog = new FirstRunDialog();
-	// dialog.show(getSupportFragmentManager(),
-	// Constants.FIRST_RUN_DIALOG_FRAGMENT);
-	// }
-	// }
     }
     
     @Override
