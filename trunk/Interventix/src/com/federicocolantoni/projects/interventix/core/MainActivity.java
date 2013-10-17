@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -72,6 +73,26 @@ public class MainActivity extends ActionBarActivity {
 	try {
 	    
 	    prefs = readPref.get();
+	    
+	    PreferenceManager.setDefaultValues(getApplicationContext(), R.string.prefs_key_url, true);
+	    
+	    // final Editor edit = prefs.edit();
+	    // edit.putString(getResources().getString(R.string.prefs_key_url),
+	    // prefs.getString(getResources().getString(R.string.prefs_key_url),
+	    // ""));
+	    //
+	    // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+	    // edit.apply();
+	    // }
+	    // else {
+	    // new Thread(new Runnable() {
+	    //
+	    // @Override
+	    // public void run() {
+	    // edit.commit();
+	    // }
+	    // }).start();
+	    // }
 	}
 	catch (InterruptedException e) {
 	    
