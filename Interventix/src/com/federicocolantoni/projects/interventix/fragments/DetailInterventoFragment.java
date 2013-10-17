@@ -790,7 +790,7 @@ public class DetailInterventoFragment extends Fragment {
     
     public static class SetTipo extends DialogFragment implements DialogInterface.OnClickListener {
 	
-	private EditText mEdit_tipo_dett;
+	private String mTipologiaChanged;
 	
 	public SetTipo() {
 	    
@@ -803,12 +803,17 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    tipo_dett.setTitle(R.string.tipo_dett_title);
 	    
-	    TextView tv_tipo_dett = (TextView) getActivity().findViewById(R.id.tv_row_tipo_dettaglio);
+	    final String[] tipos = getResources().getStringArray(R.array.tipo_dettaglio_intervento);
 	    
-	    mEdit_tipo_dett = new EditText(getActivity());
-	    mEdit_tipo_dett.setText(tv_tipo_dett.getText());
-	    
-	    tipo_dett.setView(mEdit_tipo_dett);
+	    tipo_dett.setSingleChoiceItems(tipos, -1, new DialogInterface.OnClickListener() {
+		
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+		    TextView tv_tipology = (TextView) getActivity().findViewById(R.id.tv_row_tipo_dettaglio);
+		    tv_tipology.setText(tipos[which]);
+		    mTipologiaChanged = tipos[which];
+		}
+	    });
 	    
 	    tipo_dett.setPositiveButton(getResources().getString(R.string.ok_btn), this);
 	    
@@ -818,13 +823,10 @@ public class DetailInterventoFragment extends Fragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    TextView tv_tipo_dett = (TextView) getActivity().findViewById(R.id.tv_row_tipo_dettaglio);
-	    tv_tipo_dett.setText(mEdit_tipo_dett.getText());
-	    
 	    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
 	    
 	    ContentValues values = new ContentValues();
-	    values.put(DettaglioInterventoDB.Fields.TIPO, mEdit_tipo_dett.getText().toString());
+	    values.put(DettaglioInterventoDB.Fields.TIPO, mTipologiaChanged);
 	    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
 	    
 	    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
