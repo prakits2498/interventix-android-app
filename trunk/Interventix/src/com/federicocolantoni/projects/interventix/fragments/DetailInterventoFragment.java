@@ -438,10 +438,6 @@ public class DetailInterventoFragment extends Fragment {
 	}
 	else {
 	    
-	    // InterventixToast.makeToast(getActivity(),
-	    // "Creazione nuovo dettaglio per l'intervento",
-	    // Toast.LENGTH_SHORT);
-	    
 	    addNewDetail(view);
 	}
 	
