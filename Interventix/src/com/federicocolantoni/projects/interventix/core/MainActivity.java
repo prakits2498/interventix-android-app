@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.BuildConfig;
@@ -34,6 +35,7 @@ import com.federicocolantoni.projects.interventix.modules.login.Login;
 import com.federicocolantoni.projects.interventix.settings.SettingActivity;
 import com.federicocolantoni.projects.interventix.settings.SettingSupportActivity;
 import com.federicocolantoni.projects.interventix.task.ReadDefaultPreferences;
+import com.federicocolantoni.projects.interventix.utils.ChangeLogDialog;
 
 @SuppressLint("NewApi")
 public class MainActivity extends ActionBarActivity {
@@ -74,7 +76,10 @@ public class MainActivity extends ActionBarActivity {
 	    
 	    prefs = readPref.get();
 	    
-	    PreferenceManager.setDefaultValues(getApplicationContext(), R.string.prefs_key_url, true);
+	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_preferences_options, true);
+	    else
+		PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_support_preferences_options, true);
 	    
 	    // final Editor edit = prefs.edit();
 	    // edit.putString(getResources().getString(R.string.prefs_key_url),
@@ -106,6 +111,18 @@ public class MainActivity extends ActionBarActivity {
 	}
 	
 	System.out.println("DEFAULT URL: " + prefs.getString(getResources().getString(R.string.prefs_key_url), ""));
+	
+	TextView tv_changelog = (TextView) findViewById(R.id.tv_changelog);
+	tv_changelog.setOnClickListener(new OnClickListener() {
+	    
+	    @Override
+	    public void onClick(View v) {
+		
+		// Launch change log dialog
+		ChangeLogDialog _ChangelogDialog = new ChangeLogDialog(MainActivity.this);
+		_ChangelogDialog.show();
+	    }
+	});
     }
     
     @Override

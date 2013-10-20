@@ -282,6 +282,10 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		}
 	    }
 	    else {
+		
+		// mi trovo nella creazione di un nuovo dettaglio
+		
+		// mi trovo in un altro fragment
 		manager.popBackStackImmediate();
 	    }
 	    return true;
