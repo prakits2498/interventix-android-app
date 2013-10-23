@@ -3,14 +3,14 @@
     android:id="@+id/DateTimePicker"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#000000"
+    android:background="@android:color/black"
     android:fitsSystemWindows="true"
     android:padding="4dp" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#000000"
+        android:background="@android:color/black"
         android:baselineAligned="true"
         android:orientation="horizontal"
         android:weightSum="5" >

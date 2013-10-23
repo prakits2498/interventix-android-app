@@ -25,7 +25,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,10 +42,11 @@ import com.federicocolantoni.projects.interventix.intervento.Intervento;
 import com.federicocolantoni.projects.interventix.task.GetInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetListaDettagliInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
+import com.metova.roboguice.appcompat.RoboActionBarActivity;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
-public class ViewInterventoActivity extends ActionBarActivity {
+public class ViewInterventoActivity extends RoboActionBarActivity {
     
     private static long id_intervento;
     
@@ -229,7 +230,10 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	
 	if (keyCode == KeyEvent.KEYCODE_BACK) {
 	    
-	    FragmentManager manager = getSupportFragmentManager();
+	    if (getSupportActionBar().getNavigationMode() == ActionBar.NAVIGATION_MODE_TABS)
+		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+	    
+	    final FragmentManager manager = getSupportFragmentManager();
 	    
 	    if (manager.getBackStackEntryCount() == 1) {
 		
@@ -282,10 +286,6 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		}
 	    }
 	    else {
-		
-		// mi trovo nella creazione di un nuovo dettaglio
-		
-		// mi trovo in un altro fragment
 		manager.popBackStackImmediate();
 	    }
 	    return true;
@@ -297,7 +297,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
 	
-	FragmentManager manager = getSupportFragmentManager();
+	final FragmentManager manager = getSupportFragmentManager();
 	
 	if (manager.getBackStackEntryCount() == 1) {
 	    

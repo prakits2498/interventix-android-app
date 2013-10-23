@@ -8,7 +8,11 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import roboguice.fragment.RoboFragment;
+import roboguice.inject.InjectView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -21,8 +25,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -44,11 +47,26 @@ import com.federicocolantoni.projects.interventix.task.SaveChangesDettaglioInter
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatcher;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
+import com.metova.roboguice.appcompat.RoboActionBarActivity;
 
 @SuppressLint("NewApi")
-public class DetailInterventoFragment extends Fragment {
+public class DetailInterventoFragment extends RoboFragment {
     
     private static long sId_Dettaglio_Intervento;
+    
+    private static JSONObject mNewDetail;
+    
+    @InjectView(R.id.tv_dett_interv)
+    TextView tv_dett_interv;
+    
+    @InjectView(R.id.row_oggetto_dettaglio)
+    View row_oggetto_dett;
+    @InjectView(R.id.tv_row_oggetto_dettaglio)
+    TextView tv_row_oggetto_dett;
+    
+    // private Tab saveDetail, cancelDetail;
+    
+    private ActionBar actionbar;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,12 +75,42 @@ public class DetailInterventoFragment extends Fragment {
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	// ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+	// public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft)
+	// {
+	// // show the given tab
+	// }
+	//
+	// public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction
+	// ft) {
+	// // hide the given tab
+	// }
+	//
+	// public void onTabReselected(ActionBar.Tab tab, FragmentTransaction
+	// ft) {
+	//
+	// }
+	// };
+	
+	actionbar = ((RoboActionBarActivity) getActivity()).getSupportActionBar();
+	
+	// saveDetail =
+	// actionbar.newTab().setText("Salva").setTabListener(tabListener);
+	// cancelDetail =
+	// actionbar.newTab().setText("Annulla").setTabListener(tabListener);
+	
+	actionbar.setHomeButtonEnabled(true);
+	actionbar.setDisplayHomeAsUpEnabled(true);
+	// actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+	//
+	// actionbar.addTab(saveDetail);
+	// actionbar.addTab(cancelDetail);
 	
 	final View view = inflater.inflate(R.layout.detail_dett_intervento_fragment, container, false);
 	
 	Bundle bundle = getArguments();
+	
+	setHasOptionsMenu(true);
 	
 	sId_Dettaglio_Intervento = bundle.getLong(Constants.ID_DETTAGLIO_INTERVENTO);
 	
@@ -85,7 +133,7 @@ public class DetailInterventoFragment extends Fragment {
 		BugSenseHandler.sendException(e);
 	    }
 	    
-	    TextView tv_dett_interv = (TextView) view.findViewById(R.id.tv_dett_interv);
+	    tv_dett_interv = (TextView) view.findViewById(R.id.tv_dett_interv);
 	    
 	    tv_dett_interv.setText("Dettaglio " + sId_Dettaglio_Intervento);
 	    
@@ -103,7 +151,7 @@ public class DetailInterventoFragment extends Fragment {
 	    TextView tv_row_tipo_dett = (TextView) row_tipo_dett.findViewById(R.id.tv_row_tipo_dettaglio);
 	    tv_row_tipo_dett.setText(dettInterv.getmTipo());
 	    
-	    View row_oggetto_dett = view.findViewById(R.id.row_oggetto_dettaglio);
+	    row_oggetto_dett = view.findViewById(R.id.row_oggetto_dettaglio);
 	    
 	    row_oggetto_dett.setOnClickListener(new OnClickListener() {
 		
@@ -114,7 +162,7 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    
-	    TextView tv_row_oggetto_dett = (TextView) row_oggetto_dett.findViewById(R.id.tv_row_oggetto_dettaglio);
+	    tv_row_oggetto_dett = (TextView) row_oggetto_dett.findViewById(R.id.tv_row_oggetto_dettaglio);
 	    tv_row_oggetto_dett.setText(dettInterv.getmOggetto());
 	    
 	    View row_tecnici_dett = view.findViewById(R.id.row_tecnici_dettaglio);
@@ -446,6 +494,15 @@ public class DetailInterventoFragment extends Fragment {
     
     private void addNewDetail(final View view) {
 	
+	mNewDetail = new JSONObject();
+	try {
+	    mNewDetail.put("iddettagliointervento", sId_Dettaglio_Intervento);
+	}
+	catch (JSONException e) {
+	    
+	    e.printStackTrace();
+	}
+	
 	TextView tv_dett_interv = (TextView) view.findViewById(R.id.tv_dett_interv);
 	
 	tv_dett_interv.setText("Dettaglio " + sId_Dettaglio_Intervento);
@@ -564,37 +621,63 @@ public class DetailInterventoFragment extends Fragment {
 			    
 			    tv_dett_ore_tot.setText(dt_tot_ore.toString("HH:mm"));
 			    
-			    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
-			    
-			    ContentValues values = new ContentValues();
-			    values.put(DettaglioInterventoDB.Fields.INIZIO, dt_inizio.toDate().getTime());
-			    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
-			    
-			    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
-			    
-			    String[] selectionArgs = new String[] {
-				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
-			    };
-			    
-			    saveChanges.startUpdate(Constants.TOKEN_ORA_INIZIO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
-			    
-			    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-			    
-			    final Editor edit = prefs.edit();
-			    
-			    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
-			    
-			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-				edit.apply();
+			    if (sId_Dettaglio_Intervento != -1l) {
+				SaveChangesDettaglioInterventoAsyncQueryHandler
+				saveChanges = new
+					SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
+				
+				ContentValues values = new ContentValues();
+				values.put(DettaglioInterventoDB.Fields.INIZIO,
+					dt_inizio.toDate().getTime());
+				values.put(DettaglioInterventoDB.Fields.MODIFICATO,
+					"M");
+				
+				String selection =
+					DettaglioInterventoDB.Fields.TYPE + " = ? AND " +
+						DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO
+						+ " = ?";
+				
+				String[] selectionArgs = new String[] {
+					DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
+					"" + sId_Dettaglio_Intervento
+				};
+				
+				saveChanges.startUpdate(Constants.TOKEN_ORA_INIZIO_DETTAGLIO,
+					null, DettaglioInterventoDB.CONTENT_URI, values,
+					selection, selectionArgs);
+				
+				SharedPreferences prefs =
+					getActivity().getSharedPreferences(Constants.PREFERENCES,
+						Context.MODE_PRIVATE);
+				
+				final Editor edit = prefs.edit();
+				
+				edit.putBoolean(Constants.DETT_INTERV_MODIFIED,
+					true);
+				
+				if (Build.VERSION.SDK_INT >=
+				Build.VERSION_CODES.GINGERBREAD) {
+				    edit.apply();
+				}
+				else {
+				    new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+					    edit.commit();
+					}
+				    }).start();
+				}
 			    }
 			    else {
-				new Thread(new Runnable() {
+				
+				try {
+				    mNewDetail.put("inizio", dt_inizio.toDate().getTime());
+				}
+				catch (JSONException e) {
 				    
-				    @Override
-				    public void run() {
-					edit.commit();
-				    }
-				}).start();
+				    e.printStackTrace();
+				}
 			    }
 			}
 			
@@ -699,37 +782,63 @@ public class DetailInterventoFragment extends Fragment {
 			    
 			    tv_dett_ore_tot.setText(dt_tot_ore.toString("HH:mm"));
 			    
-			    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
-			    
-			    ContentValues values = new ContentValues();
-			    values.put(DettaglioInterventoDB.Fields.FINE, dt_fine.toDate().getTime());
-			    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
-			    
-			    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
-			    
-			    String[] selectionArgs = new String[] {
-				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
-			    };
-			    
-			    saveChanges.startUpdate(Constants.TOKEN_ORA_FINE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
-			    
-			    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-			    
-			    final Editor edit = prefs.edit();
-			    
-			    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
-			    
-			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-				edit.apply();
+			    if (sId_Dettaglio_Intervento != -1l) {
+				SaveChangesDettaglioInterventoAsyncQueryHandler
+				saveChanges = new
+					SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
+				
+				ContentValues values = new ContentValues();
+				values.put(DettaglioInterventoDB.Fields.FINE,
+					dt_fine.toDate().getTime());
+				values.put(DettaglioInterventoDB.Fields.MODIFICATO,
+					"M");
+				
+				String selection =
+					DettaglioInterventoDB.Fields.TYPE + " = ? AND " +
+						DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO
+						+ " = ?";
+				
+				String[] selectionArgs = new String[] {
+					DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
+					"" + sId_Dettaglio_Intervento
+				};
+				
+				saveChanges.startUpdate(Constants.TOKEN_ORA_FINE_DETTAGLIO,
+					null, DettaglioInterventoDB.CONTENT_URI, values,
+					selection, selectionArgs);
+				
+				SharedPreferences prefs =
+					getActivity().getSharedPreferences(Constants.PREFERENCES,
+						Context.MODE_PRIVATE);
+				
+				final Editor edit = prefs.edit();
+				
+				edit.putBoolean(Constants.DETT_INTERV_MODIFIED,
+					true);
+				
+				if (Build.VERSION.SDK_INT >=
+				Build.VERSION_CODES.GINGERBREAD) {
+				    edit.apply();
+				}
+				else {
+				    new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+					    edit.commit();
+					}
+				    }).start();
+				}
 			    }
 			    else {
-				new Thread(new Runnable() {
+				
+				try {
+				    mNewDetail.put("fine", dt_fine.toDate().getTime());
+				}
+				catch (JSONException e) {
 				    
-				    @Override
-				    public void run() {
-					edit.commit();
-				    }
-				}).start();
+				    e.printStackTrace();
+				}
 			    }
 			}
 			
@@ -819,37 +928,49 @@ public class DetailInterventoFragment extends Fragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
-	    
-	    ContentValues values = new ContentValues();
-	    values.put(DettaglioInterventoDB.Fields.TIPO, mTipologiaChanged);
-	    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
-	    
-	    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
-	    
-	    String[] selectionArgs = new String[] {
-		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
-	    };
-	    
-	    saveChanges.startUpdate(Constants.TOKEN_TIPO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
-	    
-	    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-	    
-	    final Editor edit = prefs.edit();
-	    
-	    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
-	    
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-		edit.apply();
+	    if (sId_Dettaglio_Intervento != -1l) {
+		SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
+		
+		ContentValues values = new ContentValues();
+		values.put(DettaglioInterventoDB.Fields.TIPO, mTipologiaChanged);
+		values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
+		
+		String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+		
+		String[] selectionArgs = new String[] {
+			DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
+		};
+		
+		saveChanges.startUpdate(Constants.TOKEN_TIPO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
+		
+		SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+		
+		final Editor edit = prefs.edit();
+		
+		edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
+		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+		    edit.apply();
+		}
+		else {
+		    new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+			    edit.commit();
+			}
+		    }).start();
+		}
 	    }
 	    else {
-		new Thread(new Runnable() {
+		
+		try {
+		    mNewDetail.put("tipo", mTipologiaChanged);
+		}
+		catch (JSONException e) {
 		    
-		    @Override
-		    public void run() {
-			edit.commit();
-		    }
-		}).start();
+		    e.printStackTrace();
+		}
 	    }
 	    
 	    dialog.dismiss();
@@ -886,40 +1007,55 @@ public class DetailInterventoFragment extends Fragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    TextView tv_oggetto_dett = (TextView) getActivity().findViewById(R.id.tv_row_oggetto_dettaglio);
-	    tv_oggetto_dett.setText(mEdit_oggetto_dett.getText());
-	    
-	    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
-	    
-	    ContentValues values = new ContentValues();
-	    values.put(DettaglioInterventoDB.Fields.OGGETTO, mEdit_oggetto_dett.getText().toString());
-	    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
-	    
-	    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
-	    
-	    String[] selectionArgs = new String[] {
-		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
-	    };
-	    
-	    saveChanges.startUpdate(Constants.TOKEN_OGGETTO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
-	    
-	    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-	    
-	    final Editor edit = prefs.edit();
-	    
-	    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
-	    
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-		edit.apply();
+	    if (sId_Dettaglio_Intervento != -1l) {
+		TextView tv_oggetto_dett = (TextView) getActivity().findViewById(R.id.tv_row_oggetto_dettaglio);
+		tv_oggetto_dett.setText(mEdit_oggetto_dett.getText());
+		
+		SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
+		
+		ContentValues values = new ContentValues();
+		values.put(DettaglioInterventoDB.Fields.OGGETTO, mEdit_oggetto_dett.getText().toString());
+		values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
+		
+		String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+		
+		String[] selectionArgs = new String[] {
+			DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
+		};
+		
+		saveChanges.startUpdate(Constants.TOKEN_OGGETTO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
+		
+		SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+		
+		final Editor edit = prefs.edit();
+		
+		edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
+		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+		    edit.apply();
+		}
+		else {
+		    new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+			    edit.commit();
+			}
+		    }).start();
+		}
 	    }
 	    else {
-		new Thread(new Runnable() {
+		
+		TextView tv_oggetto_dett = (TextView) getActivity().findViewById(R.id.tv_row_oggetto_dettaglio);
+		tv_oggetto_dett.setText(mEdit_oggetto_dett.getText());
+		
+		try {
+		    mNewDetail.put("oggetto", mEdit_oggetto_dett.getText().toString());
+		}
+		catch (JSONException e) {
 		    
-		    @Override
-		    public void run() {
-			edit.commit();
-		    }
-		}).start();
+		    e.printStackTrace();
+		}
 	    }
 	    
 	    dialog.dismiss();
@@ -956,40 +1092,55 @@ public class DetailInterventoFragment extends Fragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    TextView tv_descrizione_dett = (TextView) getActivity().findViewById(R.id.tv_row_descrizione_dettaglio);
-	    tv_descrizione_dett.setText(mEdit_descrizione_dett.getText());
-	    
-	    SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
-	    
-	    ContentValues values = new ContentValues();
-	    values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, mEdit_descrizione_dett.getText().toString());
-	    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
-	    
-	    String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
-	    
-	    String[] selectionArgs = new String[] {
-		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
-	    };
-	    
-	    saveChanges.startUpdate(Constants.TOKEN_DESCRIZIONE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
-	    
-	    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-	    
-	    final Editor edit = prefs.edit();
-	    
-	    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
-	    
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-		edit.apply();
+	    if (sId_Dettaglio_Intervento != -1l) {
+		TextView tv_descrizione_dett = (TextView) getActivity().findViewById(R.id.tv_row_descrizione_dettaglio);
+		tv_descrizione_dett.setText(mEdit_descrizione_dett.getText());
+		
+		SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
+		
+		ContentValues values = new ContentValues();
+		values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, mEdit_descrizione_dett.getText().toString());
+		values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
+		
+		String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+		
+		String[] selectionArgs = new String[] {
+			DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
+		};
+		
+		saveChanges.startUpdate(Constants.TOKEN_DESCRIZIONE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
+		
+		SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+		
+		final Editor edit = prefs.edit();
+		
+		edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
+		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+		    edit.apply();
+		}
+		else {
+		    new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+			    edit.commit();
+			}
+		    }).start();
+		}
 	    }
 	    else {
-		new Thread(new Runnable() {
+		
+		TextView tv_descrizione_dett = (TextView) getActivity().findViewById(R.id.tv_row_descrizione_dettaglio);
+		tv_descrizione_dett.setText(mEdit_descrizione_dett.getText());
+		
+		try {
+		    mNewDetail.put("descrizione", mEdit_descrizione_dett.getText().toString());
+		}
+		catch (JSONException e) {
 		    
-		    @Override
-		    public void run() {
-			edit.commit();
-		    }
-		}).start();
+		    e.printStackTrace();
+		}
 	    }
 	    
 	    dialog.dismiss();
