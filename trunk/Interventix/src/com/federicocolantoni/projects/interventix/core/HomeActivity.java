@@ -9,6 +9,7 @@ import multiface.crypto.cr2.JsonCR2;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import roboguice.inject.InjectView;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -23,7 +24,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -47,10 +47,11 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Int
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
+import com.metova.roboguice.appcompat.RoboActionBarActivity;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
-public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<Cursor> {
+public class HomeActivity extends RoboActionBarActivity implements LoaderCallbacks<Cursor> {
     
     private final static int MESSAGE_LOADER = 1;
     
@@ -68,6 +69,11 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     private Menu optionsMenu;
     
+    @InjectView(R.id.list_interv_open)
+    ListView listOpen;
+    @InjectView(R.id.list_header_open)
+    TextView headerOpen;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	
@@ -80,7 +86,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	getUsersSyncro();
 	
-	ListView listOpen = (ListView) findViewById(R.id.list_interv_open);
+	listOpen = (ListView) findViewById(R.id.list_interv_open);
 	
 	mAdapter = new InterventiAdapter(this, null);
 	
@@ -88,7 +94,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	getSupportLoaderManager().initLoader(HomeActivity.MESSAGE_LOADER, null, this);
 	
-	TextView headerOpen = (TextView) findViewById(R.id.list_header_open);
+	headerOpen = (TextView) findViewById(R.id.list_header_open);
 	headerOpen.setText(R.string.interventi_aperti);
 	
 	listOpen.setOnItemClickListener(new OnItemClickListener() {
@@ -129,44 +135,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	finish();
     }
     
-    // public static class LogoutDialog extends DialogFragment implements
-    // OnClickListener {
-    //
-    // public LogoutDialog() {
-    //
-    // }
-    //
-    // @Override
-    // public Dialog onCreateDialog(Bundle savedInstanceState) {
-    //
-    // AlertDialog.Builder logout_dialog = new Builder(getActivity());
-    //
-    // logout_dialog.setTitle(getResources().getString(R.string.logout_title));
-    // logout_dialog.setMessage(getResources().getString(R.string.logout_message));
-    // logout_dialog.setIcon(R.drawable.ic_launcher);
-    //
-    // logout_dialog.setPositiveButton(getResources().getString(R.string.logout_positive_btn),
-    // this);
-    // logout_dialog.setNegativeButton(getResources().getString(R.string.btn_cancel),
-    // this);
-    //
-    // return logout_dialog.create();
-    // }
-    //
-    // @Override
-    // public void onClick(DialogInterface dialog, int which) {
-    //
-    // if (DialogInterface.BUTTON_POSITIVE == which) {
-    //
-    // dialog.dismiss();
-    // getActivity().finish();
-    // }
-    // else {
-    // dialog.dismiss();
-    // }
-    // }
-    // }
-    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 	
@@ -184,10 +152,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	switch (item.getItemId()) {
 	
 	    case android.R.id.home:
-		
-		// LogoutDialog logout = new LogoutDialog();
-		// logout.show(getSupportFragmentManager(),
-		// Constants.LOGOUT_DIALOG_FRAGMENT);
 		
 		finish();
 		
@@ -225,13 +189,14 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	    else {
 		final MenuItemImpl refreshItem = (MenuItemImpl) optionsMenu.findItem(R.id.refresh_menu);
 		
-		if (refreshItem != null)
+		if (refreshItem != null) {
 		    if (refreshing) {
 			refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
 		    }
 		    else {
 			refreshItem.setActionView(null);
 		    }
+		}
 	    }
 	}
     }

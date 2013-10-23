@@ -154,6 +154,8 @@
     <string name="add_details_interv">Aggiungi dettaglio</string>
     <string name="interv_mod_title">Intervento modificato!</string>
     <string name="interv_mod_text">Salvare le modifiche?</string>
+    <string name="detail_new_title">Nuovo dettaglio!</string>
+    <string name="detail_new_text">Salvare il nuovo dettalio?</string>
     <string name="add_user_list_users">Tecnici</string>
     <string name="add_user_list_admin">Amministratori</string>
 

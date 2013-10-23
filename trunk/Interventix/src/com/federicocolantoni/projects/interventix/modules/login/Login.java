@@ -7,6 +7,8 @@ import multiface.crypto.cr2.JsonCR2;
 
 import org.json.JSONObject;
 
+import roboguice.fragment.RoboFragment;
+import roboguice.inject.InjectView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,7 +28,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,9 +44,18 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Dat
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
+import com.google.inject.Inject;
 
 @SuppressLint("NewApi")
-public class Login extends Fragment implements OnClickListener {
+public class Login extends RoboFragment implements OnClickListener {
+    
+    @InjectView(R.id.field_password)
+    EditText password;
+    @InjectView(R.id.field_username)
+    EditText username;
+    
+    @Inject
+    ConnectivityManager connMgr;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,13 +71,10 @@ public class Login extends Fragment implements OnClickListener {
     @Override
     public void onClick(View v) {
 	
-	ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+	connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 	NetworkInfo info = connMgr.getActiveNetworkInfo();
 	
 	SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-	
-	EditText username = (EditText) getActivity().findViewById(R.id.field_username);
-	EditText password = (EditText) getActivity().findViewById(R.id.field_password);
 	
 	if (username.getText().toString().length() == 0 || password.getText().toString().length() == 0)
 	    InterventixToast.makeToast(getActivity(), "Devi riempire i campi \"Username\" e \"Password\"", Toast.LENGTH_SHORT);
