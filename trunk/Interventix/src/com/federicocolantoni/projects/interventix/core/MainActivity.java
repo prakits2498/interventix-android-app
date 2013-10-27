@@ -189,6 +189,7 @@ public class MainActivity extends RoboActionBarActivity {
     @Override
     protected void onDestroy() {
 	super.onDestroy();
+	
 	if (BuildConfig.DEBUG) {
 	    System.gc();
 	}
