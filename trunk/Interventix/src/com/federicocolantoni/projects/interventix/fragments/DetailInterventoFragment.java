@@ -27,6 +27,9 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -54,7 +57,7 @@ public class DetailInterventoFragment extends RoboFragment {
     
     private static long sId_Dettaglio_Intervento;
     
-    private static JSONObject mNewDetail;
+    private static JSONObject sNewDetail;
     
     @InjectView(R.id.tv_dett_interv)
     TextView tv_dett_interv;
@@ -63,8 +66,6 @@ public class DetailInterventoFragment extends RoboFragment {
     View row_oggetto_dett;
     @InjectView(R.id.tv_row_oggetto_dettaglio)
     TextView tv_row_oggetto_dett;
-    
-    // private Tab saveDetail, cancelDetail;
     
     private ActionBar actionbar;
     
@@ -75,36 +76,10 @@ public class DetailInterventoFragment extends RoboFragment {
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	// ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-	// public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft)
-	// {
-	// // show the given tab
-	// }
-	//
-	// public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction
-	// ft) {
-	// // hide the given tab
-	// }
-	//
-	// public void onTabReselected(ActionBar.Tab tab, FragmentTransaction
-	// ft) {
-	//
-	// }
-	// };
-	
 	actionbar = ((RoboActionBarActivity) getActivity()).getSupportActionBar();
-	
-	// saveDetail =
-	// actionbar.newTab().setText("Salva").setTabListener(tabListener);
-	// cancelDetail =
-	// actionbar.newTab().setText("Annulla").setTabListener(tabListener);
 	
 	actionbar.setHomeButtonEnabled(true);
 	actionbar.setDisplayHomeAsUpEnabled(true);
-	// actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-	//
-	// actionbar.addTab(saveDetail);
-	// actionbar.addTab(cancelDetail);
 	
 	final View view = inflater.inflate(R.layout.detail_dett_intervento_fragment, container, false);
 	
@@ -116,6 +91,115 @@ public class DetailInterventoFragment extends RoboFragment {
 	
 	return setupViewsDetailIntervernto(view);
     }
+    
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	
+	super.onCreateOptionsMenu(menu, inflater);
+	
+	inflater.inflate(R.menu.menu_new_detail, menu);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	
+	switch (item.getItemId()) {
+	    case R.id.menu_save_detail:
+		
+		InterventixToast.makeToast(getActivity(), "Dettaglio intervento salvato",
+			Toast.LENGTH_SHORT);
+		
+		try {
+		    System.out.println(sNewDetail.toString(2));
+		}
+		catch (JSONException e) {
+		    
+		    e.printStackTrace();
+		}
+		
+		sNewDetail = null;
+		
+		getActivity().getSupportFragmentManager().popBackStackImmediate();
+		
+		break;
+	    
+	    case R.id.menu_cancel_detail:
+		
+		InterventixToast.makeToast(getActivity(),
+			"Dettaglio intervento cancellato", Toast.LENGTH_SHORT);
+		
+		sNewDetail = null;
+		
+		getActivity().getSupportFragmentManager().popBackStackImmediate();
+		
+		break;
+	}
+	
+	return true;
+    }
+    
+    // private ActionMode mActionMode;
+    //
+    // private ActionMode.Callback mActionModeCallback = new
+    // ActionMode.Callback() {
+    //
+    // @Override
+    // public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+    //
+    // return false;
+    // }
+    //
+    // @Override
+    // public void onDestroyActionMode(ActionMode mode) {
+    //
+    // mActionMode = null;
+    // }
+    //
+    // @Override
+    // public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+    //
+    // MenuInflater inflater = mode.getMenuInflater();
+    // inflater.inflate(R.menu.menu_new_detail, menu);
+    // return true;
+    // }
+    //
+    // @Override
+    // public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+    // switch (item.getItemId()) {
+    // case R.id.menu_save_detail:
+    //
+    // InterventixToast.makeToast(getActivity(), "Dettaglio intervento salvato",
+    // Toast.LENGTH_SHORT);
+    //
+    // try {
+    // System.out.println(sNewDetail.toString(2));
+    // }
+    // catch (JSONException e) {
+    //
+    // e.printStackTrace();
+    // }
+    //
+    // sNewDetail = null;
+    //
+    // getActivity().getSupportFragmentManager().popBackStackImmediate();
+    //
+    // break;
+    //
+    // case R.id.menu_cancel_detail:
+    //
+    // InterventixToast.makeToast(getActivity(),
+    // "Dettaglio intervento cancellato", Toast.LENGTH_SHORT);
+    //
+    // sNewDetail = null;
+    //
+    // getActivity().getSupportFragmentManager().popBackStackImmediate();
+    //
+    // break;
+    // }
+    //
+    // return true;
+    // }
+    // };
     
     private View setupViewsDetailIntervernto(final View view) {
 	if (sId_Dettaglio_Intervento != -1l) {
@@ -494,9 +578,9 @@ public class DetailInterventoFragment extends RoboFragment {
     
     private void addNewDetail(final View view) {
 	
-	mNewDetail = new JSONObject();
+	sNewDetail = new JSONObject();
 	try {
-	    mNewDetail.put("iddettagliointervento", sId_Dettaglio_Intervento);
+	    sNewDetail.put("iddettagliointervento", sId_Dettaglio_Intervento);
 	}
 	catch (JSONException e) {
 	    
@@ -672,7 +756,7 @@ public class DetailInterventoFragment extends RoboFragment {
 			    else {
 				
 				try {
-				    mNewDetail.put("inizio", dt_inizio.toDate().getTime());
+				    sNewDetail.put("inizio", dt_inizio.toDate().getTime());
 				}
 				catch (JSONException e) {
 				    
@@ -722,6 +806,12 @@ public class DetailInterventoFragment extends RoboFragment {
 	DateTime dt_inizio = new DateTime(DateTime.now(), DateTimeZone.forID("Europe/Rome"));
 	
 	tv_row_inizio_dett.setText(dt_inizio.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
+	try {
+	    sNewDetail.put("inizio", dt_inizio.getMillis());
+	}
+	catch (JSONException e1) {
+	    e1.printStackTrace();
+	}
 	
 	final View row_fine_dett = view.findViewById(R.id.row_fine_dettaglio);
 	
@@ -833,7 +923,7 @@ public class DetailInterventoFragment extends RoboFragment {
 			    else {
 				
 				try {
-				    mNewDetail.put("fine", dt_fine.toDate().getTime());
+				    sNewDetail.put("fine", dt_fine.toDate().getTime());
 				}
 				catch (JSONException e) {
 				    
@@ -883,6 +973,12 @@ public class DetailInterventoFragment extends RoboFragment {
 	DateTime dt_fine = new DateTime(DateTime.now(), DateTimeZone.forID("Europe/Rome"));
 	
 	tv_row_fine_dett.setText(dt_fine.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
+	try {
+	    sNewDetail.put("fine", dt_fine.getMillis());
+	}
+	catch (JSONException e1) {
+	    e1.printStackTrace();
+	}
 	
 	View row_tot_ore_dett = view.findViewById(R.id.row_tot_ore_dettaglio);
 	
@@ -965,7 +1061,7 @@ public class DetailInterventoFragment extends RoboFragment {
 	    else {
 		
 		try {
-		    mNewDetail.put("tipo", mTipologiaChanged);
+		    sNewDetail.put("tipo", mTipologiaChanged);
 		}
 		catch (JSONException e) {
 		    
@@ -1050,7 +1146,7 @@ public class DetailInterventoFragment extends RoboFragment {
 		tv_oggetto_dett.setText(mEdit_oggetto_dett.getText());
 		
 		try {
-		    mNewDetail.put("oggetto", mEdit_oggetto_dett.getText().toString());
+		    sNewDetail.put("oggetto", mEdit_oggetto_dett.getText().toString());
 		}
 		catch (JSONException e) {
 		    
@@ -1135,7 +1231,7 @@ public class DetailInterventoFragment extends RoboFragment {
 		tv_descrizione_dett.setText(mEdit_descrizione_dett.getText());
 		
 		try {
-		    mNewDetail.put("descrizione", mEdit_descrizione_dett.getText().toString());
+		    sNewDetail.put("descrizione", mEdit_descrizione_dett.getText().toString());
 		}
 		catch (JSONException e) {
 		    
@@ -1145,5 +1241,9 @@ public class DetailInterventoFragment extends RoboFragment {
 	    
 	    dialog.dismiss();
 	}
+    }
+    
+    public static final void setmNewDetail(JSONObject mNewDetail) {
+	DetailInterventoFragment.sNewDetail = mNewDetail;
     }
 }

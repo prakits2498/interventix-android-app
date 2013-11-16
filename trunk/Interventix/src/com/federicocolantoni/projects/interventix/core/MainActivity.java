@@ -30,7 +30,6 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.BuildConfig;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.R.id;
 import com.federicocolantoni.projects.interventix.modules.login.Login;
 import com.federicocolantoni.projects.interventix.settings.SettingActivity;
 import com.federicocolantoni.projects.interventix.settings.SettingSupportActivity;
@@ -41,8 +40,10 @@ import com.metova.roboguice.appcompat.RoboActionBarActivity;
 @SuppressLint("NewApi")
 public class MainActivity extends RoboActionBarActivity {
     
-    @InjectView(R.id.tv_changelog)
-    TextView tv_changelog;
+    // abilitato quando verrà rilasciata la versione 3.0 di RoboGuice che
+    // porterà il supporto anche all'ActionBarActivity
+    // @InjectView(R.id.tv_changelog)
+    // TextView tv_changelog;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +99,7 @@ public class MainActivity extends RoboActionBarActivity {
 	
 	System.out.println("DEFAULT URL: " + prefs.getString(getResources().getString(R.string.prefs_key_url), ""));
 	
-	// TextView tv_changelog = (TextView) findViewById(R.id.tv_changelog);
+	TextView tv_changelog = (TextView) findViewById(R.id.tv_changelog);
 	tv_changelog.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -128,7 +129,7 @@ public class MainActivity extends RoboActionBarActivity {
 	super.onOptionsItemSelected(item);
 	
 	switch (item.getItemId()) {
-	    case id.menu_options:
+	    case R.id.menu_options:
 		
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
 		    startActivity(new Intent(this, SettingActivity.class));

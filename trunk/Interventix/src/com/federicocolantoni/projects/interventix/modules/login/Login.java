@@ -77,7 +77,7 @@ public class Login extends RoboFragment implements OnClickListener {
 	SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
 	if (username.getText().toString().length() == 0 || password.getText().toString().length() == 0)
-	    InterventixToast.makeToast(getActivity(), "Devi riempire i campi \"Username\" e \"Password\"", Toast.LENGTH_SHORT);
+	    InterventixToast.makeToast(getActivity(), getString(R.string.toast_username_and_password_required), Toast.LENGTH_SHORT);
 	else {
 	    
 	    String json_req = new String();
@@ -113,7 +113,7 @@ public class Login extends RoboFragment implements OnClickListener {
 				    
 				    password.setText("");
 				    
-				    InterventixToast.makeToast(getActivity(), "Accesso in modalità offline", Toast.LENGTH_LONG);
+				    InterventixToast.makeToast(getActivity(), getString(R.string.toast_offline_access), Toast.LENGTH_LONG);
 				    
 				    startActivity(new Intent(getActivity(), HomeActivity.class));
 				}
@@ -149,7 +149,7 @@ public class Login extends RoboFragment implements OnClickListener {
 				    
 				    password.setText("");
 				    
-				    InterventixToast.makeToast(getActivity(), "Accesso in modalità offline", Toast.LENGTH_LONG);
+				    InterventixToast.makeToast(getActivity(), getString(R.string.toast_offline_access), Toast.LENGTH_LONG);
 				    
 				    startActivity(new Intent(getActivity(), HomeActivity.class));
 				}
@@ -161,7 +161,7 @@ public class Login extends RoboFragment implements OnClickListener {
 		
 		AlertDialog.Builder connUnavailable = new Builder(getActivity());
 		
-		connUnavailable.setTitle("Nessuna connessione attiva");
+		connUnavailable.setTitle(getString(R.string.no_active_connection));
 		connUnavailable.setMessage(R.string.conn_unavailable_text);
 		connUnavailable.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
 		    
@@ -209,9 +209,9 @@ public class Login extends RoboFragment implements OnClickListener {
 	    context = activity;
 	    progress = new ProgressDialog(context);
 	    progress.setIndeterminate(true);
-	    progress.setTitle("Login in corso");
+	    progress.setTitle(getString(R.string.login_started_title));
 	    progress.setIcon(R.drawable.ic_launcher);
-	    progress.setMessage("Attendere prego...");
+	    progress.setMessage(getString(R.string.login_started_message));
 	    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 	    progress.setCancelable(false);
 	}
@@ -380,7 +380,7 @@ public class Login extends RoboFragment implements OnClickListener {
 		startActivity(new Intent(context, HomeActivity.class));
 	    }
 	    else
-		InterventixToast.makeToast(context, "Si è verificato un errore nel login.", Toast.LENGTH_LONG);
+		InterventixToast.makeToast(context, getString(R.string.toast_login_error), Toast.LENGTH_LONG);
 	}
     }
 }

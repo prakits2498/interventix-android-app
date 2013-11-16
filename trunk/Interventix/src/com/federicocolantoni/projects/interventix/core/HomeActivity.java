@@ -382,7 +382,7 @@ public class HomeActivity extends RoboActionBarActivity implements LoaderCallbac
 		}
 		else {
 		    
-		    InterventixToast.makeToast(HomeActivity.this, "Si è verificato un errore nella sincronizzazione degli utenti.", Toast.LENGTH_LONG);
+		    InterventixToast.makeToast(HomeActivity.this, getString(R.string.toast_error_syncro_users), Toast.LENGTH_LONG);
 		    
 		    setRefreshActionButtonState(false);
 		}
@@ -562,7 +562,7 @@ public class HomeActivity extends RoboActionBarActivity implements LoaderCallbac
 		}
 		else {
 		    
-		    InterventixToast.makeToast(HomeActivity.this, "Si è verificato un errore nella sincronizzazione dei clienti.", Toast.LENGTH_LONG);
+		    InterventixToast.makeToast(HomeActivity.this, getString(R.string.toast_error_syncro_clients), Toast.LENGTH_LONG);
 		    
 		    setRefreshActionButtonState(false);
 		}
@@ -883,7 +883,7 @@ public class HomeActivity extends RoboActionBarActivity implements LoaderCallbac
 		}
 		else {
 		    
-		    InterventixToast.makeToast(HomeActivity.this, "Si è verificato un errore nella sincronizzazione degli interventi.", Toast.LENGTH_LONG);
+		    InterventixToast.makeToast(HomeActivity.this, getString(R.string.toast_error_syncro_interventions), Toast.LENGTH_LONG);
 		    
 		    setRefreshActionButtonState(false);
 		}
