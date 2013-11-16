@@ -74,7 +74,7 @@ public class InterventiAdapter extends CursorAdapter {
 	
 	DateTime dt = new DateTime(cursor.getLong(mDataInterventoIndex));
 	
-	tv_data_intervento.setText(dt.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
+	tv_data_intervento.setText(dt.toString(mContext.getString(R.string.date_format), Locale.ITALY));
     }
     
     @Override

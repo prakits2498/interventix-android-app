@@ -504,7 +504,6 @@ public class InformationsInterventoFragment extends Fragment {
 	    mEdit_prodotto.setText(tv_product.getText());
 	    
 	    prodotto.setView(mEdit_prodotto);
-	    
 	    prodotto.setPositiveButton(getResources().getString(R.string.ok_btn), this);
 	    
 	    return prodotto.create();

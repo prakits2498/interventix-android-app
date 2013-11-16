@@ -368,8 +368,8 @@ public class ViewInterventoActivity extends RoboActionBarActivity {
 	    exit_dialog.setTitle(R.string.interv_mod_title);
 	    exit_dialog.setMessage(R.string.interv_mod_text);
 	    
-	    exit_dialog.setPositiveButton("SI", this);
-	    exit_dialog.setNegativeButton("NO", this);
+	    exit_dialog.setPositiveButton(getString(R.string.yes_btn), this);
+	    exit_dialog.setNegativeButton(getString(R.string.no_btn), this);
 	    
 	    return exit_dialog.create();
 	}
