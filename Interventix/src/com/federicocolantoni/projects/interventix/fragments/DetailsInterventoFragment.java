@@ -89,6 +89,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 		Cursor cur = (Cursor) adapter.getItemAtPosition(position);
 		
 		bundle.putLong(Constants.ID_DETTAGLIO_INTERVENTO, cur.getInt(cur.getColumnIndex(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO)));
+		bundle.putString(Constants.NUOVO_DETTAGLIO_INTERVENTO, Constants.DETTAGLIO_INTERVENTO_ESISTENTE);
 		
 		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
@@ -135,6 +136,8 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 		
 		Bundle bundle = new Bundle();
 		bundle.putLong(Constants.ID_DETTAGLIO_INTERVENTO, -1l);
+		bundle.putString(Constants.NUOVO_DETTAGLIO_INTERVENTO, Constants.NUOVO_DETTAGLIO_INTERVENTO);
+		bundle.putLong(Constants.ID_INTERVENTO, mId_intervento);
 		
 		newDetail.setArguments(bundle);
 		
