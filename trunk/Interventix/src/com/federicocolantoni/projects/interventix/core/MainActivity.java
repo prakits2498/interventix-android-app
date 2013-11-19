@@ -45,6 +45,8 @@ public class MainActivity extends RoboActionBarActivity {
     // @InjectView(R.id.tv_changelog)
     // TextView tv_changelog;
     
+    Timer timer;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	
@@ -60,7 +62,7 @@ public class MainActivity extends RoboActionBarActivity {
 	
 	final FragmentTransaction transaction = manager.beginTransaction();
 	
-	Timer timer = new Timer();
+	timer = new Timer();
 	
 	timer.schedule(new TimerTask() {
 	    
@@ -190,6 +192,9 @@ public class MainActivity extends RoboActionBarActivity {
     @Override
     protected void onDestroy() {
 	super.onDestroy();
+	
+	timer.cancel();
+	timer = null;
 	
 	if (BuildConfig.DEBUG) {
 	    System.gc();

@@ -26,7 +26,7 @@
 	<string name="refresh_interventi_menu">Aggiorna Interventi</string>
 	<string name="add_intervento_menu">Aggiungi Intervento</string>
 	<string name="add_dettaglio_menu">Aggiungi Dettaglio</string>
-	<string name="search_title">Cerca clienti o tecnici#8230;</string>
+	<string name="search_title">Cerca clienti o tecnici&#8230;</string>
 	<string name="send_mail">Invia mail</string>
 	<string name="pay">Salda</string>
 	<string name="close_interv">Chiudi</string>
@@ -82,7 +82,7 @@
 
 	<!-- strings for progress' login -->
 	<string name="login_started_title">Login in corso</string>
-	<string name="login_started_message">Attendere prego#8230;</string>
+	<string name="login_started_message">Attendere prego&#8230;</string>
 
 	<!-- strings for toasts -->
 	<string name="toast_username_and_password_required">Devi riempire i campi Username e Password</string>

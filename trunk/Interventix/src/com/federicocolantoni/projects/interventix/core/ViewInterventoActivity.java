@@ -583,6 +583,10 @@ public class ViewInterventoActivity extends RoboActionBarActivity {
 				queryHandlerDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
 					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 				});
+				
+				queryHandlerDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, DettaglioInterventoDB.CONTENT_URI, DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?", new String[] {
+				    "-1"
+				});
 			    }
 			    catch (JSONException e) {
 				e.printStackTrace();

@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,11 +18,13 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -55,7 +58,17 @@ import com.metova.roboguice.appcompat.RoboActionBarActivity;
 @SuppressLint("NewApi")
 public class DetailInterventoFragment extends RoboFragment {
     
-    private static long sId_Dettaglio_Intervento;
+    private static long sId_Dettaglio_Intervento, sId_Intervento;
+    
+    private static String sNuovo_Dettaglio;
+    
+    private static final String DESCRIZIONE_NUOVO_DETTAGLIO = "descrizione";
+    private static final String OGGETTO_NUOVO_DETTAGLIO = "oggetto";
+    private static final String TIPO_NUOVO_DETTAGLIO = "tipo";
+    private static final String FINE_NUOVO_DETTAGLIO = "fine";
+    private static final String INTERVENTO_NUOVO_DETTAGLIO = "intervento";
+    private static final String INIZIO_NUOVO_DETTAGLIO = "inizio";
+    private static final String ID_NUOVO_DETTAGLIO = "iddettagliointervento";
     
     private static JSONObject sNewDetail;
     
@@ -88,6 +101,8 @@ public class DetailInterventoFragment extends RoboFragment {
 	setHasOptionsMenu(true);
 	
 	sId_Dettaglio_Intervento = bundle.getLong(Constants.ID_DETTAGLIO_INTERVENTO);
+	sNuovo_Dettaglio = bundle.getString(Constants.NUOVO_DETTAGLIO_INTERVENTO);
+	sId_Intervento = bundle.getLong(Constants.ID_INTERVENTO);
 	
 	return setupViewsDetailIntervernto(view);
     }
@@ -97,7 +112,8 @@ public class DetailInterventoFragment extends RoboFragment {
 	
 	super.onCreateOptionsMenu(menu, inflater);
 	
-	inflater.inflate(R.menu.menu_new_detail, menu);
+	if (sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO))
+	    inflater.inflate(R.menu.menu_new_detail, menu);
     }
     
     @Override
@@ -106,11 +122,51 @@ public class DetailInterventoFragment extends RoboFragment {
 	switch (item.getItemId()) {
 	    case R.id.menu_save_detail:
 		
-		InterventixToast.makeToast(getActivity(), "Dettaglio intervento salvato",
-			Toast.LENGTH_SHORT);
-		
 		try {
 		    System.out.println(sNewDetail.toString(2));
+		    
+		    AsyncQueryHandler saveNewDetail = new AsyncQueryHandler(getActivity().getContentResolver()) {
+			
+			@Override
+			protected void onInsertComplete(int token, Object cookie, Uri uri) {
+			    
+			    InterventixToast.makeToast(getActivity(), "Nuovo dettaglio inserito: " + uri.toString(), Toast.LENGTH_LONG);
+			    
+			    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+			    
+			    final Editor edit = prefs.edit();
+			    
+			    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
+			    
+			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+				edit.apply();
+			    }
+			    else {
+				new Thread(new Runnable() {
+				    
+				    @Override
+				    public void run() {
+					edit.commit();
+				    }
+				}).start();
+			    }
+			}
+		    };
+		    
+		    ContentValues values = new ContentValues();
+		    
+		    values.put(DettaglioInterventoDB.Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
+		    values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, sNewDetail.getString(DESCRIZIONE_NUOVO_DETTAGLIO));
+		    values.put(DettaglioInterventoDB.Fields.FINE, sNewDetail.getLong(FINE_NUOVO_DETTAGLIO));
+		    values.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, sNewDetail.getLong(ID_NUOVO_DETTAGLIO));
+		    values.put(DettaglioInterventoDB.Fields.INIZIO, sNewDetail.getLong(INIZIO_NUOVO_DETTAGLIO));
+		    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "N");
+		    values.put(DettaglioInterventoDB.Fields.INTERVENTO, sNewDetail.getLong(INTERVENTO_NUOVO_DETTAGLIO));
+		    values.put(DettaglioInterventoDB.Fields.OGGETTO, sNewDetail.getString(OGGETTO_NUOVO_DETTAGLIO));
+		    values.put(DettaglioInterventoDB.Fields.TIPO, sNewDetail.getString(TIPO_NUOVO_DETTAGLIO));
+		    values.put(DettaglioInterventoDB.Fields.TECNICI, new JSONArray().toString());
+		    
+		    saveNewDetail.startInsert(0, null, DettaglioInterventoDB.CONTENT_URI, values);
 		}
 		catch (JSONException e) {
 		    
@@ -138,71 +194,8 @@ public class DetailInterventoFragment extends RoboFragment {
 	return true;
     }
     
-    // private ActionMode mActionMode;
-    //
-    // private ActionMode.Callback mActionModeCallback = new
-    // ActionMode.Callback() {
-    //
-    // @Override
-    // public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-    //
-    // return false;
-    // }
-    //
-    // @Override
-    // public void onDestroyActionMode(ActionMode mode) {
-    //
-    // mActionMode = null;
-    // }
-    //
-    // @Override
-    // public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-    //
-    // MenuInflater inflater = mode.getMenuInflater();
-    // inflater.inflate(R.menu.menu_new_detail, menu);
-    // return true;
-    // }
-    //
-    // @Override
-    // public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-    // switch (item.getItemId()) {
-    // case R.id.menu_save_detail:
-    //
-    // InterventixToast.makeToast(getActivity(), "Dettaglio intervento salvato",
-    // Toast.LENGTH_SHORT);
-    //
-    // try {
-    // System.out.println(sNewDetail.toString(2));
-    // }
-    // catch (JSONException e) {
-    //
-    // e.printStackTrace();
-    // }
-    //
-    // sNewDetail = null;
-    //
-    // getActivity().getSupportFragmentManager().popBackStackImmediate();
-    //
-    // break;
-    //
-    // case R.id.menu_cancel_detail:
-    //
-    // InterventixToast.makeToast(getActivity(),
-    // "Dettaglio intervento cancellato", Toast.LENGTH_SHORT);
-    //
-    // sNewDetail = null;
-    //
-    // getActivity().getSupportFragmentManager().popBackStackImmediate();
-    //
-    // break;
-    // }
-    //
-    // return true;
-    // }
-    // };
-    
     private View setupViewsDetailIntervernto(final View view) {
-	if (sId_Dettaglio_Intervento != -1l) {
+	if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
 	    DettaglioIntervento dettInterv = null;
 	    
 	    try {
@@ -580,7 +573,8 @@ public class DetailInterventoFragment extends RoboFragment {
 	
 	sNewDetail = new JSONObject();
 	try {
-	    sNewDetail.put("iddettagliointervento", sId_Dettaglio_Intervento);
+	    sNewDetail.put(ID_NUOVO_DETTAGLIO, sId_Dettaglio_Intervento);
+	    sNewDetail.put(INTERVENTO_NUOVO_DETTAGLIO, sId_Intervento);
 	}
 	catch (JSONException e) {
 	    
@@ -705,7 +699,7 @@ public class DetailInterventoFragment extends RoboFragment {
 			    
 			    tv_dett_ore_tot.setText(dt_tot_ore.toString("HH:mm"));
 			    
-			    if (sId_Dettaglio_Intervento != -1l) {
+			    if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
 				SaveChangesDettaglioInterventoAsyncQueryHandler
 				saveChanges = new
 					SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
@@ -756,7 +750,7 @@ public class DetailInterventoFragment extends RoboFragment {
 			    else {
 				
 				try {
-				    sNewDetail.put("inizio", dt_inizio.toDate().getTime());
+				    sNewDetail.put(INIZIO_NUOVO_DETTAGLIO, dt_inizio.toDate().getTime());
 				}
 				catch (JSONException e) {
 				    
@@ -807,7 +801,7 @@ public class DetailInterventoFragment extends RoboFragment {
 	
 	tv_row_inizio_dett.setText(dt_inizio.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
 	try {
-	    sNewDetail.put("inizio", dt_inizio.getMillis());
+	    sNewDetail.put(INIZIO_NUOVO_DETTAGLIO, dt_inizio.getMillis());
 	}
 	catch (JSONException e1) {
 	    e1.printStackTrace();
@@ -872,7 +866,7 @@ public class DetailInterventoFragment extends RoboFragment {
 			    
 			    tv_dett_ore_tot.setText(dt_tot_ore.toString("HH:mm"));
 			    
-			    if (sId_Dettaglio_Intervento != -1l) {
+			    if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
 				SaveChangesDettaglioInterventoAsyncQueryHandler
 				saveChanges = new
 					SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
@@ -923,7 +917,7 @@ public class DetailInterventoFragment extends RoboFragment {
 			    else {
 				
 				try {
-				    sNewDetail.put("fine", dt_fine.toDate().getTime());
+				    sNewDetail.put(FINE_NUOVO_DETTAGLIO, dt_fine.toDate().getTime());
 				}
 				catch (JSONException e) {
 				    
@@ -974,7 +968,7 @@ public class DetailInterventoFragment extends RoboFragment {
 	
 	tv_row_fine_dett.setText(dt_fine.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
 	try {
-	    sNewDetail.put("fine", dt_fine.getMillis());
+	    sNewDetail.put(FINE_NUOVO_DETTAGLIO, dt_fine.getMillis());
 	}
 	catch (JSONException e1) {
 	    e1.printStackTrace();
@@ -1024,7 +1018,7 @@ public class DetailInterventoFragment extends RoboFragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    if (sId_Dettaglio_Intervento != -1l) {
+	    if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
 		SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
 		
 		ContentValues values = new ContentValues();
@@ -1061,7 +1055,7 @@ public class DetailInterventoFragment extends RoboFragment {
 	    else {
 		
 		try {
-		    sNewDetail.put("tipo", mTipologiaChanged);
+		    sNewDetail.put(TIPO_NUOVO_DETTAGLIO, mTipologiaChanged);
 		}
 		catch (JSONException e) {
 		    
@@ -1103,7 +1097,7 @@ public class DetailInterventoFragment extends RoboFragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    if (sId_Dettaglio_Intervento != -1l) {
+	    if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
 		TextView tv_oggetto_dett = (TextView) getActivity().findViewById(R.id.tv_row_oggetto_dettaglio);
 		tv_oggetto_dett.setText(mEdit_oggetto_dett.getText());
 		
@@ -1146,7 +1140,7 @@ public class DetailInterventoFragment extends RoboFragment {
 		tv_oggetto_dett.setText(mEdit_oggetto_dett.getText());
 		
 		try {
-		    sNewDetail.put("oggetto", mEdit_oggetto_dett.getText().toString());
+		    sNewDetail.put(OGGETTO_NUOVO_DETTAGLIO, mEdit_oggetto_dett.getText().toString());
 		}
 		catch (JSONException e) {
 		    
@@ -1188,7 +1182,7 @@ public class DetailInterventoFragment extends RoboFragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    if (sId_Dettaglio_Intervento != -1l) {
+	    if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
 		TextView tv_descrizione_dett = (TextView) getActivity().findViewById(R.id.tv_row_descrizione_dettaglio);
 		tv_descrizione_dett.setText(mEdit_descrizione_dett.getText());
 		
@@ -1231,7 +1225,7 @@ public class DetailInterventoFragment extends RoboFragment {
 		tv_descrizione_dett.setText(mEdit_descrizione_dett.getText());
 		
 		try {
-		    sNewDetail.put("descrizione", mEdit_descrizione_dett.getText().toString());
+		    sNewDetail.put(DESCRIZIONE_NUOVO_DETTAGLIO, mEdit_descrizione_dett.getText().toString());
 		}
 		catch (JSONException e) {
 		    
