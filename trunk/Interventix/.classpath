@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/joda-time-2.3/joda-time-2.3.jar" sourcepath="/Users/federico/Documents/common project libraries/joda-time-2.3/joda-time-2.3-sources.jar">
@@ -17,5 +17,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/bugsense-3.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/Roboguice/roboguice-3.0b-experimental.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/Roboguice/jsr305-1.3.9.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/Roboguice/javax.inject-1.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/Roboguice/guice-4.0-beta-no_aop.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
