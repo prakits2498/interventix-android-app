@@ -1272,6 +1272,11 @@ public class DetailInterventoFragment extends RoboFragment {
 	
 	private String mArrayTecnici;
 	
+	private String[] tuttiTecnici;
+	private boolean[] tecniciChecked;
+	
+	private JSONArray tecnici;
+	
 	public SetTecnici() {
 	    
 	}
@@ -1283,7 +1288,9 @@ public class DetailInterventoFragment extends RoboFragment {
 	    
 	    mArrayTecnici = bundle.getString(TECNICI_DETTAGLIO);
 	    
-	    JSONArray tecnici = null;
+	    tuttiTecnici = null;
+	    
+	    tecnici = null;
 	    
 	    try {
 		
@@ -1295,8 +1302,6 @@ public class DetailInterventoFragment extends RoboFragment {
 	    catch (JSONException e) {
 		e.printStackTrace();
 	    }
-	    
-	    String[] tuttiTecnici = null;
 	    
 	    try {
 		tuttiTecnici = getAllTecnici();
@@ -1310,34 +1315,49 @@ public class DetailInterventoFragment extends RoboFragment {
 		e.printStackTrace();
 	    }
 	    
-	    final boolean[] tecniciChecked = new boolean[tuttiTecnici.length];
+	    tecniciChecked = new boolean[tuttiTecnici.length];
 	    
 	    for (int i = 0; i < tuttiTecnici.length; i++) {
 		
-		try {
-		    if (tuttiTecnici[i].equals(tecnici.get(i)))
-			tecniciChecked[i] = true;
+		String posTutti = tuttiTecnici[i];
+		
+		for (int j = 0; j < tecnici.length(); j++) {
+		    
+		    try {
+			String posAlcuni = tecnici.getString(j);
+			
+			if (posTutti.equals(posAlcuni))
+			    tecniciChecked[i] = true;
+			
+			if (j == tecnici.length() - 1)
+			    break;
+		    }
+		    catch (JSONException e) {
+			
+			e.printStackTrace();
+		    }
 		}
-		catch (JSONException e) {
-		    e.printStackTrace();
-		}
+		
+		if (i == tuttiTecnici.length - 1)
+		    break;
 	    }
 	    
 	    AlertDialog.Builder tecnici_dett = new Builder(getActivity());
 	    
 	    tecnici_dett.setTitle(R.string.choose_tecnici_title);
-	    
 	    tecnici_dett.setMultiChoiceItems(tuttiTecnici, tecniciChecked, new OnMultiChoiceClickListener() {
 		
 		@Override
 		public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 		    
 		    if (isChecked)
-			tecniciChecked[which] = false;
-		    else
 			tecniciChecked[which] = true;
+		    else
+			tecniciChecked[which] = false;
 		}
 	    });
+	    tecnici_dett.setPositiveButton(R.string.ok_btn, this);
+	    tecnici_dett.setNegativeButton(R.string.no_btn, this);
 	    
 	    return tecnici_dett.create();
 	}
@@ -1345,7 +1365,34 @@ public class DetailInterventoFragment extends RoboFragment {
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 	    
-	    dialog.dismiss();
+	    switch (which) {
+		case DialogInterface.BUTTON_POSITIVE:
+		    
+		    tecnici = new JSONArray();
+		    
+		    for (int cont = 0; cont < tuttiTecnici.length; cont++) {
+			
+			long pos = Integer.parseInt(tuttiTecnici[cont]);
+			
+			if (tecniciChecked[cont] == true)
+			    tecnici.put(pos);
+			
+			if (cont == tecniciChecked.length - 1)
+			    break;
+		    }
+		    
+		    System.out.println(tecnici.toString());
+		    
+		    dialog.dismiss();
+		    
+		    break;
+		
+		case DialogInterface.BUTTON_NEGATIVE:
+		    
+		    dialog.dismiss();
+		    
+		    break;
+	    }
 	}
 	
 	private String[] getAllTecnici() throws InterruptedException, ExecutionException {
