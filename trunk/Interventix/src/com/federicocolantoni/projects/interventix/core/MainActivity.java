@@ -193,7 +193,6 @@ public class MainActivity extends RoboActionBarActivity {
     protected void onDestroy() {
 	super.onDestroy();
 	
-	timer.cancel();
 	timer = null;
 	
 	if (BuildConfig.DEBUG) {
