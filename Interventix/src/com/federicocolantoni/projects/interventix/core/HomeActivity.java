@@ -45,6 +45,8 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Dat
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
+import com.federicocolantoni.projects.interventix.intervento.Utente;
+import com.federicocolantoni.projects.interventix.task.GetNominativoUtenteAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
 import com.metova.roboguice.appcompat.RoboActionBarActivity;
@@ -205,50 +207,13 @@ public class HomeActivity extends RoboActionBarActivity implements LoaderCallbac
 	
 	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
-	ManagedAsyncTask<Long, Void, String> nominativo = new ManagedAsyncTask<Long, Void, String>(HomeActivity.this) {
-	    
-	    @Override
-	    protected String doInBackground(Long... params) {
-		
-		String res = null;
-		
-		ContentResolver cr = getContentResolver();
-		
-		String[] projection = new String[] {
-			UtenteDB.Fields._ID, UtenteDB.Fields.NOME, UtenteDB.Fields.COGNOME
-		};
-		
-		String selection = UtenteDB.Fields.TYPE + " = ? AND " + UtenteDB.Fields.ID_UTENTE + " = ?";
-		
-		String[] selectionArgs = new String[] {
-			UtenteDB.UTENTE_ITEM_TYPE, "" + params[0]
-		};
-		
-		Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection, selection, selectionArgs, null);
-		
-		if (cursor.getCount() == 1) {
-		    cursor.moveToFirst();
-		    
-		    res = cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.NOME)) + " " + cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.COGNOME));
-		}
-		
-		if (!cursor.isClosed()) {
-		    cursor.close();
-		}
-		else {
-		    System.out.println("Cursor for setNominativo is closed");
-		}
-		
-		return res;
-	    }
-	    
-	    @Override
-	    protected void onPostExecute(String result) {
-		
-	    };
-	}.execute(prefs.getLong(Constants.USER_ID, 0l));
+	GetNominativoUtenteAsyncTask nominativo = new GetNominativoUtenteAsyncTask(this);
 	
-	return nominativo.get();
+	nominativo.execute(prefs.getLong(Constants.USER_ID, 0l));
+	
+	Utente utente = nominativo.get();
+	
+	return utente.getmNome() + " " + utente.getmCognome();
     }
     
     private void getUsersSyncro() {

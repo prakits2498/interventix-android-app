@@ -1,5 +1,6 @@
 package com.federicocolantoni.projects.interventix.fragments;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -19,12 +20,16 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.AsyncQueryHandler;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -47,6 +52,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
 import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.task.GetDettaglioInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.SaveChangesDettaglioInterventoAsyncQueryHandler;
@@ -69,6 +75,7 @@ public class DetailInterventoFragment extends RoboFragment {
     private static final String INTERVENTO_NUOVO_DETTAGLIO = "intervento";
     private static final String INIZIO_NUOVO_DETTAGLIO = "inizio";
     private static final String ID_NUOVO_DETTAGLIO = "iddettagliointervento";
+    private static final String TECNICI_DETTAGLIO = "tecnici";
     
     private static JSONObject sNewDetail;
     
@@ -89,22 +96,36 @@ public class DetailInterventoFragment extends RoboFragment {
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
+	final View view = inflater.inflate(R.layout.detail_dett_intervento_fragment, container, false);
+	
 	actionbar = ((RoboActionBarActivity) getActivity()).getSupportActionBar();
 	
 	actionbar.setHomeButtonEnabled(true);
 	actionbar.setDisplayHomeAsUpEnabled(true);
 	
-	final View view = inflater.inflate(R.layout.detail_dett_intervento_fragment, container, false);
+	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN || Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1)
+	    setHasOptionsMenu(true);
 	
 	Bundle bundle = getArguments();
-	
-	setHasOptionsMenu(true);
 	
 	sId_Dettaglio_Intervento = bundle.getLong(Constants.ID_DETTAGLIO_INTERVENTO);
 	sNuovo_Dettaglio = bundle.getString(Constants.NUOVO_DETTAGLIO_INTERVENTO);
 	sId_Intervento = bundle.getLong(Constants.ID_INTERVENTO);
 	
+	System.out.println("ID dettaglio = " + sId_Dettaglio_Intervento + "\n"
+		+ "ID intervento = " + sId_Intervento + "\n"
+		+ "Nuovo dettaglio = " + sNuovo_Dettaglio);
+	
 	return setupViewsDetailIntervernto(view);
+    }
+    
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+	
+	super.onActivityCreated(savedInstanceState);
+	
+	if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN && Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
+	    setHasOptionsMenu(true);
     }
     
     @Override
@@ -130,7 +151,7 @@ public class DetailInterventoFragment extends RoboFragment {
 			@Override
 			protected void onInsertComplete(int token, Object cookie, Uri uri) {
 			    
-			    InterventixToast.makeToast(getActivity(), "Nuovo dettaglio inserito: " + uri.toString(), Toast.LENGTH_LONG);
+			    InterventixToast.makeToast(getActivity(), "Nuovo dettaglio inserito", Toast.LENGTH_LONG);
 			    
 			    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 			    
@@ -247,25 +268,28 @@ public class DetailInterventoFragment extends RoboFragment {
 	    TextView tv_row_tecnici_dett = (TextView) row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
 	    tv_row_tecnici_dett.setText("" + dettInterv.getmTecnici().length());
 	    
+	    final JSONArray tecnici = dettInterv.getmTecnici();
+	    
+	    System.out.println(this.getClass().getName() + " - Array tecnici: " + tecnici.toString());
+	    
 	    row_tecnici_dett.setOnClickListener(new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
 		    
-		    // FragmentManager manager =
-		    // getActivity().getSupportFragmentManager();
-		    // FragmentTransaction transaction =
-		    // manager.beginTransaction();
-		    //
-		    // AddUserToDetailFragment dettInterv = new
-		    // AddUserToDetailFragment();
-		    //
-		    // transaction.replace(R.id.fragments_layout, dettInterv,
-		    // Constants.ADD_USERS_TO_DETAIL_FRAGMENT);
-		    // transaction.addToBackStack(Constants.ADD_USERS_TO_DETAIL_FRAGMENT);
-		    // transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		    //
-		    // transaction.commit();
+		    // inserire una dialog con la lista di tutti i tecnici già
+		    // associati al dettaglio e che dia la possibilità di
+		    // aggiungere o togliere i tecnici. Un tasto "fatto" chiude
+		    // la dialog.
+		    
+		    SetTecnici diag_Tecnici = new SetTecnici();
+		    
+		    Bundle bundle = new Bundle();
+		    bundle.putString(TECNICI_DETTAGLIO, tecnici.toString());
+		    
+		    diag_Tecnici.setArguments(bundle);
+		    
+		    diag_Tecnici.show(getFragmentManager(), Constants.TECHNICIANS_DETAIL_FRAGMENT);
 		}
 	    });
 	    
@@ -623,6 +647,13 @@ public class DetailInterventoFragment extends RoboFragment {
 	    @Override
 	    public void onClick(View v) {
 		
+		SetTecnici diag_Tecnici = new SetTecnici();
+		
+		Bundle bundle = new Bundle();
+		
+		diag_Tecnici.setArguments(bundle);
+		
+		diag_Tecnici.show(getFragmentManager(), Constants.TECHNICIANS_DETAIL_FRAGMENT);
 	    }
 	});
 	
@@ -1009,7 +1040,7 @@ public class DetailInterventoFragment extends RoboFragment {
 		    mTipologiaChanged = tipos[which];
 		}
 	    });
-	    
+	    tipo_dett.setCancelable(false);
 	    tipo_dett.setPositiveButton(getResources().getString(R.string.ok_btn), this);
 	    
 	    return tipo_dett.create();
@@ -1088,7 +1119,7 @@ public class DetailInterventoFragment extends RoboFragment {
 	    mEdit_oggetto_dett.setText(tv_oggetto_dett.getText());
 	    
 	    oggetto_dett.setView(mEdit_oggetto_dett);
-	    
+	    oggetto_dett.setCancelable(false);
 	    oggetto_dett.setPositiveButton(getResources().getString(R.string.ok_btn), this);
 	    
 	    return oggetto_dett.create();
@@ -1152,7 +1183,7 @@ public class DetailInterventoFragment extends RoboFragment {
 	}
     }
     
-    public static class SetDecrizione extends android.support.v4.app.DialogFragment implements DialogInterface.OnClickListener {
+    public static class SetDecrizione extends DialogFragment implements DialogInterface.OnClickListener {
 	
 	private EditText mEdit_descrizione_dett;
 	
@@ -1163,20 +1194,20 @@ public class DetailInterventoFragment extends RoboFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    
-	    AlertDialog.Builder decrizione_dett = new Builder(getActivity());
+	    AlertDialog.Builder descrizione_dett = new Builder(getActivity());
 	    
-	    decrizione_dett.setTitle(R.string.oggetto_dett_title);
+	    descrizione_dett.setTitle(R.string.oggetto_dett_title);
 	    
 	    TextView tv_descrizione_dett = (TextView) getActivity().findViewById(R.id.tv_row_descrizione_dettaglio);
 	    
 	    mEdit_descrizione_dett = new EditText(getActivity());
 	    mEdit_descrizione_dett.setText(tv_descrizione_dett.getText());
 	    
-	    decrizione_dett.setView(mEdit_descrizione_dett);
+	    descrizione_dett.setView(mEdit_descrizione_dett);
+	    descrizione_dett.setCancelable(false);
+	    descrizione_dett.setPositiveButton(getResources().getString(R.string.ok_btn), this);
 	    
-	    decrizione_dett.setPositiveButton(getResources().getString(R.string.ok_btn), this);
-	    
-	    return decrizione_dett.create();
+	    return descrizione_dett.create();
 	}
 	
 	@Override
@@ -1237,7 +1268,137 @@ public class DetailInterventoFragment extends RoboFragment {
 	}
     }
     
-    public static final void setmNewDetail(JSONObject mNewDetail) {
-	DetailInterventoFragment.sNewDetail = mNewDetail;
+    public static class SetTecnici extends DialogFragment implements DialogInterface.OnClickListener {
+	
+	private String mArrayTecnici;
+	
+	public SetTecnici() {
+	    
+	}
+	
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	    
+	    Bundle bundle = getArguments();
+	    
+	    mArrayTecnici = bundle.getString(TECNICI_DETTAGLIO);
+	    
+	    JSONArray tecnici = null;
+	    
+	    try {
+		
+		if (mArrayTecnici != null)
+		    tecnici = new JSONArray(mArrayTecnici);
+		else
+		    tecnici = new JSONArray();
+	    }
+	    catch (JSONException e) {
+		e.printStackTrace();
+	    }
+	    
+	    String[] tuttiTecnici = null;
+	    
+	    try {
+		tuttiTecnici = getAllTecnici();
+	    }
+	    catch (InterruptedException e) {
+		
+		e.printStackTrace();
+	    }
+	    catch (ExecutionException e) {
+		
+		e.printStackTrace();
+	    }
+	    
+	    final boolean[] tecniciChecked = new boolean[tuttiTecnici.length];
+	    
+	    for (int i = 0; i < tuttiTecnici.length; i++) {
+		
+		try {
+		    if (tuttiTecnici[i].equals(tecnici.get(i)))
+			tecniciChecked[i] = true;
+		}
+		catch (JSONException e) {
+		    e.printStackTrace();
+		}
+	    }
+	    
+	    AlertDialog.Builder tecnici_dett = new Builder(getActivity());
+	    
+	    tecnici_dett.setTitle(R.string.choose_tecnici_title);
+	    
+	    tecnici_dett.setMultiChoiceItems(tuttiTecnici, tecniciChecked, new OnMultiChoiceClickListener() {
+		
+		@Override
+		public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+		    
+		    if (isChecked)
+			tecniciChecked[which] = false;
+		    else
+			tecniciChecked[which] = true;
+		}
+	    });
+	    
+	    return tecnici_dett.create();
+	}
+	
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+	    
+	    dialog.dismiss();
+	}
+	
+	private String[] getAllTecnici() throws InterruptedException, ExecutionException {
+	    
+	    // restituisce un array degli ID di tutti i tecnici
+	    
+	    AsyncTask<Void, Void, String[]> tuttiTecnici = new AsyncTask<Void, Void, String[]>() {
+		
+		@Override
+		protected String[] doInBackground(Void... params) {
+		    
+		    ContentResolver cr = getActivity().getContentResolver();
+		    
+		    String[] projection = new String[] {
+			    UtenteDB.Fields._ID, UtenteDB.Fields.ID_UTENTE
+		    };
+		    
+		    String selection = UtenteDB.Fields.TYPE + "=?";
+		    
+		    String[] selectionArgs = new String[] {
+			    UtenteDB.UTENTE_ITEM_TYPE
+		    };
+		    
+		    String sortOrder = UtenteDB.Fields.COGNOME + " asc";
+		    
+		    Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection, selection, selectionArgs, sortOrder);
+		    
+		    ArrayList<String> arrayTecnici = new ArrayList<String>();
+		    
+		    while (cursor.moveToNext()) {
+			
+			arrayTecnici.add("" + cursor.getLong(cursor.getColumnIndex(UtenteDB.Fields.ID_UTENTE)));
+		    }
+		    
+		    System.out.println("Tutti i tecnici: " + arrayTecnici.toString());
+		    
+		    if (!cursor.isClosed())
+			cursor.close();
+		    
+		    String[] tecnici = new String[arrayTecnici.size()];
+		    
+		    return arrayTecnici.toArray(tecnici);
+		}
+		
+		@Override
+		protected void onPostExecute(String[] result) {
+		    
+		}
+	    };
+	    
+	    tuttiTecnici.execute();
+	    
+	    return tuttiTecnici.get();
+	}
     }
 }
