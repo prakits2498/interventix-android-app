@@ -73,6 +73,7 @@ public final class Constants {
     public static final int TOKEN_COSTO_MANODOPERA = 14;
     public static final int TOKEN_COSTO_COMPONENTI = 15;
     public static final int TOKEN_COSTO_ACCESSORI = 16;
+    public static final int TOKEN_TECNICI_DETTAGLIO = 17;
     
     public static final String ARRAY_DETTAGLI = "arrayDettagli";
     
