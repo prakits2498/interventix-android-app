@@ -60,6 +60,7 @@ import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatcher;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.metova.roboguice.appcompat.RoboActionBarActivity;
+import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
 public class DetailInterventoFragment extends RoboFragment {
@@ -75,9 +76,11 @@ public class DetailInterventoFragment extends RoboFragment {
     private static final String INTERVENTO_NUOVO_DETTAGLIO = "intervento";
     private static final String INIZIO_NUOVO_DETTAGLIO = "inizio";
     private static final String ID_NUOVO_DETTAGLIO = "iddettagliointervento";
-    private static final String TECNICI_DETTAGLIO = "tecnici";
+    // private static final String TECNICI_DETTAGLIO = "tecnici";
     
     private static JSONObject sNewDetail;
+    
+    private DettaglioIntervento dettInterv;
     
     @InjectView(R.id.tv_dett_interv)
     TextView tv_dett_interv;
@@ -217,7 +220,8 @@ public class DetailInterventoFragment extends RoboFragment {
     
     private View setupViewsDetailIntervernto(final View view) {
 	if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
-	    DettaglioIntervento dettInterv = null;
+	    
+	    dettInterv = null;
 	    
 	    try {
 		dettInterv = new GetDettaglioInterventoAsyncTask(getActivity()).execute(sId_Dettaglio_Intervento).get();
@@ -284,10 +288,10 @@ public class DetailInterventoFragment extends RoboFragment {
 		    
 		    SetTecnici diag_Tecnici = new SetTecnici();
 		    
-		    Bundle bundle = new Bundle();
-		    bundle.putString(TECNICI_DETTAGLIO, tecnici.toString());
-		    
-		    diag_Tecnici.setArguments(bundle);
+		    // Bundle bundle = new Bundle();
+		    // bundle.putString(TECNICI_DETTAGLIO, tecnici.toString());
+		    //
+		    // diag_Tecnici.setArguments(bundle);
 		    
 		    diag_Tecnici.show(getFragmentManager(), Constants.TECHNICIANS_DETAIL_FRAGMENT);
 		}
@@ -1272,7 +1276,7 @@ public class DetailInterventoFragment extends RoboFragment {
 	
 	private String mArrayTecnici;
 	
-	private String[] tuttiTecnici;
+	private String[] tuttiTecnici, tuttiNomiTecnici;
 	private boolean[] tecniciChecked;
 	
 	private JSONArray tecnici;
@@ -1284,11 +1288,59 @@ public class DetailInterventoFragment extends RoboFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    
-	    Bundle bundle = getArguments();
+	    // Bundle bundle = getArguments();
+	    //
+	    // mArrayTecnici = bundle.getString(TECNICI_DETTAGLIO);
 	    
-	    mArrayTecnici = bundle.getString(TECNICI_DETTAGLIO);
+	    ManagedAsyncTask<Void, Void, String> tecniciOld = new ManagedAsyncTask<Void, Void, String>(getActivity()) {
+		
+		@Override
+		protected String doInBackground(Void... params) {
+		    
+		    String result = null;
+		    
+		    ContentResolver cr = getActivity().getContentResolver();
+		    
+		    String[] projection = new String[] {
+			    DettaglioInterventoDB.Fields._ID,
+			    DettaglioInterventoDB.Fields.TECNICI
+		    };
+		    
+		    String selection = DettaglioInterventoDB.Fields.TYPE + "=? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?";
+		    
+		    String[] selectionArgs = new String[] {
+			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
+			    "" + sId_Dettaglio_Intervento
+		    };
+		    
+		    Cursor cursor = cr.query(DettaglioInterventoDB.CONTENT_URI, projection, selection, selectionArgs, null);
+		    
+		    if (cursor.moveToNext()) {
+			
+			result = cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TECNICI));
+		    }
+		    
+		    if (!cursor.isClosed())
+			cursor.close();
+		    
+		    return result;
+		}
+	    };
+	    
+	    try {
+		mArrayTecnici = tecniciOld.execute().get();
+	    }
+	    catch (InterruptedException e) {
+		
+		e.printStackTrace();
+	    }
+	    catch (ExecutionException e) {
+		
+		e.printStackTrace();
+	    }
 	    
 	    tuttiTecnici = null;
+	    tuttiNomiTecnici = null;
 	    
 	    tecnici = null;
 	    
@@ -1305,6 +1357,58 @@ public class DetailInterventoFragment extends RoboFragment {
 	    
 	    try {
 		tuttiTecnici = getAllTecnici();
+		
+		ManagedAsyncTask<String, Void, String[]> tuttiNomiTecnici = new ManagedAsyncTask<String, Void, String[]>(getActivity()) {
+		    
+		    @Override
+		    protected String[] doInBackground(String... params) {
+			
+			ContentResolver cr = getActivity().getContentResolver();
+			
+			ArrayList<String> arrayNomiTecnici = new ArrayList<String>();
+			
+			for (int i = 0; i < params.length; i++) {
+			    
+			    String[] projection = new String[] {
+				    UtenteDB.Fields._ID, UtenteDB.Fields.NOME,
+				    UtenteDB.Fields.COGNOME
+			    };
+			    
+			    String selection = UtenteDB.Fields.TYPE + "=? AND " + UtenteDB.Fields.ID_UTENTE + "=?";
+			    
+			    String[] selectionArgs = new String[] {
+				    UtenteDB.UTENTE_ITEM_TYPE,
+				    params[i]
+			    };
+			    
+			    String sortOrder = UtenteDB.Fields.COGNOME + " asc";
+			    
+			    Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection, selection, selectionArgs, sortOrder);
+			    
+			    while (cursor.moveToNext()) {
+				
+				arrayNomiTecnici.add(cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.NOME)) + " " + cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.COGNOME)));
+			    }
+			    
+			    if (!cursor.isClosed())
+				cursor.close();
+			}
+			
+			System.out.println("Tutti i nomi dei tecnici: " + arrayNomiTecnici.toString());
+			
+			String[] tecnici = new String[arrayNomiTecnici.size()];
+			
+			return arrayNomiTecnici.toArray(tecnici);
+		    }
+		    
+		    @Override
+		    protected void onPostExecute(String[] result) {
+			
+			super.onPostExecute(result);
+		    }
+		};
+		
+		this.tuttiNomiTecnici = tuttiNomiTecnici.execute(tuttiTecnici).get();
 	    }
 	    catch (InterruptedException e) {
 		
@@ -1315,7 +1419,7 @@ public class DetailInterventoFragment extends RoboFragment {
 		e.printStackTrace();
 	    }
 	    
-	    tecniciChecked = new boolean[tuttiTecnici.length];
+	    tecniciChecked = new boolean[tuttiNomiTecnici.length];
 	    
 	    for (int i = 0; i < tuttiTecnici.length; i++) {
 		
@@ -1345,7 +1449,7 @@ public class DetailInterventoFragment extends RoboFragment {
 	    AlertDialog.Builder tecnici_dett = new Builder(getActivity());
 	    
 	    tecnici_dett.setTitle(R.string.choose_tecnici_title);
-	    tecnici_dett.setMultiChoiceItems(tuttiTecnici, tecniciChecked, new OnMultiChoiceClickListener() {
+	    tecnici_dett.setMultiChoiceItems(tuttiNomiTecnici, tecniciChecked, new OnMultiChoiceClickListener() {
 		
 		@Override
 		public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -1357,7 +1461,7 @@ public class DetailInterventoFragment extends RoboFragment {
 		}
 	    });
 	    tecnici_dett.setPositiveButton(R.string.ok_btn, this);
-	    tecnici_dett.setNegativeButton(R.string.no_btn, this);
+	    tecnici_dett.setNegativeButton(R.string.cancel_btn, this);
 	    
 	    return tecnici_dett.create();
 	}
@@ -1382,6 +1486,55 @@ public class DetailInterventoFragment extends RoboFragment {
 		    }
 		    
 		    System.out.println(tecnici.toString());
+		    
+		    AsyncQueryHandler saveChanges = new AsyncQueryHandler(getActivity().getContentResolver()) {
+			
+			@Override
+			protected void onInsertComplete(int token, Object cookie, Uri uri) {
+			    
+			    getActivity().runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+				    
+				    View row_tecnici_dett = getActivity().findViewById(R.id.row_tecnici_dettaglio);
+				    TextView tv_row_tecnici_dett = (TextView) row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
+				    tv_row_tecnici_dett.setText(tecnici.length());
+				}
+			    });
+			}
+		    };
+		    
+		    ContentValues values = new ContentValues();
+		    values.put(DettaglioInterventoDB.Fields.TECNICI, tecnici.toString());
+		    
+		    String selection = DettaglioInterventoDB.Fields.TYPE + "=? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?";
+		    
+		    String[] selectionArgs = new String[] {
+			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
+			    sId_Dettaglio_Intervento + ""
+		    };
+		    
+		    saveChanges.startUpdate(Constants.TOKEN_TECNICI_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
+		    
+		    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+		    
+		    final Editor edit = prefs.edit();
+		    
+		    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
+		    
+		    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			edit.apply();
+		    }
+		    else {
+			new Thread(new Runnable() {
+			    
+			    @Override
+			    public void run() {
+				edit.commit();
+			    }
+			}).start();
+		    }
 		    
 		    dialog.dismiss();
 		    
