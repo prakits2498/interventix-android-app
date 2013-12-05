@@ -60,6 +60,7 @@ public class GetDettaglioInterventoAsyncTask extends AsyncTask<Long, Void, Detta
 		dettInterv.setmTecnici(new JSONArray(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TECNICI))));
 	    }
 	    catch (JSONException e) {
+		
 		e.printStackTrace();
 		BugSenseHandler.sendException(e);
 	    }

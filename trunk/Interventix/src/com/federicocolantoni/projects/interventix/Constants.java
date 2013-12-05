@@ -84,4 +84,6 @@ public final class Constants {
     
     public static final String NUOVO_DETTAGLIO_INTERVENTO = "NUOVO_DETTAGLIO_INTERVENTO";
     public static final String DETTAGLIO_INTERVENTO_ESISTENTE = "DETTAGLIO_INTERVENTO_ESISTENTE";
+    
+    public static long sID_Dettaglio_Temp = -1l;
 }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.intervento.Cliente;
@@ -66,9 +67,15 @@ public class InterventiAdapter extends CursorAdapter {
 	    tv_cliente_intervento.setText(cliente.getmNominativo() + " - ");
 	}
 	catch (InterruptedException e) {
+	    
+	    BugSenseHandler.sendException(e);
+	    
 	    e.printStackTrace();
 	}
 	catch (ExecutionException e) {
+	    
+	    BugSenseHandler.sendException(e);
+	    
 	    e.printStackTrace();
 	}
 	

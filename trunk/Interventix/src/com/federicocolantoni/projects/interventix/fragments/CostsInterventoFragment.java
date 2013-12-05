@@ -78,10 +78,12 @@ public class CostsInterventoFragment extends Fragment {
 	    interv = new GetCostsInterventoAsyncTask(getActivity()).execute(sId_intervento).get();
 	}
 	catch (InterruptedException e) {
+	    
 	    e.printStackTrace();
 	    BugSenseHandler.sendException(e);
 	}
 	catch (ExecutionException e) {
+	    
 	    e.printStackTrace();
 	    BugSenseHandler.sendException(e);
 	}
