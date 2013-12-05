@@ -78,10 +78,12 @@ public class InformationsInterventoFragment extends Fragment {
 	    interv = new GetInformationsInterventoAsyncTask(getActivity()).execute(sId_Intervento).get();
 	}
 	catch (InterruptedException e) {
+	    
 	    e.printStackTrace();
 	    BugSenseHandler.sendException(e);
 	}
 	catch (ExecutionException e) {
+	    
 	    e.printStackTrace();
 	    BugSenseHandler.sendException(e);
 	}

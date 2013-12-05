@@ -33,6 +33,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -76,7 +77,7 @@ public class DetailInterventoFragment extends RoboFragment {
     private static final String INTERVENTO_NUOVO_DETTAGLIO = "intervento";
     private static final String INIZIO_NUOVO_DETTAGLIO = "inizio";
     private static final String ID_NUOVO_DETTAGLIO = "iddettagliointervento";
-    // private static final String TECNICI_DETTAGLIO = "tecnici";
+    private static final String TECNICI_DETTAGLIO = "tecnici";
     
     private static JSONObject sNewDetail;
     
@@ -191,15 +192,18 @@ public class DetailInterventoFragment extends RoboFragment {
 		    values.put(DettaglioInterventoDB.Fields.TECNICI, new JSONArray().toString());
 		    
 		    saveNewDetail.startInsert(0, null, DettaglioInterventoDB.CONTENT_URI, values);
+		    
+		    sNewDetail = null;
+		    
+		    Constants.sID_Dettaglio_Temp--;
+		    
+		    getActivity().getSupportFragmentManager().popBackStackImmediate();
 		}
 		catch (JSONException e) {
 		    
+		    BugSenseHandler.sendException(e);
 		    e.printStackTrace();
 		}
-		
-		sNewDetail = null;
-		
-		getActivity().getSupportFragmentManager().popBackStackImmediate();
 		
 		break;
 	    
@@ -227,10 +231,12 @@ public class DetailInterventoFragment extends RoboFragment {
 		dettInterv = new GetDettaglioInterventoAsyncTask(getActivity()).execute(sId_Dettaglio_Intervento).get();
 	    }
 	    catch (InterruptedException e) {
+		
 		e.printStackTrace();
 		BugSenseHandler.sendException(e);
 	    }
 	    catch (ExecutionException e) {
+		
 		e.printStackTrace();
 		BugSenseHandler.sendException(e);
 	    }
@@ -600,18 +606,21 @@ public class DetailInterventoFragment extends RoboFragment {
     private void addNewDetail(final View view) {
 	
 	sNewDetail = new JSONObject();
+	
 	try {
-	    sNewDetail.put(ID_NUOVO_DETTAGLIO, sId_Dettaglio_Intervento);
+	    
+	    sNewDetail.put(ID_NUOVO_DETTAGLIO, Constants.sID_Dettaglio_Temp);
 	    sNewDetail.put(INTERVENTO_NUOVO_DETTAGLIO, sId_Intervento);
 	}
 	catch (JSONException e) {
 	    
 	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
 	}
 	
 	TextView tv_dett_interv = (TextView) view.findViewById(R.id.tv_dett_interv);
 	
-	tv_dett_interv.setText("Dettaglio " + sId_Dettaglio_Intervento);
+	tv_dett_interv.setText("Dettaglio " + Constants.sID_Dettaglio_Temp);
 	
 	View row_tipo_dett = view.findViewById(R.id.row_tipo_dettaglio);
 	
@@ -651,13 +660,98 @@ public class DetailInterventoFragment extends RoboFragment {
 	    @Override
 	    public void onClick(View v) {
 		
-		SetTecnici diag_Tecnici = new SetTecnici();
+		AlertDialog.Builder tecniciDialog = new Builder(getActivity());
 		
-		Bundle bundle = new Bundle();
+		String[] tuttiTecnici = null;
 		
-		diag_Tecnici.setArguments(bundle);
+		try {
+		    
+		    tuttiTecnici = getAllTecnici(getActivity().getContentResolver());
+		}
+		catch (InterruptedException e) {
+		    
+		    BugSenseHandler.sendException(e);
+		    e.printStackTrace();
+		}
+		catch (ExecutionException e) {
+		    
+		    BugSenseHandler.sendException(e);
+		    e.printStackTrace();
+		}
 		
-		diag_Tecnici.show(getFragmentManager(), Constants.TECHNICIANS_DETAIL_FRAGMENT);
+		String[] tuttiNomiTecnici = new String[tuttiTecnici.length];
+		
+		ManagedAsyncTask<String, Void, String[]> tuttiNomiTecniciAsyncTask = getTuttiNomiTecnici(getActivity());
+		
+		try {
+		    tuttiNomiTecnici = tuttiNomiTecniciAsyncTask.execute(tuttiTecnici).get();
+		}
+		catch (InterruptedException e) {
+		    
+		    BugSenseHandler.sendException(e);
+		    e.printStackTrace();
+		}
+		catch (ExecutionException e) {
+		    
+		    BugSenseHandler.sendException(e);
+		    e.printStackTrace();
+		}
+		
+		final boolean[] tecniciChecked = new boolean[tuttiTecnici.length];
+		
+		tecniciDialog.setTitle(R.string.choose_tecnici_title);
+		tecniciDialog.setMultiChoiceItems(tuttiNomiTecnici, tecniciChecked, new OnMultiChoiceClickListener() {
+		    
+		    @Override
+		    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+			
+			if (isChecked)
+			    tecniciChecked[which] = true;
+			else
+			    tecniciChecked[which] = false;
+		    }
+		});
+		
+		final String[] copiaTuttiTecnici = tuttiTecnici;
+		
+		tecniciDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
+		    
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+			
+			JSONArray tecniciSelected = new JSONArray();
+			
+			for (int i = 0; i < copiaTuttiTecnici.length; i++) {
+			    
+			    if (tecniciChecked[i])
+				tecniciSelected.put(copiaTuttiTecnici[i]);
+			}
+			
+			try {
+			    
+			    sNewDetail.put(TECNICI_DETTAGLIO, tecniciSelected);
+			}
+			catch (JSONException e) {
+			    
+			    BugSenseHandler.sendException(e);
+			    e.printStackTrace();
+			}
+			
+			System.out.println("Tecnici Nuovo Dettaglio: " + sNewDetail.optJSONArray(TECNICI_DETTAGLIO));
+			
+			dialog.dismiss();
+		    }
+		});
+		tecniciDialog.setNegativeButton(R.string.cancel_btn, new DialogInterface.OnClickListener() {
+		    
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+			
+			dialog.dismiss();
+		    }
+		});
+		
+		tecniciDialog.create().show();
 	    }
 	});
 	
@@ -789,6 +883,7 @@ public class DetailInterventoFragment extends RoboFragment {
 				}
 				catch (JSONException e) {
 				    
+				    BugSenseHandler.sendException(e);
 				    e.printStackTrace();
 				}
 			    }
@@ -838,8 +933,10 @@ public class DetailInterventoFragment extends RoboFragment {
 	try {
 	    sNewDetail.put(INIZIO_NUOVO_DETTAGLIO, dt_inizio.getMillis());
 	}
-	catch (JSONException e1) {
-	    e1.printStackTrace();
+	catch (JSONException e) {
+	    
+	    BugSenseHandler.sendException(e);
+	    e.printStackTrace();
 	}
 	
 	final View row_fine_dett = view.findViewById(R.id.row_fine_dettaglio);
@@ -956,6 +1053,7 @@ public class DetailInterventoFragment extends RoboFragment {
 				}
 				catch (JSONException e) {
 				    
+				    BugSenseHandler.sendException(e);
 				    e.printStackTrace();
 				}
 			    }
@@ -1005,8 +1103,10 @@ public class DetailInterventoFragment extends RoboFragment {
 	try {
 	    sNewDetail.put(FINE_NUOVO_DETTAGLIO, dt_fine.getMillis());
 	}
-	catch (JSONException e1) {
-	    e1.printStackTrace();
+	catch (JSONException e) {
+	    
+	    BugSenseHandler.sendException(e);
+	    e.printStackTrace();
 	}
 	
 	View row_tot_ore_dett = view.findViewById(R.id.row_tot_ore_dettaglio);
@@ -1094,6 +1194,7 @@ public class DetailInterventoFragment extends RoboFragment {
 		}
 		catch (JSONException e) {
 		    
+		    BugSenseHandler.sendException(e);
 		    e.printStackTrace();
 		}
 	    }
@@ -1179,6 +1280,7 @@ public class DetailInterventoFragment extends RoboFragment {
 		}
 		catch (JSONException e) {
 		    
+		    BugSenseHandler.sendException(e);
 		    e.printStackTrace();
 		}
 	    }
@@ -1264,6 +1366,7 @@ public class DetailInterventoFragment extends RoboFragment {
 		}
 		catch (JSONException e) {
 		    
+		    BugSenseHandler.sendException(e);
 		    e.printStackTrace();
 		}
 	    }
@@ -1332,10 +1435,12 @@ public class DetailInterventoFragment extends RoboFragment {
 	    }
 	    catch (InterruptedException e) {
 		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	    catch (ExecutionException e) {
 		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	    
@@ -1352,70 +1457,26 @@ public class DetailInterventoFragment extends RoboFragment {
 		    tecnici = new JSONArray();
 	    }
 	    catch (JSONException e) {
+		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	    
 	    try {
-		tuttiTecnici = getAllTecnici();
+		tuttiTecnici = getAllTecnici(getActivity().getContentResolver());
 		
-		ManagedAsyncTask<String, Void, String[]> tuttiNomiTecnici = new ManagedAsyncTask<String, Void, String[]>(getActivity()) {
-		    
-		    @Override
-		    protected String[] doInBackground(String... params) {
-			
-			ContentResolver cr = getActivity().getContentResolver();
-			
-			ArrayList<String> arrayNomiTecnici = new ArrayList<String>();
-			
-			for (int i = 0; i < params.length; i++) {
-			    
-			    String[] projection = new String[] {
-				    UtenteDB.Fields._ID, UtenteDB.Fields.NOME,
-				    UtenteDB.Fields.COGNOME
-			    };
-			    
-			    String selection = UtenteDB.Fields.TYPE + "=? AND " + UtenteDB.Fields.ID_UTENTE + "=?";
-			    
-			    String[] selectionArgs = new String[] {
-				    UtenteDB.UTENTE_ITEM_TYPE,
-				    params[i]
-			    };
-			    
-			    String sortOrder = UtenteDB.Fields.COGNOME + " asc";
-			    
-			    Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection, selection, selectionArgs, sortOrder);
-			    
-			    while (cursor.moveToNext()) {
-				
-				arrayNomiTecnici.add(cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.NOME)) + " " + cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.COGNOME)));
-			    }
-			    
-			    if (!cursor.isClosed())
-				cursor.close();
-			}
-			
-			System.out.println("Tutti i nomi dei tecnici: " + arrayNomiTecnici.toString());
-			
-			String[] tecnici = new String[arrayNomiTecnici.size()];
-			
-			return arrayNomiTecnici.toArray(tecnici);
-		    }
-		    
-		    @Override
-		    protected void onPostExecute(String[] result) {
-			
-			super.onPostExecute(result);
-		    }
-		};
+		ManagedAsyncTask<String, Void, String[]> tuttiNomiTecniciAsyncTask = getTuttiNomiTecnici(getActivity());
 		
-		this.tuttiNomiTecnici = tuttiNomiTecnici.execute(tuttiTecnici).get();
+		this.tuttiNomiTecnici = tuttiNomiTecniciAsyncTask.execute(tuttiTecnici).get();
 	    }
 	    catch (InterruptedException e) {
 		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	    catch (ExecutionException e) {
 		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	    
@@ -1438,6 +1499,7 @@ public class DetailInterventoFragment extends RoboFragment {
 		    }
 		    catch (JSONException e) {
 			
+			BugSenseHandler.sendException(e);
 			e.printStackTrace();
 		    }
 		}
@@ -1548,57 +1610,111 @@ public class DetailInterventoFragment extends RoboFragment {
 	    }
 	}
 	
-	private String[] getAllTecnici() throws InterruptedException, ExecutionException {
+    }
+    
+    private static String[] getAllTecnici(final ContentResolver contentResolver) throws InterruptedException, ExecutionException {
+	
+	// restituisce un array degli ID di tutti i tecnici
+	
+	AsyncTask<Void, Void, String[]> tuttiTecnici = new AsyncTask<Void, Void, String[]>() {
 	    
-	    // restituisce un array degli ID di tutti i tecnici
-	    
-	    AsyncTask<Void, Void, String[]> tuttiTecnici = new AsyncTask<Void, Void, String[]>() {
+	    @Override
+	    protected String[] doInBackground(Void... params) {
 		
-		@Override
-		protected String[] doInBackground(Void... params) {
+		ContentResolver cr = contentResolver;
+		
+		String[] projection = new String[] {
+			UtenteDB.Fields._ID, UtenteDB.Fields.ID_UTENTE
+		};
+		
+		String selection = UtenteDB.Fields.TYPE + "=?";
+		
+		String[] selectionArgs = new String[] {
+			UtenteDB.UTENTE_ITEM_TYPE
+		};
+		
+		String sortOrder = UtenteDB.Fields.COGNOME + " asc";
+		
+		Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection, selection, selectionArgs, sortOrder);
+		
+		ArrayList<String> arrayTecnici = new ArrayList<String>();
+		
+		while (cursor.moveToNext()) {
 		    
-		    ContentResolver cr = getActivity().getContentResolver();
+		    arrayTecnici.add("" + cursor.getLong(cursor.getColumnIndex(UtenteDB.Fields.ID_UTENTE)));
+		}
+		
+		System.out.println("Tutti i tecnici: " + arrayTecnici.toString());
+		
+		if (!cursor.isClosed())
+		    cursor.close();
+		
+		String[] tecnici = new String[arrayTecnici.size()];
+		
+		return arrayTecnici.toArray(tecnici);
+	    }
+	    
+	    @Override
+	    protected void onPostExecute(String[] result) {
+		
+	    }
+	};
+	
+	tuttiTecnici.execute();
+	
+	return tuttiTecnici.get();
+    }
+    
+    private static ManagedAsyncTask<String, Void, String[]> getTuttiNomiTecnici(FragmentActivity activity) {
+	ManagedAsyncTask<String, Void, String[]> tuttiNomiTecniciAsyncTask = new ManagedAsyncTask<String, Void, String[]>(activity) {
+	    
+	    @Override
+	    protected String[] doInBackground(String... params) {
+		
+		ContentResolver cr = getActivity().getContentResolver();
+		
+		ArrayList<String> arrayNomiTecnici = new ArrayList<String>();
+		
+		for (int i = 0; i < params.length; i++) {
 		    
 		    String[] projection = new String[] {
-			    UtenteDB.Fields._ID, UtenteDB.Fields.ID_UTENTE
+			    UtenteDB.Fields._ID, UtenteDB.Fields.NOME,
+			    UtenteDB.Fields.COGNOME
 		    };
 		    
-		    String selection = UtenteDB.Fields.TYPE + "=?";
+		    String selection = UtenteDB.Fields.TYPE + "=? AND " + UtenteDB.Fields.ID_UTENTE + "=?";
 		    
 		    String[] selectionArgs = new String[] {
-			    UtenteDB.UTENTE_ITEM_TYPE
+			    UtenteDB.UTENTE_ITEM_TYPE,
+			    params[i]
 		    };
 		    
 		    String sortOrder = UtenteDB.Fields.COGNOME + " asc";
 		    
 		    Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection, selection, selectionArgs, sortOrder);
 		    
-		    ArrayList<String> arrayTecnici = new ArrayList<String>();
-		    
 		    while (cursor.moveToNext()) {
 			
-			arrayTecnici.add("" + cursor.getLong(cursor.getColumnIndex(UtenteDB.Fields.ID_UTENTE)));
+			arrayNomiTecnici.add(cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.NOME)) + " " + cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.COGNOME)));
 		    }
-		    
-		    System.out.println("Tutti i tecnici: " + arrayTecnici.toString());
 		    
 		    if (!cursor.isClosed())
 			cursor.close();
-		    
-		    String[] tecnici = new String[arrayTecnici.size()];
-		    
-		    return arrayTecnici.toArray(tecnici);
 		}
 		
-		@Override
-		protected void onPostExecute(String[] result) {
-		    
-		}
-	    };
+		System.out.println("Tutti i nomi dei tecnici: " + arrayNomiTecnici.toString());
+		
+		String[] tecnici = new String[arrayNomiTecnici.size()];
+		
+		return arrayNomiTecnici.toArray(tecnici);
+	    }
 	    
-	    tuttiTecnici.execute();
-	    
-	    return tuttiTecnici.get();
-	}
+	    @Override
+	    protected void onPostExecute(String[] result) {
+		
+		super.onPostExecute(result);
+	    }
+	};
+	return tuttiNomiTecniciAsyncTask;
     }
 }

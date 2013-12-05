@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
-
+    <release
+        version="0.0.390"
+        versioncode="39" >
+        <change>
+            Bla bla bla
+        </change>
+    </release>
+    <release
+        version="0.0.380"
+        versioncode="38" >
+        <change>
+            Bla bla bla          
+        </change>
+    </release>
     <release
         version="0.0.370"
         versioncode="37" >
         <change>
-Fixed: A bug fix
+			Fixed: A bug fix
         </change>
         <change>
-Button appearance changed
+			Button appearance changed
         </change>
         <change>
-Small layout change in the view item screen
+			Small layout change in the view item screen
         </change>
     </release>
     <release
         version="0.0.350"
         versioncode="35" >
         <change>
-Small layout change in the view item screen
+			Small layout change in the view item screen
         </change>
         <change>
-Minor tweaks
+			Minor tweaks
         </change>
     </release>
-
 </changelog>

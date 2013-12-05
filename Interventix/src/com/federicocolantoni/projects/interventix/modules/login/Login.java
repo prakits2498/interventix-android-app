@@ -100,6 +100,7 @@ public class Login extends RoboFragment implements OnClickListener {
 				new GetLogin(getActivity()).execute(json_req, username.getText().toString(), password.getText().toString());
 			    }
 			    catch (Exception e) {
+				
 				e.printStackTrace();
 				BugSenseHandler.sendException(e);
 			    }
@@ -136,6 +137,7 @@ public class Login extends RoboFragment implements OnClickListener {
 				new GetLogin(getActivity()).execute(json_req, username.getText().toString(), password.getText().toString());
 			    }
 			    catch (Exception e) {
+				
 				e.printStackTrace();
 				BugSenseHandler.sendException(e);
 			    }
@@ -353,10 +355,12 @@ public class Login extends RoboFragment implements OnClickListener {
 		    }
 		}
 		catch (SocketTimeoutException e) {
+		    
 		    e.printStackTrace();
 		    BugSenseHandler.sendException(e);
 		}
 		catch (Exception e) {
+		    
 		    e.printStackTrace();
 		    BugSenseHandler.sendException(e);
 		}

@@ -166,14 +166,17 @@ public class ViewInterventoActivity extends RoboActionBarActivity {
 	    }.execute(intervento);
 	}
 	catch (InterruptedException e) {
+	    
 	    e.printStackTrace();
 	    BugSenseHandler.sendException(e);
 	}
 	catch (ExecutionException e) {
+	    
 	    e.printStackTrace();
 	    BugSenseHandler.sendException(e);
 	}
 	catch (JSONException e) {
+	    
 	    e.printStackTrace();
 	    BugSenseHandler.sendException(e);
 	}
@@ -511,10 +514,12 @@ public class ViewInterventoActivity extends RoboActionBarActivity {
 			}.execute(RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE).get();
 		    }
 		    catch (InterruptedException e) {
+			
 			e.printStackTrace();
 			BugSenseHandler.sendException(e);
 		    }
 		    catch (ExecutionException e) {
+			
 			e.printStackTrace();
 			BugSenseHandler.sendException(e);
 		    }
@@ -584,11 +589,12 @@ public class ViewInterventoActivity extends RoboActionBarActivity {
 					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 				});
 				
-				queryHandlerDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, DettaglioInterventoDB.CONTENT_URI, DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?", new String[] {
-				    "-1"
+				queryHandlerDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, DettaglioInterventoDB.CONTENT_URI, DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "<?", new String[] {
+					"0"
 				});
 			    }
 			    catch (JSONException e) {
+				
 				e.printStackTrace();
 				BugSenseHandler.sendException(e);
 			    }

@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -105,6 +106,18 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 	    }
 	});
 	
+	detailsList.setOnItemLongClickListener(new OnItemLongClickListener() {
+	    
+	    @Override
+	    public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
+		
+		// aggiungere il menu contestuale per la cancellazione del
+		// dettaglio
+		
+		return false;
+	    }
+	});
+	
 	getActivity().getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
 	
 	return view;
@@ -135,7 +148,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 		DetailInterventoFragment newDetail = new DetailInterventoFragment();
 		
 		Bundle bundle = new Bundle();
-		bundle.putLong(Constants.ID_DETTAGLIO_INTERVENTO, -1l);
+		// bundle.putLong(Constants.ID_DETTAGLIO_INTERVENTO, -1l);
 		bundle.putString(Constants.NUOVO_DETTAGLIO_INTERVENTO, Constants.NUOVO_DETTAGLIO_INTERVENTO);
 		bundle.putLong(Constants.ID_INTERVENTO, mId_intervento);
 		

@@ -60,10 +60,12 @@ public class OverViewInterventoFragment extends Fragment {
 	    interv = new GetOverviewInterventoAsyncTask(getActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
 	}
 	catch (InterruptedException e) {
+	    
 	    e.printStackTrace();
 	    BugSenseHandler.sendException(e);
 	}
 	catch (ExecutionException e) {
+	    
 	    e.printStackTrace();
 	    BugSenseHandler.sendException(e);
 	}
@@ -93,9 +95,13 @@ public class OverViewInterventoFragment extends Fragment {
 	    cliente = new GetNominativoClienteAsyncTask(getActivity()).execute(interv.getmIdCliente()).get();
 	}
 	catch (InterruptedException e) {
+	    
+	    BugSenseHandler.sendException(e);
 	    e.printStackTrace();
 	}
 	catch (ExecutionException e) {
+	    
+	    BugSenseHandler.sendException(e);
 	    e.printStackTrace();
 	}
 	
@@ -141,9 +147,13 @@ public class OverViewInterventoFragment extends Fragment {
 	    listaDetailsInterv = new GetListaDettagliInterventoAsyncTask(getActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
 	}
 	catch (InterruptedException e) {
+	    
+	    BugSenseHandler.sendException(e);
 	    e.printStackTrace();
 	}
 	catch (ExecutionException e) {
+	    
+	    BugSenseHandler.sendException(e);
 	    e.printStackTrace();
 	}
 	

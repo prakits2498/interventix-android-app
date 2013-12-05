@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
 
 public class DateTimePicker extends RelativeLayout {
@@ -157,6 +158,8 @@ public class DateTimePicker extends RelativeLayout {
 	    });
 	}
 	catch (Exception e) {
+	    
+	    BugSenseHandler.sendException(e);
 	    e.printStackTrace();
 	}
     }
@@ -170,6 +173,8 @@ public class DateTimePicker extends RelativeLayout {
 	    });
 	}
 	catch (Exception e) {
+	    
+	    BugSenseHandler.sendException(e);
 	    day_display.setText("" + cal.get(Calendar.DAY_OF_MONTH));
 	    e.printStackTrace();
 	}
@@ -231,6 +236,8 @@ public class DateTimePicker extends RelativeLayout {
 		sendToDisplay();
 	    }
 	    catch (Exception e) {
+		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	}
@@ -247,6 +254,8 @@ public class DateTimePicker extends RelativeLayout {
 		sendToDisplay();
 	    }
 	    catch (Exception e) {
+		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	}
@@ -312,6 +321,8 @@ public class DateTimePicker extends RelativeLayout {
 		sendToListener();
 	    }
 	    catch (Exception e) {
+		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	    
@@ -333,6 +344,8 @@ public class DateTimePicker extends RelativeLayout {
 		sendToListener();
 	    }
 	    catch (Exception e) {
+		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	}
@@ -363,6 +376,8 @@ public class DateTimePicker extends RelativeLayout {
 		sendToListener();
 	    }
 	    catch (Exception e) {
+		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	    
@@ -393,6 +408,8 @@ public class DateTimePicker extends RelativeLayout {
 		sendToListener();
 	    }
 	    catch (Exception e) {
+		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	    
@@ -502,6 +519,8 @@ public class DateTimePicker extends RelativeLayout {
 		
 	    }
 	    catch (Exception e) {
+		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	}
@@ -530,6 +549,8 @@ public class DateTimePicker extends RelativeLayout {
 		
 	    }
 	    catch (Exception e) {
+		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	}
@@ -608,9 +629,13 @@ public class DateTimePicker extends RelativeLayout {
 		}
 	    }
 	    catch (NumberFormatException e) {
+		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	    catch (Exception e) {
+		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	    
@@ -651,6 +676,8 @@ public class DateTimePicker extends RelativeLayout {
 		sendToListener();
 	    }
 	    catch (Exception e) {
+		
+		BugSenseHandler.sendException(e);
 		e.printStackTrace();
 	    }
 	}

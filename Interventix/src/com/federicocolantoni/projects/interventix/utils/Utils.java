@@ -15,6 +15,7 @@ import multiface.crypto.cr2.JsonCR2;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 
 public class Utils {
@@ -55,6 +56,8 @@ public class Utils {
 	    
 	}
 	catch (IOException e) {
+	    
+	    BugSenseHandler.sendException(e);
 	    e.printStackTrace();
 	}
 	finally {
@@ -63,6 +66,8 @@ public class Utils {
 		    br.close();
 		}
 		catch (IOException e) {
+		    
+		    BugSenseHandler.sendException(e);
 		    e.printStackTrace();
 		}
 	    }

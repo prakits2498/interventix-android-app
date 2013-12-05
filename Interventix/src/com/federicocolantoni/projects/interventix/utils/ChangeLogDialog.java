@@ -17,6 +17,7 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
 
 /*
@@ -52,6 +53,8 @@ public class ChangeLogDialog {
 	    return _info.versionName;
 	}
 	catch (NameNotFoundException e) {
+	    
+	    BugSenseHandler.sendException(e);
 	    e.printStackTrace();
 	    return "";
 	}
@@ -124,6 +127,8 @@ public class ChangeLogDialog {
 	    _Resource = fActivity.getPackageManager().getResourcesForApplication(_PackageName);
 	}
 	catch (NameNotFoundException e) {
+	    
+	    BugSenseHandler.sendException(e);
 	    e.printStackTrace();
 	    return;
 	}
