@@ -75,4 +75,18 @@ public class Utils {
 	
 	return sb.toString();
     }
+    
+    public static byte[] stringToByteArray(String convertToByteArray) {
+	
+	byte[] newArray = new byte[convertToByteArray.length()];
+	
+	for (int i = 0; i < convertToByteArray.length(); i++) {
+	    
+	    char character = convertToByteArray.charAt(i);
+	    
+	    newArray[i] = (byte) character;
+	}
+	
+	return newArray;
+    }
 }

@@ -41,8 +41,6 @@ public class OverViewInterventoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
-	BugSenseHandler.initAndStartSession(getActivity(), Constants.API_KEY);
-	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
 	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
@@ -77,6 +75,8 @@ public class OverViewInterventoFragment extends Fragment {
 	DateTime dt_interv = new DateTime(interv.getmDataOra(), DateTimeZone.forID("Europe/Rome"));
 	
 	summary.setText("Interv. " + bundle.getLong(Constants.NUMERO_INTERVENTO) + " del " + dt_interv.toString("dd/MM/yyyy HH:mm"));
+	
+	final FragmentManager manager = getActivity().getSupportFragmentManager();
 	
 	View rowCliente = view.findViewById(R.id.row_client);
 	rowCliente.setOnClickListener(new OnClickListener() {
@@ -124,7 +124,6 @@ public class OverViewInterventoFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		
-		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		
 		InformationsInterventoFragment infoInterv = new InformationsInterventoFragment();
@@ -162,7 +161,6 @@ public class OverViewInterventoFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		
-		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		
 		DetailsInterventoFragment detailsInterv = new DetailsInterventoFragment();
@@ -203,7 +201,6 @@ public class OverViewInterventoFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		
-		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		
 		CostsInterventoFragment costsInterv = new CostsInterventoFragment();
@@ -228,6 +225,16 @@ public class OverViewInterventoFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		
+		FragmentTransaction transaction = manager.beginTransaction();
+		
+		SignatureInterventoFragment signInterv = new SignatureInterventoFragment();
+		signInterv.setArguments(intervIDBundle);
+		
+		transaction.replace(R.id.fragments_layout, signInterv, Constants.SIGNATURE_INTERVENTO_FRAGMENT);
+		transaction.addToBackStack(Constants.SIGNATURE_INTERVENTO_FRAGMENT);
+		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		
+		transaction.commit();
 	    }
 	});
 	
