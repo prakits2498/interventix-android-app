@@ -70,7 +70,7 @@ public class CostsInterventoFragment extends Fragment {
 	sId_intervento = bundle.getLong(Constants.ID_INTERVENTO);
 	
 	TextView tv_costs_intervento = (TextView) view.findViewById(R.id.tv_costs_intervention);
-	tv_costs_intervento.setText("Costi Intervento " + bundle.getLong(Constants.NUMERO_INTERVENTO));
+	tv_costs_intervento.setText("Costi");
 	
 	Intervento interv = null;
 	

@@ -35,6 +35,7 @@ import com.federicocolantoni.projects.interventix.R;
  */
 
 public class ChangeLogDialog {
+    
     static final private String TAG = "ChangeLogDialog";
     
     static final private String TITLE_CHANGELOG = "title_changelog";

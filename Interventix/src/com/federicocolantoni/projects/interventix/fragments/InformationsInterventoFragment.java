@@ -89,7 +89,7 @@ public class InformationsInterventoFragment extends Fragment {
 	}
 	
 	TextView info_interv = (TextView) view.findViewById(R.id.tv_info_intervention);
-	info_interv.setText("Informazioni Intervento " + bundle.getLong(Constants.NUMERO_INTERVENTO));
+	info_interv.setText("Informazioni");
 	
 	View tipologia = view.findViewById(R.id.row_tipology);
 	tipologia.setOnClickListener(new View.OnClickListener() {

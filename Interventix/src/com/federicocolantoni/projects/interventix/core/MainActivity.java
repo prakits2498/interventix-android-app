@@ -4,8 +4,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
-import roboguice.fragment.RoboDialogFragment;
-import roboguice.inject.InjectView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -15,8 +13,10 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,19 +31,20 @@ import com.federicocolantoni.projects.interventix.BuildConfig;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.modules.login.Login;
+import com.federicocolantoni.projects.interventix.modules.login.Login_;
 import com.federicocolantoni.projects.interventix.settings.SettingActivity;
 import com.federicocolantoni.projects.interventix.settings.SettingSupportActivity;
 import com.federicocolantoni.projects.interventix.task.ReadDefaultPreferences;
 import com.federicocolantoni.projects.interventix.utils.ChangeLogDialog;
-import com.metova.roboguice.appcompat.RoboActionBarActivity;
+import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.ViewById;
 
 @SuppressLint("NewApi")
-public class MainActivity extends RoboActionBarActivity {
+@EActivity(R.layout.activity_main)
+public class MainActivity extends ActionBarActivity {
     
-    // abilitato quando verrà rilasciata la versione 3.0 di RoboGuice che
-    // porterà il supporto anche all'ActionBarActivity
-    // @InjectView(R.id.tv_changelog)
-    // TextView tv_changelog;
+    @ViewById(R.id.tv_changelog)
+    TextView tv_changelog;
     
     Timer timer;
     
@@ -52,13 +53,11 @@ public class MainActivity extends RoboActionBarActivity {
 	
 	super.onCreate(savedInstanceState);
 	
-	setContentView(R.layout.activity_main);
-	
 	BugSenseHandler.initAndStartSession(MainActivity.this, Constants.API_KEY);
 	
 	FragmentManager manager = getSupportFragmentManager();
 	
-	final Login fragLogin = new Login();
+	final Login fragLogin = new Login_();
 	
 	final FragmentTransaction transaction = manager.beginTransaction();
 	
@@ -101,7 +100,13 @@ public class MainActivity extends RoboActionBarActivity {
 	
 	System.out.println("DEFAULT URL: " + prefs.getString(getResources().getString(R.string.prefs_key_url), ""));
 	
-	TextView tv_changelog = (TextView) findViewById(R.id.tv_changelog);
+    }
+    
+    @Override
+    protected void onStart() {
+	
+	super.onStart();
+	
 	tv_changelog.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -146,12 +151,9 @@ public class MainActivity extends RoboActionBarActivity {
 	}
     }
     
-    public static class FirstRunDialog extends RoboDialogFragment implements OnClickListener {
+    public static class FirstRunDialog extends DialogFragment implements OnClickListener {
 	
-	// private Button btn_ok;
-	
-	@InjectView(R.id.save_prefs_url)
-	Button btn_ok;
+	private Button btn_ok;
 	
 	public FirstRunDialog() {
 	    

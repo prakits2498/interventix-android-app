@@ -72,7 +72,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 	};
 	
 	TextView tv_costs_intervento = (TextView) view.findViewById(R.id.tv_details_intervention);
-	tv_costs_intervento.setText("Dettagli Intervento " + bundle.getLong(Constants.NUMERO_INTERVENTO));
+	tv_costs_intervento.setText("Dettagli");
 	
 	ListView detailsList = (ListView) view.findViewById(R.id.list_details_intervento);
 	
