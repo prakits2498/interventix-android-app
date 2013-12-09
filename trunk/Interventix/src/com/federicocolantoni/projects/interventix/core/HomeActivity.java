@@ -9,7 +9,6 @@ import multiface.crypto.cr2.JsonCR2;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import roboguice.inject.InjectView;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -24,6 +23,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -49,11 +49,10 @@ import com.federicocolantoni.projects.interventix.intervento.Utente;
 import com.federicocolantoni.projects.interventix.task.GetNominativoUtenteAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
-import com.metova.roboguice.appcompat.RoboActionBarActivity;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
-public class HomeActivity extends RoboActionBarActivity implements LoaderCallbacks<Cursor> {
+public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<Cursor> {
     
     private final static int MESSAGE_LOADER = 1;
     
@@ -71,9 +70,7 @@ public class HomeActivity extends RoboActionBarActivity implements LoaderCallbac
     
     private Menu optionsMenu;
     
-    @InjectView(R.id.list_interv_open)
     ListView listOpen;
-    @InjectView(R.id.list_header_open)
     TextView headerOpen;
     
     @Override

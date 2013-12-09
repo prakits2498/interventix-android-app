@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-	<TextView
-		android:id="@+id/tv_summary_intervention"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center_horizontal|center_vertical"
-		android:textSize="18sp"
-		android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tv_summary_intervention"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|center_vertical"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
-	<ImageView
-		android:id="@+id/signature"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:layout_marginTop="8dp"
-		android:contentDescription="signature" />
+    <ImageView
+        android:id="@+id/signature"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:contentDescription="signature" />
+
+    <LinearLayout
+        android:id="@+id/layout_signature_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:visibility="gone" >
+
+        <com.federicocolantoni.projects.interventix.utils.DrawingView
+            android:id="@+id/signature_drawer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 </LinearLayout>

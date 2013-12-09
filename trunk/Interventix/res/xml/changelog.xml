@@ -1,40 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
     <release
+        version="0.0.400"
+        versioncode="40" >
+        <change>
+            Tolto l'utilizzo della libreria RoboJuice.
+        </change>
+    </release>
+    <release
         version="0.0.390"
         versioncode="39" >
         <change>
-            Bla bla bla
-        </change>
-    </release>
-    <release
-        version="0.0.380"
-        versioncode="38" >
-        <change>
-            Bla bla bla          
-        </change>
-    </release>
-    <release
-        version="0.0.370"
-        versioncode="37" >
-        <change>
-			Fixed: A bug fix
+            Implementata l'aggiunta di un nuovo dettaglio per l'intervento.
         </change>
         <change>
-			Button appearance changed
+            Reso di default l'indirizzo per la connessione al server centrale.
         </change>
         <change>
-			Small layout change in the view item screen
-        </change>
-    </release>
-    <release
-        version="0.0.350"
-        versioncode="35" >
-        <change>
-			Small layout change in the view item screen
+            Aggiunto l'utilizzo della libreria RoboJuice.
         </change>
         <change>
-			Minor tweaks
+            Effettuato il passaggio dalla libreria ActionBarSherlock alla libreria di supporto AppCompat.
+        </change>
+        <change>
+            Refactoring del progetto: eliminati librerie e codice che non serve piu'.
+        </change>
+        <change>
+            Altri fix di bug minori.
         </change>
     </release>
 </changelog>

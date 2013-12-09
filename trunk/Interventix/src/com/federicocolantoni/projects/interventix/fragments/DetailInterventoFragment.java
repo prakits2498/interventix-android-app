@@ -13,8 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import roboguice.fragment.RoboFragment;
-import roboguice.inject.InjectView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -33,8 +31,10 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,11 +60,10 @@ import com.federicocolantoni.projects.interventix.task.SaveChangesDettaglioInter
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatcher;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
-import com.metova.roboguice.appcompat.RoboActionBarActivity;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
-public class DetailInterventoFragment extends RoboFragment {
+public class DetailInterventoFragment extends Fragment {
     
     private static long sId_Dettaglio_Intervento, sId_Intervento;
     
@@ -83,13 +82,23 @@ public class DetailInterventoFragment extends RoboFragment {
     
     private DettaglioIntervento dettInterv;
     
-    @InjectView(R.id.tv_dett_interv)
-    TextView tv_dett_interv;
+    private TextView tv_dett_interv;
     
-    @InjectView(R.id.row_oggetto_dettaglio)
-    View row_oggetto_dett;
-    @InjectView(R.id.tv_row_oggetto_dettaglio)
-    TextView tv_row_oggetto_dett;
+    private View row_tipo_dett;
+    
+    private TextView tv_row_tipo_dett;
+    
+    private View row_oggetto_dett;
+    
+    private TextView tv_row_oggetto_dett;
+    
+    private View row_descr_dett;
+    
+    private TextView tv_row_descr_dett;
+    
+    private View row_tecnici_dett;
+    
+    private TextView tv_row_tecnici_dett;
     
     private ActionBar actionbar;
     
@@ -102,7 +111,7 @@ public class DetailInterventoFragment extends RoboFragment {
 	
 	final View view = inflater.inflate(R.layout.detail_dett_intervento_fragment, container, false);
 	
-	actionbar = ((RoboActionBarActivity) getActivity()).getSupportActionBar();
+	actionbar = ((ActionBarActivity) getActivity()).getSupportActionBar();
 	
 	actionbar.setHomeButtonEnabled(true);
 	actionbar.setDisplayHomeAsUpEnabled(true);
@@ -242,10 +251,9 @@ public class DetailInterventoFragment extends RoboFragment {
 	    }
 	    
 	    tv_dett_interv = (TextView) view.findViewById(R.id.tv_dett_interv);
-	    
 	    tv_dett_interv.setText("Dettaglio " + sId_Dettaglio_Intervento);
 	    
-	    View row_tipo_dett = view.findViewById(R.id.row_tipo_dettaglio);
+	    row_tipo_dett = view.findViewById(R.id.row_tipo_dettaglio);
 	    
 	    row_tipo_dett.setOnClickListener(new OnClickListener() {
 		
@@ -256,11 +264,10 @@ public class DetailInterventoFragment extends RoboFragment {
 		}
 	    });
 	    
-	    TextView tv_row_tipo_dett = (TextView) row_tipo_dett.findViewById(R.id.tv_row_tipo_dettaglio);
+	    tv_row_tipo_dett = (TextView) row_tipo_dett.findViewById(R.id.tv_row_tipo_dettaglio);
 	    tv_row_tipo_dett.setText(dettInterv.getmTipo());
 	    
 	    row_oggetto_dett = view.findViewById(R.id.row_oggetto_dettaglio);
-	    
 	    row_oggetto_dett.setOnClickListener(new OnClickListener() {
 		
 		@Override
@@ -273,9 +280,9 @@ public class DetailInterventoFragment extends RoboFragment {
 	    tv_row_oggetto_dett = (TextView) row_oggetto_dett.findViewById(R.id.tv_row_oggetto_dettaglio);
 	    tv_row_oggetto_dett.setText(dettInterv.getmOggetto());
 	    
-	    View row_tecnici_dett = view.findViewById(R.id.row_tecnici_dettaglio);
+	    row_tecnici_dett = view.findViewById(R.id.row_tecnici_dettaglio);
 	    
-	    TextView tv_row_tecnici_dett = (TextView) row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
+	    tv_row_tecnici_dett = (TextView) row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
 	    tv_row_tecnici_dett.setText("" + dettInterv.getmTecnici().length());
 	    
 	    final JSONArray tecnici = dettInterv.getmTecnici();
@@ -303,9 +310,9 @@ public class DetailInterventoFragment extends RoboFragment {
 		}
 	    });
 	    
-	    View row_descrizione_dett = view.findViewById(R.id.row_descrizione_dettaglio);
+	    row_descr_dett = view.findViewById(R.id.row_descrizione_dettaglio);
 	    
-	    row_descrizione_dett.setOnClickListener(new OnClickListener() {
+	    row_descr_dett.setOnClickListener(new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
@@ -314,8 +321,8 @@ public class DetailInterventoFragment extends RoboFragment {
 		}
 	    });
 	    
-	    TextView tv_row_descrizione_dett = (TextView) row_descrizione_dett.findViewById(R.id.tv_row_descrizione_dettaglio);
-	    tv_row_descrizione_dett.setText(dettInterv.getmDescrizione());
+	    tv_row_descr_dett = (TextView) row_descr_dett.findViewById(R.id.tv_row_descrizione_dettaglio);
+	    tv_row_descr_dett.setText(dettInterv.getmDescrizione());
 	    
 	    final View row_inizio_dett = view.findViewById(R.id.row_inizio_dettaglio);
 	    
@@ -618,12 +625,10 @@ public class DetailInterventoFragment extends RoboFragment {
 	    BugSenseHandler.sendException(e);
 	}
 	
-	TextView tv_dett_interv = (TextView) view.findViewById(R.id.tv_dett_interv);
-	
+	tv_dett_interv = (TextView) view.findViewById(R.id.tv_dett_interv);
 	tv_dett_interv.setText("Dettaglio " + Constants.sID_Dettaglio_Temp);
 	
-	View row_tipo_dett = view.findViewById(R.id.row_tipo_dettaglio);
-	
+	row_tipo_dett = view.findViewById(R.id.row_tipo_dettaglio);
 	row_tipo_dett.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -633,11 +638,10 @@ public class DetailInterventoFragment extends RoboFragment {
 	    }
 	});
 	
-	TextView tv_row_tipo_dett = (TextView) row_tipo_dett.findViewById(R.id.tv_row_tipo_dettaglio);
+	tv_row_tipo_dett = (TextView) row_tipo_dett.findViewById(R.id.tv_row_tipo_dettaglio);
 	tv_row_tipo_dett.setText("");
 	
-	View row_oggetto_dett = view.findViewById(R.id.row_oggetto_dettaglio);
-	
+	row_oggetto_dett = view.findViewById(R.id.row_oggetto_dettaglio);
 	row_oggetto_dett.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -647,12 +651,12 @@ public class DetailInterventoFragment extends RoboFragment {
 	    }
 	});
 	
-	TextView tv_row_oggetto_dett = (TextView) row_oggetto_dett.findViewById(R.id.tv_row_oggetto_dettaglio);
+	tv_row_oggetto_dett = (TextView) row_oggetto_dett.findViewById(R.id.tv_row_oggetto_dettaglio);
 	tv_row_oggetto_dett.setText("");
 	
-	View row_tecnici_dett = view.findViewById(R.id.row_tecnici_dettaglio);
+	row_tecnici_dett = view.findViewById(R.id.row_tecnici_dettaglio);
 	
-	TextView tv_row_tecnici_dett = (TextView) row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
+	tv_row_tecnici_dett = (TextView) row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
 	tv_row_tecnici_dett.setText("");
 	
 	row_tecnici_dett.setOnClickListener(new OnClickListener() {
@@ -755,9 +759,8 @@ public class DetailInterventoFragment extends RoboFragment {
 	    }
 	});
 	
-	View row_descrizione_dett = view.findViewById(R.id.row_descrizione_dettaglio);
-	
-	row_descrizione_dett.setOnClickListener(new OnClickListener() {
+	row_descr_dett = view.findViewById(R.id.row_descrizione_dettaglio);
+	row_descr_dett.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
 	    public void onClick(View v) {
@@ -766,8 +769,8 @@ public class DetailInterventoFragment extends RoboFragment {
 	    }
 	});
 	
-	TextView tv_row_descrizione_dett = (TextView) row_descrizione_dett.findViewById(R.id.tv_row_descrizione_dettaglio);
-	tv_row_descrizione_dett.setText("");
+	tv_row_descr_dett = (TextView) row_descr_dett.findViewById(R.id.tv_row_descrizione_dettaglio);
+	tv_row_descr_dett.setText("");
 	
 	final View row_inizio_dett = view.findViewById(R.id.row_inizio_dettaglio);
 	
@@ -1554,16 +1557,6 @@ public class DetailInterventoFragment extends RoboFragment {
 			@Override
 			protected void onInsertComplete(int token, Object cookie, Uri uri) {
 			    
-			    getActivity().runOnUiThread(new Runnable() {
-				
-				@Override
-				public void run() {
-				    
-				    View row_tecnici_dett = getActivity().findViewById(R.id.row_tecnici_dettaglio);
-				    TextView tv_row_tecnici_dett = (TextView) row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
-				    tv_row_tecnici_dett.setText(tecnici.length());
-				}
-			    });
 			}
 		    };
 		    

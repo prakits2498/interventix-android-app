@@ -220,27 +220,27 @@ public class OverViewInterventoFragment extends Fragment {
 	tv_row_costs.setText(formatter.format(interv.getmTotale().doubleValue()) + " €");
 	
 	View rowSignature = view.findViewById(R.id.row_signature);
-	rowSignature.setOnClickListener(new OnClickListener() {
-	    
-	    @Override
-	    public void onClick(View v) {
-		
-		FragmentTransaction transaction = manager.beginTransaction();
-		
-		SignatureInterventoFragment signInterv = new SignatureInterventoFragment();
-		signInterv.setArguments(intervIDBundle);
-		
-		transaction.replace(R.id.fragments_layout, signInterv, Constants.SIGNATURE_INTERVENTO_FRAGMENT);
-		transaction.addToBackStack(Constants.SIGNATURE_INTERVENTO_FRAGMENT);
-		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		
-		transaction.commit();
-	    }
-	});
 	
 	TextView tv_row_signature = (TextView) rowSignature.findViewById(R.id.tv_row_signature);
-	if (interv.getmFirma() != null) {
+	if (interv.getmFirma().length() > 0) {
 	    tv_row_signature.setText("Presente");
+	    rowSignature.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+		    
+		    FragmentTransaction transaction = manager.beginTransaction();
+		    
+		    SignatureInterventoFragment signInterv = new SignatureInterventoFragment();
+		    signInterv.setArguments(intervIDBundle);
+		    
+		    transaction.replace(R.id.fragments_layout, signInterv, Constants.SIGNATURE_INTERVENTO_FRAGMENT);
+		    transaction.addToBackStack(Constants.SIGNATURE_INTERVENTO_FRAGMENT);
+		    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		    
+		    transaction.commit();
+		}
+	    });
 	}
 	else {
 	    tv_row_signature.setText("Non presente");

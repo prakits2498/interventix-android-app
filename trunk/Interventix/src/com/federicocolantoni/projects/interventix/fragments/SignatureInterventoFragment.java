@@ -2,32 +2,88 @@ package com.federicocolantoni.projects.interventix.fragments;
 
 import java.util.concurrent.ExecutionException;
 
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.IOUtils;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
+import android.support.v7.view.ActionMode.Callback;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.intervento.Intervento;
 import com.federicocolantoni.projects.interventix.task.GetSignatureInterventoAsyncTask;
+import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
 
 @SuppressLint("NewApi")
 public class SignatureInterventoFragment extends Fragment {
+    
+    private ImageView signature;
+    
+    private LinearLayout layout_drawer;
+    
+    private ActionMode mActionModeSignature;
+    
+    private ActionMode.Callback mActionModeCallback = new Callback() {
+	
+	@Override
+	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+	    
+	    return false;
+	}
+	
+	@Override
+	public void onDestroyActionMode(ActionMode mode) {
+	    
+	    mActionModeSignature = null;
+	}
+	
+	@Override
+	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+	    
+	    MenuInflater inflater = mode.getMenuInflater();
+	    inflater.inflate(R.menu.context_menu_signature, menu);
+	    
+	    return true;
+	}
+	
+	@Override
+	public boolean onActionItemClicked(ActionMode mode, MenuItem menuItem) {
+	    
+	    switch (menuItem.getItemId()) {
+	    
+		case R.id.save_signature:
+		    mode.finish();
+		    layout_drawer.setVisibility(View.GONE);
+		    signature.setVisibility(View.VISIBLE);
+		    return true;
+		    
+		case R.id.cancel:
+		    mode.finish();
+		    layout_drawer.setVisibility(View.GONE);
+		    signature.setVisibility(View.VISIBLE);
+		    return true;
+		    
+		default:
+		    return false;
+	    }
+	}
+    };
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,22 +119,48 @@ public class SignatureInterventoFragment extends Fragment {
 	
 	TextView summary = (TextView) view.findViewById(R.id.tv_summary_intervention);
 	
-	DateTime dt_interv = new DateTime(interv.getmDataOra(), DateTimeZone.forID("Europe/Rome"));
+	summary.setText("Firma");
 	
-	summary.setText("Interv. " + bundle.getLong(Constants.NUMERO_INTERVENTO) + " del " + dt_interv.toString("dd/MM/yyyy HH:mm"));
-	
-	ImageView signature = (ImageView) view.findViewById(R.id.signature);
+	signature = (ImageView) view.findViewById(R.id.signature);
+	signature.setDrawingCacheEnabled(true);
 	
 	String hexSignature = interv.getmFirma();
 	
-	System.out.println("Hex signature: " + hexSignature + "\nByte[] signature: " + Utils.stringToByteArray(hexSignature));
+	byte[] byteSignature = Utils.hexToBytes(hexSignature.toCharArray());
 	
-	Bitmap bitmapSignature = BitmapFactory.decodeStream(IOUtils.toInputStream(hexSignature, Charsets.UTF_8));
+	System.out.println("Hex signature: " + hexSignature);
+	System.out.println("Byte[] signature: " + byteSignature);
+	
+	Bitmap bitmapSignature = BitmapFactory.decodeByteArray(byteSignature, 0, byteSignature.length);
 	
 	if (bitmapSignature != null)
 	    signature.setImageBitmap(bitmapSignature);
 	else
 	    System.out.println("Error to generate image from hex string!");
+	
+	signature.setOnLongClickListener(new OnLongClickListener() {
+	    
+	    @Override
+	    public boolean onLongClick(View v) {
+		
+		if (mActionModeSignature != null)
+		    return false;
+		
+		// TODO aprire un menu contestuale per salvare o annullare
+		// l'operazione di modifica della firma
+		
+		InterventixToast.makeToast(getActivity(), "TODO: modificare la firma", Toast.LENGTH_SHORT);
+		
+		mActionModeSignature = ((ActionBarActivity) getActivity()).startSupportActionMode(mActionModeCallback);
+		
+		signature.setVisibility(View.GONE);
+		
+		layout_drawer = (LinearLayout) ((ActionBarActivity) getActivity()).findViewById(R.id.layout_signature_drawer);
+		layout_drawer.setVisibility(View.VISIBLE);
+		
+		return true;
+	    }
+	});
 	
 	return view;
     }
