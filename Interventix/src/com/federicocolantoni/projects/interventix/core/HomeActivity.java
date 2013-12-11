@@ -39,7 +39,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.R.string;
-import com.federicocolantoni.projects.interventix.adapter.InterventiAdapter;
+import com.federicocolantoni.projects.interventix.adapter.ListInterventiAdapter;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
@@ -66,7 +66,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	    InterventoDB.INTERVENTO_ITEM_TYPE, "0"
     };
     
-    private InterventiAdapter mAdapter;
+    private ListInterventiAdapter mAdapter;
     
     private Menu optionsMenu;
     
@@ -87,11 +87,11 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	listOpen = (ListView) findViewById(R.id.list_interv_open);
 	
-	mAdapter = new InterventiAdapter(this, null);
+	mAdapter = new ListInterventiAdapter(this, null);
 	
 	listOpen.setAdapter(mAdapter);
 	
-	getSupportLoaderManager().initLoader(HomeActivity.MESSAGE_LOADER, null, this);
+	getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
 	
 	headerOpen = (TextView) findViewById(R.id.list_header_open);
 	headerOpen.setText(R.string.interventi_aperti);
@@ -115,6 +115,12 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		startActivity(intent);
 	    }
 	});
+    }
+    
+    @Override
+    protected void onStart() {
+	
+	super.onStart();
     }
     
     @Override

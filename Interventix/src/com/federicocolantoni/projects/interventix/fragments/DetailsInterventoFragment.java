@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.adapter.DettaglioInterventoAdapter;
+import com.federicocolantoni.projects.interventix.adapter.ListDettagliInterventiAdapter;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
@@ -47,7 +47,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
     
     private String[] SELECTION_ARGS;
     
-    private DettaglioInterventoAdapter mAdapter;
+    private ListDettagliInterventiAdapter mAdapter;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 	
 	ListView detailsList = (ListView) view.findViewById(R.id.list_details_intervento);
 	
-	mAdapter = new DettaglioInterventoAdapter(getActivity(), null);
+	mAdapter = new ListDettagliInterventiAdapter(getActivity(), null);
 	
 	detailsList.setAdapter(mAdapter);
 	

@@ -84,6 +84,15 @@ public class OverViewInterventoFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		
+		FragmentTransaction transaction = manager.beginTransaction();
+		
+		ClientsInterventoFragment clientiInterv = new ClientsInterventoFragment_();
+		
+		transaction.replace(R.id.fragments_layout, clientiInterv, Constants.CLIENTS_INTERVENTO_FRAGMENT);
+		transaction.addToBackStack(Constants.CLIENTS_INTERVENTO_FRAGMENT);
+		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		
+		transaction.commit();
 	    }
 	});
 	
