@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <dimen name="default_vertical_margin">16dp</dimen>
     <dimen name="default_horizontal_margin">16dp</dimen>
     <dimen name="listPreferredItemHeightSmall">48dp</dimen>
     <!-- dimens for brush -->
-    <dimen name="small_brush">10dp</dimen>
-    <integer name="small_size">10</integer>
+    <dimen name="small_brush">2dp</dimen>
+
+    <integer name="small_size">2</integer>
+
 </resources>
