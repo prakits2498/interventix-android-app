@@ -42,7 +42,7 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
-import com.federicocolantoni.projects.interventix.intervento.Intervento;
+import com.federicocolantoni.projects.interventix.entity.Intervento;
 import com.federicocolantoni.projects.interventix.task.GetInformationsInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.SaveChangesInterventoAsyncQueryHandler;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
