@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+
     <release
         version="0.0.400"
         versioncode="40" >
@@ -29,4 +30,5 @@
             Altri fix di bug minori.
         </change>
     </release>
+
 </changelog>
