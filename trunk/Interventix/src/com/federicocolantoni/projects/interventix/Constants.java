@@ -12,22 +12,34 @@ public final class Constants {
     public static final String INTERVENTIX_TITLE = "Interventix";
     public static final String USER_ID = "USER_ID";
     public static final String USER_NOMINATIVO = "USER_NOMINATIVO";
-    public static final int CONNECTION_TIMEOUT = 16000;
-    public static final String DETAILS_INTERVENTO_FRAGMENT = "DETAILS_INTERVENTO_FRAGMENT";
-    public static final String NEW_DETAIL_INTERVENTO_FRAGMENT = "NEW_DETAIL_INTERVENTO_FRAGMENT";
-    public static final String INFO_DETAIL_INTERVENTO_FRAGMENT = "INFO_DETAIL_INTERVENTO_FRAGMENT";
-    public static final String COSTS_INTERVENTO_FRAGMENT = "COSTS_INTERVENTO_FRAGMENT";
-    public static final String SIGNATURE_INTERVENTO_FRAGMENT = "SIGNATURE_INTERVENTO_FRAGMENT";
-    public static final String OVERVIEW_INTERVENTO_FRAGMENT = "OVERVIEW_INTERVENTO";
-    public static final String INFORMATIONS_INTERVENTO_FRAGMENT = "INFORMATIONS_INTERVENTO";
-    public static final String ADD_USERS_TO_DETAIL_FRAGMENT = "ADD_USERS_TO_DETAIL_FRAGMENT";
-    public static final String TECHNICIANS_DETAIL_FRAGMENT = "TECHNICIANS_DETAIL_FRAGMENT";
-    public static final String CLIENTS_INTERVENTO_FRAGMENT = "CLIENTS_INTERVENTO_FRAGMENT";
+    public static final int CONNECTION_TIMEOUT = Integer.MAX_VALUE;
     public static final String INTERV_MODIFIED = "INTERV_MODIFIED";
     public static final String DETT_INTERV_MODIFIED = "DETT_INTERV_MODIFIED";
     public static final String REVISION_INTERVENTIONS = "REVISION_INTERVENTIONS";
     public static final String REVISION_USERS = "REVISION_USERS";
     public static final String REVISION_CLIENTS = "REVISION_CLIENTS";
+    public static final String NUOVO_DETTAGLIO_INTERVENTO = "NUOVO_DETTAGLIO_INTERVENTO";
+    public static final String DETTAGLIO_INTERVENTO_ESISTENTE = "DETTAGLIO_INTERVENTO_ESISTENTE";
+    
+    public static long sID_Dettaglio_Temp = -1l;
+    
+    public static final String NUOVO_INTERVENTO = "N";
+    public static final String NUOVO_DETT_INTERVENTO = "N";
+    public static final String INTERVENTO_MODIFICATO = "M";
+    public static final String DETTAGLIO_INTERVENTO_MODIFICATO = "M";
+    
+    // *** costanti per i fragment ***\\
+    public static final String DETAILS_INTERVENTO_FRAGMENT = "DETAILS_INTERVENTO_FRAGMENT";
+    public static final String NEW_DETAIL_INTERVENTO_FRAGMENT = "NEW_DETAIL_INTERVENTO_FRAGMENT";
+    public static final String INFO_DETAIL_INTERVENTO_FRAGMENT = "INFO_DETAIL_INTERVENTO_FRAGMENT";
+    public static final String COSTS_INTERVENTO_FRAGMENT = "COSTS_INTERVENTO_FRAGMENT";
+    public static final String SIGNATURE_INTERVENTO_FRAGMENT = "SIGNATURE_INTERVENTO_FRAGMENT";
+    public static final String DRAWER_FRAGMENT = "DRAWER_FRAGMENT";
+    public static final String OVERVIEW_INTERVENTO_FRAGMENT = "OVERVIEW_INTERVENTO";
+    public static final String INFORMATIONS_INTERVENTO_FRAGMENT = "INFORMATIONS_INTERVENTO";
+    public static final String ADD_USERS_TO_DETAIL_FRAGMENT = "ADD_USERS_TO_DETAIL_FRAGMENT";
+    public static final String TECHNICIANS_DETAIL_FRAGMENT = "TECHNICIANS_DETAIL_FRAGMENT";
+    public static final String CLIENTS_INTERVENTO_FRAGMENT = "CLIENTS_INTERVENTO_FRAGMENT";
     
     // *** costanti per le dialog ***\\
     public static final String FIRST_RUN_DIALOG_FRAGMENT = "FIRST_RUN_DIALOG_FRAGMENT";
@@ -82,9 +94,4 @@ public final class Constants {
     public static final String LOGIN_DATA = "LOGIN_DATA";
     public static final String USERNAME = "USERNAME";
     public static final String PASSWORD = "PASSWORD";
-    
-    public static final String NUOVO_DETTAGLIO_INTERVENTO = "NUOVO_DETTAGLIO_INTERVENTO";
-    public static final String DETTAGLIO_INTERVENTO_ESISTENTE = "DETTAGLIO_INTERVENTO_ESISTENTE";
-    
-    public static long sID_Dettaglio_Temp = -1l;
 }
