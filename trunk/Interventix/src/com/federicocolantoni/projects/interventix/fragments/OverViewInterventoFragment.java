@@ -26,9 +26,9 @@ import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.intervento.Cliente;
-import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
-import com.federicocolantoni.projects.interventix.intervento.Intervento;
+import com.federicocolantoni.projects.interventix.entity.Cliente;
+import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
+import com.federicocolantoni.projects.interventix.entity.Intervento;
 import com.federicocolantoni.projects.interventix.task.GetListaDettagliInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetNominativoClienteAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetOverviewInterventoAsyncTask;
@@ -240,7 +240,7 @@ public class OverViewInterventoFragment extends Fragment {
 		    
 		    FragmentTransaction transaction = manager.beginTransaction();
 		    
-		    SignatureInterventoFragment signInterv = new SignatureInterventoFragment();
+		    SignatureInterventoFragment signInterv = new SignatureInterventoFragment_();
 		    signInterv.setArguments(intervIDBundle);
 		    
 		    transaction.replace(R.id.fragments_layout, signInterv, Constants.SIGNATURE_INTERVENTO_FRAGMENT);
