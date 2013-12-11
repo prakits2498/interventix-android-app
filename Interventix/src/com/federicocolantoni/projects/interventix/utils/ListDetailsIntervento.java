@@ -3,7 +3,7 @@ package com.federicocolantoni.projects.interventix.utils;
 import java.io.Serializable;
 import java.util.List;
 
-import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
+import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 
 public final class ListDetailsIntervento implements Serializable {
     

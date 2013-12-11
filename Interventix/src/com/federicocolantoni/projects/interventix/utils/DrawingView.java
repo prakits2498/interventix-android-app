@@ -3,6 +3,7 @@ package com.federicocolantoni.projects.interventix.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
@@ -18,7 +19,7 @@ public class DrawingView extends View {
     // drawing and canvas paint
     private Paint drawPaint, canvasPaint;
     // initial color
-    private int paintColor = 0x00000000;
+    private int paintColor = Color.BLACK;
     // canvas
     private Canvas drawCanvas;
     // canvas bitmap

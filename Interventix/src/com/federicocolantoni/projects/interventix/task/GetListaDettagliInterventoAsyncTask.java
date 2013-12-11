@@ -13,7 +13,7 @@ import android.os.AsyncTask;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
-import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
+import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
 
 public class GetListaDettagliInterventoAsyncTask extends AsyncTask<Long, Void, ListDetailsIntervento> {

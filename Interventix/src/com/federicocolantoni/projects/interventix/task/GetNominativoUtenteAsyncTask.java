@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
-import com.federicocolantoni.projects.interventix.intervento.Utente;
+import com.federicocolantoni.projects.interventix.entity.Utente;
 
 public class GetNominativoUtenteAsyncTask extends AsyncTask<Long, Void, Utente> {
     

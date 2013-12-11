@@ -21,9 +21,10 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.R.string;
-import com.federicocolantoni.projects.interventix.core.HomeActivity;
+import com.federicocolantoni.projects.interventix.core.HomeActivity_;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
+import com.federicocolantoni.projects.interventix.entity.Utente;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
 
@@ -101,15 +102,14 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 			
 			// Update user's informations
 			
-			values = new ContentValues();
-			values.put(UtenteDB.Fields.NOME, data.getString("nome"));
-			values.put(UtenteDB.Fields.COGNOME, data.getString("cognome"));
-			values.put(UtenteDB.Fields.USERNAME, data.getString("username"));
-			values.put(UtenteDB.Fields.CANCELLATO, data.getBoolean("cancellato"));
-			values.put(UtenteDB.Fields.REVISIONE, data.getLong("revisione"));
-			values.put(UtenteDB.Fields.EMAIL, data.getString("email"));
-			values.put(UtenteDB.Fields.TIPO, data.getString("tipo"));
-			values.put(UtenteDB.Fields.CESTINATO, data.getBoolean("cestinato"));
+			values = Utente.updateSQL(data.getString("nome"),
+				data.getString("cognome"),
+				data.getString("username"),
+				data.getString("email"),
+				data.getString("tipo"),
+				data.getLong("revisione"),
+				data.getBoolean("cancellato"),
+				data.getBoolean("cestinato"));
 			
 			String selectionUpdate = UtenteDB.Fields.ID_UTENTE + " = ?";
 			
@@ -121,14 +121,8 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 			
 			SharedPreferences localPrefs = mContext.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 			
-			// if (Build.VERSION.SDK_INT >=
-			// Build.VERSION_CODES.GINGERBREAD)
-			// localPrefs.edit().putLong(Constants.USER_ID,
-			// data.getLong("idutente")).apply();
-			// else {
 			Editor editor = localPrefs.edit();
 			editor.putLong(Constants.USER_ID, data.getLong("idutente")).commit();
-			// }
 			
 			System.out.println("UPDATE USER DONE");
 			
@@ -145,29 +139,20 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 			
 			// Insert user's informations
 			
-			values = new ContentValues();
-			values.put(UtenteDB.Fields.ID_UTENTE, data.getLong("idutente"));
-			values.put(Fields.TYPE, UtenteDB.UTENTE_ITEM_TYPE);
-			values.put(UtenteDB.Fields.NOME, data.getString("nome"));
-			values.put(UtenteDB.Fields.COGNOME, data.getString("cognome"));
-			values.put(UtenteDB.Fields.USERNAME, data.getString("username"));
-			values.put(UtenteDB.Fields.CANCELLATO, data.getBoolean("cancellato"));
-			values.put(UtenteDB.Fields.REVISIONE, data.getLong("revisione"));
-			values.put(UtenteDB.Fields.EMAIL, data.getString("email"));
-			values.put(UtenteDB.Fields.TIPO, data.getString("tipo"));
-			values.put(UtenteDB.Fields.CESTINATO, data.getBoolean("cestinato"));
+			values = Utente.insertSQL(data.getLong("idutente"),
+				data.getString("nome"),
+				data.getString("cognome"),
+				data.getString("username"),
+				data.getString("email"),
+				data.getString("tipo"),
+				data.getLong("revisione"),
+				data.getBoolean("cancellato"),
+				data.getBoolean("cestinato"));
 			
 			cr.insert(UtenteDB.CONTENT_URI, values);
 			
 			SharedPreferences localPrefs = mContext.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 			
-			// if (Build.VERSION.SDK_INT >=
-			// Build.VERSION_CODES.GINGERBREAD)
-			// localPrefs.edit().putLong(Constants.USER_ID,
-			// data.getLong("idutente")).putString(Constants.USERNAME,
-			// mUsername).putString(Constants.PASSWORD,
-			// mPassword).apply();
-			// else
 			localPrefs.edit().putLong(Constants.USER_ID, data.getLong("idutente")).putString(Constants.USERNAME, mUsername).putString(Constants.PASSWORD, mPassword).commit();
 			
 			System.out.println("INSERT USER DONE");
@@ -212,7 +197,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 	
 	if (result == Activity.RESULT_OK) {
 	    
-	    mContext.startActivity(new Intent(mContext, HomeActivity.class));
+	    mContext.startActivity(new Intent(mContext, HomeActivity_.class));
 	}
 	else
 	    InterventixToast.makeToast(mContext, mContext.getString(R.string.toast_login_error), Toast.LENGTH_LONG);
