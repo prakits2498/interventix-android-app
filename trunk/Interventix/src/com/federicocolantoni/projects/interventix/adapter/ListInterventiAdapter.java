@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
-import com.federicocolantoni.projects.interventix.intervento.Cliente;
+import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.federicocolantoni.projects.interventix.task.GetNominativoClienteAsyncTask;
 
 public class ListInterventiAdapter extends CursorAdapter {
