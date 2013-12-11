@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 
-public class DettaglioInterventoAdapter extends CursorAdapter {
+public class ListDettagliInterventiAdapter extends CursorAdapter {
     
     private final LayoutInflater mInflater;
     private boolean mFoundIndexes;
@@ -19,7 +19,7 @@ public class DettaglioInterventoAdapter extends CursorAdapter {
     private int mTipoDettaglioInterventoIndex;
     private int mOggettoDettaglioInterventoIndex;
     
-    public DettaglioInterventoAdapter(Context context, Cursor c) {
+    public ListDettagliInterventiAdapter(Context context, Cursor c) {
 	
 	super(context, c, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 	mInflater = LayoutInflater.from(context);

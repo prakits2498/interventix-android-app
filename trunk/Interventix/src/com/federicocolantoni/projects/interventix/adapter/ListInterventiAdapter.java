@@ -19,7 +19,7 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Int
 import com.federicocolantoni.projects.interventix.intervento.Cliente;
 import com.federicocolantoni.projects.interventix.task.GetNominativoClienteAsyncTask;
 
-public class InterventiAdapter extends CursorAdapter {
+public class ListInterventiAdapter extends CursorAdapter {
     
     private final LayoutInflater mInflater;
     private boolean mFoundIndexes;
@@ -28,7 +28,7 @@ public class InterventiAdapter extends CursorAdapter {
     private int mClienteInterventoIndex;
     private int mDataInterventoIndex;
     
-    public InterventiAdapter(Context context, Cursor c) {
+    public ListInterventiAdapter(Context context, Cursor c) {
 	
 	super(context, c, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 	mInflater = LayoutInflater.from(context);
@@ -38,7 +38,7 @@ public class InterventiAdapter extends CursorAdapter {
     @Override
     public void bindView(View row, Context context, Cursor cursor) {
 	
-	TextView tv_nome_intervento = (TextView) row.getTag(R.id.tv_nome_intervento);
+	TextView tv_numero_intervento = (TextView) row.getTag(R.id.tv_numero_intervento);
 	TextView tv_cliente_intervento = (TextView) row.getTag(R.id.tv_cliente_intervento);
 	TextView tv_data_intervento = (TextView) row.getTag(R.id.tv_data_intervento);
 	
@@ -54,9 +54,9 @@ public class InterventiAdapter extends CursorAdapter {
 	
 	Long idCliente = cursor.getLong(mClienteInterventoIndex);
 	
-	String nomeInterv = mContext.getString(R.string.numero_intervento) + idInterv;
+	String numeroInterv = mContext.getString(R.string.numero_intervento) + idInterv;
 	
-	tv_nome_intervento.setText(nomeInterv);
+	tv_numero_intervento.setText(numeroInterv);
 	
 	GetNominativoClienteAsyncTask clienteAsyncTask = new GetNominativoClienteAsyncTask(mContext);
 	clienteAsyncTask.execute(idCliente);
@@ -89,11 +89,11 @@ public class InterventiAdapter extends CursorAdapter {
 	
 	View view = mInflater.inflate(R.layout.interv_row, listView, false);
 	
-	TextView tv_nome_intervento = (TextView) view.findViewById(R.id.tv_nome_intervento);
+	TextView tv_numero_intervento = (TextView) view.findViewById(R.id.tv_numero_intervento);
 	TextView tv_cliente_intervento = (TextView) view.findViewById(R.id.tv_cliente_intervento);
 	TextView tv_data_intervento = (TextView) view.findViewById(R.id.tv_data_intervento);
 	
-	view.setTag(R.id.tv_nome_intervento, tv_nome_intervento);
+	view.setTag(R.id.tv_numero_intervento, tv_numero_intervento);
 	view.setTag(R.id.tv_cliente_intervento, tv_cliente_intervento);
 	view.setTag(R.id.tv_data_intervento, tv_data_intervento);
 	
