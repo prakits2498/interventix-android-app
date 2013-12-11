@@ -37,15 +37,17 @@ import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.RipristinoInterventoDB;
+import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
+import com.federicocolantoni.projects.interventix.entity.Intervento;
 import com.federicocolantoni.projects.interventix.fragments.OverViewInterventoFragment;
-import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
-import com.federicocolantoni.projects.interventix.intervento.Intervento;
 import com.federicocolantoni.projects.interventix.task.GetInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetListaDettagliInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
+import com.googlecode.androidannotations.annotations.EActivity;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
+@EActivity(R.layout.activity_view_intervento)
 public class ViewInterventoActivity extends ActionBarActivity {
     
     private static long id_intervento;
@@ -55,10 +57,16 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	
 	super.onCreate(savedInstanceState);
 	
-	setContentView(R.layout.activity_view_intervento);
+	// setContentView(R.layout.activity_view_intervento);
 	
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    
+    @Override
+    protected void onStart() {
+	
+	super.onStart();
 	
 	Bundle extras = getIntent().getExtras();
 	

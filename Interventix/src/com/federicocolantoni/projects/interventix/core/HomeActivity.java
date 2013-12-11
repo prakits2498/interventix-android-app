@@ -45,13 +45,19 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Dat
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
-import com.federicocolantoni.projects.interventix.intervento.Utente;
+import com.federicocolantoni.projects.interventix.entity.Cliente;
+import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
+import com.federicocolantoni.projects.interventix.entity.Intervento;
+import com.federicocolantoni.projects.interventix.entity.Utente;
 import com.federicocolantoni.projects.interventix.task.GetNominativoUtenteAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
+import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.ViewById;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
+@EActivity(R.layout.activity_home)
 public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<Cursor> {
     
     private final static int MESSAGE_LOADER = 1;
@@ -70,7 +76,10 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     private Menu optionsMenu;
     
+    @ViewById(R.id.list_interv_open)
     ListView listOpen;
+    
+    @ViewById(R.id.list_header_open)
     TextView headerOpen;
     
     @Override
@@ -78,10 +87,16 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	super.onCreate(savedInstanceState);
 	
-	setContentView(R.layout.activity_home);
+	// setContentView(R.layout.activity_home);
 	
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    
+    @Override
+    protected void onStart() {
+	
+	super.onStart();
 	
 	getUsersSyncro();
 	
@@ -93,8 +108,8 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
 	
-	headerOpen = (TextView) findViewById(R.id.list_header_open);
-	headerOpen.setText(R.string.interventi_aperti);
+	// headerOpen = (TextView) findViewById(R.id.list_header_open);
+	// headerOpen.setText(R.string.interventi_aperti);
 	
 	listOpen.setOnItemClickListener(new OnItemClickListener() {
 	    
@@ -108,19 +123,13 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		bundle.putLong(Constants.ID_INTERVENTO, cur.getLong(cur.getColumnIndex(InterventoDB.Fields.ID_INTERVENTO)));
 		bundle.putLong(Constants.NUMERO_INTERVENTO, cur.getLong(cur.getColumnIndex(InterventoDB.Fields.NUMERO_INTERVENTO)));
 		
-		Intent intent = new Intent(HomeActivity.this, ViewInterventoActivity.class);
+		Intent intent = new Intent(HomeActivity.this, ViewInterventoActivity_.class);
 		
 		intent.putExtras(bundle);
 		
 		startActivity(intent);
 	    }
 	});
-    }
-    
-    @Override
-    protected void onStart() {
-	
-	super.onStart();
     }
     
     @Override
@@ -255,8 +264,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		    final String url_string = prefsDefault.getString(prefs_url, null);
 		    
 		    JSONObject response = new org.json.JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
-		    // JSONObject json_resp = Utils.connectionForURL(json_req,
-		    // url_string);
 		    
 		    System.out.println("RESPONSE SYNCRO USERS:\n" + response.toString());
 		    
@@ -295,16 +302,15 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    
 			    if (obj.getLong("idutente") != params[0]) {
 				
-				values.put(UtenteDB.Fields.ID_UTENTE, obj.getLong("idutente"));
-				values.put(Fields.TYPE, UtenteDB.UTENTE_ITEM_TYPE);
-				values.put(UtenteDB.Fields.NOME, obj.getString("nome"));
-				values.put(UtenteDB.Fields.COGNOME, obj.getString("cognome"));
-				values.put(UtenteDB.Fields.USERNAME, obj.getString("username"));
-				values.put(UtenteDB.Fields.CANCELLATO, obj.getBoolean("cancellato"));
-				values.put(UtenteDB.Fields.REVISIONE, (Long) obj.getLong("revisione"));
-				values.put(UtenteDB.Fields.EMAIL, obj.getString("email"));
-				values.put(UtenteDB.Fields.TIPO, obj.getString("tipo"));
-				values.put(UtenteDB.Fields.CESTINATO, obj.getBoolean("cestinato"));
+				values = Utente.insertSQL(obj.getLong("idutente"),
+					obj.getString("nome"),
+					obj.getString("cognome"),
+					obj.getString("username"),
+					obj.getString("email"),
+					obj.getString("tipo"),
+					obj.getLong("revisione"),
+					obj.getBoolean("cancellato"),
+					obj.getBoolean("cestinato"));
 				
 				cr.insert(UtenteDB.CONTENT_URI, values);
 			    }
@@ -320,7 +326,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				};
 				
 				cr.delete(UtenteDB.CONTENT_URI, where, selectionArgs);
-				
 			    }
 			}
 			else {
@@ -386,9 +391,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		    
 		    json_req = JsonCR2.createRequest("clients", "syncro", parameters, params[0].intValue());
 		    
-		    // System.out.println("Request syncro clients\n" +
-		    // json_req);
-		    
 		    final SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
 		    
 		    final String prefs_url = getResources().getString(string.prefs_key_url);
@@ -396,12 +398,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		    final String url_string = prefsDefault.getString(prefs_url, null);
 		    
 		    JSONObject response = new JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
-		    
-		    // JSONObject json_resp = Utils.connectionForURL(json_req,
-		    // url_string);
-		    
-		    // System.out.println("Response syncro clients: \n"
-		    // + json_resp.toJSONString());
 		    
 		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
 			JSONObject data = response.getJSONObject("data");
@@ -443,24 +439,25 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    
 			    cursorCliente = cr.query(ClienteDB.CONTENT_URI, null, selectionCliente, selectionClienteArgs, null);
 			    
+			    ContentValues values = new ContentValues();
+			    
 			    if (cursorCliente.getCount() > 0) {
 				
-				// *** UPDATE CLIENTE ***\\\
-				ContentValues values = new ContentValues();
+				// *** UPDATE CLIENTE ***\\
 				
-				values.put(ClienteDB.Fields.CITTA, cliente.getString("citta"));
-				values.put(ClienteDB.Fields.CODICE_FISCALE, cliente.getString("codicefiscale"));
-				values.put(ClienteDB.Fields.EMAIL, cliente.getString("email"));
-				values.put(ClienteDB.Fields.FAX, cliente.getString("fax"));
-				values.put(ClienteDB.Fields.INDIRIZZO, cliente.getString("indirizzo"));
-				values.put(ClienteDB.Fields.INTERNO, cliente.getString("interno"));
-				values.put(ClienteDB.Fields.NOMINATIVO, cliente.getString("nominativo"));
-				values.put(ClienteDB.Fields.NOTE, cliente.getString("note"));
-				values.put(ClienteDB.Fields.PARTITAIVA, cliente.getString("partitaiva"));
-				values.put(ClienteDB.Fields.REFERENTE, cliente.getString("referente"));
-				values.put(ClienteDB.Fields.REVISIONE, cliente.getLong("revisione"));
-				values.put(ClienteDB.Fields.TELEFONO, cliente.getString("telefono"));
-				values.put(ClienteDB.Fields.UFFICIO, cliente.getString("ufficio"));
+				values = Cliente.updateSQL(cliente.getString("citta"),
+					cliente.getString("codicefiscale"),
+					cliente.getString("email"),
+					cliente.getString("fax"),
+					cliente.getString("indirizzo"),
+					cliente.getString("interno"),
+					cliente.getString("nominativo"),
+					cliente.getString("note"),
+					cliente.getString("partitaiva"),
+					cliente.getString("referente"),
+					cliente.getLong("revisione"),
+					cliente.getString("telefono"),
+					cliente.getString("telefono"));
 				
 				cr.update(ClienteDB.CONTENT_URI, values,
 					ClienteDB.Fields.TYPE + "=? AND " + ClienteDB.Fields.ID_CLIENTE + "=?", new String[] {
@@ -471,24 +468,22 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    }
 			    else {
 				
-				// *** INSERT CLIENTE ***\\\
-				ContentValues values = new ContentValues();
+				// *** INSERT CLIENTE ***\\
 				
-				values.put(ClienteDB.Fields.ID_CLIENTE, cliente.getLong("idcliente"));
-				values.put(Fields.TYPE, ClienteDB.CLIENTE_ITEM_TYPE);
-				values.put(ClienteDB.Fields.CITTA, cliente.getString("citta"));
-				values.put(ClienteDB.Fields.CODICE_FISCALE, cliente.getString("codicefiscale"));
-				values.put(ClienteDB.Fields.EMAIL, cliente.getString("email"));
-				values.put(ClienteDB.Fields.FAX, cliente.getString("fax"));
-				values.put(ClienteDB.Fields.INDIRIZZO, cliente.getString("indirizzo"));
-				values.put(ClienteDB.Fields.INTERNO, cliente.getString("interno"));
-				values.put(ClienteDB.Fields.NOMINATIVO, cliente.getString("nominativo"));
-				values.put(ClienteDB.Fields.NOTE, cliente.getString("note"));
-				values.put(ClienteDB.Fields.PARTITAIVA, cliente.getString("partitaiva"));
-				values.put(ClienteDB.Fields.REFERENTE, cliente.getString("referente"));
-				values.put(ClienteDB.Fields.REVISIONE, cliente.getLong("revisione"));
-				values.put(ClienteDB.Fields.TELEFONO, cliente.getString("telefono"));
-				values.put(ClienteDB.Fields.UFFICIO, cliente.getString("ufficio"));
+				values = Cliente.insertSQL(cliente.getLong("idcliente"),
+					cliente.getString("citta"),
+					cliente.getString("codicefiscale"),
+					cliente.getString("email"),
+					cliente.getString("fax"),
+					cliente.getString("indirizzo"),
+					cliente.getString("interno"),
+					cliente.getString("nominativo"),
+					cliente.getString("note"),
+					cliente.getString("partitaiva"),
+					cliente.getString("referente"),
+					cliente.getLong("revisione"),
+					cliente.getString("telefono"),
+					cliente.getString("telefono"));
 				
 				cr.insert(ClienteDB.CONTENT_URI, values);
 				
@@ -575,9 +570,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		    final String url_string = prefsDefault.getString(prefs_url, null);
 		    
 		    JSONObject response = new JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
-		    
-		    // JSONObject json_resp = Utils.connectionForURL(json_req,
-		    // url_string);
 		    
 		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
 			
@@ -678,31 +670,30 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			
 			System.out.println("Inserimento intervento " + responseIntervs.getLong("idintervento"));
 			
-			values.put(InterventoDB.Fields.ID_INTERVENTO, responseIntervs.getLong("idintervento"));
-			values.put(Fields.TYPE, InterventoDB.INTERVENTO_ITEM_TYPE);
-			values.put(InterventoDB.Fields.CANCELLATO, responseIntervs.getBoolean("cancellato"));
-			values.put(InterventoDB.Fields.COSTO_ACCESSORI, responseIntervs.getDouble("costoaccessori"));
-			values.put(InterventoDB.Fields.COSTO_COMPONENTI, responseIntervs.getDouble("costocomponenti"));
-			values.put(InterventoDB.Fields.COSTO_MANODOPERA, responseIntervs.getDouble("costomanodopera"));
-			values.put(InterventoDB.Fields.DATA_ORA, (Long) responseIntervs.getLong("dataora"));
-			values.put(InterventoDB.Fields.FIRMA, responseIntervs.getString("firma"));
-			values.put(InterventoDB.Fields.CLIENTE, responseIntervs.getLong("cliente"));
-			values.put(InterventoDB.Fields.IMPORTO, responseIntervs.getDouble("importo"));
-			values.put(InterventoDB.Fields.IVA, responseIntervs.getDouble("iva"));
-			values.put(InterventoDB.Fields.MODALITA, responseIntervs.getString("modalita"));
-			values.put(InterventoDB.Fields.MODIFICATO, "N");
-			values.put(InterventoDB.Fields.MOTIVO, responseIntervs.getString("motivo"));
-			values.put(InterventoDB.Fields.NOMINATIVO, responseIntervs.getString("nominativo"));
-			values.put(InterventoDB.Fields.NOTE, responseIntervs.getString("note"));
-			values.put(InterventoDB.Fields.NUMERO_INTERVENTO, responseIntervs.getLong("numero"));
-			values.put(InterventoDB.Fields.PRODOTTO, responseIntervs.getString("prodotto"));
-			values.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, responseIntervs.getString("riffattura"));
-			values.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO, responseIntervs.getString("rifscontrino"));
-			values.put(InterventoDB.Fields.SALDATO, responseIntervs.getBoolean("saldato"));
-			values.put(InterventoDB.Fields.TIPOLOGIA, responseIntervs.getString("tipologia"));
-			values.put(InterventoDB.Fields.TOTALE, responseIntervs.getDouble("totale"));
-			values.put(InterventoDB.Fields.CHIUSO, responseIntervs.getBoolean("chiuso"));
-			values.put(InterventoDB.Fields.TECNICO, responseIntervs.getLong("tecnico"));
+			values = Intervento.insertSQL(responseIntervs.getLong("idintervento"),
+				responseIntervs.getDouble("costoaccessori"),
+				responseIntervs.getDouble("costocomponenti"),
+				responseIntervs.getDouble("costomanodopera"),
+				responseIntervs.getLong("dataora"),
+				responseIntervs.getString("firma"),
+				responseIntervs.getLong("cliente"),
+				responseIntervs.getLong("tecnico"),
+				responseIntervs.getDouble("importo"),
+				responseIntervs.getDouble("iva"),
+				responseIntervs.getString("modalita"),
+				responseIntervs.getString("motivo"),
+				responseIntervs.getString("nominativo"),
+				responseIntervs.getString("note"),
+				responseIntervs.getLong("numero"),
+				responseIntervs.getString("prodotto"),
+				responseIntervs.getString("riffattura"),
+				responseIntervs.getString("rifscontrino"),
+				responseIntervs.getString("tipologia"),
+				responseIntervs.getDouble("totale"),
+				responseIntervs.getBoolean("saldato"),
+				responseIntervs.getBoolean("chiuso"),
+				responseIntervs.getBoolean("cancellato"),
+				Constants.NUOVO_INTERVENTO);
 			
 			cr.insert(InterventoDB.CONTENT_URI, values);
 			
@@ -714,21 +705,15 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    
 			    // *** INSERT DETTAGLIO INTERVENTO *** \\
 			    
-			    values = new ContentValues();
-			    
-			    // System.out.println("Dettaglio intervento n° "
-			    // + cont + " inserito");
-			    
-			    values.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, dettInterv.getLong("iddettagliointervento"));
-			    values.put(DettaglioInterventoDB.Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
-			    values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, dettInterv.getString("descrizione"));
-			    values.put(DettaglioInterventoDB.Fields.INTERVENTO, responseIntervs.getLong("idintervento"));
-			    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "N");
-			    values.put(DettaglioInterventoDB.Fields.OGGETTO, dettInterv.getString("oggetto"));
-			    values.put(DettaglioInterventoDB.Fields.TIPO, dettInterv.getString("tipo"));
-			    values.put(DettaglioInterventoDB.Fields.INIZIO, dettInterv.getLong("inizio"));
-			    values.put(DettaglioInterventoDB.Fields.FINE, dettInterv.getLong("fine"));
-			    values.put(DettaglioInterventoDB.Fields.TECNICI, dettInterv.getJSONArray("tecniciintervento").toString());
+			    values = DettaglioIntervento.insertSQL(dettInterv.getLong("iddettagliointervento"),
+				    dettInterv.getString("descrizione"),
+				    responseIntervs.getLong("idintervento"),
+				    Constants.NUOVO_DETT_INTERVENTO,
+				    dettInterv.getString("oggetto"),
+				    dettInterv.getString("tipo"),
+				    dettInterv.getLong("inizio"),
+				    dettInterv.getLong("fine"),
+				    dettInterv.getJSONArray("tecniciintervento").toString());
 			    
 			    cr.insert(DettaglioInterventoDB.CONTENT_URI, values);
 			}
@@ -737,29 +722,29 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			
 			// *** UPDATE INTERVENTO *** \\
 			
-			values.put(InterventoDB.Fields.CANCELLATO, responseIntervs.getBoolean("cancellato"));
-			values.put(InterventoDB.Fields.COSTO_ACCESSORI, responseIntervs.getDouble("costoaccessori"));
-			values.put(InterventoDB.Fields.COSTO_COMPONENTI, responseIntervs.getDouble("costocomponenti"));
-			values.put(InterventoDB.Fields.COSTO_MANODOPERA, responseIntervs.getDouble("costomanodopera"));
-			values.put(InterventoDB.Fields.DATA_ORA, responseIntervs.getLong("dataora"));
-			values.put(InterventoDB.Fields.FIRMA, responseIntervs.getString("firma"));
-			values.put(InterventoDB.Fields.CLIENTE, responseIntervs.getLong("cliente"));
-			values.put(InterventoDB.Fields.IMPORTO, responseIntervs.getDouble("importo"));
-			values.put(InterventoDB.Fields.IVA, responseIntervs.getDouble("iva"));
-			values.put(InterventoDB.Fields.MODALITA, responseIntervs.getString("modalita"));
-			values.put(InterventoDB.Fields.MODIFICATO, "N");
-			values.put(InterventoDB.Fields.MOTIVO, responseIntervs.getString("motivo"));
-			values.put(InterventoDB.Fields.NOMINATIVO, responseIntervs.getString("nominativo"));
-			values.put(InterventoDB.Fields.NOTE, responseIntervs.getString("note"));
-			values.put(InterventoDB.Fields.NUMERO_INTERVENTO, responseIntervs.getLong("numero"));
-			values.put(InterventoDB.Fields.PRODOTTO, responseIntervs.getString("prodotto"));
-			values.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, responseIntervs.getString("riffattura"));
-			values.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO, responseIntervs.getString("rifscontrino"));
-			values.put(InterventoDB.Fields.SALDATO, responseIntervs.getBoolean("saldato"));
-			values.put(InterventoDB.Fields.TIPOLOGIA, responseIntervs.getString("tipologia"));
-			values.put(InterventoDB.Fields.TOTALE, responseIntervs.getDouble("totale"));
-			values.put(InterventoDB.Fields.CHIUSO, responseIntervs.getBoolean("chiuso"));
-			values.put(InterventoDB.Fields.TECNICO, responseIntervs.getLong("tecnico"));
+			values = Intervento.updateSQL(responseIntervs.getDouble("costoaccessori"),
+				responseIntervs.getDouble("costocomponenti"),
+				responseIntervs.getDouble("costomanodopera"),
+				responseIntervs.getLong("dataora"),
+				responseIntervs.getString("firma"),
+				responseIntervs.getLong("cliente"),
+				responseIntervs.getLong("tecnico"),
+				responseIntervs.getDouble("importo"),
+				responseIntervs.getDouble("iva"),
+				responseIntervs.getString("modalita"),
+				responseIntervs.getString("motivo"),
+				responseIntervs.getString("nominativo"),
+				responseIntervs.getString("note"),
+				responseIntervs.getLong("numero"),
+				responseIntervs.getString("prodotto"),
+				responseIntervs.getString("riffattura"),
+				responseIntervs.getString("rifscontrino"),
+				responseIntervs.getString("tipologia"),
+				responseIntervs.getDouble("totale"),
+				responseIntervs.getBoolean("saldato"),
+				responseIntervs.getBoolean("chiuso"),
+				responseIntervs.getBoolean("cancellato"),
+				Constants.NUOVO_INTERVENTO);
 			
 			String where = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 			
@@ -773,19 +758,14 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    
 			    // *** UPDATE DETTAGLIO INTERVENTO *** \\
 			    
-			    values = new ContentValues();
-			    
-			    // System.out.println("Dettaglio intervento n° " +
-			    // cont + " inserito");
-			    
-			    values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, dettInterv.getString("descrizione"));
-			    values.put(DettaglioInterventoDB.Fields.INTERVENTO, responseIntervs.getLong("idintervento"));
-			    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "N");
-			    values.put(DettaglioInterventoDB.Fields.OGGETTO, dettInterv.getString("oggetto"));
-			    values.put(DettaglioInterventoDB.Fields.TIPO, dettInterv.getString("tipo"));
-			    values.put(DettaglioInterventoDB.Fields.INIZIO, dettInterv.getLong("inizio"));
-			    values.put(DettaglioInterventoDB.Fields.FINE, dettInterv.getLong("fine"));
-			    values.put(DettaglioInterventoDB.Fields.TECNICI, dettInterv.getJSONArray("tecniciintervento").toString());
+			    values = DettaglioIntervento.updateSQL(dettInterv.getString("descrizione"),
+				    responseIntervs.getLong("idintervento"),
+				    Constants.NUOVO_DETT_INTERVENTO,
+				    dettInterv.getString("oggetto"),
+				    dettInterv.getString("tipo"),
+				    dettInterv.getLong("inizio"),
+				    dettInterv.getLong("fine"),
+				    dettInterv.getJSONArray("tecniciintervento").toString());
 			    
 			    String selectionDettaglioIntervento = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 			    
