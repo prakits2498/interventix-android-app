@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -43,17 +42,15 @@ public class Login extends Fragment {
     
     private SharedPreferences prefs;
     
-    @Override
-    public void onStart() {
-	
-	super.onStart();
-	
-	// username = (EditText) view.findViewById(R.id.field_username);
-	// password = (EditText) view.findViewById(R.id.field_password);
-	// view.findViewById(R.id.btn_login).setOnClickListener(this);
-	
-	prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-    }
+    // @Override
+    // public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    // Bundle savedInstanceState) {
+    //
+    // super.onCreateView(inflater, container, savedInstanceState);
+    // final View view = inflater.inflate(R.layout.login, container, false);
+    //
+    // return null;
+    // }
     
     // @Override
     // public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,7 +61,7 @@ public class Login extends Fragment {
     //
     // username = (EditText) view.findViewById(R.id.field_username);
     // password = (EditText) view.findViewById(R.id.field_password);
-    // // view.findViewById(R.id.btn_login).setOnClickListener(this);
+    // view.findViewById(R.id.btn_login).setOnClickListener(this);
     //
     // prefs = getActivity().getSharedPreferences(Constants.PREFERENCES,
     // Context.MODE_PRIVATE);
@@ -73,9 +70,11 @@ public class Login extends Fragment {
     // }
     
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onStart() {
 	
-	super.onCreate(savedInstanceState);
+	super.onStart();
+	
+	prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
     }
     
     // @Override

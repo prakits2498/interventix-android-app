@@ -10,7 +10,7 @@ import android.os.AsyncTask;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
-import com.federicocolantoni.projects.interventix.intervento.DettaglioIntervento;
+import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 
 public class GetDettaglioInterventoAsyncTask extends AsyncTask<Long, Void, DettaglioIntervento> {
     
