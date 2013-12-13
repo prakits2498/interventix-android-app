@@ -1,5 +1,6 @@
 package com.federicocolantoni.projects.interventix.fragments;
 
+import java.io.ByteArrayOutputStream;
 import java.util.concurrent.ExecutionException;
 
 import android.annotation.SuppressLint;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.caverock.androidsvg.SVGImageView;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.entity.Intervento;
@@ -33,10 +36,16 @@ import com.googlecode.androidannotations.annotations.ViewById;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.signature_fragment)
-public class SignatureInterventoFragment extends Fragment {
+public class SignatureInterventoFragment extends Fragment implements OnClickListener {
     
     @ViewById(R.id.signature)
     ImageView signature;
+    
+    @ViewById(R.id.brush)
+    SVGImageView brush;
+    
+    @ViewById(R.id.eraser)
+    SVGImageView eraser;
     
     @ViewById(R.id.layout_drawer)
     LinearLayout layout_drawer;
@@ -48,6 +57,8 @@ public class SignatureInterventoFragment extends Fragment {
     TextView summary;
     
     private ActionMode mActionModeSignature;
+    
+    public static long sId_Intervento;
     
     private ActionMode.Callback mActionModeCallback = new Callback() {
 	
@@ -81,14 +92,29 @@ public class SignatureInterventoFragment extends Fragment {
 	    
 		case R.id.save_signature:
 		    mode.finish();
+		    
+		    DrawingView newSignature = (DrawingView) layout_drawer.findViewById(R.id.signature_drawer);
+		    newSignature.setDrawingCacheEnabled(true);
+		    
+		    Bitmap firma = newSignature.getDrawingCache();
+		    
+		    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		    
+		    firma.compress(Bitmap.CompressFormat.JPEG, 0, stream);
+		    byte[] image = stream.toByteArray();
+		    
+		    String hexSignature = Utils.bytesToHex(image);
+		    
 		    layout_drawer.setVisibility(View.GONE);
 		    signature.setVisibility(View.VISIBLE);
+		    
 		    return true;
 		    
 		case R.id.cancel:
 		    mode.finish();
 		    layout_drawer.setVisibility(View.GONE);
 		    signature.setVisibility(View.VISIBLE);
+		    
 		    return true;
 		    
 		default:
@@ -114,6 +140,8 @@ public class SignatureInterventoFragment extends Fragment {
 	
 	Bundle bundle = getArguments();
 	
+	sId_Intervento = bundle.getLong(Constants.ID_INTERVENTO);
+	
 	Intervento interv = null;
 	
 	try {
@@ -130,7 +158,7 @@ public class SignatureInterventoFragment extends Fragment {
 	    BugSenseHandler.sendException(e);
 	}
 	
-	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Intervento " + bundle.getLong(Constants.NUMERO_INTERVENTO));
+	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Intervento " + sId_Intervento);
 	
 	summary.setText("Firma");
 	
@@ -158,8 +186,6 @@ public class SignatureInterventoFragment extends Fragment {
 		if (mActionModeSignature != null)
 		    return false;
 		
-		InterventixToast.makeToast(getActivity(), "TODO: modificare la firma", Toast.LENGTH_SHORT);
-		
 		mActionModeSignature = ((ActionBarActivity) getActivity()).startSupportActionMode(mActionModeCallback);
 		v.setSelected(true);
 		
@@ -170,5 +196,28 @@ public class SignatureInterventoFragment extends Fragment {
 		return true;
 	    }
 	});
+	
+	brush.setOnClickListener(this);
+	eraser.setOnClickListener(this);
+    }
+    
+    @Override
+    public void onClick(View v) {
+	
+	switch (v.getId()) {
+	    case R.id.brush:
+		
+		InterventixToast.makeToast(getActivity(), "Modalità scrittura", Toast.LENGTH_SHORT);
+		
+		break;
+	    
+	    case R.id.eraser:
+		
+		InterventixToast.makeToast(getActivity(), "Modalità gomma", Toast.LENGTH_SHORT);
+		
+		break;
+	    default:
+		break;
+	}
     }
 }
