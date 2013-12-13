@@ -12,7 +12,7 @@ public final class Constants {
     public static final String INTERVENTIX_TITLE = "Interventix";
     public static final String USER_ID = "USER_ID";
     public static final String USER_NOMINATIVO = "USER_NOMINATIVO";
-    public static final int CONNECTION_TIMEOUT = Integer.MAX_VALUE;
+    public static final int CONNECTION_TIMEOUT = 16000;
     public static final String INTERV_MODIFIED = "INTERV_MODIFIED";
     public static final String DETT_INTERV_MODIFIED = "DETT_INTERV_MODIFIED";
     public static final String REVISION_INTERVENTIONS = "REVISION_INTERVENTIONS";
