@@ -1,34 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release
-        version="0.0.400"
-        versioncode="40" >
-        <change>
+	<release
+		version="0.0.430"
+		versioncode="43" >
+		<change>
+            Completata l'implementazione della firma per l'intervento.
+		</change>
+		<change>
+			Fix sulla schermata iniziale: sugli schermi troppo piccoli la tastiera impediva la corretta visualizzazione dei campi di testo per l'username e la password.
+		</change>
+		<change>
+        	Refactoring di alcune classi e fix minori.
+		</change>
+	</release>
+	<release
+		version="0.0.400"
+		versioncode="40" >
+		<change>
             Tolto l'utilizzo della libreria RoboJuice.
-        </change>
-    </release>
-    <release
-        version="0.0.390"
-        versioncode="39" >
-        <change>
+		</change>
+		<change>
+			Aggiunta la libreria Android Annotations (http://androidannotations.org/)
+		</change>
+	</release>
+	<release
+		version="0.0.390"
+		versioncode="39" >
+		<change>
             Implementata l'aggiunta di un nuovo dettaglio per l'intervento.
-        </change>
-        <change>
+		</change>
+		<change>
             Reso di default l'indirizzo per la connessione al server centrale.
-        </change>
-        <change>
+		</change>
+		<change>
             Aggiunto l'utilizzo della libreria RoboJuice.
-        </change>
-        <change>
+		</change>
+		<change>
             Effettuato il passaggio dalla libreria ActionBarSherlock alla libreria di supporto AppCompat.
-        </change>
-        <change>
+		</change>
+		<change>
             Refactoring del progetto: eliminati librerie e codice che non serve piu'.
-        </change>
-        <change>
-            Altri fix di bug minori.
-        </change>
-    </release>
+		</change>
+		<change>
+            Altri fix minori.
+		</change>
+	</release>
 
 </changelog>
