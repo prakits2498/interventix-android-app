@@ -1,196 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Error messages -->
-    <string name="changelog_internal_error_parsing">Error while parsing file</string>
+	<!-- Error messages -->
+	<string name="changelog_internal_error_parsing">Error while parsing file</string>
 
-    <!--
+	<!--
          String for Version Header.
          You can customize it in your strings.xml.
          Use string with quotes if you want a space
-    -->
-    <string name="changelog_header_version">"Version "</string>
+	-->
+	<string name="changelog_header_version">"Version "</string>
 
-    <!--
+	<!--
          BulletPoint
         You can customize it in your strings.xml
         If you don't want a bulletpoint you can specify it in your changelog.xml
-    -->
-    <string name="changelog_row_bulletpoint">\u2022"</string>
+	-->
+	<string name="changelog_row_bulletpoint">\u2022"</string>
 
-    <!-- String resources for Interventix app -->
-    <string name="string_badge">Nuovi interventi!</string>
-    <string name="app_name">Interventix</string>
-    <string name="menu_settings">Opzioni</string>
-    <string name="menu_back">Indietro</string>
-    <string name="refresh_interventi_menu">Aggiorna Interventi</string>
-    <string name="add_intervento_menu">Aggiungi Intervento</string>
-    <string name="add_dettaglio_menu">Aggiungi Dettaglio</string>
-    <string name="search_title">Cerca clienti o tecnici&#8230;</string>
-    <string name="send_mail">Invia mail</string>
-    <string name="pay">Salda</string>
-    <string name="close_interv">Chiudi</string>
-    <string name="prefs_key_url">PREFS_KEY_URL</string>
-    <string name="first_run">first_run</string>
-    <string name="prefs_url_title">Inserisci l\'indirizzo del sito che ti e\' stato fornito nel contratto</string>
-    <string name="prefs_url_hint">http://azienda.interventix.com</string>
-    <string name="default_url">http://37.187.1.50:8080/interventix/connector</string>
-    <string name="welcome_title">Benvenuto su Interventix</string>
-    <string name="welcome_message">Interventix e\' stata avviata per la prima volta. Inserire l\'indirizzo per la connessione al server che e\' stato fornito nel contratto.</string>
-    <string name="logout_title">Richiesta di logout</string>
-    <string name="logout_message">Sei sicuro di voler effettuare il logout?</string>
-    <string name="logout_positive_btn">Logout</string>
-    <string name="btn_cancel">Annulla</string>
-    <string name="tipologia_title">Scegli una tipologia di intervento</string>
-    <string name="tipo_dett_title">Scegli il tipo di dettaglio</string>
-    <string name="oggetto_dett_title">Inserisci l\'oggetto del dettaglio</string>
+	<!-- String resources for Interventix app -->
+	<string name="string_badge">Nuovi interventi!</string>
+	<string name="app_name">Interventix</string>
+	<string name="menu_settings">Opzioni</string>
+	<string name="menu_back">Indietro</string>
+	<string name="refresh_interventi_menu">Aggiorna Interventi</string>
+	<string name="add_intervento_menu">Aggiungi Intervento</string>
+	<string name="add_dettaglio_menu">Aggiungi Dettaglio</string>
+	<string name="search_title">Cerca clienti o tecnici&#8230;</string>
+	<string name="send_mail">Invia mail</string>
+	<string name="pay">Salda</string>
+	<string name="close_interv">Chiudi</string>
+	<string name="prefs_key_url">PREFS_KEY_URL</string>
+	<string name="first_run">first_run</string>
+	<string name="prefs_url_title">Inserisci l\'indirizzo del sito che ti e\' stato fornito nel contratto</string>
+	<string name="prefs_url_hint">http://azienda.interventix.com</string>
+	<string name="default_url">http://37.187.1.50:8080/interventix/connector</string>
+	<string name="welcome_title">Benvenuto su Interventix</string>
+	<string name="welcome_message">Interventix e\' stata avviata per la prima volta. Inserire l\'indirizzo per la connessione al server che e\' stato fornito nel contratto.</string>
+	<string name="logout_title">Richiesta di logout</string>
+	<string name="logout_message">Sei sicuro di voler effettuare il logout?</string>
+	<string name="logout_positive_btn">Logout</string>
+	<string name="btn_cancel">Annulla</string>
+	<string name="tipologia_title">Scegli una tipologia di intervento</string>
+	<string name="tipo_dett_title">Scegli il tipo di dettaglio</string>
+	<string name="oggetto_dett_title">Inserisci l\'oggetto del dettaglio</string>
 
-    <!-- Array di stringhe -->
-    <string-array name="tipologia_choose">
-        <item n="0">Su richiesta</item>
-        <item n="1">Programmata</item>
-    </string-array>
-    <string-array name="modalita_choose">
-        <item n="0">Contrattualizzato</item>
-        <item n="1">Pagamento Diretto</item>
-        <item n="2">Post-Vendita (Garanzia)</item>
-        <item n="3">Comodato d\'Uso</item>
-    </string-array>
-    <string-array name="tipo_dettaglio_intervento">
-        <item n="0">Regolazione</item>
-        <item n="1">Ripristino</item>
-        <item n="2">Sostituzione</item>
-        <item n="3">Accessorio</item>
-        <item n="4">Ritiro</item>
-        <item n="5">Altro</item>
-    </string-array>
+	<!-- Array di stringhe -->
+	<string-array name="tipologia_choose">
+		<item n="0">Su richiesta</item>
+		<item n="1">Programmata</item>
+	</string-array>
+	<string-array name="modalita_choose">
+		<item n="0">Contrattualizzato</item>
+		<item n="1">Pagamento Diretto</item>
+		<item n="2">Post-Vendita (Garanzia)</item>
+		<item n="3">Comodato d\'Uso</item>
+	</string-array>
+	<string-array name="tipo_dettaglio_intervento">
+		<item n="0">Regolazione</item>
+		<item n="1">Ripristino</item>
+		<item n="2">Sostituzione</item>
+		<item n="3">Accessorio</item>
+		<item n="4">Ritiro</item>
+		<item n="5">Altro</item>
+	</string-array>
 
-    <string name="modalita_title">Scegli una modalità di intervento</string>
-    <string name="prodotto_title">Inserisci il nome del prodotto dell\'intervento</string>
-    <string name="nominativo_title">Inserisci il nominativo per l\'intervento</string>
-    <string name="motivation_title">Inserisci la motivazione per l\'intervento</string>
-    <string name="manodopera_title">Inserisci il costo della manodopera</string>
-    <string name="componenti_title">Inserisci il costo dei componenti</string>
-    <string name="accessori_title">Inserisci il costo degli accessori</string>
-    <string name="ok_btn">OK</string>
-    <string name="yes_btn">SI</string>
-    <string name="no_btn">NO</string>
-    <string name="cancel_btn">ANNULLA</string>
-    <string name="prefs_key_auto_login">PREFS_KEY_AUTO_LOGIN</string>
-    <string name="username">Username</string>
-    <string name="password_">Password</string>
+	<string name="modalita_title">Scegli una modalità di intervento</string>
+	<string name="prodotto_title">Inserisci il nome del prodotto dell\'intervento</string>
+	<string name="nominativo_title">Inserisci il nominativo per l\'intervento</string>
+	<string name="motivation_title">Inserisci la motivazione per l\'intervento</string>
+	<string name="manodopera_title">Inserisci il costo della manodopera</string>
+	<string name="componenti_title">Inserisci il costo dei componenti</string>
+	<string name="accessori_title">Inserisci il costo degli accessori</string>
+	<string name="ok_btn">OK</string>
+	<string name="yes_btn">SI</string>
+	<string name="no_btn">NO</string>
+	<string name="cancel_btn">ANNULLA</string>
+	<string name="prefs_key_auto_login">PREFS_KEY_AUTO_LOGIN</string>
+	<string name="username">Username</string>
+	<string name="password_">Password</string>
 
-    <!-- strings for progress' login -->
-    <string name="login_started_title">Login in corso</string>
-    <string name="login_started_message">Attendere prego&#8230;</string>
+	<!-- strings for progress' login -->
+	<string name="login_started_title">Login in corso</string>
+	<string name="login_started_message">Attendere prego&#8230;</string>
 
-    <!-- strings for toasts -->
-    <string name="toast_username_and_password_required">Devi riempire i campi Username e Password</string>
-    <string name="toast_offline_access">Accesso in modalità offline</string>
-    <string name="toast_login_error">Si è verificato un errore nel login</string>
-    <string name="toast_error_syncro_users">Si è verificato un errore nella sincronizzazione degli utenti</string>
-    <string name="toast_error_syncro_clients">Si è verificato un errore nella sincronizzazione dei clienti</string>
-    <string name="toast_error_syncro_interventions">Si è verificato un errore nella sincronizzazione degli interventi</string>
+	<!-- strings for toasts -->
+	<string name="toast_username_and_password_required">Devi riempire i campi Username e Password</string>
+	<string name="toast_offline_access">Accesso in modalità offline</string>
+	<string name="toast_login_error">Si è verificato un errore nel login</string>
+	<string name="toast_error_syncro_users">Si è verificato un errore nella sincronizzazione degli utenti</string>
+	<string name="toast_error_syncro_clients">Si è verificato un errore nella sincronizzazione dei clienti</string>
+	<string name="toast_error_syncro_interventions">Si è verificato un errore nella sincronizzazione degli interventi</string>
 
-    <!-- other strings -->
-    <string name="login_">Login</string>
-    <string name="logo_">Logo Interventix</string>
-    <string name="title_activity_index">IndexActivity</string>
-    <string name="add_interv">AGGIUNGI INTERVENTO</string>
-    <string name="my_interv">I MIEI INTERVENTI</string>
-    <string name="exit">ESCI</string>
-    <string name="title_activity_my_interventions">MyInterventionsActivity</string>
-    <string name="others">ALTRI</string>
-    <string name="back">INDIETRO</string>
-    <string name="title_activity_tab_bar">TabBarActivity</string>
-    <string name="interv">Interventi</string>
-    <string name="clients">Clienti</string>
-    <string name="signature">Firma</string>
-    <string name="costs">Costi</string>
-    <string name="details">Dettagli</string>
-    <string name="new_interv">NUOVO INTERVENTO</string>
-    <string name="numero_intervento">Intervento n° </string>
-    <string name="type_interv">Tipologia</string>
-    <string name="prod_interv">Prodotto</string>
-    <string name="what_interv">Motivo</string>
-    <string name="nomin_interv">Nominativo</string>
-    <string name="date_interv">Data</string>
-    <string name="time_interv">Ora</string>
-    <string name="tv_tipo_dettaglio">Tipo</string>
-    <string name="tv_oggetto_dettaglio">Oggetto</string>
-    <string name="tv_tecnici_dettaglio">Tecnici</string>
-    <string name="tv_descrizione_dettaglio">Descrizione</string>
-    <string name="tv_inizio_dettaglio">Inizio</string>
-    <string name="tv_fine_dettaglio">Fine</string>
-    <string name="tv_tot_ore_dettaglio">Totale ore</string>
-    <string name="save">SALVA</string>
-    <string name="hint_nomin">Nominativo</string>
-    <string name="hint_cod_fis">Codice Fiscale</string>
-    <string name="hint_p_iva">Partita IVA</string>
-    <string name="reload_clients">Ricarica lista clienti</string>
-    <string name="client_dtl">Dettagli Cliente</string>
-    <string name="hint_telefono">0123456789</string>
-    <string name="hint_email">nome@dominio.com</string>
-    <string name="hint_citta">Roma</string>
-    <string name="hint_interno">Interno 7</string>
-    <string name="hint_ufficio">Ufficio 3</string>
-    <string name="hint_referente">Paolo</string>
-    <string name="hint_note">Note</string>
-    <string name="hint_indirizzo">via Camino Palmero, 10</string>
-    <string name="interventi_aperti">Interventi aperti</string>
-    <string name="interventi_chiusi">Interventi chiusi</string>
-    <string name="row_client">Cliente</string>
-    <string name="row_user">Tecnico</string>
-    <string name="row_informations">Informazioni</string>
-    <string name="row_details">Dettagli</string>
-    <string name="row_costs">Costi</string>
-    <string name="row_signature">Firma</string>
-    <string name="row_tipology">Tipologia</string>
-    <string name="row_mode">Modalità</string>
-    <string name="row_product">Prodotto</string>
-    <string name="row_motivation">Motivo</string>
-    <string name="row_name">Nominativo</string>
-    <string name="row_date">Data</string>
-    <string name="row_references">Riferimenti</string>
-    <string name="row_notes">Annotazioni</string>
-    <string name="reset">Ripristina</string>
-    <string name="row_manodopera">Manodopera</string>
-    <string name="row_componenti">Componenti</string>
-    <string name="row_accessori">Accessori</string>
-    <string name="row_importo">Importo</string>
-    <string name="row_iva">IVA (21.00 %)</string>
-    <string name="row_totale">Totale</string>
-    <string name="content_right_nav">Right Navigation</string>
-    <string name="no_details_interv">Nessun dettaglio</string>
-    <string name="add_details_interv">Aggiungi dettaglio</string>
-    <string name="interv_mod_title">Intervento modificato!</string>
-    <string name="interv_mod_text">Salvare le modifiche?</string>
-    <string name="save_detail">Salva</string>
-    <string name="cancel_detail">Annulla</string>
-    <string name="add_user_list_users">Tecnici</string>
-    <string name="add_user_list_admin">Amministratori</string>
-    <string name="choose_tecnici_title">Seleziona i tecnici</string>
-    <string name="search_clients_hint">Cerca clienti&#8230;</string>
-    <string name="signature_content_description">immagine firma</string>
+	<!-- other strings -->
+	<string name="login_">Login</string>
+	<string name="logo_">Logo Interventix</string>
+	<string name="title_activity_index">IndexActivity</string>
+	<string name="add_interv">AGGIUNGI INTERVENTO</string>
+	<string name="my_interv">I MIEI INTERVENTI</string>
+	<string name="exit">ESCI</string>
+	<string name="title_activity_my_interventions">MyInterventionsActivity</string>
+	<string name="others">ALTRI</string>
+	<string name="back">INDIETRO</string>
+	<string name="title_activity_tab_bar">TabBarActivity</string>
+	<string name="interv">Interventi</string>
+	<string name="clients">Clienti</string>
+	<string name="signature">Firma</string>
+	<string name="costs">Costi</string>
+	<string name="details">Dettagli</string>
+	<string name="new_interv">NUOVO INTERVENTO</string>
+	<string name="numero_intervento">Intervento n° </string>
+	<string name="type_interv">Tipologia</string>
+	<string name="prod_interv">Prodotto</string>
+	<string name="what_interv">Motivo</string>
+	<string name="nomin_interv">Nominativo</string>
+	<string name="date_interv">Data</string>
+	<string name="time_interv">Ora</string>
+	<string name="tv_tipo_dettaglio">Tipo</string>
+	<string name="tv_oggetto_dettaglio">Oggetto</string>
+	<string name="tv_tecnici_dettaglio">Tecnici</string>
+	<string name="tv_descrizione_dettaglio">Descrizione</string>
+	<string name="tv_inizio_dettaglio">Inizio</string>
+	<string name="tv_fine_dettaglio">Fine</string>
+	<string name="tv_tot_ore_dettaglio">Totale ore</string>
+	<string name="save">SALVA</string>
+	<string name="hint_nomin">Nominativo</string>
+	<string name="hint_cod_fis">Codice Fiscale</string>
+	<string name="hint_p_iva">Partita IVA</string>
+	<string name="reload_clients">Ricarica lista clienti</string>
+	<string name="client_dtl">Dettagli Cliente</string>
+	<string name="hint_telefono">0123456789</string>
+	<string name="hint_email">nome@dominio.com</string>
+	<string name="hint_citta">Roma</string>
+	<string name="hint_interno">Interno 7</string>
+	<string name="hint_ufficio">Ufficio 3</string>
+	<string name="hint_referente">Paolo</string>
+	<string name="hint_note">Note</string>
+	<string name="hint_indirizzo">via Camino Palmero, 10</string>
+	<string name="interventi_aperti">Interventi aperti</string>
+	<string name="interventi_chiusi">Interventi chiusi</string>
+	<string name="row_client">Cliente</string>
+	<string name="row_user">Tecnico</string>
+	<string name="row_informations">Informazioni</string>
+	<string name="row_details">Dettagli</string>
+	<string name="row_costs">Costi</string>
+	<string name="row_signature">Firma</string>
+	<string name="row_tipology">Tipologia</string>
+	<string name="row_mode">Modalità</string>
+	<string name="row_product">Prodotto</string>
+	<string name="row_motivation">Motivo</string>
+	<string name="row_name">Nominativo</string>
+	<string name="row_date">Data</string>
+	<string name="row_references">Riferimenti</string>
+	<string name="row_notes">Annotazioni</string>
+	<string name="reset">Ripristina</string>
+	<string name="row_manodopera">Manodopera</string>
+	<string name="row_componenti">Componenti</string>
+	<string name="row_accessori">Accessori</string>
+	<string name="row_importo">Importo</string>
+	<string name="row_iva">IVA (21.00 %)</string>
+	<string name="row_totale">Totale</string>
+	<string name="content_right_nav">Right Navigation</string>
+	<string name="no_details_interv">Nessun dettaglio</string>
+	<string name="add_details_interv">Aggiungi dettaglio</string>
+	<string name="interv_mod_title">Intervento modificato!</string>
+	<string name="interv_mod_text">Salvare le modifiche?</string>
+	<string name="save_detail">Salva</string>
+	<string name="cancel_detail">Annulla</string>
+	<string name="add_user_list_users">Tecnici</string>
+	<string name="add_user_list_admin">Amministratori</string>
+	<string name="choose_tecnici_title">Seleziona i tecnici</string>
+	<string name="search_clients_hint">Cerca clienti&#8230;</string>
+	<string name="signature_content_description">immagine firma</string>
 
-    <!-- strings for date format -->
-    <string name="date_format">dd/MM/yyyy HH:mm</string>
+	<!-- strings for date format -->
+	<string name="date_format">dd/MM/yyyy HH:mm</string>
 
-    <!-- URL connessione server -->
-    <string name="url_connection">http://</string>
-    <string name="conn_unavailable_text">Vuoi attivare ora la connessione a internet WIFI o mobile?</string>
-    <string name="enable_wifi">Attiva WIFI</string>
-    <string name="enable_mobile">Attiva conn. dati</string>
-    <string name="no_active_connection">Nessuna connessione attiva</string>
+	<!-- URL connessione server -->
+	<string name="url_connection">http://</string>
+	<string name="conn_unavailable_text">Vuoi attivare ora la connessione a internet WIFI o mobile?</string>
+	<string name="enable_wifi">Attiva WIFI</string>
+	<string name="enable_mobile">Attiva conn. dati</string>
+	<string name="no_active_connection">Nessuna connessione attiva</string>
 
-    <!-- changelog -->
-    <string name="title_changelog">Change log Interventix</string>
-    <string name="changelog_close">Close</string>
+	<!-- changelog -->
+	<string name="title_changelog">Change log Interventix</string>
+	<string name="changelog_close">Close</string>
 
-    <!-- strings for validator -->
-    <string name="required">Campo richiesto</string>
+	<!-- strings for validator -->
+	<string name="required">Campo richiesto</string>
 
-    <!-- strings for contextual menu for signature -->
-    <string name="save_signature">Salva firma</string>
+	<!-- strings for contextual menu for signature -->
+	<string name="save_signature">Salva firma</string>
 
 </resources>

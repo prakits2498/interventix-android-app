@@ -1,63 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:svgimageview="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+	xmlns:svgimageview="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/tv_summary_intervention"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal|center_vertical"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+	<TextView
+		android:id="@+id/tv_summary_intervention"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_horizontal|center_vertical"
+		android:textSize="18sp"
+		android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/signature"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:contentDescription="@string/signature_content_description" />
+	<ImageView
+		android:id="@+id/signature"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginTop="8dp"
+		android:contentDescription="@string/signature_content_description" />
 
-    <LinearLayout
-        android:id="@+id/layout_drawer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone" >
+	<LinearLayout
+		android:id="@+id/layout_drawer"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@android:color/transparent"
+		android:orientation="vertical"
+		android:visibility="gone" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2" >
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@android:color/transparent"
+			android:orientation="horizontal"
+			android:weightSum="2" >
 
-            <com.caverock.androidsvg.SVGImageView
-                android:id="@+id/brush"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/pressed_item"
-                svgimageview:svg="@drawable/brush_new" />
+			<com.caverock.androidsvg.SVGImageView
+				android:id="@+id/brush"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_weight="1"
+				android:background="@drawable/pressed_item"
+				svgimageview:svg="@drawable/brush_new" />
 
-            <com.caverock.androidsvg.SVGImageView
-                android:id="@+id/eraser"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/pressed_item"
-                svgimageview:svg="@drawable/eraser" />
-        </LinearLayout>
+			<com.caverock.androidsvg.SVGImageView
+				android:id="@+id/eraser"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_weight="1"
+				android:background="@drawable/pressed_item"
+				svgimageview:svg="@drawable/eraser" />
+		</LinearLayout>
 
-        <com.federicocolantoni.projects.interventix.utils.DrawingView
-            android:id="@+id/signature_drawer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:drawingCacheQuality="auto" />
-    </LinearLayout>
+		<!-- <com.federicocolantoni.projects.interventix.utils.DrawingView -->
+		<!-- android:id="@+id/signature_drawer" -->
+		<!-- android:layout_width="match_parent" -->
+		<!-- android:layout_height="match_parent" -->
+		<!-- android:layout_marginTop="8dp" -->
+		<!-- android:drawingCacheQuality="low" /> -->
+
+	</LinearLayout>
 
 </LinearLayout>

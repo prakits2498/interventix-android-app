@@ -28,7 +28,7 @@ import com.googlecode.androidannotations.annotations.SystemService;
 import com.googlecode.androidannotations.annotations.ViewById;
 
 @SuppressLint("NewApi")
-@EFragment(R.layout.login)
+@EFragment(R.layout.fragment_login)
 public class Login extends Fragment {
     
     @ViewById(R.id.field_password)
@@ -42,33 +42,6 @@ public class Login extends Fragment {
     
     private SharedPreferences prefs;
     
-    // @Override
-    // public View onCreateView(LayoutInflater inflater, ViewGroup container,
-    // Bundle savedInstanceState) {
-    //
-    // super.onCreateView(inflater, container, savedInstanceState);
-    // final View view = inflater.inflate(R.layout.login, container, false);
-    //
-    // return null;
-    // }
-    
-    // @Override
-    // public View onCreateView(LayoutInflater inflater, ViewGroup container,
-    // Bundle savedInstanceState) {
-    //
-    // super.onCreateView(inflater, container, savedInstanceState);
-    // final View view = inflater.inflate(R.layout.login, container, false);
-    //
-    // username = (EditText) view.findViewById(R.id.field_username);
-    // password = (EditText) view.findViewById(R.id.field_password);
-    // view.findViewById(R.id.btn_login).setOnClickListener(this);
-    //
-    // prefs = getActivity().getSharedPreferences(Constants.PREFERENCES,
-    // Context.MODE_PRIVATE);
-    //
-    // return view;
-    // }
-    
     @Override
     public void onStart() {
 	
@@ -76,12 +49,6 @@ public class Login extends Fragment {
 	
 	prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
     }
-    
-    // @Override
-    // public void onClick(View v) {
-    //
-    // startLogin();
-    // }
     
     @Click(R.id.btn_login)
     void startLogin() {
