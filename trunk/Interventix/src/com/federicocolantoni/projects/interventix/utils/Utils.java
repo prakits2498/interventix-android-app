@@ -15,12 +15,15 @@ import multiface.crypto.cr2.JsonCR2;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import android.annotation.SuppressLint;
+
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 
+@SuppressLint("DefaultLocale")
 public class Utils {
     
-    private final static char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
+    private final static char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
     
     public static JSONObject connectionForURL(String json_req, final String url_string) throws MalformedURLException, IOException, ProtocolException, ParseException, Exception, UnsupportedEncodingException {
 	
@@ -98,16 +101,17 @@ public class Utils {
     }
     
     public static String bytesToHex(byte[] bytes) {
+	
 	char[] hexChars = new char[bytes.length * 2];
 	
 	int v;
 	
 	for (int j = 0; j < bytes.length; j++) {
 	    v = bytes[j] & 0xFF;
-	    hexChars[j * 2] = HEX_ARRAY[v >>> 4];
+	    hexChars[j * 2] = HEX_ARRAY[v >> 4];
 	    hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
 	}
 	
-	return new String(hexChars);
+	return new String(hexChars).toLowerCase();
     }
 }

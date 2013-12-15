@@ -212,7 +212,7 @@ public class OverViewInterventoFragment extends Fragment {
 		
 		FragmentTransaction transaction = manager.beginTransaction();
 		
-		CostsInterventoFragment costsInterv = new CostsInterventoFragment();
+		CostsInterventoFragment costsInterv = new CostsInterventoFragment_();
 		costsInterv.setArguments(intervIDBundle);
 		
 		transaction.replace(R.id.fragments_layout, costsInterv, Constants.COSTS_INTERVENTO_FRAGMENT);

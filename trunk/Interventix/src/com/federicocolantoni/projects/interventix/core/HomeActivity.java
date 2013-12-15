@@ -32,7 +32,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
@@ -79,15 +78,10 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     @ViewById(R.id.list_interv_open)
     ListView listOpen;
     
-    @ViewById(R.id.list_header_open)
-    TextView headerOpen;
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	
 	super.onCreate(savedInstanceState);
-	
-	// setContentView(R.layout.activity_home);
 	
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -107,9 +101,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	listOpen.setAdapter(mAdapter);
 	
 	getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
-	
-	// headerOpen = (TextView) findViewById(R.id.list_header_open);
-	// headerOpen.setText(R.string.interventi_aperti);
 	
 	listOpen.setOnItemClickListener(new OnItemClickListener() {
 	    

@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,16 +16,17 @@ import com.federicocolantoni.projects.interventix.R;
 
 public class DrawingView extends View {
     
-    // drawing path
     private Path drawPath;
-    // drawing and canvas paint
+    
     private Paint drawPaint, canvasPaint;
-    // initial color
+    
     private int paintColor = Color.BLACK;
-    // canvas
+    
     private Canvas drawCanvas;
-    // canvas bitmap
+    
     private Bitmap canvasBitmap;
+    
+    private boolean erase = false;
     
     public DrawingView(Context context) {
 	super(context);
@@ -65,6 +68,34 @@ public class DrawingView extends View {
 	
 	canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
 	canvas.drawPath(drawPath, drawPaint);
+    }
+    
+    public void setErase(boolean isErase) {
+	
+	erase = isErase;
+	
+	if (erase) {
+	    drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+	    drawPaint.setStrokeWidth(getResources().getDimension(R.dimen.small_brush) * 10);
+	    drawPaint.setColor(Color.WHITE);
+	}
+	else {
+	    drawPaint.setXfermode(null);
+	    drawPaint.setColor(Color.BLACK);
+	    drawPaint.setStrokeWidth(getResources().getDimension(R.dimen.small_brush));
+	}
+    }
+    
+    public void resetSignature() {
+	
+	drawPath = null;
+	
+	drawPaint = null;
+	canvasPaint = null;
+	
+	drawCanvas = null;
+	
+	canvasBitmap = null;
     }
     
     @Override

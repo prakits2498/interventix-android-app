@@ -4,8 +4,14 @@ import java.io.ByteArrayOutputStream;
 import java.util.concurrent.ExecutionException;
 
 import android.annotation.SuppressLint;
+import android.content.AsyncQueryHandler;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -26,6 +32,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.caverock.androidsvg.SVGImageView;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.entity.Intervento;
 import com.federicocolantoni.projects.interventix.task.GetSignatureInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.DrawingView;
@@ -50,7 +57,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     @ViewById(R.id.layout_drawer)
     LinearLayout layout_drawer;
     
-    @ViewById(R.id.signature_drawer)
+    // @ViewById(R.id.signature_drawer)
     DrawingView drawer;
     
     @ViewById(R.id.tv_summary_intervention)
@@ -58,6 +65,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     
     private ActionMode mActionModeSignature;
     
+    private Intervento interv = null;
     public static long sId_Intervento;
     
     private ActionMode.Callback mActionModeCallback = new Callback() {
@@ -91,29 +99,76 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 	    switch (menuItem.getItemId()) {
 	    
 		case R.id.save_signature:
+		    
 		    mode.finish();
 		    
-		    DrawingView newSignature = (DrawingView) layout_drawer.findViewById(R.id.signature_drawer);
-		    newSignature.setDrawingCacheEnabled(true);
-		    
-		    Bitmap firma = newSignature.getDrawingCache();
+		    Bitmap firma = drawer.getDrawingCache();
 		    
 		    ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		    
-		    firma.compress(Bitmap.CompressFormat.JPEG, 0, stream);
+		    firma.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		    
 		    byte[] image = stream.toByteArray();
 		    
 		    String hexSignature = Utils.bytesToHex(image);
 		    
+		    AsyncQueryHandler saveSignature = new AsyncQueryHandler(getActivity().getContentResolver()) {
+			
+			@Override
+			protected void onUpdateComplete(int token, Object cookie, int result) {
+			    
+			    InterventixToast.makeToast(getActivity(), "Firma aggiornata", Toast.LENGTH_SHORT);
+			    
+			    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+			    
+			    final Editor edit = prefs.edit();
+			    
+			    edit.putBoolean(Constants.INTERV_MODIFIED, true);
+			    
+			    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+				edit.apply();
+			    }
+			    else {
+				new Thread(new Runnable() {
+				    
+				    @Override
+				    public void run() {
+					edit.commit();
+				    }
+				}).start();
+			    }
+			    
+			    onStart();
+			};
+		    };
+		    
+		    ContentValues values = new ContentValues();
+		    values.put(InterventoDB.Fields.FIRMA, hexSignature);
+		    values.put(InterventoDB.Fields.MODIFICATO, "M");
+		    
+		    String selection = InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?";
+		    
+		    String[] selectionArgs = new String[] {
+			    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento
+		    };
+		    
+		    saveSignature.startUpdate(0, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
+		    
 		    layout_drawer.setVisibility(View.GONE);
 		    signature.setVisibility(View.VISIBLE);
+		    
+		    layout_drawer.removeView(drawer);
 		    
 		    return true;
 		    
 		case R.id.cancel:
+		    
 		    mode.finish();
+		    
 		    layout_drawer.setVisibility(View.GONE);
 		    signature.setVisibility(View.VISIBLE);
+		    
+		    layout_drawer.removeView(drawer);
 		    
 		    return true;
 		    
@@ -134,18 +189,23 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     };
     
     @Override
-    public void onStart() {
+    public void onActivityCreated(Bundle savedInstanceState) {
 	
-	super.onStart();
+	super.onActivityCreated(savedInstanceState);
 	
 	Bundle bundle = getArguments();
 	
 	sId_Intervento = bundle.getLong(Constants.ID_INTERVENTO);
+    }
+    
+    @Override
+    public void onStart() {
 	
-	Intervento interv = null;
+	super.onStart();
 	
 	try {
-	    interv = new GetSignatureInterventoAsyncTask(getActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
+	    
+	    interv = new GetSignatureInterventoAsyncTask(getActivity()).execute(sId_Intervento).get();
 	}
 	catch (InterruptedException e) {
 	    
@@ -160,7 +220,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 	
 	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Intervento " + sId_Intervento);
 	
-	summary.setText("Firma");
+	summary.setText(R.string.signature);
 	
 	signature.setDrawingCacheEnabled(true);
 	
@@ -168,15 +228,10 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 	
 	byte[] byteSignature = Utils.hexToBytes(hexSignature.toCharArray());
 	
-	System.out.println("Hex signature: " + hexSignature);
-	System.out.println("Byte[] signature: " + byteSignature);
-	
 	Bitmap bitmapSignature = BitmapFactory.decodeByteArray(byteSignature, 0, byteSignature.length);
 	
 	if (bitmapSignature != null)
 	    signature.setImageBitmap(bitmapSignature);
-	else
-	    System.out.println("Error to generate image from hex string!");
 	
 	signature.setOnLongClickListener(new OnLongClickListener() {
 	    
@@ -193,6 +248,12 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 		
 		layout_drawer.setVisibility(View.VISIBLE);
 		
+		drawer = new DrawingView(getActivity());
+		drawer.setDrawingCacheEnabled(true);
+		drawer.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_AUTO);
+		
+		layout_drawer.addView(drawer);
+		
 		return true;
 	    }
 	});
@@ -202,18 +263,34 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     }
     
     @Override
+    public void onPause() {
+	
+	super.onPause();
+	
+	System.out.println(this.getClass().getSimpleName() + " in pause");
+    }
+    
+    @Override
+    public void onResume() {
+	
+	super.onResume();
+	
+	System.out.println(this.getClass().getSimpleName() + " in resume");
+    }
+    
+    @Override
     public void onClick(View v) {
 	
 	switch (v.getId()) {
 	    case R.id.brush:
 		
-		InterventixToast.makeToast(getActivity(), "Modalità scrittura", Toast.LENGTH_SHORT);
+		drawer.setErase(false);
 		
 		break;
 	    
 	    case R.id.eraser:
 		
-		InterventixToast.makeToast(getActivity(), "Modalità gomma", Toast.LENGTH_SHORT);
+		drawer.setErase(true);
 		
 		break;
 	    default:

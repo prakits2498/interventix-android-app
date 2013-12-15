@@ -19,13 +19,11 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,8 +36,11 @@ import com.federicocolantoni.projects.interventix.entity.Intervento;
 import com.federicocolantoni.projects.interventix.task.GetCostsInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.SaveChangesInterventoAsyncQueryHandler;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
+import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.ViewById;
 
 @SuppressLint("NewApi")
+@EFragment(R.layout.costs_intervento_fragment)
 public class CostsInterventoFragment extends Fragment {
     
     public static long sId_intervento;
@@ -51,25 +52,62 @@ public class CostsInterventoFragment extends Fragment {
     private static Double sIva;
     private static Double sTotale;
     
+    // retrieve views using annotations
+    @ViewById(R.id.tv_costs_intervention)
+    TextView tv_costs_intervento;
+    
+    @ViewById(R.id.row_manodopera)
+    View rowManodopera;
+    
+    @ViewById(R.id.row_componenti)
+    View rowComponenti;
+    
+    @ViewById(R.id.row_accessori)
+    View rowAccessori;
+    
+    @ViewById(R.id.row_importo)
+    View rowImporto;
+    
+    @ViewById(R.id.row_iva)
+    View rowIVA;
+    
+    @ViewById(R.id.row_totale)
+    View rowTotale;
+    
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+	
+	super.onCreate(savedInstanceState);
 	
 	BugSenseHandler.initAndStartSession(getActivity(), Constants.API_KEY);
-	
-	super.onCreateView(inflater, container, savedInstanceState);
 	
 	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
 	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	setHasOptionsMenu(true);
 	
-	final View view = inflater.inflate(R.layout.costs_intervento_fragment, container, false);
-	
 	Bundle bundle = getArguments();
 	
 	sId_intervento = bundle.getLong(Constants.ID_INTERVENTO);
+    }
+    
+    // @Override
+    // public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    // Bundle savedInstanceState) {
+    //
+    // super.onCreateView(inflater, container, savedInstanceState);
+    //
+    // final View view = inflater.inflate(R.layout.costs_intervento_fragment,
+    // container, false);
+    //
+    // return view;
+    // }
+    
+    @Override
+    public void onStart() {
 	
-	TextView tv_costs_intervento = (TextView) view.findViewById(R.id.tv_costs_intervention);
+	super.onStart();
+	
 	tv_costs_intervento.setText("Costi");
 	
 	Intervento interv = null;
@@ -90,7 +128,6 @@ public class CostsInterventoFragment extends Fragment {
 	
 	DecimalFormat formatter = new DecimalFormat("###,###,###.##");
 	
-	View rowManodopera = view.findViewById(R.id.row_manodopera);
 	rowManodopera.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -103,7 +140,6 @@ public class CostsInterventoFragment extends Fragment {
 	sCosto_manodopera = interv.getmCostoManodopera().doubleValue();
 	tv_row_manodopera.setText(formatter.format(sCosto_manodopera) + " €");
 	
-	View rowComponenti = view.findViewById(R.id.row_componenti);
 	rowComponenti.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -116,7 +152,6 @@ public class CostsInterventoFragment extends Fragment {
 	sCosto_componenti = interv.getmCostoComponenti().doubleValue();
 	tv_row_componenti.setText(formatter.format(sCosto_componenti) + " €");
 	
-	View rowAccessori = view.findViewById(R.id.row_accessori);
 	rowAccessori.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -129,25 +164,17 @@ public class CostsInterventoFragment extends Fragment {
 	sCosto_accessori = interv.getmCostoAccessori().doubleValue();
 	tv_row_accessori.setText(formatter.format(sCosto_accessori) + " €");
 	
-	View rowImporto = view.findViewById(R.id.row_importo);
-	
 	TextView tv_row_importo = (TextView) rowImporto.findViewById(R.id.tv_row_importo);
 	sImporto = interv.getmImporto().doubleValue();
 	tv_row_importo.setText(formatter.format(sImporto) + " €");
-	
-	View rowIVA = view.findViewById(R.id.row_iva);
 	
 	TextView tv_row_iva = (TextView) rowIVA.findViewById(R.id.tv_row_iva);
 	sIva = interv.getmIva().doubleValue();
 	tv_row_iva.setText(formatter.format(sIva) + " €");
 	
-	View rowTotale = view.findViewById(R.id.row_totale);
-	
 	TextView tv_row_totale = (TextView) rowTotale.findViewById(R.id.tv_row_totale);
 	sTotale = interv.getmTotale().doubleValue();
 	tv_row_totale.setText(formatter.format(sTotale) + " €");
-	
-	return view;
     }
     
     @Override
