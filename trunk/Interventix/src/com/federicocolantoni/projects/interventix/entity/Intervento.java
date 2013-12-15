@@ -19,7 +19,7 @@ public class Intervento implements Serializable {
     private String mTipologia, mProdotto, mMotivo, mNominativo, mRifFattura,
 	    mRifScontrino, mNote, mModalita, mModificato;
     private String mFirma;
-    private boolean mSaldato, mCancellato, mChiuso;
+    private boolean mSaldato, mCancellato, mChiuso, mConflitto;
     private Long mDataOra;
     private Long mIdCliente;
     private Long mIdTecnico;
@@ -439,6 +439,21 @@ public class Intervento implements Serializable {
      */
     public void setmModificato(String mModificato) {
 	this.mModificato = mModificato;
+    }
+    
+    /**
+     * @return the mConflitto
+     */
+    public boolean ismConflitto() {
+	return mConflitto;
+    }
+    
+    /**
+     * @param mConflitto
+     *            the mConflitto to set
+     */
+    public void setmConflitto(boolean mConflitto) {
+	this.mConflitto = mConflitto;
     }
     
     @Override

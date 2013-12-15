@@ -31,7 +31,6 @@ import com.federicocolantoni.projects.interventix.BuildConfig;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.modules.login.Login;
-import com.federicocolantoni.projects.interventix.modules.login.Login_;
 import com.federicocolantoni.projects.interventix.settings.SettingActivity;
 import com.federicocolantoni.projects.interventix.settings.SettingSupportActivity;
 import com.federicocolantoni.projects.interventix.task.ReadDefaultPreferences;
@@ -53,11 +52,11 @@ public class MainActivity extends ActionBarActivity {
 	
 	super.onCreate(savedInstanceState);
 	
-	BugSenseHandler.initAndStartSession(MainActivity.this, Constants.API_KEY);
+	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
 	
 	FragmentManager manager = getSupportFragmentManager();
 	
-	final Login fragLogin = new Login_();
+	final Login fragLogin = new com.federicocolantoni.projects.interventix.modules.login.Login_();
 	
 	final FragmentTransaction transaction = manager.beginTransaction();
 	

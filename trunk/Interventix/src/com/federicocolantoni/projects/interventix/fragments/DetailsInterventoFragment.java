@@ -28,8 +28,10 @@ import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.ListDettagliInterventiAdapter;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
+import com.googlecode.androidannotations.annotations.EFragment;
 
 @SuppressLint("NewApi")
+@EFragment(R.layout.details_intervento_fragment)
 public class DetailsInterventoFragment extends Fragment implements LoaderCallbacks<Cursor> {
     
     private final static int MESSAGE_LOADER = 1;
@@ -38,7 +40,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
     
     private static final String[] PROJECTION = new String[] {
 	    DettaglioInterventoDB.Fields._ID,
-	    DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
+	    // DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
 	    DettaglioInterventoDB.Fields.TIPO,
 	    DettaglioInterventoDB.Fields.OGGETTO
     };
@@ -71,8 +73,8 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 		DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + mId_intervento
 	};
 	
-	TextView tv_costs_intervento = (TextView) view.findViewById(R.id.tv_details_intervention);
-	tv_costs_intervento.setText("Dettagli");
+	TextView tv_details_intervento = (TextView) view.findViewById(R.id.tv_details_intervention);
+	tv_details_intervento.setText("Dettagli");
 	
 	ListView detailsList = (ListView) view.findViewById(R.id.list_details_intervento);
 	

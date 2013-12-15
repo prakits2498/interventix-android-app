@@ -31,7 +31,13 @@ public class InterventixDBContract {
 	    public final static String TYPE = "type";
 	    public final static String INDEX = "indexed";
 	    public final static String[] DATA = {
-		    "data0", "data1", "data2", "data3", "data4", "data5", "data6", "data7", "data8", "data9", "data10", "data11", "data12", "data13", "data14", "data15", "data16", "data17", "data18", "data19", "data20", "data21", "data22", "data23", "data24"
+		    "data0", "data1", "data2", "data3",
+		    "data4", "data5", "data6", "data7",
+		    "data8", "data9", "data10", "data11",
+		    "data12", "data13", "data14", "data15",
+		    "data16", "data17", "data18", "data19",
+		    "data20", "data21", "data22", "data23",
+		    "data24", "data25", "data26", "data27"
 	    };
 	    public final static String[] BLOB = {
 		    "blob0", "blob1", "blob2"
@@ -55,7 +61,7 @@ public class InterventixDBContract {
 	    public static final String REVISIONE = DATA[7];
 	    public static final String ID_UTENTE = DATA[8];
 	    public static final String CESTINATO = DATA[9];
-	    public static final String MODIFICATO = DATA[24];
+	    public static final String MODIFICATO = DATA[27];
 	}
     }
     
@@ -80,7 +86,7 @@ public class InterventixDBContract {
 	    public static final String INDIRIZZO = DATA[12];
 	    public static final String UFFICIO = DATA[13];
 	    public static final String INTERNO = DATA[14];
-	    public static final String MODIFICATO = DATA[24];
+	    public static final String MODIFICATO = DATA[27];
 	}
     }
     
@@ -113,7 +119,8 @@ public class InterventixDBContract {
 	    public static final String CHIUSO = DATA[19];
 	    public static final String ID_INTERVENTO = DATA[20];
 	    public static final String MODALITA = DATA[21];
-	    public static final String MODIFICATO = DATA[24];
+	    public static final String CONFLITTO = DATA[26];
+	    public static final String MODIFICATO = DATA[27];
 	}
     }
     
@@ -131,7 +138,7 @@ public class InterventixDBContract {
 	    public static final String INIZIO = DATA[5];
 	    public static final String FINE = DATA[6];
 	    public static final String TECNICI = DATA[7];
-	    public static final String MODIFICATO = DATA[24];
+	    public static final String MODIFICATO = DATA[27];
 	}
     }
     

@@ -57,7 +57,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	
 	super.onCreate(savedInstanceState);
 	
-	// setContentView(R.layout.activity_view_intervento);
+	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
 	
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);

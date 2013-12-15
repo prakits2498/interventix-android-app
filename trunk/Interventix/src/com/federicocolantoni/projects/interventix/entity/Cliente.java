@@ -17,7 +17,7 @@ public class Cliente implements Serializable {
     private Integer mIdCliente;
     private String mNominativo, mCodiceFiscale, mPartitaIVA, mTelefono, mFax,
 	    mEmail, mReferente, mCitta, mIndirizzo, mInterno, mUfficio, mNote;
-    private boolean mCancellato;
+    private boolean mCancellato, mConflitto;
     private int mRevisione;
     
     public Cliente() {
@@ -282,6 +282,21 @@ public class Cliente implements Serializable {
     public void setmRevisione(int revisione) {
 	
 	mRevisione = revisione;
+    }
+    
+    /**
+     * @return the mConflitto
+     */
+    public boolean ismConflitto() {
+	return mConflitto;
+    }
+    
+    /**
+     * @param mConflitto
+     *            the mConflitto to set
+     */
+    public void setmConflitto(boolean mConflitto) {
+	this.mConflitto = mConflitto;
     }
     
     @Override
