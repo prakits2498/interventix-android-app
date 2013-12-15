@@ -63,6 +63,8 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     @ViewById(R.id.tv_summary_intervention)
     TextView summary;
     
+    private SharedPreferences prefs;
+    
     private ActionMode mActionModeSignature;
     
     private Intervento interv = null;
@@ -119,7 +121,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 			    
 			    InterventixToast.makeToast(getActivity(), "Firma aggiornata", Toast.LENGTH_SHORT);
 			    
-			    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+			    prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 			    
 			    final Editor edit = prefs.edit();
 			    

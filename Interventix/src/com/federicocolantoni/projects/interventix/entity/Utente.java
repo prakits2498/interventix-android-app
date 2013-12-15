@@ -16,7 +16,7 @@ public class Utente implements Serializable {
     
     private Long mIdUtente, mRevisione;
     private String mNome, mCognome, mUserName, mPassword, mEmail, mTipo;
-    private boolean mCancellato, mCestinato;
+    private boolean mCancellato, mCestinato, mConflitto;
     private List<Intervento> mInterventi;
     
     public Utente() {
@@ -211,6 +211,21 @@ public class Utente implements Serializable {
     public void setmRevisione(Long mRevisione) {
 	
 	this.mRevisione = mRevisione;
+    }
+    
+    /**
+     * @return the mConflitto
+     */
+    public boolean ismConflitto() {
+	return mConflitto;
+    }
+    
+    /**
+     * @param mConflitto
+     *            the mConflitto to set
+     */
+    public void setmConflitto(boolean mConflitto) {
+	this.mConflitto = mConflitto;
     }
     
     @Override

@@ -83,6 +83,8 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	super.onCreate(savedInstanceState);
 	
+	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
+	
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
