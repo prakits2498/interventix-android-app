@@ -28,5 +28,4 @@
 		android:hint="@string/hint_p_iva"
 		android:textIsSelectable="false"
 		android:textSize="14sp" />
-
 </LinearLayout>

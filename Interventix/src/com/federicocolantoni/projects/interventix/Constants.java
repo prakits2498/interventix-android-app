@@ -28,6 +28,8 @@ public final class Constants {
     public static final String INTERVENTO_MODIFICATO = "M";
     public static final String DETTAGLIO_INTERVENTO_MODIFICATO = "M";
     
+    public static final int WHAT_MESSAGE_GET_CLIENTI = 99;
+    
     // *** costanti per i fragment ***\\
     public static final String DETAILS_INTERVENTO_FRAGMENT = "DETAILS_INTERVENTO_FRAGMENT";
     public static final String NEW_DETAIL_INTERVENTO_FRAGMENT = "NEW_DETAIL_INTERVENTO_FRAGMENT";
