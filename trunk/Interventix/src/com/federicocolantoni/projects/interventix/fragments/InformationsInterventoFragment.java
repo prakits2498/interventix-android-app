@@ -23,12 +23,10 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,25 +46,59 @@ import com.federicocolantoni.projects.interventix.task.SaveChangesInterventoAsyn
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatcher;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
+import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.ViewById;
 
 @SuppressLint("NewApi")
+@EFragment(R.layout.information_intervento_fragment)
 public class InformationsInterventoFragment extends Fragment {
     
     public static long sId_Intervento;
     
+    // retrieve views
+    
+    @ViewById(R.id.tv_info_intervention)
+    TextView info_interv;
+    
+    @ViewById(R.id.row_tipology)
+    View tipologia;
+    
+    @ViewById(R.id.row_mode)
+    View mode;
+    
+    @ViewById(R.id.row_product)
+    View product;
+    
+    @ViewById(R.id.row_motivation)
+    View motivation;
+    
+    @ViewById(R.id.row_name)
+    View nominativo;
+    
+    @ViewById(R.id.row_date)
+    View date_interv;
+    
+    @ViewById(R.id.row_references)
+    LinearLayout row_references;
+    
+    @ViewById(R.id.row_notes)
+    LinearLayout row_notes;
+    
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
 	
-	BugSenseHandler.initAndStartSession(getActivity(), Constants.API_KEY);
-	
-	super.onCreateView(inflater, container, savedInstanceState);
+	super.onCreate(savedInstanceState);
 	
 	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
 	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	setHasOptionsMenu(true);
+    }
+    
+    @Override
+    public void onStart() {
 	
-	final View view = inflater.inflate(R.layout.information_intervento_fragment, container, false);
+	super.onStart();
 	
 	Bundle bundle = getArguments();
 	
@@ -88,10 +120,9 @@ public class InformationsInterventoFragment extends Fragment {
 	    BugSenseHandler.sendException(e);
 	}
 	
-	TextView info_interv = (TextView) view.findViewById(R.id.tv_info_intervention);
 	info_interv.setText("Informazioni");
 	
-	View tipologia = view.findViewById(R.id.row_tipology);
+	// View tipologia = view.findViewById(R.id.row_tipology);
 	tipologia.setOnClickListener(new View.OnClickListener() {
 	    
 	    @Override
@@ -104,7 +135,7 @@ public class InformationsInterventoFragment extends Fragment {
 	TextView tv_tipology = (TextView) tipologia.findViewById(R.id.tv_row_tipology);
 	tv_tipology.setText(interv.getmTipologia());
 	
-	View mode = view.findViewById(R.id.row_mode);
+	// View mode = view.findViewById(R.id.row_mode);
 	mode.setOnClickListener(new View.OnClickListener() {
 	    
 	    @Override
@@ -117,7 +148,7 @@ public class InformationsInterventoFragment extends Fragment {
 	TextView tv_mode = (TextView) mode.findViewById(R.id.tv_row_mode);
 	tv_mode.setText(interv.getmModalita());
 	
-	View product = view.findViewById(R.id.row_product);
+	// View product = view.findViewById(R.id.row_product);
 	product.setOnClickListener(new View.OnClickListener() {
 	    
 	    @Override
@@ -130,7 +161,7 @@ public class InformationsInterventoFragment extends Fragment {
 	TextView tv_product = (TextView) product.findViewById(R.id.tv_row_product);
 	tv_product.setText(interv.getmProdotto());
 	
-	View motivation = view.findViewById(R.id.row_motivation);
+	// View motivation = view.findViewById(R.id.row_motivation);
 	motivation.setOnClickListener(new View.OnClickListener() {
 	    
 	    @Override
@@ -143,7 +174,7 @@ public class InformationsInterventoFragment extends Fragment {
 	TextView tv_motivation = (TextView) motivation.findViewById(R.id.tv_row_motivation);
 	tv_motivation.setText(interv.getmMotivo());
 	
-	View nominativo = view.findViewById(R.id.row_name);
+	// View nominativo = view.findViewById(R.id.row_name);
 	nominativo.setOnClickListener(new View.OnClickListener() {
 	    
 	    @Override
@@ -156,7 +187,7 @@ public class InformationsInterventoFragment extends Fragment {
 	TextView tv_nominativo = (TextView) nominativo.findViewById(R.id.tv_row_name);
 	tv_nominativo.setText(interv.getmNominativo());
 	
-	final View date_interv = view.findViewById(R.id.row_date);
+	// final View date_interv = view.findViewById(R.id.row_date);
 	
 	date_interv.setOnClickListener(new View.OnClickListener() {
 	    
@@ -271,7 +302,8 @@ public class InformationsInterventoFragment extends Fragment {
 	
 	tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
 	
-	LinearLayout row_references = (LinearLayout) view.findViewById(R.id.row_references);
+	// LinearLayout row_references = (LinearLayout)
+	// view.findViewById(R.id.row_references);
 	row_references.setOnClickListener(new View.OnClickListener() {
 	    
 	    @Override
@@ -280,7 +312,8 @@ public class InformationsInterventoFragment extends Fragment {
 	    }
 	});
 	
-	LinearLayout row_notes = (LinearLayout) view.findViewById(R.id.row_notes);
+	// LinearLayout row_notes = (LinearLayout)
+	// view.findViewById(R.id.row_notes);
 	row_notes.setOnClickListener(new View.OnClickListener() {
 	    
 	    @Override
@@ -288,8 +321,6 @@ public class InformationsInterventoFragment extends Fragment {
 		
 	    }
 	});
-	
-	return view;
     }
     
     @Override

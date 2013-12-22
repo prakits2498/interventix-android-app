@@ -21,7 +21,6 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.R.string;
-import com.federicocolantoni.projects.interventix.core.HomeActivity_;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
 import com.federicocolantoni.projects.interventix.entity.Utente;
@@ -197,7 +196,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 	
 	if (result == Activity.RESULT_OK) {
 	    
-	    mContext.startActivity(new Intent(mContext, HomeActivity_.class));
+	    mContext.startActivity(new Intent(mContext, com.federicocolantoni.projects.interventix.core.HomeActivity_.class));
 	}
 	else
 	    InterventixToast.makeToast(mContext, mContext.getString(R.string.toast_login_error), Toast.LENGTH_LONG);

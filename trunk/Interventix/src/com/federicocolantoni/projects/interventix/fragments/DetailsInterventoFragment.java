@@ -10,12 +10,10 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -29,6 +27,7 @@ import com.federicocolantoni.projects.interventix.adapter.ListDettagliInterventi
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.ViewById;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.details_intervento_fragment)
@@ -40,7 +39,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
     
     private static final String[] PROJECTION = new String[] {
 	    DettaglioInterventoDB.Fields._ID,
-	    // DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
+	    DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
 	    DettaglioInterventoDB.Fields.TIPO,
 	    DettaglioInterventoDB.Fields.OGGETTO
     };
@@ -51,17 +50,29 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
     
     private ListDettagliInterventiAdapter mAdapter;
     
+    // retrieve views
+    
+    @ViewById(R.id.tv_details_intervention)
+    TextView tv_details_intervento;
+    
+    @ViewById(R.id.list_details_intervento)
+    ListView detailsList;
+    
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
 	
-	super.onCreateView(inflater, container, savedInstanceState);
+	super.onCreate(savedInstanceState);
 	
 	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
 	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	setHasOptionsMenu(true);
+    }
+    
+    @Override
+    public void onStart() {
 	
-	final View view = inflater.inflate(R.layout.details_intervento_fragment, container, false);
+	super.onStart();
 	
 	Bundle bundle = getArguments();
 	
@@ -73,10 +84,12 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 		DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + mId_intervento
 	};
 	
-	TextView tv_details_intervento = (TextView) view.findViewById(R.id.tv_details_intervention);
+	// TextView tv_details_intervento = (TextView)
+	// view.findViewById(R.id.tv_details_intervention);
 	tv_details_intervento.setText("Dettagli");
 	
-	ListView detailsList = (ListView) view.findViewById(R.id.list_details_intervento);
+	// ListView detailsList = (ListView)
+	// view.findViewById(R.id.list_details_intervento);
 	
 	mAdapter = new ListDettagliInterventiAdapter(getActivity(), null);
 	
@@ -121,8 +134,6 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 	});
 	
 	getActivity().getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
-	
-	return view;
     }
     
     @Override
