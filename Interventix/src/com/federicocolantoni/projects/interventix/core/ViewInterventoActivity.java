@@ -196,7 +196,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	FragmentManager manager = getSupportFragmentManager();
 	FragmentTransaction transaction = manager.beginTransaction();
 	
-	OverViewInterventoFragment overView = new OverViewInterventoFragment();
+	OverViewInterventoFragment overView = new com.federicocolantoni.projects.interventix.fragments.OverViewInterventoFragment_();
 	
 	Bundle bundle = new Bundle();
 	bundle.putString(Constants.USER_NOMINATIVO, nominativo);

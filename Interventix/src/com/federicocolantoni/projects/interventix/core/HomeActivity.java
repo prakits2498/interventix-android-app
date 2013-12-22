@@ -116,7 +116,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		bundle.putLong(Constants.ID_INTERVENTO, cur.getLong(cur.getColumnIndex(InterventoDB.Fields.ID_INTERVENTO)));
 		bundle.putLong(Constants.NUMERO_INTERVENTO, cur.getLong(cur.getColumnIndex(InterventoDB.Fields.NUMERO_INTERVENTO)));
 		
-		Intent intent = new Intent(HomeActivity.this, ViewInterventoActivity_.class);
+		Intent intent = new Intent(HomeActivity.this, com.federicocolantoni.projects.interventix.core.ViewInterventoActivity_.class);
 		
 		intent.putExtras(bundle);
 		

@@ -34,23 +34,62 @@ import com.federicocolantoni.projects.interventix.task.GetNominativoClienteAsync
 import com.federicocolantoni.projects.interventix.task.GetOverviewInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
+import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.ViewById;
 
 @SuppressLint("NewApi")
+@EFragment(R.layout.overview_intervento_fragment)
 public class OverViewInterventoFragment extends Fragment {
+    
+    // retrieve views
+    @ViewById(R.id.tv_summary_intervention)
+    TextView summary;
+    
+    @ViewById(R.id.row_client)
+    View rowCliente;
+    
+    @ViewById(R.id.row_user)
+    View rowTecnico;
+    
+    @ViewById(R.id.row_informations)
+    View rowInformazioni;
+    
+    @ViewById(R.id.row_details)
+    View rowDetails;
+    
+    @ViewById(R.id.row_costs)
+    View rowCosts;
+    
+    @ViewById(R.id.row_signature)
+    View rowSignature;
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+	
+	super.onCreate(savedInstanceState);
+	
+	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	
+	setHasOptionsMenu(true);
+    }
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 	super.onCreateView(inflater, container, savedInstanceState);
 	
-	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	final View view = inflater.inflate(R.layout.overview_intervento_fragment, container, false);
 	
-	setHasOptionsMenu(true);
+	return view;
+    }
+    
+    @Override
+    public void onStart() {
+	
+	super.onStart();
 	
 	Bundle bundle = getArguments();
-	
-	final View view = inflater.inflate(R.layout.overview_intervento_fragment, container, false);
 	
 	Intervento interv = null;
 	
@@ -70,7 +109,8 @@ public class OverViewInterventoFragment extends Fragment {
 	
 	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Intervento " + bundle.getLong(Constants.NUMERO_INTERVENTO));
 	
-	TextView summary = (TextView) view.findViewById(R.id.tv_summary_intervention);
+	// TextView summary = (TextView)
+	// view.findViewById(R.id.tv_summary_intervention);
 	
 	DateTime dt_interv = new DateTime(interv.getmDataOra(), DateTimeZone.forID("Europe/Rome"));
 	
@@ -78,7 +118,7 @@ public class OverViewInterventoFragment extends Fragment {
 	
 	final FragmentManager manager = getActivity().getSupportFragmentManager();
 	
-	View rowCliente = view.findViewById(R.id.row_client);
+	// View rowCliente = view.findViewById(R.id.row_client);
 	rowCliente.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -86,7 +126,7 @@ public class OverViewInterventoFragment extends Fragment {
 		
 		FragmentTransaction transaction = manager.beginTransaction();
 		
-		ClientsInterventoFragment clientiInterv = new ClientsInterventoFragment_();
+		ClientsInterventoFragment clientiInterv = new com.federicocolantoni.projects.interventix.fragments.ClientsInterventoFragment_();
 		
 		transaction.replace(R.id.fragments_layout, clientiInterv, Constants.CLIENTS_INTERVENTO_FRAGMENT);
 		transaction.addToBackStack(Constants.CLIENTS_INTERVENTO_FRAGMENT);
@@ -116,7 +156,7 @@ public class OverViewInterventoFragment extends Fragment {
 	
 	tv_row_client.setText(cliente.getmNominativo());
 	
-	View rowTecnico = view.findViewById(R.id.row_user);
+	// View rowTecnico = view.findViewById(R.id.row_user);
 	rowTecnico.setEnabled(false);
 	
 	TextView tv_row_tecnico = (TextView) rowTecnico.findViewById(R.id.tv_row_user);
@@ -127,7 +167,7 @@ public class OverViewInterventoFragment extends Fragment {
 	final Bundle intervIDBundle = new Bundle();
 	intervIDBundle.putAll(bundle);
 	
-	View rowInformazioni = view.findViewById(R.id.row_informations);
+	// View rowInformazioni = view.findViewById(R.id.row_informations);
 	rowInformazioni.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -135,7 +175,7 @@ public class OverViewInterventoFragment extends Fragment {
 		
 		FragmentTransaction transaction = manager.beginTransaction();
 		
-		InformationsInterventoFragment infoInterv = new InformationsInterventoFragment();
+		InformationsInterventoFragment infoInterv = new com.federicocolantoni.projects.interventix.fragments.InformationsInterventoFragment_();
 		infoInterv.setArguments(intervIDBundle);
 		
 		transaction.replace(R.id.fragments_layout, infoInterv, Constants.INFORMATIONS_INTERVENTO_FRAGMENT);
@@ -146,7 +186,7 @@ public class OverViewInterventoFragment extends Fragment {
 	    }
 	});
 	
-	View rowDetails = view.findViewById(R.id.row_details);
+	// View rowDetails = view.findViewById(R.id.row_details);
 	
 	ListDetailsIntervento listaDetailsInterv = null;
 	
@@ -172,7 +212,7 @@ public class OverViewInterventoFragment extends Fragment {
 		
 		FragmentTransaction transaction = manager.beginTransaction();
 		
-		DetailsInterventoFragment detailsInterv = new DetailsInterventoFragment();
+		DetailsInterventoFragment detailsInterv = new com.federicocolantoni.projects.interventix.fragments.DetailsInterventoFragment_();
 		
 		Bundle detailsIntervBundle = new Bundle(intervIDBundle);
 		
@@ -204,7 +244,7 @@ public class OverViewInterventoFragment extends Fragment {
 	    tv_row_details.setText(getString(R.string.no_details_interv));
 	}
 	
-	View rowCosts = view.findViewById(R.id.row_costs);
+	// View rowCosts = view.findViewById(R.id.row_costs);
 	rowCosts.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -212,7 +252,7 @@ public class OverViewInterventoFragment extends Fragment {
 		
 		FragmentTransaction transaction = manager.beginTransaction();
 		
-		CostsInterventoFragment costsInterv = new CostsInterventoFragment_();
+		CostsInterventoFragment costsInterv = new com.federicocolantoni.projects.interventix.fragments.CostsInterventoFragment_();
 		costsInterv.setArguments(intervIDBundle);
 		
 		transaction.replace(R.id.fragments_layout, costsInterv, Constants.COSTS_INTERVENTO_FRAGMENT);
@@ -228,7 +268,7 @@ public class OverViewInterventoFragment extends Fragment {
 	TextView tv_row_costs = (TextView) rowCosts.findViewById(R.id.tv_row_costs);
 	tv_row_costs.setText(formatter.format(interv.getmTotale().doubleValue()) + " €");
 	
-	View rowSignature = view.findViewById(R.id.row_signature);
+	// View rowSignature = view.findViewById(R.id.row_signature);
 	
 	TextView tv_row_signature = (TextView) rowSignature.findViewById(R.id.tv_row_signature);
 	if (interv.getmFirma().length() > 0) {
@@ -240,7 +280,7 @@ public class OverViewInterventoFragment extends Fragment {
 		    
 		    FragmentTransaction transaction = manager.beginTransaction();
 		    
-		    SignatureInterventoFragment signInterv = new SignatureInterventoFragment_();
+		    SignatureInterventoFragment signInterv = new com.federicocolantoni.projects.interventix.fragments.SignatureInterventoFragment_();
 		    signInterv.setArguments(intervIDBundle);
 		    
 		    transaction.replace(R.id.fragments_layout, signInterv, Constants.SIGNATURE_INTERVENTO_FRAGMENT);
@@ -254,8 +294,6 @@ public class OverViewInterventoFragment extends Fragment {
 	else {
 	    tv_row_signature.setText("Non presente");
 	}
-	
-	return view;
     }
     
     @Override
