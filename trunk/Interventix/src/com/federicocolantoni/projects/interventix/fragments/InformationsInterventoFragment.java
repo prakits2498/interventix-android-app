@@ -122,7 +122,6 @@ public class InformationsInterventoFragment extends Fragment {
 	
 	info_interv.setText("Informazioni");
 	
-	// View tipologia = view.findViewById(R.id.row_tipology);
 	tipologia.setOnClickListener(new View.OnClickListener() {
 	    
 	    @Override
@@ -135,7 +134,6 @@ public class InformationsInterventoFragment extends Fragment {
 	TextView tv_tipology = (TextView) tipologia.findViewById(R.id.tv_row_tipology);
 	tv_tipology.setText(interv.getmTipologia());
 	
-	// View mode = view.findViewById(R.id.row_mode);
 	mode.setOnClickListener(new View.OnClickListener() {
 	    
 	    @Override
@@ -148,7 +146,6 @@ public class InformationsInterventoFragment extends Fragment {
 	TextView tv_mode = (TextView) mode.findViewById(R.id.tv_row_mode);
 	tv_mode.setText(interv.getmModalita());
 	
-	// View product = view.findViewById(R.id.row_product);
 	product.setOnClickListener(new View.OnClickListener() {
 	    
 	    @Override
@@ -161,7 +158,6 @@ public class InformationsInterventoFragment extends Fragment {
 	TextView tv_product = (TextView) product.findViewById(R.id.tv_row_product);
 	tv_product.setText(interv.getmProdotto());
 	
-	// View motivation = view.findViewById(R.id.row_motivation);
 	motivation.setOnClickListener(new View.OnClickListener() {
 	    
 	    @Override
@@ -174,7 +170,6 @@ public class InformationsInterventoFragment extends Fragment {
 	TextView tv_motivation = (TextView) motivation.findViewById(R.id.tv_row_motivation);
 	tv_motivation.setText(interv.getmMotivo());
 	
-	// View nominativo = view.findViewById(R.id.row_name);
 	nominativo.setOnClickListener(new View.OnClickListener() {
 	    
 	    @Override
@@ -186,8 +181,6 @@ public class InformationsInterventoFragment extends Fragment {
 	
 	TextView tv_nominativo = (TextView) nominativo.findViewById(R.id.tv_row_name);
 	tv_nominativo.setText(interv.getmNominativo());
-	
-	// final View date_interv = view.findViewById(R.id.row_date);
 	
 	date_interv.setOnClickListener(new View.OnClickListener() {
 	    
@@ -302,8 +295,6 @@ public class InformationsInterventoFragment extends Fragment {
 	
 	tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
 	
-	// LinearLayout row_references = (LinearLayout)
-	// view.findViewById(R.id.row_references);
 	row_references.setOnClickListener(new View.OnClickListener() {
 	    
 	    @Override
@@ -312,8 +303,6 @@ public class InformationsInterventoFragment extends Fragment {
 	    }
 	});
 	
-	// LinearLayout row_notes = (LinearLayout)
-	// view.findViewById(R.id.row_notes);
 	row_notes.setOnClickListener(new View.OnClickListener() {
 	    
 	    @Override

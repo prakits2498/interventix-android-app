@@ -57,7 +57,6 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     @ViewById(R.id.layout_drawer)
     LinearLayout layout_drawer;
     
-    // @ViewById(R.id.signature_drawer)
     DrawingView drawer;
     
     @ViewById(R.id.tv_summary_intervention)

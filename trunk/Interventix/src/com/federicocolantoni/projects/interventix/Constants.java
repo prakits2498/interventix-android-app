@@ -71,7 +71,7 @@ public final class Constants {
     public static final String LIST_DETAILS_INTERVENTO = "LIST_DETAILS_INTERVENTO";
     public static final Double IVA = 0.21;
     
-    // *** costanti per il token delle AsyncQueryHandler *** \\\
+    // *** costanti per il token delle AsyncQueryHandler ***\\
     public static final int WRITE_INTERV_TOKEN = 0;
     public static final int WRITE_DETT_INTERV_TOKEN = 1;
     public static final int TOKEN_TIPO_DETTAGLIO = 2;
