@@ -52,6 +52,8 @@ public class ViewInterventoActivity extends ActionBarActivity {
     
     private static long id_intervento;
     
+    private SharedPreferences prefs;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	
@@ -70,124 +72,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	
 	Bundle extras = getIntent().getExtras();
 	
-	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-	
-	id_intervento = extras.getLong(Constants.ID_INTERVENTO);
-	
-	Intervento interv_old = null;
-	ListDetailsIntervento listaDettagliIntervento_old = null;
-	
-	try {
-	    interv_old = new GetInterventoAsyncTask(this).execute(id_intervento).get();
-	    
-	    listaDettagliIntervento_old = new GetListaDettagliInterventoAsyncTask(this).execute(id_intervento).get();
-	    
-	    JSONObject intervento = new JSONObject();
-	    
-	    intervento.put(InterventoDB.Fields.TYPE, InterventoDB.INTERVENTO_ITEM_TYPE);
-	    intervento.put(InterventoDB.Fields.ID_INTERVENTO.toString(), interv_old.getmIdIntervento());
-	    intervento.put(InterventoDB.Fields.CANCELLATO.toString(), interv_old.ismCancellato());
-	    intervento.put(InterventoDB.Fields.CHIUSO.toString(), interv_old.ismChiuso());
-	    intervento.put(InterventoDB.Fields.CLIENTE.toString(), interv_old.getmIdCliente());
-	    intervento.put(InterventoDB.Fields.COSTO_ACCESSORI.toString(), interv_old.getmCostoAccessori().doubleValue());
-	    intervento.put(InterventoDB.Fields.COSTO_COMPONENTI.toString(), interv_old.getmCostoComponenti().doubleValue());
-	    intervento.put(InterventoDB.Fields.COSTO_MANODOPERA.toString(), interv_old.getmCostoManodopera().doubleValue());
-	    intervento.put(InterventoDB.Fields.DATA_ORA.toString(), interv_old.getmDataOra());
-	    intervento.put(InterventoDB.Fields.FIRMA.toString(), new String(interv_old.getmFirma()));
-	    intervento.put(InterventoDB.Fields.IMPORTO.toString(), interv_old.getmImporto().doubleValue());
-	    intervento.put(InterventoDB.Fields.IVA.toString(), interv_old.getmIva().doubleValue());
-	    intervento.put(InterventoDB.Fields.MODALITA.toString(), interv_old.getmModalita());
-	    intervento.put(InterventoDB.Fields.MODIFICATO.toString(), interv_old.getmModificato());
-	    intervento.put(InterventoDB.Fields.MOTIVO.toString(), interv_old.getmMotivo());
-	    intervento.put(InterventoDB.Fields.NOMINATIVO.toString(), interv_old.getmNominativo());
-	    intervento.put(InterventoDB.Fields.NOTE.toString(), interv_old.getmNote());
-	    intervento.put(InterventoDB.Fields.NUMERO_INTERVENTO.toString(), interv_old.getmNumeroIntervento());
-	    intervento.put(InterventoDB.Fields.PRODOTTO.toString(), interv_old.getmProdotto());
-	    intervento.put(InterventoDB.Fields.RIFERIMENTO_FATTURA.toString(), interv_old.getmRifFattura());
-	    intervento.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO.toString(), interv_old.getmRifScontrino());
-	    intervento.put(InterventoDB.Fields.SALDATO.toString(), interv_old.ismSaldato());
-	    intervento.put(InterventoDB.Fields.TECNICO.toString(), interv_old.getmIdTecnico());
-	    intervento.put(InterventoDB.Fields.TOTALE.toString(), interv_old.getmTotale().doubleValue());
-	    intervento.put(InterventoDB.Fields.TIPOLOGIA.toString(), interv_old.getmTipologia());
-	    
-	    JSONArray arrayDettagli = new JSONArray();
-	    
-	    for (DettaglioIntervento dettaglio : listaDettagliIntervento_old.getListDetails()) {
-		
-		JSONObject dettaglioIntervento = new JSONObject();
-		
-		dettaglioIntervento.put(DettaglioInterventoDB.Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
-		dettaglioIntervento.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO.toString(), dettaglio.getmIdDettaglioIntervento());
-		dettaglioIntervento.put(DettaglioInterventoDB.Fields.DESCRIZIONE.toString(), dettaglio.getmDescrizione());
-		dettaglioIntervento.put(DettaglioInterventoDB.Fields.FINE.toString(), dettaglio.getmFine());
-		dettaglioIntervento.put(DettaglioInterventoDB.Fields.INIZIO.toString(), dettaglio.getmInizio());
-		dettaglioIntervento.put(DettaglioInterventoDB.Fields.INTERVENTO.toString(), dettaglio.getmIntervento());
-		dettaglioIntervento.put(DettaglioInterventoDB.Fields.MODIFICATO.toString(), dettaglio.getmModificato());
-		dettaglioIntervento.put(DettaglioInterventoDB.Fields.OGGETTO.toString(), dettaglio.getmOggetto());
-		dettaglioIntervento.put(DettaglioInterventoDB.Fields.TIPO.toString(), dettaglio.getmTipo());
-		dettaglioIntervento.put(DettaglioInterventoDB.Fields.TECNICI.toString(), dettaglio.getmTecnici());
-		
-		arrayDettagli.put(dettaglioIntervento);
-	    }
-	    
-	    intervento.put(Constants.ARRAY_DETTAGLI, arrayDettagli);
-	    
-	    new ManagedAsyncTask<JSONObject, Void, Integer>(this) {
-		
-		@Override
-		protected Integer doInBackground(JSONObject... params) {
-		    
-		    int result = 0;
-		    
-		    ContentResolver cr = getContentResolver();
-		    
-		    ContentValues values = new ContentValues();
-		    
-		    values.put(RipristinoInterventoDB.Field.TYPE, RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE);
-		    values.put(RipristinoInterventoDB.Field.BACKUP_INTERVENTO, params[0].toString());
-		    
-		    Uri newRow = cr.insert(RipristinoInterventoDB.CONTENT_URI, values);
-		    
-		    if (newRow != null) {
-			
-			System.out.println("Uri ripristino intervento: " + newRow.toString());
-			
-			result = RESULT_OK;
-		    }
-		    else {
-			result = RESULT_CANCELED;
-		    }
-		    
-		    return result;
-		}
-		
-		@Override
-		protected void onPostExecute(Integer result) {
-		    
-		    if (result == RESULT_OK) {
-			System.out.println("Salvataggio dell'intervento di ripristino avvenuto con successo");
-		    }
-		    else {
-			System.out.println("Errore nel salvataggio dell'intervento di ripristino");
-		    }
-		}
-	    }.execute(intervento);
-	}
-	catch (InterruptedException e) {
-	    
-	    e.printStackTrace();
-	    BugSenseHandler.sendException(e);
-	}
-	catch (ExecutionException e) {
-	    
-	    e.printStackTrace();
-	    BugSenseHandler.sendException(e);
-	}
-	catch (JSONException e) {
-	    
-	    e.printStackTrace();
-	    BugSenseHandler.sendException(e);
-	}
+	prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
 	String nominativo = prefs.getString(Constants.USER_NOMINATIVO, null);
 	
@@ -195,6 +80,140 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	
 	FragmentManager manager = getSupportFragmentManager();
 	FragmentTransaction transaction = manager.beginTransaction();
+	
+	id_intervento = extras.getLong(Constants.ID_INTERVENTO);
+	
+	if (id_intervento != -1l) {
+	    Intervento interv_old = null;
+	    ListDetailsIntervento listaDettagliIntervento_old = null;
+	    
+	    try {
+		interv_old = new GetInterventoAsyncTask(this).execute(id_intervento).get();
+		
+		listaDettagliIntervento_old = new GetListaDettagliInterventoAsyncTask(this).execute(id_intervento).get();
+		
+		JSONObject intervento = new JSONObject();
+		
+		intervento.put(InterventoDB.Fields.TYPE, InterventoDB.INTERVENTO_ITEM_TYPE);
+		intervento.put(InterventoDB.Fields.ID_INTERVENTO.toString(), interv_old.getmIdIntervento());
+		intervento.put(InterventoDB.Fields.CANCELLATO.toString(), interv_old.ismCancellato());
+		intervento.put(InterventoDB.Fields.CHIUSO.toString(), interv_old.ismChiuso());
+		intervento.put(InterventoDB.Fields.CLIENTE.toString(), interv_old.getmIdCliente());
+		intervento.put(InterventoDB.Fields.COSTO_ACCESSORI.toString(), interv_old.getmCostoAccessori().doubleValue());
+		intervento.put(InterventoDB.Fields.COSTO_COMPONENTI.toString(), interv_old.getmCostoComponenti().doubleValue());
+		intervento.put(InterventoDB.Fields.COSTO_MANODOPERA.toString(), interv_old.getmCostoManodopera().doubleValue());
+		intervento.put(InterventoDB.Fields.DATA_ORA.toString(), interv_old.getmDataOra());
+		intervento.put(InterventoDB.Fields.FIRMA.toString(), new String(interv_old.getmFirma()));
+		intervento.put(InterventoDB.Fields.IMPORTO.toString(), interv_old.getmImporto().doubleValue());
+		intervento.put(InterventoDB.Fields.IVA.toString(), interv_old.getmIva().doubleValue());
+		intervento.put(InterventoDB.Fields.MODALITA.toString(), interv_old.getmModalita());
+		intervento.put(InterventoDB.Fields.MODIFICATO.toString(), interv_old.getmModificato());
+		intervento.put(InterventoDB.Fields.MOTIVO.toString(), interv_old.getmMotivo());
+		intervento.put(InterventoDB.Fields.NOMINATIVO.toString(), interv_old.getmNominativo());
+		intervento.put(InterventoDB.Fields.NOTE.toString(), interv_old.getmNote());
+		intervento.put(InterventoDB.Fields.NUMERO_INTERVENTO.toString(), interv_old.getmNumeroIntervento());
+		intervento.put(InterventoDB.Fields.PRODOTTO.toString(), interv_old.getmProdotto());
+		intervento.put(InterventoDB.Fields.RIFERIMENTO_FATTURA.toString(), interv_old.getmRifFattura());
+		intervento.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO.toString(), interv_old.getmRifScontrino());
+		intervento.put(InterventoDB.Fields.SALDATO.toString(), interv_old.ismSaldato());
+		intervento.put(InterventoDB.Fields.TECNICO.toString(), interv_old.getmIdTecnico());
+		intervento.put(InterventoDB.Fields.TOTALE.toString(), interv_old.getmTotale().doubleValue());
+		intervento.put(InterventoDB.Fields.TIPOLOGIA.toString(), interv_old.getmTipologia());
+		
+		JSONArray arrayDettagli = new JSONArray();
+		
+		for (DettaglioIntervento dettaglio : listaDettagliIntervento_old.getListDetails()) {
+		    
+		    JSONObject dettaglioIntervento = new JSONObject();
+		    
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO.toString(), dettaglio.getmIdDettaglioIntervento());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.DESCRIZIONE.toString(), dettaglio.getmDescrizione());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.FINE.toString(), dettaglio.getmFine());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.INIZIO.toString(), dettaglio.getmInizio());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.INTERVENTO.toString(), dettaglio.getmIntervento());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.MODIFICATO.toString(), dettaglio.getmModificato());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.OGGETTO.toString(), dettaglio.getmOggetto());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.TIPO.toString(), dettaglio.getmTipo());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.TECNICI.toString(), dettaglio.getmTecnici());
+		    
+		    arrayDettagli.put(dettaglioIntervento);
+		}
+		
+		intervento.put(Constants.ARRAY_DETTAGLI, arrayDettagli);
+		
+		new ManagedAsyncTask<JSONObject, Void, Integer>(this) {
+		    
+		    @Override
+		    protected Integer doInBackground(JSONObject... params) {
+			
+			int result = 0;
+			
+			ContentResolver cr = getContentResolver();
+			
+			ContentValues values = new ContentValues();
+			
+			values.put(RipristinoInterventoDB.Field.TYPE, RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE);
+			values.put(RipristinoInterventoDB.Field.BACKUP_INTERVENTO, params[0].toString());
+			
+			Uri newRow = cr.insert(RipristinoInterventoDB.CONTENT_URI, values);
+			
+			if (newRow != null) {
+			    
+			    System.out.println("Uri ripristino intervento: " + newRow.toString());
+			    
+			    result = RESULT_OK;
+			}
+			else {
+			    result = RESULT_CANCELED;
+			}
+			
+			return result;
+		    }
+		    
+		    @Override
+		    protected void onPostExecute(Integer result) {
+			
+			if (result == RESULT_OK) {
+			    System.out.println("Salvataggio dell'intervento di ripristino avvenuto con successo");
+			}
+			else {
+			    System.out.println("Errore nel salvataggio dell'intervento di ripristino");
+			}
+		    }
+		}.execute(intervento);
+	    }
+	    catch (InterruptedException e) {
+		
+		e.printStackTrace();
+		BugSenseHandler.sendException(e);
+	    }
+	    catch (ExecutionException e) {
+		
+		e.printStackTrace();
+		BugSenseHandler.sendException(e);
+	    }
+	    catch (JSONException e) {
+		
+		e.printStackTrace();
+		BugSenseHandler.sendException(e);
+	    }
+	    
+	    // OverViewInterventoFragment overView = new
+	    // com.federicocolantoni.projects.interventix.fragments.OverViewInterventoFragment_();
+	    
+	    // Bundle bundle = new Bundle();
+	    // bundle.putString(Constants.USER_NOMINATIVO, nominativo);
+	    // bundle.putAll(extras);
+	    //
+	    // overView.setArguments(bundle);
+	    //
+	    // transaction.add(R.id.fragments_layout, overView,
+	    // Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+	    // transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+	    // transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	    // transaction.commit();
+	}
 	
 	OverViewInterventoFragment overView = new com.federicocolantoni.projects.interventix.fragments.OverViewInterventoFragment_();
 	
@@ -208,6 +227,19 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
 	transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 	transaction.commit();
+	
+	// else {
+	//
+	// Bundle bundle = new Bundle();
+	// bundle.putString(Constants.USER_NOMINATIVO, nominativo);
+	// bundle.putAll(extras);
+	//
+	// transaction.add(R.id.fragments_layout, overView,
+	// Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+	// transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+	// transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	// transaction.commit();
+	// }
     }
     
     @Override

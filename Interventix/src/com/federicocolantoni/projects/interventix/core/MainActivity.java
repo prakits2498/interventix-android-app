@@ -2,14 +2,12 @@ package com.federicocolantoni.projects.interventix.core;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -37,6 +35,7 @@ import com.federicocolantoni.projects.interventix.task.ReadDefaultPreferences;
 import com.federicocolantoni.projects.interventix.utils.ChangeLogDialog;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.googlecode.androidannotations.annotations.res.StringRes;
 
 @SuppressLint("NewApi")
 @EActivity(R.layout.activity_main)
@@ -44,6 +43,12 @@ public class MainActivity extends ActionBarActivity {
     
     @ViewById(R.id.tv_changelog)
     TextView tv_changelog;
+    
+    @StringRes(R.string.welcome_title)
+    static String welcome_title;
+    
+    @StringRes(R.string.welcome_message)
+    static String welcome_message;
     
     Timer timer;
     
@@ -72,33 +77,13 @@ public class MainActivity extends ActionBarActivity {
 	    }
 	}, 2500);
 	
-	SharedPreferences prefs = null;
-	
 	ReadDefaultPreferences readPref = new ReadDefaultPreferences(MainActivity.this);
 	readPref.execute();
 	
-	try {
-	    
-	    prefs = readPref.get();
-	    
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-		PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_preferences_options, true);
-	    else
-		PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_support_preferences_options, true);
-	}
-	catch (InterruptedException e) {
-	    
-	    e.printStackTrace();
-	    BugSenseHandler.sendException(e);
-	}
-	catch (ExecutionException e) {
-	    
-	    e.printStackTrace();
-	    BugSenseHandler.sendException(e);
-	}
-	
-	System.out.println("DEFAULT URL: " + prefs.getString(getResources().getString(R.string.prefs_key_url), ""));
-	
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+	    PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_preferences_options, true);
+	else
+	    PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_support_preferences_options, true);
     }
     
     @Override
@@ -163,8 +148,8 @@ public class MainActivity extends ActionBarActivity {
 	    
 	    AlertDialog.Builder first_run_dialog = new Builder(getActivity());
 	    
-	    first_run_dialog.setTitle(R.string.welcome_title);
-	    first_run_dialog.setMessage(R.string.welcome_message);
+	    first_run_dialog.setTitle(welcome_title);
+	    first_run_dialog.setMessage(welcome_message);
 	    first_run_dialog.setIcon(R.drawable.ic_launcher);
 	    
 	    LayoutInflater inflater = getActivity().getLayoutInflater();
