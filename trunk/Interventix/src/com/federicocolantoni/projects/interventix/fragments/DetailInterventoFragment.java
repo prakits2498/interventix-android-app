@@ -60,6 +60,7 @@ import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatch
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.googlecode.androidannotations.annotations.res.StringRes;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
@@ -128,6 +129,18 @@ public class DetailInterventoFragment extends Fragment {
     @ViewById(R.id.tv_row_tot_ore_dettaglio)
     TextView tv_row_tot_ore_dett;
     
+    @StringRes(R.string.ok_btn)
+    static String ok_btn;
+    
+    @StringRes(R.string.cancel_btn)
+    static String cancel_btn;
+    
+    @StringRes(R.string.tipo_dett_title)
+    static String tipo_dett_title;
+    
+    @StringRes(R.string.choose_tecnici_title)
+    static String choose_tecnici_title;
+    
     private ActionBar actionbar;
     
     @Override
@@ -145,10 +158,6 @@ public class DetailInterventoFragment extends Fragment {
 	sId_Dettaglio_Intervento = bundle.getLong(Constants.ID_DETTAGLIO_INTERVENTO);
 	sNuovo_Dettaglio = bundle.getString(Constants.NUOVO_DETTAGLIO_INTERVENTO);
 	sId_Intervento = bundle.getLong(Constants.ID_INTERVENTO);
-	
-	System.out.println("ID dettaglio = " + sId_Dettaglio_Intervento + "\n"
-		+ "ID intervento = " + sId_Intervento + "\n"
-		+ "Nuovo dettaglio = " + sNuovo_Dettaglio);
     }
     
     @Override
@@ -231,7 +240,7 @@ public class DetailInterventoFragment extends Fragment {
 		    
 		    sNewDetail = null;
 		    
-		    Constants.sID_Dettaglio_Temp--;
+		    Constants.sIdDettaglio_Temp--;
 		    
 		    getActivity().getSupportFragmentManager().popBackStackImmediate();
 		}
@@ -277,11 +286,7 @@ public class DetailInterventoFragment extends Fragment {
 		BugSenseHandler.sendException(e);
 	    }
 	    
-	    // tv_dett_interv = (TextView)
-	    // view.findViewById(R.id.tv_dett_interv);
 	    tv_dett_interv.setText("Dettaglio " + sId_Dettaglio_Intervento);
-	    
-	    // row_tipo_dett = view.findViewById(R.id.row_tipo_dettaglio);
 	    
 	    row_tipo_dett.setOnClickListener(new OnClickListener() {
 		
@@ -295,7 +300,6 @@ public class DetailInterventoFragment extends Fragment {
 	    tv_row_tipo_dett = (TextView) row_tipo_dett.findViewById(R.id.tv_row_tipo_dettaglio);
 	    tv_row_tipo_dett.setText(dettInterv.getmTipo());
 	    
-	    // row_oggetto_dett = view.findViewById(R.id.row_oggetto_dettaglio);
 	    row_oggetto_dett.setOnClickListener(new OnClickListener() {
 		
 		@Override
@@ -305,14 +309,8 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    
-	    // tv_row_oggetto_dett = (TextView)
-	    // row_oggetto_dett.findViewById(R.id.tv_row_oggetto_dettaglio);
 	    tv_row_oggetto_dett.setText(dettInterv.getmOggetto());
 	    
-	    // row_tecnici_dett = view.findViewById(R.id.row_tecnici_dettaglio);
-	    
-	    // tv_row_tecnici_dett = (TextView)
-	    // row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
 	    tv_row_tecnici_dett.setText("" + dettInterv.getmTecnici().length());
 	    
 	    final JSONArray tecnici = dettInterv.getmTecnici();
@@ -331,17 +329,9 @@ public class DetailInterventoFragment extends Fragment {
 		    
 		    SetTecnici diag_Tecnici = new SetTecnici();
 		    
-		    // Bundle bundle = new Bundle();
-		    // bundle.putString(TECNICI_DETTAGLIO, tecnici.toString());
-		    //
-		    // diag_Tecnici.setArguments(bundle);
-		    
 		    diag_Tecnici.show(getFragmentManager(), Constants.TECHNICIANS_DETAIL_FRAGMENT);
 		}
 	    });
-	    
-	    // row_descr_dett =
-	    // view.findViewById(R.id.row_descrizione_dettaglio);
 	    
 	    row_descr_dett.setOnClickListener(new OnClickListener() {
 		
@@ -352,12 +342,7 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    
-	    // tv_row_descr_dett = (TextView)
-	    // row_descr_dett.findViewById(R.id.tv_row_descrizione_dettaglio);
 	    tv_row_descr_dett.setText(dettInterv.getmDescrizione());
-	    
-	    // final View row_inizio_dett =
-	    // view.findViewById(R.id.row_inizio_dettaglio);
 	    
 	    row_inizio_dett.setOnClickListener(new OnClickListener() {
 		
@@ -486,15 +471,9 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    
-	    // TextView tv_row_inizio_dett = (TextView)
-	    // row_inizio_dett.findViewById(R.id.tv_row_inizio_dettaglio);
-	    
 	    DateTime dt_inizio = new DateTime(dettInterv.getmInizio(), DateTimeZone.forID("Europe/Rome"));
 	    
 	    tv_row_inizio_dett.setText(dt_inizio.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
-	    
-	    // final View row_fine_dett =
-	    // view.findViewById(R.id.row_fine_dettaglio);
 	    
 	    row_fine_dett.setOnClickListener(new OnClickListener() {
 		
@@ -623,18 +602,9 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    
-	    // TextView tv_row_fine_dett = (TextView)
-	    // row_fine_dett.findViewById(R.id.tv_row_fine_dettaglio);
-	    
 	    DateTime dt_fine = new DateTime(dettInterv.getmFine(), DateTimeZone.forID("Europe/Rome"));
 	    
 	    tv_row_fine_dett.setText(dt_fine.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
-	    
-	    // View row_tot_ore_dett =
-	    // view.findViewById(R.id.row_tot_ore_dettaglio);
-	    
-	    // TextView tv_row_tot_ore_dett = (TextView)
-	    // row_tot_ore_dett.findViewById(R.id.tv_row_tot_ore_dettaglio);
 	    
 	    DateTime dt_tot_ore = new DateTime(dt_fine.toDate().getTime() - dt_inizio.toDate().getTime(), DateTimeZone.forID("Europe/Rome"));
 	    
@@ -644,8 +614,6 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    addNewDetail();
 	}
-	
-	// return view;
     }
     
     private void addNewDetail() {
@@ -654,7 +622,7 @@ public class DetailInterventoFragment extends Fragment {
 	
 	try {
 	    
-	    sNewDetail.put(ID_NUOVO_DETTAGLIO, Constants.sID_Dettaglio_Temp);
+	    sNewDetail.put(ID_NUOVO_DETTAGLIO, Constants.sIdDettaglio_Temp);
 	    sNewDetail.put(INTERVENTO_NUOVO_DETTAGLIO, sId_Intervento);
 	}
 	catch (JSONException e) {
@@ -663,10 +631,8 @@ public class DetailInterventoFragment extends Fragment {
 	    BugSenseHandler.sendException(e);
 	}
 	
-	// tv_dett_interv = (TextView) view.findViewById(R.id.tv_dett_interv);
-	tv_dett_interv.setText("Dettaglio " + Constants.sID_Dettaglio_Temp);
+	tv_dett_interv.setText("Dettaglio " + Constants.sIdDettaglio_Temp);
 	
-	// row_tipo_dett = view.findViewById(R.id.row_tipo_dettaglio);
 	row_tipo_dett.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -690,14 +656,8 @@ public class DetailInterventoFragment extends Fragment {
 	    }
 	});
 	
-	// tv_row_oggetto_dett = (TextView)
-	// row_oggetto_dett.findViewById(R.id.tv_row_oggetto_dettaglio);
 	tv_row_oggetto_dett.setText("");
 	
-	// row_tecnici_dett = view.findViewById(R.id.row_tecnici_dettaglio);
-	
-	// tv_row_tecnici_dett = (TextView)
-	// row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
 	tv_row_tecnici_dett.setText("");
 	
 	row_tecnici_dett.setOnClickListener(new OnClickListener() {
@@ -744,7 +704,7 @@ public class DetailInterventoFragment extends Fragment {
 		
 		final boolean[] tecniciChecked = new boolean[tuttiTecnici.length];
 		
-		tecniciDialog.setTitle(R.string.choose_tecnici_title);
+		tecniciDialog.setTitle(choose_tecnici_title);
 		tecniciDialog.setMultiChoiceItems(tuttiNomiTecnici, tecniciChecked, new OnMultiChoiceClickListener() {
 		    
 		    @Override
@@ -759,7 +719,7 @@ public class DetailInterventoFragment extends Fragment {
 		
 		final String[] copiaTuttiTecnici = tuttiTecnici;
 		
-		tecniciDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
+		tecniciDialog.setPositiveButton(ok_btn, new DialogInterface.OnClickListener() {
 		    
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
@@ -787,7 +747,7 @@ public class DetailInterventoFragment extends Fragment {
 			dialog.dismiss();
 		    }
 		});
-		tecniciDialog.setNegativeButton(R.string.cancel_btn, new DialogInterface.OnClickListener() {
+		tecniciDialog.setNegativeButton(cancel_btn, new DialogInterface.OnClickListener() {
 		    
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
@@ -800,7 +760,6 @@ public class DetailInterventoFragment extends Fragment {
 	    }
 	});
 	
-	// row_descr_dett = view.findViewById(R.id.row_descrizione_dettaglio);
 	row_descr_dett.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -810,12 +769,7 @@ public class DetailInterventoFragment extends Fragment {
 	    }
 	});
 	
-	// tv_row_descr_dett = (TextView)
-	// row_descr_dett.findViewById(R.id.tv_row_descrizione_dettaglio);
 	tv_row_descr_dett.setText("");
-	
-	// final View row_inizio_dett =
-	// view.findViewById(R.id.row_inizio_dettaglio);
 	
 	row_inizio_dett.setOnClickListener(new OnClickListener() {
 	    
@@ -971,9 +925,6 @@ public class DetailInterventoFragment extends Fragment {
 	    }
 	});
 	
-	// TextView tv_row_inizio_dett = (TextView)
-	// row_inizio_dett.findViewById(R.id.tv_row_inizio_dettaglio);
-	
 	DateTime dt_inizio = new DateTime(DateTime.now(), DateTimeZone.forID("Europe/Rome"));
 	
 	tv_row_inizio_dett.setText(dt_inizio.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
@@ -985,9 +936,6 @@ public class DetailInterventoFragment extends Fragment {
 	    BugSenseHandler.sendException(e);
 	    e.printStackTrace();
 	}
-	
-	// final View row_fine_dett =
-	// view.findViewById(R.id.row_fine_dettaglio);
 	
 	row_fine_dett.setOnClickListener(new OnClickListener() {
 	    
@@ -1143,9 +1091,6 @@ public class DetailInterventoFragment extends Fragment {
 	    }
 	});
 	
-	// TextView tv_row_fine_dett = (TextView)
-	// row_fine_dett.findViewById(R.id.tv_row_fine_dettaglio);
-	
 	DateTime dt_fine = new DateTime(DateTime.now(), DateTimeZone.forID("Europe/Rome"));
 	
 	tv_row_fine_dett.setText(dt_fine.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
@@ -1157,12 +1102,6 @@ public class DetailInterventoFragment extends Fragment {
 	    BugSenseHandler.sendException(e);
 	    e.printStackTrace();
 	}
-	
-	// View row_tot_ore_dett =
-	// view.findViewById(R.id.row_tot_ore_dettaglio);
-	
-	// TextView tv_row_tot_ore_dett = (TextView)
-	// row_tot_ore_dett.findViewById(R.id.tv_row_tot_ore_dettaglio);
 	
 	DateTime dt_tot_ore = new DateTime(dt_fine.toDate().getTime() - dt_inizio.toDate().getTime(), DateTimeZone.forID("Europe/Rome"));
 	
@@ -1182,7 +1121,7 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    AlertDialog.Builder tipo_dett = new Builder(getActivity());
 	    
-	    tipo_dett.setTitle(R.string.tipo_dett_title);
+	    tipo_dett.setTitle(tipo_dett_title);
 	    
 	    final String[] tipos = getResources().getStringArray(R.array.tipo_dettaglio_intervento);
 	    
@@ -1196,7 +1135,7 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    tipo_dett.setCancelable(false);
-	    tipo_dett.setPositiveButton(getResources().getString(R.string.ok_btn), this);
+	    tipo_dett.setPositiveButton(ok_btn, this);
 	    
 	    return tipo_dett.create();
 	}
@@ -1276,7 +1215,7 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    oggetto_dett.setView(mEdit_oggetto_dett);
 	    oggetto_dett.setCancelable(false);
-	    oggetto_dett.setPositiveButton(getResources().getString(R.string.ok_btn), this);
+	    oggetto_dett.setPositiveButton(ok_btn, this);
 	    
 	    return oggetto_dett.create();
 	}
@@ -1362,7 +1301,7 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    descrizione_dett.setView(mEdit_descrizione_dett);
 	    descrizione_dett.setCancelable(false);
-	    descrizione_dett.setPositiveButton(getResources().getString(R.string.ok_btn), this);
+	    descrizione_dett.setPositiveButton(ok_btn, this);
 	    
 	    return descrizione_dett.create();
 	}
@@ -1561,7 +1500,7 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    AlertDialog.Builder tecnici_dett = new Builder(getActivity());
 	    
-	    tecnici_dett.setTitle(R.string.choose_tecnici_title);
+	    tecnici_dett.setTitle(choose_tecnici_title);
 	    tecnici_dett.setMultiChoiceItems(tuttiNomiTecnici, tecniciChecked, new OnMultiChoiceClickListener() {
 		
 		@Override
@@ -1573,8 +1512,8 @@ public class DetailInterventoFragment extends Fragment {
 			tecniciChecked[which] = false;
 		}
 	    });
-	    tecnici_dett.setPositiveButton(R.string.ok_btn, this);
-	    tecnici_dett.setNegativeButton(R.string.cancel_btn, this);
+	    tecnici_dett.setPositiveButton(ok_btn, this);
+	    tecnici_dett.setNegativeButton(cancel_btn, this);
 	    
 	    return tecnici_dett.create();
 	}

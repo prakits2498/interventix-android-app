@@ -53,6 +53,7 @@ import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.googlecode.androidannotations.annotations.res.StringRes;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
@@ -77,6 +78,15 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     @ViewById(R.id.list_interv_open)
     ListView listOpen;
+    
+    @StringRes(R.string.toast_error_syncro_users)
+    String toast_error_syncro_users;
+    
+    @StringRes(R.string.toast_error_syncro_clients)
+    String toast_error_syncro_clients;
+    
+    @StringRes(R.string.toast_error_syncro_interventions)
+    String toast_error_syncro_interventions;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,6 +182,17 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		break;
 	    
 	    case R.id.add_menu:
+		
+		Bundle bundle = new Bundle();
+		
+		bundle.putLong(Constants.ID_INTERVENTO, -1l);
+		bundle.putLong(Constants.NUMERO_INTERVENTO, -1l);
+		
+		Intent intent = new Intent(HomeActivity.this, com.federicocolantoni.projects.interventix.core.ViewInterventoActivity_.class);
+		
+		intent.putExtras(bundle);
+		
+		startActivity(intent);
 		
 		break;
 	}
@@ -348,7 +369,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		}
 		else {
 		    
-		    InterventixToast.makeToast(HomeActivity.this, getString(R.string.toast_error_syncro_users), Toast.LENGTH_LONG);
+		    InterventixToast.makeToast(HomeActivity.this, toast_error_syncro_users, Toast.LENGTH_LONG);
 		    
 		    setRefreshActionButtonState(false);
 		}
@@ -518,7 +539,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		}
 		else {
 		    
-		    InterventixToast.makeToast(HomeActivity.this, getString(R.string.toast_error_syncro_clients), Toast.LENGTH_LONG);
+		    InterventixToast.makeToast(HomeActivity.this, toast_error_syncro_clients, Toast.LENGTH_LONG);
 		    
 		    setRefreshActionButtonState(false);
 		}
@@ -824,7 +845,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		}
 		else {
 		    
-		    InterventixToast.makeToast(HomeActivity.this, getString(R.string.toast_error_syncro_interventions), Toast.LENGTH_LONG);
+		    InterventixToast.makeToast(HomeActivity.this, toast_error_syncro_interventions, Toast.LENGTH_LONG);
 		    
 		    setRefreshActionButtonState(false);
 		}
