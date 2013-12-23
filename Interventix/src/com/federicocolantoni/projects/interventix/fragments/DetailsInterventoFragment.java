@@ -110,7 +110,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 		FragmentManager manager = getActivity().getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		
-		DetailInterventoFragment dettInterv = new DetailInterventoFragment();
+		DetailInterventoFragment dettInterv = new com.federicocolantoni.projects.interventix.fragments.DetailInterventoFragment_();
 		dettInterv.setArguments(bundle);
 		
 		transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);

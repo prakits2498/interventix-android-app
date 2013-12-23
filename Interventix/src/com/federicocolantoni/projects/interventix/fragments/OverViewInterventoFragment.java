@@ -63,6 +63,8 @@ public class OverViewInterventoFragment extends Fragment {
     @ViewById(R.id.row_signature)
     View rowSignature;
     
+    FragmentManager manager;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	
@@ -109,16 +111,12 @@ public class OverViewInterventoFragment extends Fragment {
 	
 	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Intervento " + bundle.getLong(Constants.NUMERO_INTERVENTO));
 	
-	// TextView summary = (TextView)
-	// view.findViewById(R.id.tv_summary_intervention);
-	
 	DateTime dt_interv = new DateTime(interv.getmDataOra(), DateTimeZone.forID("Europe/Rome"));
 	
 	summary.setText("Interv. " + bundle.getLong(Constants.NUMERO_INTERVENTO) + " del " + dt_interv.toString("dd/MM/yyyy HH:mm"));
 	
-	final FragmentManager manager = getActivity().getSupportFragmentManager();
+	manager = getActivity().getSupportFragmentManager();
 	
-	// View rowCliente = view.findViewById(R.id.row_client);
 	rowCliente.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -156,7 +154,6 @@ public class OverViewInterventoFragment extends Fragment {
 	
 	tv_row_client.setText(cliente.getmNominativo());
 	
-	// View rowTecnico = view.findViewById(R.id.row_user);
 	rowTecnico.setEnabled(false);
 	
 	TextView tv_row_tecnico = (TextView) rowTecnico.findViewById(R.id.tv_row_user);
@@ -167,7 +164,6 @@ public class OverViewInterventoFragment extends Fragment {
 	final Bundle intervIDBundle = new Bundle();
 	intervIDBundle.putAll(bundle);
 	
-	// View rowInformazioni = view.findViewById(R.id.row_informations);
 	rowInformazioni.setOnClickListener(new OnClickListener() {
 	    
 	    @Override

@@ -35,13 +35,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,9 +58,12 @@ import com.federicocolantoni.projects.interventix.task.SaveChangesDettaglioInter
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatcher;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
+import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.ViewById;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
+@EFragment(R.layout.detail_dett_intervento_fragment)
 public class DetailInterventoFragment extends Fragment {
     
     private static long sId_Dettaglio_Intervento, sId_Intervento;
@@ -82,42 +83,62 @@ public class DetailInterventoFragment extends Fragment {
     
     private DettaglioIntervento dettInterv;
     
-    private TextView tv_dett_interv;
+    @ViewById(R.id.tv_dett_interv)
+    TextView tv_dett_interv;
     
-    private View row_tipo_dett;
+    @ViewById(R.id.row_tipo_dettaglio)
+    View row_tipo_dett;
     
-    private TextView tv_row_tipo_dett;
+    @ViewById(R.id.tv_row_tipo_dettaglio)
+    TextView tv_row_tipo_dett;
     
-    private View row_oggetto_dett;
+    @ViewById(R.id.row_oggetto_dettaglio)
+    View row_oggetto_dett;
     
-    private TextView tv_row_oggetto_dett;
+    @ViewById(R.id.tv_row_oggetto_dettaglio)
+    TextView tv_row_oggetto_dett;
     
-    private View row_descr_dett;
+    @ViewById(R.id.row_descrizione_dettaglio)
+    View row_descr_dett;
     
-    private TextView tv_row_descr_dett;
+    @ViewById(R.id.tv_row_descrizione_dettaglio)
+    TextView tv_row_descr_dett;
     
-    private View row_tecnici_dett;
+    @ViewById(R.id.row_tecnici_dettaglio)
+    View row_tecnici_dett;
     
-    private TextView tv_row_tecnici_dett;
+    @ViewById(R.id.tv_row_tecnici_dettaglio)
+    TextView tv_row_tecnici_dett;
+    
+    @ViewById(R.id.row_inizio_dettaglio)
+    View row_inizio_dett;
+    
+    @ViewById(R.id.tv_row_inizio_dettaglio)
+    TextView tv_row_inizio_dett;
+    
+    @ViewById(R.id.row_fine_dettaglio)
+    View row_fine_dett;
+    
+    @ViewById(R.id.tv_row_fine_dettaglio)
+    TextView tv_row_fine_dett;
+    
+    @ViewById(R.id.row_tot_ore_dettaglio)
+    View row_tot_ore_dett;
+    
+    @ViewById(R.id.tv_row_tot_ore_dettaglio)
+    TextView tv_row_tot_ore_dett;
     
     private ActionBar actionbar;
     
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
 	
-	BugSenseHandler.initAndStartSession(getActivity(), Constants.API_KEY);
-	
-	super.onCreateView(inflater, container, savedInstanceState);
-	
-	final View view = inflater.inflate(R.layout.detail_dett_intervento_fragment, container, false);
+	super.onCreate(savedInstanceState);
 	
 	actionbar = ((ActionBarActivity) getActivity()).getSupportActionBar();
 	
 	actionbar.setHomeButtonEnabled(true);
 	actionbar.setDisplayHomeAsUpEnabled(true);
-	
-	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN || Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1)
-	    setHasOptionsMenu(true);
 	
 	Bundle bundle = getArguments();
 	
@@ -128,8 +149,14 @@ public class DetailInterventoFragment extends Fragment {
 	System.out.println("ID dettaglio = " + sId_Dettaglio_Intervento + "\n"
 		+ "ID intervento = " + sId_Intervento + "\n"
 		+ "Nuovo dettaglio = " + sNuovo_Dettaglio);
+    }
+    
+    @Override
+    public void onStart() {
 	
-	return setupViewsDetailIntervernto(view);
+	super.onStart();
+	
+	setupViewsDetailIntervernto();
     }
     
     @Override
@@ -231,7 +258,7 @@ public class DetailInterventoFragment extends Fragment {
 	return true;
     }
     
-    private View setupViewsDetailIntervernto(final View view) {
+    private void setupViewsDetailIntervernto() {
 	if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
 	    
 	    dettInterv = null;
@@ -250,10 +277,11 @@ public class DetailInterventoFragment extends Fragment {
 		BugSenseHandler.sendException(e);
 	    }
 	    
-	    tv_dett_interv = (TextView) view.findViewById(R.id.tv_dett_interv);
+	    // tv_dett_interv = (TextView)
+	    // view.findViewById(R.id.tv_dett_interv);
 	    tv_dett_interv.setText("Dettaglio " + sId_Dettaglio_Intervento);
 	    
-	    row_tipo_dett = view.findViewById(R.id.row_tipo_dettaglio);
+	    // row_tipo_dett = view.findViewById(R.id.row_tipo_dettaglio);
 	    
 	    row_tipo_dett.setOnClickListener(new OnClickListener() {
 		
@@ -267,7 +295,7 @@ public class DetailInterventoFragment extends Fragment {
 	    tv_row_tipo_dett = (TextView) row_tipo_dett.findViewById(R.id.tv_row_tipo_dettaglio);
 	    tv_row_tipo_dett.setText(dettInterv.getmTipo());
 	    
-	    row_oggetto_dett = view.findViewById(R.id.row_oggetto_dettaglio);
+	    // row_oggetto_dett = view.findViewById(R.id.row_oggetto_dettaglio);
 	    row_oggetto_dett.setOnClickListener(new OnClickListener() {
 		
 		@Override
@@ -277,12 +305,14 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    
-	    tv_row_oggetto_dett = (TextView) row_oggetto_dett.findViewById(R.id.tv_row_oggetto_dettaglio);
+	    // tv_row_oggetto_dett = (TextView)
+	    // row_oggetto_dett.findViewById(R.id.tv_row_oggetto_dettaglio);
 	    tv_row_oggetto_dett.setText(dettInterv.getmOggetto());
 	    
-	    row_tecnici_dett = view.findViewById(R.id.row_tecnici_dettaglio);
+	    // row_tecnici_dett = view.findViewById(R.id.row_tecnici_dettaglio);
 	    
-	    tv_row_tecnici_dett = (TextView) row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
+	    // tv_row_tecnici_dett = (TextView)
+	    // row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
 	    tv_row_tecnici_dett.setText("" + dettInterv.getmTecnici().length());
 	    
 	    final JSONArray tecnici = dettInterv.getmTecnici();
@@ -310,7 +340,8 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    
-	    row_descr_dett = view.findViewById(R.id.row_descrizione_dettaglio);
+	    // row_descr_dett =
+	    // view.findViewById(R.id.row_descrizione_dettaglio);
 	    
 	    row_descr_dett.setOnClickListener(new OnClickListener() {
 		
@@ -321,10 +352,12 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    
-	    tv_row_descr_dett = (TextView) row_descr_dett.findViewById(R.id.tv_row_descrizione_dettaglio);
+	    // tv_row_descr_dett = (TextView)
+	    // row_descr_dett.findViewById(R.id.tv_row_descrizione_dettaglio);
 	    tv_row_descr_dett.setText(dettInterv.getmDescrizione());
 	    
-	    final View row_inizio_dett = view.findViewById(R.id.row_inizio_dettaglio);
+	    // final View row_inizio_dett =
+	    // view.findViewById(R.id.row_inizio_dettaglio);
 	    
 	    row_inizio_dett.setOnClickListener(new OnClickListener() {
 		
@@ -453,13 +486,15 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    
-	    TextView tv_row_inizio_dett = (TextView) row_inizio_dett.findViewById(R.id.tv_row_inizio_dettaglio);
+	    // TextView tv_row_inizio_dett = (TextView)
+	    // row_inizio_dett.findViewById(R.id.tv_row_inizio_dettaglio);
 	    
 	    DateTime dt_inizio = new DateTime(dettInterv.getmInizio(), DateTimeZone.forID("Europe/Rome"));
 	    
 	    tv_row_inizio_dett.setText(dt_inizio.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
 	    
-	    final View row_fine_dett = view.findViewById(R.id.row_fine_dettaglio);
+	    // final View row_fine_dett =
+	    // view.findViewById(R.id.row_fine_dettaglio);
 	    
 	    row_fine_dett.setOnClickListener(new OnClickListener() {
 		
@@ -588,15 +623,18 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    
-	    TextView tv_row_fine_dett = (TextView) row_fine_dett.findViewById(R.id.tv_row_fine_dettaglio);
+	    // TextView tv_row_fine_dett = (TextView)
+	    // row_fine_dett.findViewById(R.id.tv_row_fine_dettaglio);
 	    
 	    DateTime dt_fine = new DateTime(dettInterv.getmFine(), DateTimeZone.forID("Europe/Rome"));
 	    
 	    tv_row_fine_dett.setText(dt_fine.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
 	    
-	    View row_tot_ore_dett = view.findViewById(R.id.row_tot_ore_dettaglio);
+	    // View row_tot_ore_dett =
+	    // view.findViewById(R.id.row_tot_ore_dettaglio);
 	    
-	    TextView tv_row_tot_ore_dett = (TextView) row_tot_ore_dett.findViewById(R.id.tv_row_tot_ore_dettaglio);
+	    // TextView tv_row_tot_ore_dett = (TextView)
+	    // row_tot_ore_dett.findViewById(R.id.tv_row_tot_ore_dettaglio);
 	    
 	    DateTime dt_tot_ore = new DateTime(dt_fine.toDate().getTime() - dt_inizio.toDate().getTime(), DateTimeZone.forID("Europe/Rome"));
 	    
@@ -604,13 +642,13 @@ public class DetailInterventoFragment extends Fragment {
 	}
 	else {
 	    
-	    addNewDetail(view);
+	    addNewDetail();
 	}
 	
-	return view;
+	// return view;
     }
     
-    private void addNewDetail(final View view) {
+    private void addNewDetail() {
 	
 	sNewDetail = new JSONObject();
 	
@@ -625,10 +663,10 @@ public class DetailInterventoFragment extends Fragment {
 	    BugSenseHandler.sendException(e);
 	}
 	
-	tv_dett_interv = (TextView) view.findViewById(R.id.tv_dett_interv);
+	// tv_dett_interv = (TextView) view.findViewById(R.id.tv_dett_interv);
 	tv_dett_interv.setText("Dettaglio " + Constants.sID_Dettaglio_Temp);
 	
-	row_tipo_dett = view.findViewById(R.id.row_tipo_dettaglio);
+	// row_tipo_dett = view.findViewById(R.id.row_tipo_dettaglio);
 	row_tipo_dett.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -638,10 +676,11 @@ public class DetailInterventoFragment extends Fragment {
 	    }
 	});
 	
-	tv_row_tipo_dett = (TextView) row_tipo_dett.findViewById(R.id.tv_row_tipo_dettaglio);
+	// tv_row_tipo_dett = (TextView)
+	// row_tipo_dett.findViewById(R.id.tv_row_tipo_dettaglio);
 	tv_row_tipo_dett.setText("");
 	
-	row_oggetto_dett = view.findViewById(R.id.row_oggetto_dettaglio);
+	// row_oggetto_dett = view.findViewById(R.id.row_oggetto_dettaglio);
 	row_oggetto_dett.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -651,12 +690,14 @@ public class DetailInterventoFragment extends Fragment {
 	    }
 	});
 	
-	tv_row_oggetto_dett = (TextView) row_oggetto_dett.findViewById(R.id.tv_row_oggetto_dettaglio);
+	// tv_row_oggetto_dett = (TextView)
+	// row_oggetto_dett.findViewById(R.id.tv_row_oggetto_dettaglio);
 	tv_row_oggetto_dett.setText("");
 	
-	row_tecnici_dett = view.findViewById(R.id.row_tecnici_dettaglio);
+	// row_tecnici_dett = view.findViewById(R.id.row_tecnici_dettaglio);
 	
-	tv_row_tecnici_dett = (TextView) row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
+	// tv_row_tecnici_dett = (TextView)
+	// row_tecnici_dett.findViewById(R.id.tv_row_tecnici_dettaglio);
 	tv_row_tecnici_dett.setText("");
 	
 	row_tecnici_dett.setOnClickListener(new OnClickListener() {
@@ -759,7 +800,7 @@ public class DetailInterventoFragment extends Fragment {
 	    }
 	});
 	
-	row_descr_dett = view.findViewById(R.id.row_descrizione_dettaglio);
+	// row_descr_dett = view.findViewById(R.id.row_descrizione_dettaglio);
 	row_descr_dett.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
@@ -769,10 +810,12 @@ public class DetailInterventoFragment extends Fragment {
 	    }
 	});
 	
-	tv_row_descr_dett = (TextView) row_descr_dett.findViewById(R.id.tv_row_descrizione_dettaglio);
+	// tv_row_descr_dett = (TextView)
+	// row_descr_dett.findViewById(R.id.tv_row_descrizione_dettaglio);
 	tv_row_descr_dett.setText("");
 	
-	final View row_inizio_dett = view.findViewById(R.id.row_inizio_dettaglio);
+	// final View row_inizio_dett =
+	// view.findViewById(R.id.row_inizio_dettaglio);
 	
 	row_inizio_dett.setOnClickListener(new OnClickListener() {
 	    
@@ -928,7 +971,8 @@ public class DetailInterventoFragment extends Fragment {
 	    }
 	});
 	
-	TextView tv_row_inizio_dett = (TextView) row_inizio_dett.findViewById(R.id.tv_row_inizio_dettaglio);
+	// TextView tv_row_inizio_dett = (TextView)
+	// row_inizio_dett.findViewById(R.id.tv_row_inizio_dettaglio);
 	
 	DateTime dt_inizio = new DateTime(DateTime.now(), DateTimeZone.forID("Europe/Rome"));
 	
@@ -942,7 +986,8 @@ public class DetailInterventoFragment extends Fragment {
 	    e.printStackTrace();
 	}
 	
-	final View row_fine_dett = view.findViewById(R.id.row_fine_dettaglio);
+	// final View row_fine_dett =
+	// view.findViewById(R.id.row_fine_dettaglio);
 	
 	row_fine_dett.setOnClickListener(new OnClickListener() {
 	    
@@ -1098,7 +1143,8 @@ public class DetailInterventoFragment extends Fragment {
 	    }
 	});
 	
-	TextView tv_row_fine_dett = (TextView) row_fine_dett.findViewById(R.id.tv_row_fine_dettaglio);
+	// TextView tv_row_fine_dett = (TextView)
+	// row_fine_dett.findViewById(R.id.tv_row_fine_dettaglio);
 	
 	DateTime dt_fine = new DateTime(DateTime.now(), DateTimeZone.forID("Europe/Rome"));
 	
@@ -1112,9 +1158,11 @@ public class DetailInterventoFragment extends Fragment {
 	    e.printStackTrace();
 	}
 	
-	View row_tot_ore_dett = view.findViewById(R.id.row_tot_ore_dettaglio);
+	// View row_tot_ore_dett =
+	// view.findViewById(R.id.row_tot_ore_dettaglio);
 	
-	TextView tv_row_tot_ore_dett = (TextView) row_tot_ore_dett.findViewById(R.id.tv_row_tot_ore_dettaglio);
+	// TextView tv_row_tot_ore_dett = (TextView)
+	// row_tot_ore_dett.findViewById(R.id.tv_row_tot_ore_dettaglio);
 	
 	DateTime dt_tot_ore = new DateTime(dt_fine.toDate().getTime() - dt_inizio.toDate().getTime(), DateTimeZone.forID("Europe/Rome"));
 	
