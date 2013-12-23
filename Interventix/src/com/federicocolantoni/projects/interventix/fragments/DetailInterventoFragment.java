@@ -642,11 +642,8 @@ public class DetailInterventoFragment extends Fragment {
 	    }
 	});
 	
-	// tv_row_tipo_dett = (TextView)
-	// row_tipo_dett.findViewById(R.id.tv_row_tipo_dettaglio);
 	tv_row_tipo_dett.setText("");
 	
-	// row_oggetto_dett = view.findViewById(R.id.row_oggetto_dettaglio);
 	row_oggetto_dett.setOnClickListener(new OnClickListener() {
 	    
 	    @Override

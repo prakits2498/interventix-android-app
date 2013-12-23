@@ -78,18 +78,11 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 	
 	mId_intervento = bundle.getLong(Constants.ID_INTERVENTO);
 	
-	System.out.println("LISTA DETTAGLI - ID INTERVENTO " + mId_intervento);
-	
 	SELECTION_ARGS = new String[] {
 		DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + mId_intervento
 	};
 	
-	// TextView tv_details_intervento = (TextView)
-	// view.findViewById(R.id.tv_details_intervention);
 	tv_details_intervento.setText("Dettagli");
-	
-	// ListView detailsList = (ListView)
-	// view.findViewById(R.id.list_details_intervento);
 	
 	mAdapter = new ListDettagliInterventiAdapter(getActivity(), null);
 	
