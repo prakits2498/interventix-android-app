@@ -1,8 +1,5 @@
 package com.federicocolantoni.projects.interventix.core;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -50,8 +47,6 @@ public class MainActivity extends ActionBarActivity {
     @StringRes(R.string.welcome_message)
     static String welcome_message;
     
-    Timer timer;
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	
@@ -61,21 +56,13 @@ public class MainActivity extends ActionBarActivity {
 	
 	FragmentManager manager = getSupportFragmentManager();
 	
-	final Login fragLogin = new com.federicocolantoni.projects.interventix.modules.login.Login_();
+	Login fragLogin = new com.federicocolantoni.projects.interventix.modules.login.Login_();
 	
-	final FragmentTransaction transaction = manager.beginTransaction();
+	FragmentTransaction transaction = manager.beginTransaction();
 	
-	timer = new Timer();
-	
-	timer.schedule(new TimerTask() {
-	    
-	    @Override
-	    public void run() {
-		transaction.replace(R.id.frag_login, fragLogin);
-		transaction.setCustomAnimations(R.anim.fade_out, R.anim.fade_in);
-		transaction.commit();
-	    }
-	}, 2500);
+	transaction.replace(R.id.frag_login, fragLogin);
+	transaction.setCustomAnimations(R.anim.fade_out, R.anim.fade_in);
+	transaction.commit();
 	
 	ReadDefaultPreferences readPref = new ReadDefaultPreferences(MainActivity.this);
 	readPref.execute();
@@ -178,8 +165,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onDestroy() {
 	super.onDestroy();
-	
-	timer = null;
 	
 	if (BuildConfig.DEBUG) {
 	    System.gc();

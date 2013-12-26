@@ -42,10 +42,10 @@ public class GetOverviewInterventoAsyncTask extends AsyncTask<Long, Void, Interv
 	
 	if (cursor.moveToFirst()) {
 	    
-	    overviewIntervento.setmFirma(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.FIRMA)));
-	    overviewIntervento.setmIdCliente(cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.CLIENTE)));
-	    overviewIntervento.setmTotale(BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(InterventoDB.Fields.TOTALE))));
-	    overviewIntervento.setmDataOra(cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.DATA_ORA)));
+	    overviewIntervento.setFirma(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.FIRMA)));
+	    overviewIntervento.setIdCliente(cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.CLIENTE)));
+	    overviewIntervento.setTotale(BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(InterventoDB.Fields.TOTALE))));
+	    overviewIntervento.setDataOra(cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.DATA_ORA)));
 	}
 	
 	if (!cursor.isClosed()) {

@@ -1,5 +1,6 @@
 package com.federicocolantoni.projects.interventix.core;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -75,6 +76,8 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     private ListInterventiAdapter mAdapter;
     
     private Menu optionsMenu;
+    
+    private SharedPreferences prefsLocal;
     
     @ViewById(R.id.list_interv_open)
     ListView listOpen;
@@ -231,20 +234,20 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     private String setNominativo() throws InterruptedException, ExecutionException {
 	
-	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
 	GetNominativoUtenteAsyncTask nominativo = new GetNominativoUtenteAsyncTask(this);
 	
-	nominativo.execute(prefs.getLong(Constants.USER_ID, 0l));
+	nominativo.execute(prefsLocal.getLong(Constants.USER_ID, 0l));
 	
 	Utente utente = nominativo.get();
 	
-	return utente.getmNome() + " " + utente.getmCognome();
+	return utente.getNome() + " " + utente.getCognome();
     }
     
     private void getUsersSyncro() {
 	
-	final SharedPreferences prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
 	new ManagedAsyncTask<Long, Void, Integer>(HomeActivity.this) {
 	    
@@ -316,15 +319,18 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    
 			    if (obj.getLong("idutente") != params[0]) {
 				
-				values = Utente.insertSQL(obj.getLong("idutente"),
-					obj.getString("nome"),
-					obj.getString("cognome"),
-					obj.getString("username"),
-					obj.getString("email"),
-					obj.getString("tipo"),
-					obj.getLong("revisione"),
-					obj.getBoolean("cancellato"),
-					obj.getBoolean("cestinato"));
+				Utente newUser = new Utente();
+				newUser.setIdUtente(obj.getLong("idutente"));
+				newUser.setCancellato(obj.getBoolean("cancellato"));
+				newUser.setCestinato(obj.getBoolean("cestinato"));
+				newUser.setCognome(obj.getString("cognome"));
+				newUser.setEmail(obj.getString("email"));
+				newUser.setNome(obj.getString("nome"));
+				newUser.setUserName(obj.getString("username"));
+				newUser.setRevisione(obj.getLong("revisione"));
+				newUser.setTipo(obj.getString("tipo"));
+				
+				values = Utente.insertSQL(newUser);
 				
 				cr.insert(UtenteDB.CONTENT_URI, values);
 			    }
@@ -380,7 +386,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     private void getClientsSyncro() {
 	
-	final SharedPreferences prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
 	new ManagedAsyncTask<Long, Void, Integer>(HomeActivity.this) {
 	    
@@ -459,19 +465,22 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				
 				// *** UPDATE CLIENTE ***\\
 				
-				values = Cliente.updateSQL(cliente.getString("citta"),
-					cliente.getString("codicefiscale"),
-					cliente.getString("email"),
-					cliente.getString("fax"),
-					cliente.getString("indirizzo"),
-					cliente.getString("interno"),
-					cliente.getString("nominativo"),
-					cliente.getString("note"),
-					cliente.getString("partitaiva"),
-					cliente.getString("referente"),
-					cliente.getLong("revisione"),
-					cliente.getString("telefono"),
-					cliente.getString("telefono"));
+				Cliente updateCliente = new Cliente();
+				updateCliente.setCitta(cliente.getString("citta"));
+				updateCliente.setCodiceFiscale(cliente.getString("codicefiscale"));
+				updateCliente.setEmail(cliente.getString("email"));
+				updateCliente.setFax(cliente.getString("fax"));
+				updateCliente.setIndirizzo(cliente.getString("indirizzo"));
+				updateCliente.setInterno(cliente.getString("interno"));
+				updateCliente.setNominativo(cliente.getString("nominativo"));
+				updateCliente.setNote(cliente.getString("note"));
+				updateCliente.setPartitaIVA(cliente.getString("partitaiva"));
+				updateCliente.setReferente(cliente.getString("referente"));
+				updateCliente.setRevisione(cliente.getLong("revisione"));
+				updateCliente.setTelefono(cliente.getString("telefono"));
+				updateCliente.setUfficio(cliente.getString("ufficio"));
+				
+				values = Cliente.updateSQL(updateCliente);
 				
 				cr.update(ClienteDB.CONTENT_URI, values,
 					ClienteDB.Fields.TYPE + "=? AND " + ClienteDB.Fields.ID_CLIENTE + "=?", new String[] {
@@ -484,20 +493,23 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				
 				// *** INSERT CLIENTE ***\\
 				
-				values = Cliente.insertSQL(cliente.getLong("idcliente"),
-					cliente.getString("citta"),
-					cliente.getString("codicefiscale"),
-					cliente.getString("email"),
-					cliente.getString("fax"),
-					cliente.getString("indirizzo"),
-					cliente.getString("interno"),
-					cliente.getString("nominativo"),
-					cliente.getString("note"),
-					cliente.getString("partitaiva"),
-					cliente.getString("referente"),
-					cliente.getLong("revisione"),
-					cliente.getString("telefono"),
-					cliente.getString("telefono"));
+				Cliente newCliente = new Cliente();
+				newCliente.setIdCliente(cliente.getLong("idcliente"));
+				newCliente.setCitta(cliente.getString("citta"));
+				newCliente.setCodiceFiscale(cliente.getString("codicefiscale"));
+				newCliente.setEmail(cliente.getString("email"));
+				newCliente.setFax(cliente.getString("fax"));
+				newCliente.setIndirizzo(cliente.getString("indirizzo"));
+				newCliente.setInterno(cliente.getString("interno"));
+				newCliente.setNominativo(cliente.getString("nominativo"));
+				newCliente.setNote(cliente.getString("note"));
+				newCliente.setPartitaIVA(cliente.getString("partitaiva"));
+				newCliente.setReferente(cliente.getString("referente"));
+				newCliente.setRevisione(cliente.getLong("revisione"));
+				newCliente.setTelefono(cliente.getString("telefono"));
+				newCliente.setUfficio(cliente.getString("ufficio"));
+				
+				values = Cliente.insertSQL(newCliente);
 				
 				cr.insert(ClienteDB.CONTENT_URI, values);
 				
@@ -549,7 +561,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     private void getInterventionsSyncro() {
 	
-	final SharedPreferences prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
 	new ManagedAsyncTask<Long, Void, Integer>(HomeActivity.this) {
 	    
@@ -684,30 +696,33 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			
 			System.out.println("Inserimento intervento " + responseIntervs.getLong("idintervento"));
 			
-			values = Intervento.insertSQL(responseIntervs.getLong("idintervento"),
-				responseIntervs.getDouble("costoaccessori"),
-				responseIntervs.getDouble("costocomponenti"),
-				responseIntervs.getDouble("costomanodopera"),
-				responseIntervs.getLong("dataora"),
-				responseIntervs.getString("firma"),
-				responseIntervs.getLong("cliente"),
-				responseIntervs.getLong("tecnico"),
-				responseIntervs.getDouble("importo"),
-				responseIntervs.getDouble("iva"),
-				responseIntervs.getString("modalita"),
-				responseIntervs.getString("motivo"),
-				responseIntervs.getString("nominativo"),
-				responseIntervs.getString("note"),
-				responseIntervs.getLong("numero"),
-				responseIntervs.getString("prodotto"),
-				responseIntervs.getString("riffattura"),
-				responseIntervs.getString("rifscontrino"),
-				responseIntervs.getString("tipologia"),
-				responseIntervs.getDouble("totale"),
-				responseIntervs.getBoolean("saldato"),
-				responseIntervs.getBoolean("chiuso"),
-				responseIntervs.getBoolean("cancellato"),
-				Constants.NUOVO_INTERVENTO);
+			Intervento newInterv = new Intervento();
+			newInterv.setIdIntervento(responseIntervs.getLong("idintervento"));
+			newInterv.setCostoAccessori(new BigDecimal(responseIntervs.getDouble("costoaccessori")));
+			newInterv.setCostoComponenti(new BigDecimal(responseIntervs.getDouble("costocomponenti")));
+			newInterv.setCostoManodopera(new BigDecimal(responseIntervs.getDouble("costomanodopera")));
+			newInterv.setDataOra(responseIntervs.getLong("dataora"));
+			newInterv.setFirma(responseIntervs.getString("firma"));
+			newInterv.setIdCliente(responseIntervs.getLong("cliente"));
+			newInterv.setIdTecnico(responseIntervs.getLong("tecnico"));
+			newInterv.setImporto(new BigDecimal(responseIntervs.getDouble("importo")));
+			newInterv.setIva(new BigDecimal(responseIntervs.getDouble("iva")));
+			newInterv.setModalita(responseIntervs.getString("modalita"));
+			newInterv.setMotivo(responseIntervs.getString("motivo"));
+			newInterv.setNominativo(responseIntervs.getString("nominativo"));
+			newInterv.setNote(responseIntervs.getString("note"));
+			newInterv.setNumeroIntervento(responseIntervs.getLong("numero"));
+			newInterv.setProdotto(responseIntervs.getString("prodotto"));
+			newInterv.setRifFattura(responseIntervs.getString("riffattura"));
+			newInterv.setRifScontrino(responseIntervs.getString("rifscontrino"));
+			newInterv.setTipologia(responseIntervs.getString("tipologia"));
+			newInterv.setTotale(new BigDecimal(responseIntervs.getDouble("totale")));
+			newInterv.setSaldato(responseIntervs.getBoolean("saldato"));
+			newInterv.setChiuso(responseIntervs.getBoolean("chiuso"));
+			newInterv.setCancellato(responseIntervs.getBoolean("cancellato"));
+			newInterv.setModificato(Constants.NUOVO_INTERVENTO);
+			
+			values = Intervento.insertSQL(newInterv);
 			
 			cr.insert(InterventoDB.CONTENT_URI, values);
 			
@@ -715,19 +730,22 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			
 			for (int cont = 0; cont < dettagli_intervento.length(); cont++) {
 			    
-			    JSONObject dettInterv = dettagli_intervento.getJSONObject(cont);
+			    JSONObject newDettInterv = dettagli_intervento.getJSONObject(cont);
 			    
 			    // *** INSERT DETTAGLIO INTERVENTO *** \\
 			    
-			    values = DettaglioIntervento.insertSQL(dettInterv.getLong("iddettagliointervento"),
-				    dettInterv.getString("descrizione"),
-				    responseIntervs.getLong("idintervento"),
-				    Constants.NUOVO_DETT_INTERVENTO,
-				    dettInterv.getString("oggetto"),
-				    dettInterv.getString("tipo"),
-				    dettInterv.getLong("inizio"),
-				    dettInterv.getLong("fine"),
-				    dettInterv.getJSONArray("tecniciintervento").toString());
+			    DettaglioIntervento dtInt = new DettaglioIntervento();
+			    dtInt.setIdDettaglioIntervento(newDettInterv.getLong("iddettagliointervento"));
+			    dtInt.setDescrizione(newDettInterv.getString("descrizione"));
+			    dtInt.setIntervento(responseIntervs.getLong("idintervento"));
+			    dtInt.setModificato(Constants.NUOVO_DETT_INTERVENTO);
+			    dtInt.setOggetto(newDettInterv.getString("oggetto"));
+			    dtInt.setTipo(newDettInterv.getString("tipo"));
+			    dtInt.setInizio(newDettInterv.getLong("inizio"));
+			    dtInt.setFine(newDettInterv.getLong("fine"));
+			    dtInt.setTecnici(newDettInterv.getJSONArray("tecniciintervento"));
+			    
+			    values = DettaglioIntervento.insertSQL(dtInt);
 			    
 			    cr.insert(DettaglioInterventoDB.CONTENT_URI, values);
 			}
@@ -736,29 +754,32 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			
 			// *** UPDATE INTERVENTO *** \\
 			
-			values = Intervento.updateSQL(responseIntervs.getDouble("costoaccessori"),
-				responseIntervs.getDouble("costocomponenti"),
-				responseIntervs.getDouble("costomanodopera"),
-				responseIntervs.getLong("dataora"),
-				responseIntervs.getString("firma"),
-				responseIntervs.getLong("cliente"),
-				responseIntervs.getLong("tecnico"),
-				responseIntervs.getDouble("importo"),
-				responseIntervs.getDouble("iva"),
-				responseIntervs.getString("modalita"),
-				responseIntervs.getString("motivo"),
-				responseIntervs.getString("nominativo"),
-				responseIntervs.getString("note"),
-				responseIntervs.getLong("numero"),
-				responseIntervs.getString("prodotto"),
-				responseIntervs.getString("riffattura"),
-				responseIntervs.getString("rifscontrino"),
-				responseIntervs.getString("tipologia"),
-				responseIntervs.getDouble("totale"),
-				responseIntervs.getBoolean("saldato"),
-				responseIntervs.getBoolean("chiuso"),
-				responseIntervs.getBoolean("cancellato"),
-				Constants.NUOVO_INTERVENTO);
+			Intervento updateInterv = new Intervento();
+			updateInterv.setCostoAccessori(new BigDecimal(responseIntervs.getDouble("costoaccessori")));
+			updateInterv.setCostoComponenti(new BigDecimal(responseIntervs.getDouble("costocomponenti")));
+			updateInterv.setCostoManodopera(new BigDecimal(responseIntervs.getDouble("costomanodopera")));
+			updateInterv.setDataOra(responseIntervs.getLong("dataora"));
+			updateInterv.setFirma(responseIntervs.getString("firma"));
+			updateInterv.setIdCliente(responseIntervs.getLong("cliente"));
+			updateInterv.setIdTecnico(responseIntervs.getLong("tecnico"));
+			updateInterv.setImporto(new BigDecimal(responseIntervs.getDouble("importo")));
+			updateInterv.setIva(new BigDecimal(responseIntervs.getDouble("iva")));
+			updateInterv.setModalita(responseIntervs.getString("modalita"));
+			updateInterv.setMotivo(responseIntervs.getString("motivo"));
+			updateInterv.setNominativo(responseIntervs.getString("nominativo"));
+			updateInterv.setNote(responseIntervs.getString("note"));
+			updateInterv.setNumeroIntervento(responseIntervs.getLong("numero"));
+			updateInterv.setProdotto(responseIntervs.getString("prodotto"));
+			updateInterv.setRifFattura(responseIntervs.getString("riffattura"));
+			updateInterv.setRifScontrino(responseIntervs.getString("rifscontrino"));
+			updateInterv.setTipologia(responseIntervs.getString("tipologia"));
+			updateInterv.setTotale(new BigDecimal(responseIntervs.getDouble("totale")));
+			updateInterv.setSaldato(responseIntervs.getBoolean("saldato"));
+			updateInterv.setChiuso(responseIntervs.getBoolean("chiuso"));
+			updateInterv.setCancellato(responseIntervs.getBoolean("cancellato"));
+			updateInterv.setModificato(Constants.NUOVO_INTERVENTO);
+			
+			values = Intervento.updateSQL(updateInterv);
 			
 			String where = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 			
@@ -772,14 +793,17 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    
 			    // *** UPDATE DETTAGLIO INTERVENTO *** \\
 			    
-			    values = DettaglioIntervento.updateSQL(dettInterv.getString("descrizione"),
-				    responseIntervs.getLong("idintervento"),
-				    Constants.NUOVO_DETT_INTERVENTO,
-				    dettInterv.getString("oggetto"),
-				    dettInterv.getString("tipo"),
-				    dettInterv.getLong("inizio"),
-				    dettInterv.getLong("fine"),
-				    dettInterv.getJSONArray("tecniciintervento").toString());
+			    DettaglioIntervento dtInt = new DettaglioIntervento();
+			    dtInt.setDescrizione(dettInterv.getString("descrizione"));
+			    dtInt.setIntervento(responseIntervs.getLong("idintervento"));
+			    dtInt.setModificato(Constants.NUOVO_DETT_INTERVENTO);
+			    dtInt.setOggetto(dettInterv.getString("oggetto"));
+			    dtInt.setTipo(dettInterv.getString("tipo"));
+			    dtInt.setInizio(dettInterv.getLong("inizio"));
+			    dtInt.setFine(dettInterv.getLong("fine"));
+			    dtInt.setTecnici(dettInterv.getJSONArray("tecniciintervento"));
+			    
+			    values = DettaglioIntervento.updateSQL(dtInt);
 			    
 			    String selectionDettaglioIntervento = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 			    
@@ -808,9 +832,9 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		    
 		    String nominativo = null;
 		    
-		    final SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+		    prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 		    
-		    final Editor editor = prefs.edit();
+		    final Editor editor = prefsLocal.edit();
 		    
 		    try {
 			nominativo = setNominativo();

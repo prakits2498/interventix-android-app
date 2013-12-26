@@ -132,7 +132,7 @@ public class InformationsInterventoFragment extends Fragment {
 	});
 	
 	TextView tv_tipology = (TextView) tipologia.findViewById(R.id.tv_row_tipology);
-	tv_tipology.setText(interv.getmTipologia());
+	tv_tipology.setText(interv.getTipologia());
 	
 	mode.setOnClickListener(new View.OnClickListener() {
 	    
@@ -144,7 +144,7 @@ public class InformationsInterventoFragment extends Fragment {
 	});
 	
 	TextView tv_mode = (TextView) mode.findViewById(R.id.tv_row_mode);
-	tv_mode.setText(interv.getmModalita());
+	tv_mode.setText(interv.getModalita());
 	
 	product.setOnClickListener(new View.OnClickListener() {
 	    
@@ -156,7 +156,7 @@ public class InformationsInterventoFragment extends Fragment {
 	});
 	
 	TextView tv_product = (TextView) product.findViewById(R.id.tv_row_product);
-	tv_product.setText(interv.getmProdotto());
+	tv_product.setText(interv.getProdotto());
 	
 	motivation.setOnClickListener(new View.OnClickListener() {
 	    
@@ -168,7 +168,7 @@ public class InformationsInterventoFragment extends Fragment {
 	});
 	
 	TextView tv_motivation = (TextView) motivation.findViewById(R.id.tv_row_motivation);
-	tv_motivation.setText(interv.getmMotivo());
+	tv_motivation.setText(interv.getMotivo());
 	
 	nominativo.setOnClickListener(new View.OnClickListener() {
 	    
@@ -180,7 +180,7 @@ public class InformationsInterventoFragment extends Fragment {
 	});
 	
 	TextView tv_nominativo = (TextView) nominativo.findViewById(R.id.tv_row_name);
-	tv_nominativo.setText(interv.getmNominativo());
+	tv_nominativo.setText(interv.getNominativo());
 	
 	date_interv.setOnClickListener(new View.OnClickListener() {
 	    
@@ -291,7 +291,7 @@ public class InformationsInterventoFragment extends Fragment {
 	
 	TextView tv_date_interv = (TextView) date_interv.findViewById(R.id.tv_row_date);
 	
-	DateTime dt = new DateTime(interv.getmDataOra(), DateTimeZone.forID("Europe/Rome"));
+	DateTime dt = new DateTime(interv.getDataOra(), DateTimeZone.forID("Europe/Rome"));
 	
 	tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
 	

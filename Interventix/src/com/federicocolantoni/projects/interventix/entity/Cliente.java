@@ -14,17 +14,17 @@ public class Cliente implements Serializable {
      */
     private static final long serialVersionUID = 6163117197009443000L;
     
-    private Integer mIdCliente;
+    private Long mIdCliente;
     private String mNominativo, mCodiceFiscale, mPartitaIVA, mTelefono, mFax,
 	    mEmail, mReferente, mCitta, mIndirizzo, mInterno, mUfficio, mNote;
     private boolean mCancellato, mConflitto;
-    private int mRevisione;
+    private Long mRevisione;
     
     public Cliente() {
 	
     }
     
-    public Cliente(Integer idCliente) {
+    public Cliente(Long idCliente) {
 	
 	mIdCliente = idCliente;
     }
@@ -32,7 +32,7 @@ public class Cliente implements Serializable {
     /**
      * @return the mIdCliente
      */
-    public Integer getmIdCliente() {
+    public Long getIdCliente() {
 	
 	return mIdCliente;
     }
@@ -41,7 +41,7 @@ public class Cliente implements Serializable {
      * @param mIdCliente
      *            the mIdCliente to set
      */
-    public void setmIdCliente(Integer mIdCliente) {
+    public void setIdCliente(Long mIdCliente) {
 	
 	this.mIdCliente = mIdCliente;
     }
@@ -49,7 +49,7 @@ public class Cliente implements Serializable {
     /**
      * @return the mNominativo
      */
-    public String getmNominativo() {
+    public String getNominativo() {
 	
 	return mNominativo;
     }
@@ -58,7 +58,7 @@ public class Cliente implements Serializable {
      * @param mNominativo
      *            the mNominativo to set
      */
-    public void setmNominativo(String mNominativo) {
+    public void setNominativo(String mNominativo) {
 	
 	this.mNominativo = mNominativo;
     }
@@ -66,7 +66,7 @@ public class Cliente implements Serializable {
     /**
      * @return the mCodiceFiscale
      */
-    public String getmCodiceFiscale() {
+    public String getCodiceFiscale() {
 	
 	return mCodiceFiscale;
     }
@@ -75,7 +75,7 @@ public class Cliente implements Serializable {
      * @param mCodiceFiscale
      *            the mCodiceFiscale to set
      */
-    public void setmCodiceFiscale(String mCodiceFiscale) {
+    public void setCodiceFiscale(String mCodiceFiscale) {
 	
 	this.mCodiceFiscale = mCodiceFiscale;
     }
@@ -83,7 +83,7 @@ public class Cliente implements Serializable {
     /**
      * @return the mPartitaIVA
      */
-    public String getmPartitaIVA() {
+    public String getPartitaIVA() {
 	
 	return mPartitaIVA;
     }
@@ -92,7 +92,7 @@ public class Cliente implements Serializable {
      * @param mPartitaIVA
      *            the mPartitaIVA to set
      */
-    public void setmPartitaIVA(String mPartitaIVA) {
+    public void setPartitaIVA(String mPartitaIVA) {
 	
 	this.mPartitaIVA = mPartitaIVA;
     }
@@ -100,7 +100,7 @@ public class Cliente implements Serializable {
     /**
      * @return the mTelefono
      */
-    public String getmTelefono() {
+    public String getTelefono() {
 	
 	return mTelefono;
     }
@@ -109,7 +109,7 @@ public class Cliente implements Serializable {
      * @param mTelefono
      *            the mTelefono to set
      */
-    public void setmTelefono(String mTelefono) {
+    public void setTelefono(String mTelefono) {
 	
 	this.mTelefono = mTelefono;
     }
@@ -117,7 +117,7 @@ public class Cliente implements Serializable {
     /**
      * @return the mFax
      */
-    public String getmFax() {
+    public String getFax() {
 	
 	return mFax;
     }
@@ -126,7 +126,7 @@ public class Cliente implements Serializable {
      * @param mFax
      *            the mFax to set
      */
-    public void setmFax(String mFax) {
+    public void setFax(String mFax) {
 	
 	this.mFax = mFax;
     }
@@ -134,7 +134,7 @@ public class Cliente implements Serializable {
     /**
      * @return the mEmail
      */
-    public String getmEmail() {
+    public String getEmail() {
 	
 	return mEmail;
     }
@@ -143,7 +143,7 @@ public class Cliente implements Serializable {
      * @param mEmail
      *            the mEmail to set
      */
-    public void setmEmail(String mEmail) {
+    public void setEmail(String mEmail) {
 	
 	this.mEmail = mEmail;
     }
@@ -151,7 +151,7 @@ public class Cliente implements Serializable {
     /**
      * @return the mReferente
      */
-    public String getmReferente() {
+    public String getReferente() {
 	
 	return mReferente;
     }
@@ -160,7 +160,7 @@ public class Cliente implements Serializable {
      * @param mReferente
      *            the mReferente to set
      */
-    public void setmReferente(String mReferente) {
+    public void setReferente(String mReferente) {
 	
 	this.mReferente = mReferente;
     }
@@ -168,7 +168,7 @@ public class Cliente implements Serializable {
     /**
      * @return the mCitta
      */
-    public String getmCitta() {
+    public String getCitta() {
 	
 	return mCitta;
     }
@@ -177,7 +177,7 @@ public class Cliente implements Serializable {
      * @param mCitta
      *            the mCitta to set
      */
-    public void setmCitta(String mCitta) {
+    public void setCitta(String mCitta) {
 	
 	this.mCitta = mCitta;
     }
@@ -185,7 +185,7 @@ public class Cliente implements Serializable {
     /**
      * @return the mIndirizzo
      */
-    public String getmIndirizzo() {
+    public String getIndirizzo() {
 	
 	return mIndirizzo;
     }
@@ -194,7 +194,7 @@ public class Cliente implements Serializable {
      * @param mIndirizzo
      *            the mIndirizzo to set
      */
-    public void setmIndirizzo(String mIndirizzo) {
+    public void setIndirizzo(String mIndirizzo) {
 	
 	this.mIndirizzo = mIndirizzo;
     }
@@ -202,7 +202,7 @@ public class Cliente implements Serializable {
     /**
      * @return the mInterno
      */
-    public String getmInterno() {
+    public String getInterno() {
 	
 	return mInterno;
     }
@@ -211,7 +211,7 @@ public class Cliente implements Serializable {
      * @param mInterno
      *            the mInterno to set
      */
-    public void setmInterno(String mInterno) {
+    public void setInterno(String mInterno) {
 	
 	this.mInterno = mInterno;
     }
@@ -219,7 +219,7 @@ public class Cliente implements Serializable {
     /**
      * @return the mUfficio
      */
-    public String getmUfficio() {
+    public String getUfficio() {
 	
 	return mUfficio;
     }
@@ -228,7 +228,7 @@ public class Cliente implements Serializable {
      * @param mUfficio
      *            the mUfficio to set
      */
-    public void setmUfficio(String mUfficio) {
+    public void setUfficio(String mUfficio) {
 	
 	this.mUfficio = mUfficio;
     }
@@ -236,7 +236,7 @@ public class Cliente implements Serializable {
     /**
      * @return the mNote
      */
-    public String getmNote() {
+    public String getNote() {
 	
 	return mNote;
     }
@@ -245,7 +245,7 @@ public class Cliente implements Serializable {
      * @param mNote
      *            the mNote to set
      */
-    public void setmNote(String mNote) {
+    public void setNote(String mNote) {
 	
 	this.mNote = mNote;
     }
@@ -270,7 +270,7 @@ public class Cliente implements Serializable {
     /**
      * @return the revisione
      */
-    public int getmRevisione() {
+    public Long getRevisione() {
 	
 	return mRevisione;
     }
@@ -279,7 +279,7 @@ public class Cliente implements Serializable {
      * @param revisione
      *            the revisione to set
      */
-    public void setmRevisione(int revisione) {
+    public void setRevisione(Long revisione) {
 	
 	mRevisione = revisione;
     }
@@ -311,48 +311,46 @@ public class Cliente implements Serializable {
 	return result;
     }
     
-    public static ContentValues insertSQL(Long id, String citta, String codiceFiscale, String email, String fax, String indirizzo, String interno,
-	    String nominativo, String note, String partitaIva, String referente, Long revisione, String telefono, String ufficio) {
+    public static ContentValues insertSQL(Cliente cliente) {
 	
 	ContentValues values = new ContentValues();
 	
-	values.put(ClienteDB.Fields.ID_CLIENTE, id);
+	values.put(ClienteDB.Fields.ID_CLIENTE, cliente.getIdCliente());
 	values.put(Fields.TYPE, ClienteDB.CLIENTE_ITEM_TYPE);
-	values.put(ClienteDB.Fields.CITTA, citta);
-	values.put(ClienteDB.Fields.CODICE_FISCALE, codiceFiscale);
-	values.put(ClienteDB.Fields.EMAIL, email);
-	values.put(ClienteDB.Fields.FAX, fax);
-	values.put(ClienteDB.Fields.INDIRIZZO, indirizzo);
-	values.put(ClienteDB.Fields.INTERNO, interno);
-	values.put(ClienteDB.Fields.NOMINATIVO, nominativo);
-	values.put(ClienteDB.Fields.NOTE, note);
-	values.put(ClienteDB.Fields.PARTITAIVA, partitaIva);
-	values.put(ClienteDB.Fields.REFERENTE, referente);
-	values.put(ClienteDB.Fields.REVISIONE, revisione);
-	values.put(ClienteDB.Fields.TELEFONO, telefono);
-	values.put(ClienteDB.Fields.UFFICIO, ufficio);
+	values.put(ClienteDB.Fields.CITTA, cliente.getCitta());
+	values.put(ClienteDB.Fields.CODICE_FISCALE, cliente.getCodiceFiscale());
+	values.put(ClienteDB.Fields.EMAIL, cliente.getEmail());
+	values.put(ClienteDB.Fields.FAX, cliente.getFax());
+	values.put(ClienteDB.Fields.INDIRIZZO, cliente.getIndirizzo());
+	values.put(ClienteDB.Fields.INTERNO, cliente.getInterno());
+	values.put(ClienteDB.Fields.NOMINATIVO, cliente.getNominativo());
+	values.put(ClienteDB.Fields.NOTE, cliente.getNote());
+	values.put(ClienteDB.Fields.PARTITAIVA, cliente.getPartitaIVA());
+	values.put(ClienteDB.Fields.REFERENTE, cliente.getReferente());
+	values.put(ClienteDB.Fields.REVISIONE, cliente.getRevisione());
+	values.put(ClienteDB.Fields.TELEFONO, cliente.getTelefono());
+	values.put(ClienteDB.Fields.UFFICIO, cliente.getUfficio());
 	
 	return values;
     }
     
-    public static ContentValues updateSQL(String citta, String codiceFiscale, String email, String fax, String indirizzo, String interno,
-	    String nominativo, String note, String partitaIva, String referente, Long revisione, String telefono, String ufficio) {
+    public static ContentValues updateSQL(Cliente cliente) {
 	
 	ContentValues values = new ContentValues();
 	
-	values.put(ClienteDB.Fields.CITTA, citta);
-	values.put(ClienteDB.Fields.CODICE_FISCALE, codiceFiscale);
-	values.put(ClienteDB.Fields.EMAIL, email);
-	values.put(ClienteDB.Fields.FAX, fax);
-	values.put(ClienteDB.Fields.INDIRIZZO, indirizzo);
-	values.put(ClienteDB.Fields.INTERNO, interno);
-	values.put(ClienteDB.Fields.NOMINATIVO, nominativo);
-	values.put(ClienteDB.Fields.NOTE, note);
-	values.put(ClienteDB.Fields.PARTITAIVA, partitaIva);
-	values.put(ClienteDB.Fields.REFERENTE, referente);
-	values.put(ClienteDB.Fields.REVISIONE, revisione);
-	values.put(ClienteDB.Fields.TELEFONO, telefono);
-	values.put(ClienteDB.Fields.UFFICIO, ufficio);
+	values.put(ClienteDB.Fields.CITTA, cliente.getCitta());
+	values.put(ClienteDB.Fields.CODICE_FISCALE, cliente.getCodiceFiscale());
+	values.put(ClienteDB.Fields.EMAIL, cliente.getEmail());
+	values.put(ClienteDB.Fields.FAX, cliente.getFax());
+	values.put(ClienteDB.Fields.INDIRIZZO, cliente.getIndirizzo());
+	values.put(ClienteDB.Fields.INTERNO, cliente.getInterno());
+	values.put(ClienteDB.Fields.NOMINATIVO, cliente.getNominativo());
+	values.put(ClienteDB.Fields.NOTE, cliente.getNote());
+	values.put(ClienteDB.Fields.PARTITAIVA, cliente.getPartitaIVA());
+	values.put(ClienteDB.Fields.REFERENTE, cliente.getReferente());
+	values.put(ClienteDB.Fields.REVISIONE, cliente.getRevisione());
+	values.put(ClienteDB.Fields.TELEFONO, cliente.getTelefono());
+	values.put(ClienteDB.Fields.UFFICIO, cliente.getUfficio());
 	
 	return values;
     }

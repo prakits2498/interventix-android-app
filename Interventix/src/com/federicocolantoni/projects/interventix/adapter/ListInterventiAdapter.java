@@ -64,7 +64,7 @@ public class ListInterventiAdapter extends CursorAdapter {
 	Cliente cliente = null;
 	try {
 	    cliente = clienteAsyncTask.get();
-	    tv_cliente_intervento.setText(cliente.getmNominativo() + " - ");
+	    tv_cliente_intervento.setText(cliente.getNominativo() + " - ");
 	}
 	catch (InterruptedException e) {
 	    
