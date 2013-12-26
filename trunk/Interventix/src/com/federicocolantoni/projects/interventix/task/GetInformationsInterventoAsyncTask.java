@@ -38,12 +38,12 @@ public class GetInformationsInterventoAsyncTask extends AsyncTask<Long, Void, In
 	
 	if (cursor.moveToFirst()) {
 	    
-	    informationsIntervento.setmTipologia(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.TIPOLOGIA)));
-	    informationsIntervento.setmModalita(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.MODALITA)));
-	    informationsIntervento.setmMotivo(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.MOTIVO)));
-	    informationsIntervento.setmProdotto(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.PRODOTTO)));
-	    informationsIntervento.setmNominativo(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.NOMINATIVO)));
-	    informationsIntervento.setmDataOra(cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.DATA_ORA)));
+	    informationsIntervento.setTipologia(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.TIPOLOGIA)));
+	    informationsIntervento.setModalita(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.MODALITA)));
+	    informationsIntervento.setMotivo(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.MOTIVO)));
+	    informationsIntervento.setProdotto(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.PRODOTTO)));
+	    informationsIntervento.setNominativo(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.NOMINATIVO)));
+	    informationsIntervento.setDataOra(cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.DATA_ORA)));
 	}
 	
 	if (!cursor.isClosed()) {

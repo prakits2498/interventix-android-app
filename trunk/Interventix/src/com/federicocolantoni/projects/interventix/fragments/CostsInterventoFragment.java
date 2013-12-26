@@ -137,7 +137,7 @@ public class CostsInterventoFragment extends Fragment {
 	});
 	
 	TextView tv_row_manodopera = (TextView) rowManodopera.findViewById(R.id.tv_row_manodopera);
-	sCosto_manodopera = interv.getmCostoManodopera().doubleValue();
+	sCosto_manodopera = interv.getCostoManodopera().doubleValue();
 	tv_row_manodopera.setText(formatter.format(sCosto_manodopera) + " €");
 	
 	rowComponenti.setOnClickListener(new OnClickListener() {
@@ -149,7 +149,7 @@ public class CostsInterventoFragment extends Fragment {
 	});
 	
 	TextView tv_row_componenti = (TextView) rowComponenti.findViewById(R.id.tv_row_componenti);
-	sCosto_componenti = interv.getmCostoComponenti().doubleValue();
+	sCosto_componenti = interv.getCostoComponenti().doubleValue();
 	tv_row_componenti.setText(formatter.format(sCosto_componenti) + " €");
 	
 	rowAccessori.setOnClickListener(new OnClickListener() {
@@ -161,19 +161,19 @@ public class CostsInterventoFragment extends Fragment {
 	});
 	
 	TextView tv_row_accessori = (TextView) rowAccessori.findViewById(R.id.tv_row_accessori);
-	sCosto_accessori = interv.getmCostoAccessori().doubleValue();
+	sCosto_accessori = interv.getCostoAccessori().doubleValue();
 	tv_row_accessori.setText(formatter.format(sCosto_accessori) + " €");
 	
 	TextView tv_row_importo = (TextView) rowImporto.findViewById(R.id.tv_row_importo);
-	sImporto = interv.getmImporto().doubleValue();
+	sImporto = interv.getImporto().doubleValue();
 	tv_row_importo.setText(formatter.format(sImporto) + " €");
 	
 	TextView tv_row_iva = (TextView) rowIVA.findViewById(R.id.tv_row_iva);
-	sIva = interv.getmIva().doubleValue();
+	sIva = interv.getIva().doubleValue();
 	tv_row_iva.setText(formatter.format(sIva) + " €");
 	
 	TextView tv_row_totale = (TextView) rowTotale.findViewById(R.id.tv_row_totale);
-	sTotale = interv.getmTotale().doubleValue();
+	sTotale = interv.getTotale().doubleValue();
 	tv_row_totale.setText(formatter.format(sTotale) + " €");
     }
     

@@ -92,7 +92,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 		    String selection = Fields.TYPE + " = ? AND " + UtenteDB.Fields.USERNAME + " = ?";
 		    
 		    String[] selectionArgs = new String[] {
-			    UtenteDB.UTENTE_ITEM_TYPE, strings[1]
+			    UtenteDB.UTENTE_ITEM_TYPE, mUsername
 		    };
 		    
 		    Cursor cursor = cr.query(UtenteDB.CONTENT_URI, null, selection, selectionArgs, null);
@@ -101,14 +101,16 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 			
 			// Update user's informations
 			
-			values = Utente.updateSQL(data.getString("nome"),
-				data.getString("cognome"),
-				data.getString("username"),
-				data.getString("email"),
-				data.getString("tipo"),
-				data.getLong("revisione"),
-				data.getBoolean("cancellato"),
-				data.getBoolean("cestinato"));
+			Utente updateUser = new Utente();
+			updateUser.setCancellato(data.getBoolean("cancellato"));
+			updateUser.setCestinato(data.getBoolean("cestinato"));
+			updateUser.setCognome(data.getString("cognome"));
+			updateUser.setEmail(data.getString("email"));
+			updateUser.setNome(data.getString("nome"));
+			updateUser.setRevisione(data.getLong("revisione"));
+			updateUser.setTipo(data.getString("tipo"));
+			
+			values = Utente.updateSQL(updateUser);
 			
 			String selectionUpdate = UtenteDB.Fields.ID_UTENTE + " = ?";
 			
@@ -138,15 +140,18 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 			
 			// Insert user's informations
 			
-			values = Utente.insertSQL(data.getLong("idutente"),
-				data.getString("nome"),
-				data.getString("cognome"),
-				data.getString("username"),
-				data.getString("email"),
-				data.getString("tipo"),
-				data.getLong("revisione"),
-				data.getBoolean("cancellato"),
-				data.getBoolean("cestinato"));
+			Utente newUser = new Utente();
+			newUser.setIdUtente(data.getLong("idutente"));
+			newUser.setCancellato(data.getBoolean("cancellato"));
+			newUser.setCestinato(data.getBoolean("cestinato"));
+			newUser.setCognome(data.getString("cognome"));
+			newUser.setEmail(data.getString("email"));
+			newUser.setNome(data.getString("nome"));
+			newUser.setUserName(data.getString("username"));
+			newUser.setRevisione(data.getLong("revisione"));
+			newUser.setTipo(data.getString("tipo"));
+			
+			values = Utente.insertSQL(newUser);
 			
 			cr.insert(UtenteDB.CONTENT_URI, values);
 			

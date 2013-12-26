@@ -56,13 +56,13 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> {
 	Cliente cliente = getItem(position);
 	
 	TextView tv_row_nominativo = (TextView) convertView.findViewById(R.id.tv_row_nominativo);
-	tv_row_nominativo.setText(String.format("%s", cliente.getmNominativo()));
+	tv_row_nominativo.setText(String.format("%s", cliente.getNominativo()));
 	
 	TextView tv_row_cod_fis = (TextView) convertView.findViewById(R.id.tv_row_cod_fis);
-	tv_row_cod_fis.setText(String.format("%s", cliente.getmCodiceFiscale()));
+	tv_row_cod_fis.setText(String.format("%s", cliente.getCodiceFiscale()));
 	
 	TextView tv_row_p_iva = (TextView) convertView.findViewById(R.id.tv_row_p_iva);
-	tv_row_p_iva.setText(String.format("%s", cliente.getmPartitaIVA()));
+	tv_row_p_iva.setText(String.format("%s", cliente.getPartitaIVA()));
 	
 	return convertView;
     }

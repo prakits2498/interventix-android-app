@@ -75,7 +75,7 @@ public class Login extends Fragment {
 				
 				json_req = JsonCR2.createRequest("users", "login", parameters, -1);
 				
-				new GetLogin(getActivity(), username.getText().toString(), password.getText().toString()).execute(json_req, username.getText().toString(), password.getText().toString());
+				new GetLogin(getActivity(), username.getText().toString(), password.getText().toString()).execute(json_req);
 				
 				password.setText("");
 			    }

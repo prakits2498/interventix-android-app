@@ -36,8 +36,8 @@ public class GetNominativoUtenteAsyncTask extends AsyncTask<Long, Void, Utente> 
 	Utente utente = new Utente();
 	
 	if (cursor.moveToFirst()) {
-	    utente.setmNome(cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.NOME)));
-	    utente.setmCognome(cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.COGNOME)));
+	    utente.setNome(cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.NOME)));
+	    utente.setCognome(cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.COGNOME)));
 	}
 	
 	if (!cursor.isClosed()) {

@@ -74,18 +74,6 @@ public class OverViewInterventoFragment extends Fragment {
 	setHasOptionsMenu(true);
     }
     
-    // @Override
-    // public View onCreateView(LayoutInflater inflater, ViewGroup container,
-    // Bundle savedInstanceState) {
-    //
-    // super.onCreateView(inflater, container, savedInstanceState);
-    //
-    // final View view = inflater.inflate(R.layout.overview_intervento_fragment,
-    // container, false);
-    //
-    // return view;
-    // }
-    
     @Override
     public void onStart() {
 	
@@ -97,7 +85,7 @@ public class OverViewInterventoFragment extends Fragment {
 	
 	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Intervento " + bundle.getLong(Constants.NUMERO_INTERVENTO));
 	
-	manager = getActivity().getSupportFragmentManager();
+	manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
 	
 	if (bundle.getLong(Constants.ID_INTERVENTO) != -1l) {
 	    try {
@@ -114,7 +102,7 @@ public class OverViewInterventoFragment extends Fragment {
 		BugSenseHandler.sendException(e);
 	    }
 	    
-	    DateTime dt_interv = new DateTime(interv.getmDataOra(), DateTimeZone.forID("Europe/Rome"));
+	    DateTime dt_interv = new DateTime(interv.getDataOra(), DateTimeZone.forID("Europe/Rome"));
 	    
 	    summary.setText("Interv. " + bundle.getLong(Constants.NUMERO_INTERVENTO) + " del " + dt_interv.toString("dd/MM/yyyy HH:mm"));
 	    
@@ -140,7 +128,7 @@ public class OverViewInterventoFragment extends Fragment {
 	    Cliente cliente = null;
 	    
 	    try {
-		cliente = new GetNominativoClienteAsyncTask(getActivity()).execute(interv.getmIdCliente()).get();
+		cliente = new GetNominativoClienteAsyncTask(getActivity()).execute(interv.getIdCliente()).get();
 	    }
 	    catch (InterruptedException e) {
 		
@@ -153,7 +141,7 @@ public class OverViewInterventoFragment extends Fragment {
 		e.printStackTrace();
 	    }
 	    
-	    tv_row_client.setText(cliente.getmNominativo());
+	    tv_row_client.setText(cliente.getNominativo());
 	    
 	    rowTecnico.setEnabled(false);
 	    
@@ -182,8 +170,6 @@ public class OverViewInterventoFragment extends Fragment {
 		    transaction.commit();
 		}
 	    });
-	    
-	    // View rowDetails = view.findViewById(R.id.row_details);
 	    
 	    ListDetailsIntervento listaDetailsInterv = null;
 	    
@@ -241,7 +227,6 @@ public class OverViewInterventoFragment extends Fragment {
 		tv_row_details.setText(getString(R.string.no_details_interv));
 	    }
 	    
-	    // View rowCosts = view.findViewById(R.id.row_costs);
 	    rowCosts.setOnClickListener(new OnClickListener() {
 		
 		@Override
@@ -263,12 +248,10 @@ public class OverViewInterventoFragment extends Fragment {
 	    DecimalFormat formatter = new DecimalFormat("###,###,###.##");
 	    
 	    TextView tv_row_costs = (TextView) rowCosts.findViewById(R.id.tv_row_costs);
-	    tv_row_costs.setText(formatter.format(interv.getmTotale().doubleValue()) + " €");
-	    
-	    // View rowSignature = view.findViewById(R.id.row_signature);
+	    tv_row_costs.setText(formatter.format(interv.getTotale().doubleValue()) + " €");
 	    
 	    TextView tv_row_signature = (TextView) rowSignature.findViewById(R.id.tv_row_signature);
-	    if (interv.getmFirma().length() > 0) {
+	    if (interv.getFirma().length() > 0) {
 		tv_row_signature.setText("Presente");
 		rowSignature.setOnClickListener(new OnClickListener() {
 		    

@@ -56,16 +56,16 @@ public class GetListaDettagliInterventoAsyncTask extends AsyncTask<Long, Void, L
 	    
 	    DettaglioIntervento detailInterv = new DettaglioIntervento();
 	    
-	    detailInterv.setmIdDettaglioIntervento(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO)));
-	    detailInterv.setmIntervento(params[0]);
-	    detailInterv.setmDescrizione(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.DESCRIZIONE)));
-	    detailInterv.setmOggetto(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.OGGETTO)));
-	    detailInterv.setmTipo(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TIPO)));
-	    detailInterv.setmInizio(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.INIZIO)));
-	    detailInterv.setmFine(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.FINE)));
-	    detailInterv.setmModificato(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.MODIFICATO)));
+	    detailInterv.setIdDettaglioIntervento(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO)));
+	    detailInterv.setIntervento(params[0]);
+	    detailInterv.setDescrizione(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.DESCRIZIONE)));
+	    detailInterv.setOggetto(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.OGGETTO)));
+	    detailInterv.setTipo(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TIPO)));
+	    detailInterv.setInizio(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.INIZIO)));
+	    detailInterv.setFine(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.FINE)));
+	    detailInterv.setModificato(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.MODIFICATO)));
 	    try {
-		detailInterv.setmTecnici(new JSONArray(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TECNICI))));
+		detailInterv.setTecnici(new JSONArray(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TECNICI))));
 	    }
 	    catch (JSONException e) {
 		

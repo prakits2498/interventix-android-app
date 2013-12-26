@@ -49,15 +49,15 @@ public class GetDettaglioInterventoAsyncTask extends AsyncTask<Long, Void, Detta
 	
 	if (cursor.moveToFirst()) {
 	    
-	    dettInterv.setmIdDettaglioIntervento(params[0]);
-	    dettInterv.setmDescrizione(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.DESCRIZIONE)));
-	    dettInterv.setmFine(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.FINE)));
-	    dettInterv.setmInizio(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.INIZIO)));
-	    dettInterv.setmOggetto(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.OGGETTO)));
-	    dettInterv.setmIntervento(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.INTERVENTO)));
-	    dettInterv.setmTipo(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TIPO)));
+	    dettInterv.setIdDettaglioIntervento(params[0]);
+	    dettInterv.setDescrizione(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.DESCRIZIONE)));
+	    dettInterv.setFine(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.FINE)));
+	    dettInterv.setInizio(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.INIZIO)));
+	    dettInterv.setOggetto(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.OGGETTO)));
+	    dettInterv.setIntervento(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.INTERVENTO)));
+	    dettInterv.setTipo(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TIPO)));
 	    try {
-		dettInterv.setmTecnici(new JSONArray(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TECNICI))));
+		dettInterv.setTecnici(new JSONArray(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TECNICI))));
 	    }
 	    catch (JSONException e) {
 		

@@ -26,7 +26,7 @@ public class Intervento implements Serializable {
     private BigDecimal mCostoManodopera, mCostoComponenti, mCostoAccessori,
 	    mImporto, mTotale;
     private BigDecimal mIva;
-    private Integer mNumeroIntervento;
+    private Long mNumeroIntervento;
     
     public Intervento() {
 	
@@ -40,7 +40,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mIdIntervento
      */
-    public Long getmIdIntervento() {
+    public Long getIdIntervento() {
 	
 	return mIdIntervento;
     }
@@ -49,7 +49,7 @@ public class Intervento implements Serializable {
      * @param mIdIntervento
      *            the mIdIntervento to set
      */
-    public void setmIdIntervento(Long mIdIntervento) {
+    public void setIdIntervento(Long mIdIntervento) {
 	
 	this.mIdIntervento = mIdIntervento;
     }
@@ -57,7 +57,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mTipologia
      */
-    public String getmTipologia() {
+    public String getTipologia() {
 	
 	return mTipologia;
     }
@@ -66,7 +66,7 @@ public class Intervento implements Serializable {
      * @param mTipologia
      *            the mTipologia to set
      */
-    public void setmTipologia(String mTipologia) {
+    public void setTipologia(String mTipologia) {
 	
 	this.mTipologia = mTipologia;
     }
@@ -74,7 +74,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mProdotto
      */
-    public String getmProdotto() {
+    public String getProdotto() {
 	
 	return mProdotto;
     }
@@ -83,7 +83,7 @@ public class Intervento implements Serializable {
      * @param mProdotto
      *            the mProdotto to set
      */
-    public void setmProdotto(String mProdotto) {
+    public void setProdotto(String mProdotto) {
 	
 	this.mProdotto = mProdotto;
     }
@@ -91,7 +91,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mMotivo
      */
-    public String getmMotivo() {
+    public String getMotivo() {
 	
 	return mMotivo;
     }
@@ -100,7 +100,7 @@ public class Intervento implements Serializable {
      * @param mMotivo
      *            the mMotivo to set
      */
-    public void setmMotivo(String mMotivo) {
+    public void setMotivo(String mMotivo) {
 	
 	this.mMotivo = mMotivo;
     }
@@ -108,7 +108,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mNominativo
      */
-    public String getmNominativo() {
+    public String getNominativo() {
 	
 	return mNominativo;
     }
@@ -117,7 +117,7 @@ public class Intervento implements Serializable {
      * @param mNominativo
      *            the mNominativo to set
      */
-    public void setmNominativo(String mNominativo) {
+    public void setNominativo(String mNominativo) {
 	
 	this.mNominativo = mNominativo;
     }
@@ -125,7 +125,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mRifFattura
      */
-    public String getmRifFattura() {
+    public String getRifFattura() {
 	
 	return mRifFattura;
     }
@@ -134,7 +134,7 @@ public class Intervento implements Serializable {
      * @param mRifFattura
      *            the mRifFattura to set
      */
-    public void setmRifFattura(String mRifFattura) {
+    public void setRifFattura(String mRifFattura) {
 	
 	this.mRifFattura = mRifFattura;
     }
@@ -142,7 +142,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mRifScontrino
      */
-    public String getmRifScontrino() {
+    public String getRifScontrino() {
 	
 	return mRifScontrino;
     }
@@ -151,7 +151,7 @@ public class Intervento implements Serializable {
      * @param mRifScontrino
      *            the mRifScontrino to set
      */
-    public void setmRifScontrino(String mRifScontrino) {
+    public void setRifScontrino(String mRifScontrino) {
 	
 	this.mRifScontrino = mRifScontrino;
     }
@@ -159,7 +159,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mNote
      */
-    public String getmNote() {
+    public String getNote() {
 	
 	return mNote;
     }
@@ -168,7 +168,7 @@ public class Intervento implements Serializable {
      * @param mNote
      *            the mNote to set
      */
-    public void setmNote(String mNote) {
+    public void setNote(String mNote) {
 	
 	this.mNote = mNote;
     }
@@ -176,7 +176,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mFirma
      */
-    public String getmFirma() {
+    public String getFirma() {
 	
 	return mFirma;
     }
@@ -185,7 +185,7 @@ public class Intervento implements Serializable {
      * @param mFirma
      *            the mFirma to set
      */
-    public void setmFirma(String mFirma) {
+    public void setFirma(String mFirma) {
 	
 	this.mFirma = mFirma;
     }
@@ -193,7 +193,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mSaldato
      */
-    public boolean ismSaldato() {
+    public boolean isSaldato() {
 	
 	return mSaldato;
     }
@@ -202,7 +202,7 @@ public class Intervento implements Serializable {
      * @param mSaldato
      *            the mSaldato to set
      */
-    public void setmSaldato(boolean mSaldato) {
+    public void setSaldato(boolean mSaldato) {
 	
 	this.mSaldato = mSaldato;
     }
@@ -210,7 +210,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mCancellato
      */
-    public boolean ismCancellato() {
+    public boolean isCancellato() {
 	
 	return mCancellato;
     }
@@ -219,7 +219,7 @@ public class Intervento implements Serializable {
      * @param mCancellato
      *            the mCancellato to set
      */
-    public void setmCancellato(boolean mCancellato) {
+    public void setCancellato(boolean mCancellato) {
 	
 	this.mCancellato = mCancellato;
     }
@@ -227,7 +227,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mChiuso
      */
-    public boolean ismChiuso() {
+    public boolean isChiuso() {
 	
 	return mChiuso;
     }
@@ -236,7 +236,7 @@ public class Intervento implements Serializable {
      * @param mChiuso
      *            the mChiuso to set
      */
-    public void setmChiuso(boolean mChiuso) {
+    public void setChiuso(boolean mChiuso) {
 	
 	this.mChiuso = mChiuso;
     }
@@ -244,7 +244,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mDataOra
      */
-    public Long getmDataOra() {
+    public Long getDataOra() {
 	
 	return mDataOra;
     }
@@ -253,7 +253,7 @@ public class Intervento implements Serializable {
      * @param mDataOra
      *            the mDataOra to set
      */
-    public void setmDataOra(Long mDataOra) {
+    public void setDataOra(Long mDataOra) {
 	
 	this.mDataOra = mDataOra;
     }
@@ -261,7 +261,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mIdCliente
      */
-    public Long getmIdCliente() {
+    public Long getIdCliente() {
 	
 	return mIdCliente;
     }
@@ -270,7 +270,7 @@ public class Intervento implements Serializable {
      * @param mIdCliente
      *            the mIdCliente to set
      */
-    public void setmIdCliente(Long mIdCliente) {
+    public void setIdCliente(Long mIdCliente) {
 	
 	this.mIdCliente = mIdCliente;
     }
@@ -278,7 +278,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mIdTecnico
      */
-    public Long getmIdTecnico() {
+    public Long getIdTecnico() {
 	
 	return mIdTecnico;
     }
@@ -287,7 +287,7 @@ public class Intervento implements Serializable {
      * @param mIdTecnico
      *            the mIdTecnico to set
      */
-    public void setmIdTecnico(Long mIdTecnico) {
+    public void setIdTecnico(Long mIdTecnico) {
 	
 	this.mIdTecnico = mIdTecnico;
     }
@@ -295,7 +295,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mCostoManodopera
      */
-    public BigDecimal getmCostoManodopera() {
+    public BigDecimal getCostoManodopera() {
 	
 	return mCostoManodopera;
     }
@@ -304,7 +304,7 @@ public class Intervento implements Serializable {
      * @param mCostoManodopera
      *            the mCostoManodopera to set
      */
-    public void setmCostoManodopera(BigDecimal mCostoManodopera) {
+    public void setCostoManodopera(BigDecimal mCostoManodopera) {
 	
 	this.mCostoManodopera = mCostoManodopera;
     }
@@ -312,7 +312,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mCostoComponenti
      */
-    public BigDecimal getmCostoComponenti() {
+    public BigDecimal getCostoComponenti() {
 	
 	return mCostoComponenti;
     }
@@ -321,7 +321,7 @@ public class Intervento implements Serializable {
      * @param mCostoComponenti
      *            the mCostoComponenti to set
      */
-    public void setmCostoComponenti(BigDecimal mCostoComponenti) {
+    public void setCostoComponenti(BigDecimal mCostoComponenti) {
 	
 	this.mCostoComponenti = mCostoComponenti;
     }
@@ -329,7 +329,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mCostoAccessori
      */
-    public BigDecimal getmCostoAccessori() {
+    public BigDecimal getCostoAccessori() {
 	
 	return mCostoAccessori;
     }
@@ -338,7 +338,7 @@ public class Intervento implements Serializable {
      * @param mCostoAccessori
      *            the mCostoAccessori to set
      */
-    public void setmCostoAccessori(BigDecimal mCostoAccessori) {
+    public void setCostoAccessori(BigDecimal mCostoAccessori) {
 	
 	this.mCostoAccessori = mCostoAccessori;
     }
@@ -346,7 +346,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mImporto
      */
-    public BigDecimal getmImporto() {
+    public BigDecimal getImporto() {
 	
 	return mImporto;
     }
@@ -355,7 +355,7 @@ public class Intervento implements Serializable {
      * @param mImporto
      *            the mImporto to set
      */
-    public void setmImporto(BigDecimal mImporto) {
+    public void setImporto(BigDecimal mImporto) {
 	
 	this.mImporto = mImporto;
     }
@@ -363,7 +363,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mTotale
      */
-    public BigDecimal getmTotale() {
+    public BigDecimal getTotale() {
 	
 	return mTotale;
     }
@@ -372,7 +372,7 @@ public class Intervento implements Serializable {
      * @param mTotale
      *            the mTotale to set
      */
-    public void setmTotale(BigDecimal mTotale) {
+    public void setTotale(BigDecimal mTotale) {
 	
 	this.mTotale = mTotale;
     }
@@ -380,7 +380,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mIva
      */
-    public BigDecimal getmIva() {
+    public BigDecimal getIva() {
 	
 	return mIva;
     }
@@ -389,7 +389,7 @@ public class Intervento implements Serializable {
      * @param mIva
      *            the mIva to set
      */
-    public void setmIva(BigDecimal mIva) {
+    public void setIva(BigDecimal mIva) {
 	
 	this.mIva = mIva;
     }
@@ -397,7 +397,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mModalita
      */
-    public String getmModalita() {
+    public String getModalita() {
 	
 	return mModalita;
     }
@@ -406,7 +406,7 @@ public class Intervento implements Serializable {
      * @param mModalita
      *            the mModalita to set
      */
-    public void setmModalita(String mModalita) {
+    public void setModalita(String mModalita) {
 	
 	this.mModalita = mModalita;
     }
@@ -414,7 +414,7 @@ public class Intervento implements Serializable {
     /**
      * @return the mNumeroIntervento
      */
-    public Integer getmNumeroIntervento() {
+    public Long getNumeroIntervento() {
 	return mNumeroIntervento;
     }
     
@@ -422,14 +422,14 @@ public class Intervento implements Serializable {
      * @param mNumeroIntervento
      *            the mNumeroIntervento to set
      */
-    public void setmNumeroIntervento(Integer mNumeroIntervento) {
+    public void setNumeroIntervento(Long mNumeroIntervento) {
 	this.mNumeroIntervento = mNumeroIntervento;
     }
     
     /**
      * @return the mModificato
      */
-    public String getmModificato() {
+    public String getModificato() {
 	return mModificato;
     }
     
@@ -437,7 +437,7 @@ public class Intervento implements Serializable {
      * @param mModificato
      *            the mModificato to set
      */
-    public void setmModificato(String mModificato) {
+    public void setModificato(String mModificato) {
 	this.mModificato = mModificato;
     }
     
@@ -464,72 +464,66 @@ public class Intervento implements Serializable {
 	return result;
     }
     
-    public static ContentValues insertSQL(Long id, Double costoAccessori, Double costoComponenti, Double costoManodopera,
-	    Long dataOra, String firma, Long cliente, Long tecnico, Double importo, Double iva, String modalita, String motivo, String nominativo,
-	    String note, Long numeroIntervento, String prodotto, String riferimentoFattura, String riferimentoScontrino,
-	    String tipologia, Double totale, Boolean saldato, Boolean chiuso, Boolean cancellato, String modificato) {
+    public static ContentValues insertSQL(Intervento intervento) {
 	
 	ContentValues values = new ContentValues();
 	
-	values.put(InterventoDB.Fields.ID_INTERVENTO, id);
+	values.put(InterventoDB.Fields.ID_INTERVENTO, intervento.getIdIntervento());
 	values.put(Fields.TYPE, InterventoDB.INTERVENTO_ITEM_TYPE);
-	values.put(InterventoDB.Fields.CANCELLATO, cancellato);
-	values.put(InterventoDB.Fields.COSTO_ACCESSORI, costoAccessori);
-	values.put(InterventoDB.Fields.COSTO_COMPONENTI, costoComponenti);
-	values.put(InterventoDB.Fields.COSTO_MANODOPERA, costoManodopera);
-	values.put(InterventoDB.Fields.DATA_ORA, dataOra);
-	values.put(InterventoDB.Fields.FIRMA, firma);
-	values.put(InterventoDB.Fields.CLIENTE, cliente);
-	values.put(InterventoDB.Fields.IMPORTO, importo);
-	values.put(InterventoDB.Fields.IVA, iva);
-	values.put(InterventoDB.Fields.MODALITA, modalita);
-	values.put(InterventoDB.Fields.MODIFICATO, modificato);
-	values.put(InterventoDB.Fields.MOTIVO, motivo);
-	values.put(InterventoDB.Fields.NOMINATIVO, nominativo);
-	values.put(InterventoDB.Fields.NOTE, note);
-	values.put(InterventoDB.Fields.NUMERO_INTERVENTO, numeroIntervento);
-	values.put(InterventoDB.Fields.PRODOTTO, prodotto);
-	values.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, riferimentoFattura);
-	values.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO, riferimentoScontrino);
-	values.put(InterventoDB.Fields.SALDATO, saldato);
-	values.put(InterventoDB.Fields.TIPOLOGIA, tipologia);
-	values.put(InterventoDB.Fields.TOTALE, totale);
-	values.put(InterventoDB.Fields.CHIUSO, chiuso);
-	values.put(InterventoDB.Fields.TECNICO, tecnico);
+	values.put(InterventoDB.Fields.CANCELLATO, intervento.isCancellato());
+	values.put(InterventoDB.Fields.COSTO_ACCESSORI, intervento.getCostoAccessori().doubleValue());
+	values.put(InterventoDB.Fields.COSTO_COMPONENTI, intervento.getCostoComponenti().doubleValue());
+	values.put(InterventoDB.Fields.COSTO_MANODOPERA, intervento.getCostoManodopera().doubleValue());
+	values.put(InterventoDB.Fields.DATA_ORA, intervento.getDataOra());
+	values.put(InterventoDB.Fields.FIRMA, intervento.getFirma());
+	values.put(InterventoDB.Fields.CLIENTE, intervento.getIdCliente());
+	values.put(InterventoDB.Fields.IMPORTO, intervento.getImporto().doubleValue());
+	values.put(InterventoDB.Fields.IVA, intervento.getIva().doubleValue());
+	values.put(InterventoDB.Fields.MODALITA, intervento.getModalita());
+	values.put(InterventoDB.Fields.MODIFICATO, intervento.getModificato());
+	values.put(InterventoDB.Fields.MOTIVO, intervento.getMotivo());
+	values.put(InterventoDB.Fields.NOMINATIVO, intervento.getNominativo());
+	values.put(InterventoDB.Fields.NOTE, intervento.getNote());
+	values.put(InterventoDB.Fields.NUMERO_INTERVENTO, intervento.getNumeroIntervento());
+	values.put(InterventoDB.Fields.PRODOTTO, intervento.getProdotto());
+	values.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, intervento.getRifFattura());
+	values.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO, intervento.getRifScontrino());
+	values.put(InterventoDB.Fields.SALDATO, intervento.isSaldato());
+	values.put(InterventoDB.Fields.TIPOLOGIA, intervento.getTipologia());
+	values.put(InterventoDB.Fields.TOTALE, intervento.getTotale().doubleValue());
+	values.put(InterventoDB.Fields.CHIUSO, intervento.isChiuso());
+	values.put(InterventoDB.Fields.TECNICO, intervento.getIdTecnico());
 	
 	return values;
     }
     
-    public static ContentValues updateSQL(Double costoAccessori, Double costoComponenti, Double costoManodopera,
-	    Long dataOra, String firma, Long cliente, Long tecnico, Double importo, Double iva, String modalita, String motivo, String nominativo,
-	    String note, Long numeroIntervento, String prodotto, String riferimentoFattura, String riferimentoScontrino,
-	    String tipologia, Double totale, Boolean saldato, Boolean chiuso, Boolean cancellato, String modificato) {
+    public static ContentValues updateSQL(Intervento intervento) {
 	
 	ContentValues values = new ContentValues();
 	
-	values.put(InterventoDB.Fields.CANCELLATO, cancellato);
-	values.put(InterventoDB.Fields.COSTO_ACCESSORI, costoAccessori);
-	values.put(InterventoDB.Fields.COSTO_COMPONENTI, costoComponenti);
-	values.put(InterventoDB.Fields.COSTO_MANODOPERA, costoManodopera);
-	values.put(InterventoDB.Fields.DATA_ORA, dataOra);
-	values.put(InterventoDB.Fields.FIRMA, firma);
-	values.put(InterventoDB.Fields.CLIENTE, cliente);
-	values.put(InterventoDB.Fields.IMPORTO, importo);
-	values.put(InterventoDB.Fields.IVA, iva);
-	values.put(InterventoDB.Fields.MODALITA, modalita);
-	values.put(InterventoDB.Fields.MODIFICATO, modificato);
-	values.put(InterventoDB.Fields.MOTIVO, motivo);
-	values.put(InterventoDB.Fields.NOMINATIVO, nominativo);
-	values.put(InterventoDB.Fields.NOTE, note);
-	values.put(InterventoDB.Fields.NUMERO_INTERVENTO, numeroIntervento);
-	values.put(InterventoDB.Fields.PRODOTTO, prodotto);
-	values.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, riferimentoFattura);
-	values.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO, riferimentoScontrino);
-	values.put(InterventoDB.Fields.SALDATO, saldato);
-	values.put(InterventoDB.Fields.TIPOLOGIA, tipologia);
-	values.put(InterventoDB.Fields.TOTALE, totale);
-	values.put(InterventoDB.Fields.CHIUSO, chiuso);
-	values.put(InterventoDB.Fields.TECNICO, tecnico);
+	values.put(InterventoDB.Fields.CANCELLATO, intervento.isCancellato());
+	values.put(InterventoDB.Fields.COSTO_ACCESSORI, intervento.getCostoAccessori().doubleValue());
+	values.put(InterventoDB.Fields.COSTO_COMPONENTI, intervento.getCostoComponenti().doubleValue());
+	values.put(InterventoDB.Fields.COSTO_MANODOPERA, intervento.getCostoManodopera().doubleValue());
+	values.put(InterventoDB.Fields.DATA_ORA, intervento.getDataOra());
+	values.put(InterventoDB.Fields.FIRMA, intervento.getFirma());
+	values.put(InterventoDB.Fields.CLIENTE, intervento.getIdCliente());
+	values.put(InterventoDB.Fields.IMPORTO, intervento.getImporto().doubleValue());
+	values.put(InterventoDB.Fields.IVA, intervento.getIva().doubleValue());
+	values.put(InterventoDB.Fields.MODALITA, intervento.getModalita());
+	values.put(InterventoDB.Fields.MODIFICATO, intervento.getModificato());
+	values.put(InterventoDB.Fields.MOTIVO, intervento.getMotivo());
+	values.put(InterventoDB.Fields.NOMINATIVO, intervento.getNominativo());
+	values.put(InterventoDB.Fields.NOTE, intervento.getNote());
+	values.put(InterventoDB.Fields.NUMERO_INTERVENTO, intervento.getNumeroIntervento());
+	values.put(InterventoDB.Fields.PRODOTTO, intervento.getProdotto());
+	values.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, intervento.getRifFattura());
+	values.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO, intervento.getRifScontrino());
+	values.put(InterventoDB.Fields.SALDATO, intervento.isSaldato());
+	values.put(InterventoDB.Fields.TIPOLOGIA, intervento.getTipologia());
+	values.put(InterventoDB.Fields.TOTALE, intervento.getTotale().doubleValue());
+	values.put(InterventoDB.Fields.CHIUSO, intervento.isChiuso());
+	values.put(InterventoDB.Fields.TECNICO, intervento.getIdTecnico());
 	
 	return values;
     }

@@ -225,7 +225,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 	
 	signature.setDrawingCacheEnabled(true);
 	
-	String hexSignature = interv.getmFirma();
+	String hexSignature = interv.getFirma();
 	
 	byte[] byteSignature = Utils.hexToBytes(hexSignature.toCharArray());
 	

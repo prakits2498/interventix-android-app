@@ -37,7 +37,7 @@ public class GetNominativoClienteAsyncTask extends AsyncTask<Long, Void, Cliente
 	Cliente cliente = new Cliente();
 	
 	if (cursor.moveToFirst()) {
-	    cliente.setmNominativo(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOMINATIVO)));
+	    cliente.setNominativo(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOMINATIVO)));
 	}
 	
 	if (!cursor.isClosed()) {

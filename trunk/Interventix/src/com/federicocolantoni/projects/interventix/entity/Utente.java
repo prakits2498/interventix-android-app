@@ -31,7 +31,7 @@ public class Utente implements Serializable {
     /**
      * @return the mIdUtente
      */
-    public Long getmIdUtente() {
+    public Long getIdUtente() {
 	
 	return mIdUtente;
     }
@@ -40,7 +40,7 @@ public class Utente implements Serializable {
      * @param mIdUtente
      *            the mIdUtente to set
      */
-    public void setmIdUtente(Long mIdUtente) {
+    public void setIdUtente(Long mIdUtente) {
 	
 	this.mIdUtente = mIdUtente;
     }
@@ -48,7 +48,7 @@ public class Utente implements Serializable {
     /**
      * @return the mNome
      */
-    public String getmNome() {
+    public String getNome() {
 	
 	return mNome;
     }
@@ -57,7 +57,7 @@ public class Utente implements Serializable {
      * @param mNome
      *            the mNome to set
      */
-    public void setmNome(String mNome) {
+    public void setNome(String mNome) {
 	
 	this.mNome = mNome;
     }
@@ -65,7 +65,7 @@ public class Utente implements Serializable {
     /**
      * @return the mCognome
      */
-    public String getmCognome() {
+    public String getCognome() {
 	
 	return mCognome;
     }
@@ -74,7 +74,7 @@ public class Utente implements Serializable {
      * @param mCognome
      *            the mCognome to set
      */
-    public void setmCognome(String mCognome) {
+    public void setCognome(String mCognome) {
 	
 	this.mCognome = mCognome;
     }
@@ -82,7 +82,7 @@ public class Utente implements Serializable {
     /**
      * @return the mUserName
      */
-    public String getmUserName() {
+    public String getUsername() {
 	
 	return mUserName;
     }
@@ -91,7 +91,7 @@ public class Utente implements Serializable {
      * @param mUserName
      *            the mUserName to set
      */
-    public void setmUserName(String mUserName) {
+    public void setUserName(String mUserName) {
 	
 	this.mUserName = mUserName;
     }
@@ -116,7 +116,7 @@ public class Utente implements Serializable {
     /**
      * @return the mEmail
      */
-    public String getmEmail() {
+    public String getEmail() {
 	
 	return mEmail;
     }
@@ -125,7 +125,7 @@ public class Utente implements Serializable {
      * @param mEmail
      *            the mEmail to set
      */
-    public void setmEmail(String mEmail) {
+    public void setEmail(String mEmail) {
 	
 	this.mEmail = mEmail;
     }
@@ -133,7 +133,7 @@ public class Utente implements Serializable {
     /**
      * @return the mTipo
      */
-    public String getmTipo() {
+    public String getTipo() {
 	
 	return mTipo;
     }
@@ -142,7 +142,7 @@ public class Utente implements Serializable {
      * @param mTipo
      *            the mTipo to set
      */
-    public void setmTipo(String mTipo) {
+    public void setTipo(String mTipo) {
 	
 	this.mTipo = mTipo;
     }
@@ -150,7 +150,7 @@ public class Utente implements Serializable {
     /**
      * @return the mCancellato
      */
-    public boolean ismCancellato() {
+    public boolean isCancellato() {
 	
 	return mCancellato;
     }
@@ -159,7 +159,7 @@ public class Utente implements Serializable {
      * @param mCancellato
      *            the mCancellato to set
      */
-    public void setmCancellato(boolean mCancellato) {
+    public void setCancellato(boolean mCancellato) {
 	
 	this.mCancellato = mCancellato;
     }
@@ -167,7 +167,7 @@ public class Utente implements Serializable {
     /**
      * @return the mCestinato
      */
-    public boolean ismCestinato() {
+    public boolean isCestinato() {
 	return mCestinato;
     }
     
@@ -175,14 +175,14 @@ public class Utente implements Serializable {
      * @param mCestinato
      *            the mCestinato to set
      */
-    public void setmCestinato(boolean mCestinato) {
+    public void setCestinato(boolean mCestinato) {
 	this.mCestinato = mCestinato;
     }
     
     /**
      * @return the mInterventi
      */
-    public List<Intervento> getmInterventi() {
+    public List<Intervento> getInterventi() {
 	
 	return mInterventi;
     }
@@ -191,7 +191,7 @@ public class Utente implements Serializable {
      * @param mInterventi
      *            the mInterventi to set
      */
-    public void setmInterventi(List<Intervento> mInterventi) {
+    public void setInterventi(List<Intervento> mInterventi) {
 	
 	this.mInterventi = mInterventi;
     }
@@ -199,7 +199,7 @@ public class Utente implements Serializable {
     /**
      * @return the mRevisione
      */
-    public Long getmRevisione() {
+    public Long getRevisione() {
 	
 	return mRevisione;
     }
@@ -208,7 +208,7 @@ public class Utente implements Serializable {
      * @param mRevisione
      *            the mRevisione to set
      */
-    public void setmRevisione(Long mRevisione) {
+    public void setRevisione(Long mRevisione) {
 	
 	this.mRevisione = mRevisione;
     }
@@ -216,7 +216,7 @@ public class Utente implements Serializable {
     /**
      * @return the mConflitto
      */
-    public boolean ismConflitto() {
+    public boolean isConflitto() {
 	return mConflitto;
     }
     
@@ -224,7 +224,7 @@ public class Utente implements Serializable {
      * @param mConflitto
      *            the mConflitto to set
      */
-    public void setmConflitto(boolean mConflitto) {
+    public void setConflitto(boolean mConflitto) {
 	this.mConflitto = mConflitto;
     }
     
@@ -239,36 +239,36 @@ public class Utente implements Serializable {
 	return result;
     }
     
-    public static ContentValues insertSQL(Long id, String nome, String cognome, String username, String email, String tipo, Long revisione, Boolean cancellato, Boolean cestinato) {
+    public static ContentValues insertSQL(Utente user) {
 	
 	ContentValues values = new ContentValues();
 	
-	values.put(UtenteDB.Fields.ID_UTENTE, id);
+	values.put(UtenteDB.Fields.ID_UTENTE, user.getIdUtente());
 	values.put(UtenteDB.Fields.TYPE, UtenteDB.UTENTE_ITEM_TYPE);
-	values.put(UtenteDB.Fields.NOME, nome);
-	values.put(UtenteDB.Fields.COGNOME, cognome);
-	values.put(UtenteDB.Fields.USERNAME, username);
-	values.put(UtenteDB.Fields.CANCELLATO, cancellato);
-	values.put(UtenteDB.Fields.REVISIONE, revisione);
-	values.put(UtenteDB.Fields.EMAIL, email);
-	values.put(UtenteDB.Fields.TIPO, tipo);
-	values.put(UtenteDB.Fields.CESTINATO, cestinato);
+	values.put(UtenteDB.Fields.NOME, user.getNome());
+	values.put(UtenteDB.Fields.COGNOME, user.getCognome());
+	values.put(UtenteDB.Fields.USERNAME, user.getUsername());
+	values.put(UtenteDB.Fields.CANCELLATO, user.isCancellato());
+	values.put(UtenteDB.Fields.REVISIONE, user.getRevisione());
+	values.put(UtenteDB.Fields.EMAIL, user.getEmail());
+	values.put(UtenteDB.Fields.TIPO, user.getTipo());
+	values.put(UtenteDB.Fields.CESTINATO, user.isCestinato());
 	
 	return values;
     }
     
-    public static ContentValues updateSQL(String nome, String cognome, String username, String email, String tipo, Long revisione, Boolean cancellato, Boolean cestinato) {
+    public static ContentValues updateSQL(Utente user) {
 	
 	ContentValues values = new ContentValues();
 	
-	values.put(UtenteDB.Fields.NOME, nome);
-	values.put(UtenteDB.Fields.COGNOME, cognome);
-	values.put(UtenteDB.Fields.USERNAME, username);
-	values.put(UtenteDB.Fields.CANCELLATO, cancellato);
-	values.put(UtenteDB.Fields.REVISIONE, revisione);
-	values.put(UtenteDB.Fields.EMAIL, email);
-	values.put(UtenteDB.Fields.TIPO, tipo);
-	values.put(UtenteDB.Fields.CESTINATO, cestinato);
+	values.put(UtenteDB.Fields.NOME, user.getNome());
+	values.put(UtenteDB.Fields.COGNOME, user.getCognome());
+	values.put(UtenteDB.Fields.USERNAME, user.getUsername());
+	values.put(UtenteDB.Fields.CANCELLATO, user.isCancellato());
+	values.put(UtenteDB.Fields.REVISIONE, user.getRevisione());
+	values.put(UtenteDB.Fields.EMAIL, user.getEmail());
+	values.put(UtenteDB.Fields.TIPO, user.getTipo());
+	values.put(UtenteDB.Fields.CESTINATO, user.isCestinato());
 	
 	return values;
     }
