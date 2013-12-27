@@ -88,6 +88,10 @@ public class OverViewInterventoFragment extends Fragment {
 	manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
 	
 	if (bundle.getLong(Constants.ID_INTERVENTO) != -1l) {
+	    
+	    final Bundle intervIDBundle = new Bundle();
+	    intervIDBundle.putAll(bundle);
+	    
 	    try {
 		interv = new GetOverviewInterventoAsyncTask(getActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
 	    }
@@ -114,7 +118,9 @@ public class OverViewInterventoFragment extends Fragment {
 		    FragmentTransaction transaction = manager.beginTransaction();
 		    
 		    ClientsInterventoFragment clientiInterv = new com.federicocolantoni.projects.interventix.fragments.ClientsInterventoFragment_();
+		    clientiInterv.setArguments(intervIDBundle);
 		    
+		    transaction.detach(OverViewInterventoFragment.this);
 		    transaction.replace(R.id.fragments_layout, clientiInterv, Constants.CLIENTS_INTERVENTO_FRAGMENT);
 		    transaction.addToBackStack(Constants.CLIENTS_INTERVENTO_FRAGMENT);
 		    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -150,9 +156,6 @@ public class OverViewInterventoFragment extends Fragment {
 	    tv_row_tecnico.setBackgroundColor(Color.LTGRAY);
 	    tv_row_tecnico.setEnabled(false);
 	    
-	    final Bundle intervIDBundle = new Bundle();
-	    intervIDBundle.putAll(bundle);
-	    
 	    rowInformazioni.setOnClickListener(new OnClickListener() {
 		
 		@Override
@@ -163,6 +166,7 @@ public class OverViewInterventoFragment extends Fragment {
 		    InformationsInterventoFragment infoInterv = new com.federicocolantoni.projects.interventix.fragments.InformationsInterventoFragment_();
 		    infoInterv.setArguments(intervIDBundle);
 		    
+		    transaction.detach(OverViewInterventoFragment.this);
 		    transaction.replace(R.id.fragments_layout, infoInterv, Constants.INFORMATIONS_INTERVENTO_FRAGMENT);
 		    transaction.addToBackStack(Constants.INFORMATIONS_INTERVENTO_FRAGMENT);
 		    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -201,6 +205,7 @@ public class OverViewInterventoFragment extends Fragment {
 		    
 		    detailsInterv.setArguments(detailsIntervBundle);
 		    
+		    transaction.detach(OverViewInterventoFragment.this);
 		    transaction.replace(R.id.fragments_layout, detailsInterv, Constants.DETAILS_INTERVENTO_FRAGMENT);
 		    transaction.addToBackStack(Constants.DETAILS_INTERVENTO_FRAGMENT);
 		    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -237,6 +242,7 @@ public class OverViewInterventoFragment extends Fragment {
 		    CostsInterventoFragment costsInterv = new com.federicocolantoni.projects.interventix.fragments.CostsInterventoFragment_();
 		    costsInterv.setArguments(intervIDBundle);
 		    
+		    transaction.detach(OverViewInterventoFragment.this);
 		    transaction.replace(R.id.fragments_layout, costsInterv, Constants.COSTS_INTERVENTO_FRAGMENT);
 		    transaction.addToBackStack(Constants.COSTS_INTERVENTO_FRAGMENT);
 		    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -263,6 +269,7 @@ public class OverViewInterventoFragment extends Fragment {
 			SignatureInterventoFragment signInterv = new com.federicocolantoni.projects.interventix.fragments.SignatureInterventoFragment_();
 			signInterv.setArguments(intervIDBundle);
 			
+			transaction.detach(OverViewInterventoFragment.this);
 			transaction.replace(R.id.fragments_layout, signInterv, Constants.SIGNATURE_INTERVENTO_FRAGMENT);
 			transaction.addToBackStack(Constants.SIGNATURE_INTERVENTO_FRAGMENT);
 			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

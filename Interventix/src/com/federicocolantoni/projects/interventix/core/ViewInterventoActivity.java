@@ -330,6 +330,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	    }
 	    else {
 		manager.popBackStackImmediate();
+		
 	    }
 	    return true;
 	}

@@ -99,7 +99,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 	    
 	    switch (menuItem.getItemId()) {
 	    
-		case R.id.save_signature:
+		case R.id.menu_save_signature:
 		    
 		    mode.finish();
 		    
@@ -162,7 +162,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 		    
 		    return true;
 		    
-		case R.id.cancel:
+		case R.id.menu_cancel:
 		    
 		    mode.finish();
 		    
