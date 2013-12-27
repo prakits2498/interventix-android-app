@@ -37,8 +37,8 @@
 
 			<com.caverock.androidsvg.SVGImageView
 				android:id="@+id/brush"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
+				android:layout_width="48dp"
+				android:layout_height="48dp"
 				android:layout_gravity="center"
 				android:layout_weight="1"
 				android:background="@drawable/pressed_item"
@@ -46,20 +46,13 @@
 
 			<com.caverock.androidsvg.SVGImageView
 				android:id="@+id/eraser"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
+				android:layout_width="48dp"
+				android:layout_height="48dp"
 				android:layout_gravity="center"
 				android:layout_weight="1"
 				android:background="@drawable/pressed_item"
 				svgimageview:svg="@drawable/eraser" />
 		</LinearLayout>
-
-		<!-- <com.federicocolantoni.projects.interventix.utils.DrawingView -->
-		<!-- android:id="@+id/signature_drawer" -->
-		<!-- android:layout_width="match_parent" -->
-		<!-- android:layout_height="match_parent" -->
-		<!-- android:layout_marginTop="8dp" -->
-		<!-- android:drawingCacheQuality="low" /> -->
 
 	</LinearLayout>
 

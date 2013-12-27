@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
-        android:id="@+id/save_signature"
+        android:id="@+id/menu_save_signature"
         android:enabled="true"
         android:icon="@drawable/ic_action_done"
         android:showAsAction="always"
@@ -9,7 +9,7 @@
         android:visible="true">
     </item>
     <item
-        android:id="@+id/cancel"
+        android:id="@+id/menu_cancel"
         android:enabled="true"
         android:showAsAction="always"
         android:title="@string/cancel_btn"

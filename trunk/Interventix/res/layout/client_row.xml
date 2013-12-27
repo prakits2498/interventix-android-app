@@ -1,31 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:orientation="vertical" >
+    xmlns:app="http://schemas.android.com/apk/res/com.federicocolantoni.projects.interventix"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="3.0" >
 
-	<TextView
-		android:id="@+id/tv_row_nominativo"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:hint="@string/hint_nomin"
-		android:textIsSelectable="false"
-		android:textSize="18sp"
-		android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="2.5"
+        android:orientation="vertical" >
 
-	<TextView
-		android:id="@+id/tv_row_cod_fis"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:hint="@string/hint_cod_fis"
-		android:textIsSelectable="false"
-		android:textSize="14sp" />
+        <TextView
+            android:id="@+id/tv_row_nominativo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_nomin"
+            android:textIsSelectable="false"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-	<TextView
-		android:id="@+id/tv_row_p_iva"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:hint="@string/hint_p_iva"
-		android:textIsSelectable="false"
-		android:textSize="14sp" />
+        <TextView
+            android:id="@+id/tv_row_cod_fis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_cod_fis"
+            android:textIsSelectable="false"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_row_p_iva"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_p_iva"
+            android:textIsSelectable="false"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:orientation="horizontal" >
+
+        <com.caverock.androidsvg.SVGImageView
+            android:id="@+id/img_checked"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
+            android:contentDescription="cliente selezionato"
+            app:svg="@drawable/done_svg" />
+    </RelativeLayout>
+
 </LinearLayout>

@@ -30,7 +30,7 @@ public class GetClientiAsyncTask extends AsyncTask<Void, Void, ArrayList<Cliente
 	ArrayList<Cliente> listaClienti = new ArrayList<Cliente>();
 	
 	String[] PROJECTION = new String[] {
-		ClienteDB.Fields._ID, ClienteDB.Fields.NOMINATIVO, ClienteDB.Fields.CODICE_FISCALE, ClienteDB.Fields.PARTITAIVA
+		ClienteDB.Fields._ID, ClienteDB.Fields.NOMINATIVO, ClienteDB.Fields.CODICE_FISCALE, ClienteDB.Fields.PARTITAIVA, ClienteDB.Fields.ID_CLIENTE
 	};
 	
 	String SELECTION = ClienteDB.Fields.TYPE + "=?";
@@ -49,7 +49,7 @@ public class GetClientiAsyncTask extends AsyncTask<Void, Void, ArrayList<Cliente
 	    
 	    while (cursor.moveToNext()) {
 		
-		Cliente cliente = new Cliente();
+		Cliente cliente = new Cliente(cursor.getLong(cursor.getColumnIndex(ClienteDB.Fields.ID_CLIENTE)));
 		
 		cliente.setNominativo(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOMINATIVO)));
 		cliente.setCodiceFiscale(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.CODICE_FISCALE)));
