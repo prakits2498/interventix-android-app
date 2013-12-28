@@ -36,15 +36,17 @@ public class GetNominativoClienteAsyncTask extends AsyncTask<Long, Void, Cliente
 	
 	Cliente cliente = new Cliente();
 	
-	if (cursor.moveToFirst()) {
-	    cliente.setNominativo(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOMINATIVO)));
-	}
-	
-	if (!cursor.isClosed()) {
-	    cursor.close();
-	}
-	else {
-	    System.out.println("Cursor for " + this.getClass().getSimpleName() + " is closed");
+	if (cursor != null) {
+	    if (cursor.moveToFirst()) {
+		cliente.setNominativo(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOMINATIVO)));
+	    }
+	    
+	    if (!cursor.isClosed()) {
+		cursor.close();
+	    }
+	    else {
+		System.out.println("Cursor for " + this.getClass().getSimpleName() + " is closed");
+	    }
 	}
 	
 	return cliente;

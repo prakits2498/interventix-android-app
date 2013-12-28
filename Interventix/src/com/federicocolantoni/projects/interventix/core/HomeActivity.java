@@ -188,14 +188,16 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		
 		Bundle bundle = new Bundle();
 		
-		bundle.putLong(Constants.ID_INTERVENTO, -1l);
-		bundle.putLong(Constants.NUMERO_INTERVENTO, -1l);
+		bundle.putLong(Constants.ID_INTERVENTO, Constants.sIdInterventoTemp);
+		bundle.putLong(Constants.NUMERO_INTERVENTO, Constants.sIdInterventoTemp);
 		
 		Intent intent = new Intent(HomeActivity.this, com.federicocolantoni.projects.interventix.core.ViewInterventoActivity_.class);
 		
 		intent.putExtras(bundle);
 		
 		startActivity(intent);
+		
+		// Constants.sIdInterventoTemp -= 1;
 		
 		break;
 	}
