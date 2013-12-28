@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -61,6 +62,15 @@ public class OverViewInterventoFragment extends Fragment {
     @ViewById(R.id.row_signature)
     View rowSignature;
     
+    // *** variabili per il nuovo intervento - start ***\\
+    private static final String CLIENTE_NUOVO_INTERVENTO = "descrizione";
+    private static final String FIRMA_NUOVO_INTERVENTO = "oggetto";
+    private static final String COSTI_NUOVO_INTERVENTO = "tipo";
+    private static final String INFORMAZIONI_NUOVO_INTERVENTO = "fine";
+    
+    private static JSONObject sNewIntervento;
+    // *** variabili per il nuovo intervento - end ***\\
+    
     FragmentManager manager;
     
     @Override
@@ -87,7 +97,7 @@ public class OverViewInterventoFragment extends Fragment {
 	
 	manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
 	
-	if (bundle.getLong(Constants.ID_INTERVENTO) != -1l) {
+	if (bundle.getLong(Constants.ID_INTERVENTO) > -1l) {
 	    
 	    final Bundle intervIDBundle = new Bundle();
 	    intervIDBundle.putAll(bundle);
@@ -284,10 +294,77 @@ public class OverViewInterventoFragment extends Fragment {
 	}
 	else {
 	    
-	    DateTime dt_interv = new DateTime();
-	    
-	    summary.setText("Nuovo Interv. " + bundle.getLong(Constants.NUMERO_INTERVENTO) + " del " + dt_interv.toString("dd/MM/yyyy HH:mm"));
+	    addNewIntervento(bundle);
 	}
+    }
+    
+    private void addNewIntervento(Bundle bundle) {
+	
+	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Intervento " + bundle.getLong(Constants.NUMERO_INTERVENTO));
+	
+	manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
+	
+	Intervento interv = null;
+	
+	final Bundle intervIDBundle = new Bundle();
+	intervIDBundle.putAll(bundle);
+	
+	try {
+	    interv = new GetOverviewInterventoAsyncTask(getActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
+	}
+	catch (InterruptedException e) {
+	    
+	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
+	}
+	catch (ExecutionException e) {
+	    
+	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
+	}
+	
+	DateTime dt_interv = new DateTime();
+	
+	summary.setText("Nuovo Interv. " + bundle.getLong(Constants.NUMERO_INTERVENTO) + " del " + dt_interv.toString("dd/MM/yyyy HH:mm"));
+	
+	rowCliente.setOnClickListener(new OnClickListener() {
+	    
+	    @Override
+	    public void onClick(View v) {
+		
+		FragmentTransaction transaction = manager.beginTransaction();
+		
+		ClientsInterventoFragment clientiInterv = new com.federicocolantoni.projects.interventix.fragments.ClientsInterventoFragment_();
+		clientiInterv.setArguments(intervIDBundle);
+		
+		transaction.detach(OverViewInterventoFragment.this);
+		transaction.replace(R.id.fragments_layout, clientiInterv, Constants.CLIENTS_INTERVENTO_FRAGMENT);
+		transaction.addToBackStack(Constants.CLIENTS_INTERVENTO_FRAGMENT);
+		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		
+		transaction.commit();
+	    }
+	});
+	
+	TextView tv_row_client = (TextView) rowCliente.findViewById(R.id.tv_row_client);
+	
+	Cliente cliente = null;
+	
+	try {
+	    cliente = new GetNominativoClienteAsyncTask(getActivity()).execute(interv.getIdCliente()).get();
+	}
+	catch (InterruptedException e) {
+	    
+	    BugSenseHandler.sendException(e);
+	    e.printStackTrace();
+	}
+	catch (ExecutionException e) {
+	    
+	    BugSenseHandler.sendException(e);
+	    e.printStackTrace();
+	}
+	
+	tv_row_client.setText(cliente.getNominativo() != null ? cliente.getNominativo() : "");
     }
     
     @Override

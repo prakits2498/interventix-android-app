@@ -83,7 +83,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	
 	id_intervento = extras.getLong(Constants.ID_INTERVENTO);
 	
-	if (id_intervento != -1l) {
+	if (id_intervento > -1l) {
 	    Intervento interv_old = null;
 	    ListDetailsIntervento listaDettagliIntervento_old = null;
 	    

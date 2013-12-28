@@ -40,19 +40,21 @@ public class GetOverviewInterventoAsyncTask extends AsyncTask<Long, Void, Interv
 	
 	Intervento overviewIntervento = new Intervento();
 	
-	if (cursor.moveToFirst()) {
+	if (cursor != null) {
+	    if (cursor.moveToFirst()) {
+		
+		overviewIntervento.setFirma(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.FIRMA)));
+		overviewIntervento.setIdCliente(cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.CLIENTE)));
+		overviewIntervento.setTotale(BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(InterventoDB.Fields.TOTALE))));
+		overviewIntervento.setDataOra(cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.DATA_ORA)));
+	    }
 	    
-	    overviewIntervento.setFirma(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.FIRMA)));
-	    overviewIntervento.setIdCliente(cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.CLIENTE)));
-	    overviewIntervento.setTotale(BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(InterventoDB.Fields.TOTALE))));
-	    overviewIntervento.setDataOra(cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.DATA_ORA)));
-	}
-	
-	if (!cursor.isClosed()) {
-	    cursor.close();
-	}
-	else {
-	    System.out.println("Cursor for " + this.getClass().getSimpleName() + " is closed");
+	    if (!cursor.isClosed()) {
+		cursor.close();
+	    }
+	    else {
+		System.out.println("Cursor for " + this.getClass().getSimpleName() + " is closed");
+	    }
 	}
 	
 	return overviewIntervento;
