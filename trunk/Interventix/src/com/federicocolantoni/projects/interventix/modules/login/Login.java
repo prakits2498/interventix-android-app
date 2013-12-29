@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.core.HomeActivity;
+import com.federicocolantoni.projects.interventix.activity.HomeActivity;
 import com.federicocolantoni.projects.interventix.task.GetLogin;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.googlecode.androidannotations.annotations.Click;
