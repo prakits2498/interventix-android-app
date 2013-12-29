@@ -1,4 +1,4 @@
-package com.federicocolantoni.projects.interventix.core;
+package com.federicocolantoni.projects.interventix.activity;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -40,6 +40,8 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.R.string;
 import com.federicocolantoni.projects.interventix.adapter.ListInterventiAdapter;
+import com.federicocolantoni.projects.interventix.core.BufferInvioCliente;
+import com.federicocolantoni.projects.interventix.core.BufferInvioIntervento;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
@@ -91,6 +93,10 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     @StringRes(R.string.toast_error_syncro_interventions)
     String toast_error_syncro_interventions;
     
+    // buffer per gli interventi e i clienti
+    BufferInvioCliente bufferCliente;
+    BufferInvioIntervento bufferIntervento;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	
@@ -100,6 +106,9 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	
+	bufferIntervento = new BufferInvioIntervento(this);
+	bufferCliente = new BufferInvioCliente(this);
     }
     
     @Override
@@ -129,7 +138,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		bundle.putLong(Constants.ID_INTERVENTO, cur.getLong(cur.getColumnIndex(InterventoDB.Fields.ID_INTERVENTO)));
 		bundle.putLong(Constants.NUMERO_INTERVENTO, cur.getLong(cur.getColumnIndex(InterventoDB.Fields.NUMERO_INTERVENTO)));
 		
-		Intent intent = new Intent(HomeActivity.this, com.federicocolantoni.projects.interventix.core.ViewInterventoActivity_.class);
+		Intent intent = new Intent(HomeActivity.this, com.federicocolantoni.projects.interventix.activity.ViewInterventoActivity_.class);
 		
 		intent.putExtras(bundle);
 		
@@ -191,7 +200,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		bundle.putLong(Constants.ID_INTERVENTO, Constants.sIdInterventoTemp);
 		bundle.putLong(Constants.NUMERO_INTERVENTO, Constants.sIdInterventoTemp);
 		
-		Intent intent = new Intent(HomeActivity.this, com.federicocolantoni.projects.interventix.core.ViewInterventoActivity_.class);
+		Intent intent = new Intent(HomeActivity.this, com.federicocolantoni.projects.interventix.activity.ViewInterventoActivity_.class);
 		
 		intent.putExtras(bundle);
 		
@@ -203,6 +212,24 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	}
 	
 	return super.onOptionsItemSelected(item);
+    }
+    
+    @Override
+    protected void onPause() {
+	
+	super.onPause();
+	
+	bufferIntervento.stopTimerInterventi();
+	bufferCliente.stopTimerClienti();
+    }
+    
+    @Override
+    protected void onResume() {
+	
+	super.onResume();
+	
+	bufferIntervento.startTimerInterventi();
+	bufferCliente.startTimerClienti();
     }
     
     private void setRefreshActionButtonState(final boolean refreshing) {

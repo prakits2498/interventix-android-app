@@ -1,4 +1,4 @@
-package com.federicocolantoni.projects.interventix.core;
+package com.federicocolantoni.projects.interventix.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;

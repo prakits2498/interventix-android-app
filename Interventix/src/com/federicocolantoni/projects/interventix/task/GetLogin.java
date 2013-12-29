@@ -201,7 +201,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 	
 	if (result == Activity.RESULT_OK) {
 	    
-	    mContext.startActivity(new Intent(mContext, com.federicocolantoni.projects.interventix.core.HomeActivity_.class));
+	    mContext.startActivity(new Intent(mContext, com.federicocolantoni.projects.interventix.activity.HomeActivity_.class));
 	}
 	else
 	    InterventixToast.makeToast(mContext, mContext.getString(R.string.toast_login_error), Toast.LENGTH_LONG);
