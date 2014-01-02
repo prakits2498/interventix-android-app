@@ -37,11 +37,11 @@ import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
+import com.federicocolantoni.projects.interventix.Constants.BUFFER_TYPE;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.R.string;
 import com.federicocolantoni.projects.interventix.adapter.ListInterventiAdapter;
-import com.federicocolantoni.projects.interventix.core.BufferInvioCliente;
-import com.federicocolantoni.projects.interventix.core.BufferInvioIntervento;
+import com.federicocolantoni.projects.interventix.core.BufferInterventix;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
@@ -94,8 +94,10 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     String toast_error_syncro_interventions;
     
     // buffer per gli interventi e i clienti
-    BufferInvioCliente bufferCliente;
-    BufferInvioIntervento bufferIntervento;
+    private BufferInterventix buffer;
+    
+    // BufferInvioCliente bufferCliente;
+    // BufferInvioIntervento bufferIntervento;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +109,10 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	
-	bufferIntervento = new BufferInvioIntervento(this);
-	bufferCliente = new BufferInvioCliente(this);
+	buffer = BufferInterventix.getBufferInterventix();
+	
+	// bufferIntervento = new BufferInvioIntervento(this);
+	// bufferCliente = new BufferInvioCliente(this);
     }
     
     @Override
@@ -219,8 +223,11 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	super.onPause();
 	
-	bufferIntervento.stopTimerInterventi();
-	bufferCliente.stopTimerClienti();
+	buffer.startTimer(BUFFER_TYPE.BUFFER_INTERVENTO);
+	buffer.startTimer(BUFFER_TYPE.BUFFER_CLIENTE);
+	
+	// bufferIntervento.stopTimerInterventi();
+	// bufferCliente.stopTimerClienti();
     }
     
     @Override
@@ -228,8 +235,10 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	super.onResume();
 	
-	bufferIntervento.startTimerInterventi();
-	bufferCliente.startTimerClienti();
+	buffer.stopTimer();
+	
+	// bufferIntervento.startTimerInterventi();
+	// bufferCliente.startTimerClienti();
     }
     
     private void setRefreshActionButtonState(final boolean refreshing) {
