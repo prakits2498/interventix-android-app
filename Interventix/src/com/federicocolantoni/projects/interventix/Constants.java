@@ -93,8 +93,15 @@ public final class Constants {
     
     public static final String ARRAY_DETTAGLI = "arrayDettagli";
     
-    // *** costante per i dati di login ***\\
+    // *** costanti per i dati di login ***\\
     public static final String LOGIN_DATA = "LOGIN_DATA";
     public static final String USERNAME = "USERNAME";
     public static final String PASSWORD = "PASSWORD";
+    
+    // *** enumerazione per il buffer ***\\
+    public static enum BUFFER_TYPE {
+	
+	BUFFER_INTERVENTO,
+	BUFFER_CLIENTE;
+    }
 }
