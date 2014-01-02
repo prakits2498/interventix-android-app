@@ -223,8 +223,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	super.onPause();
 	
-	buffer.startTimer(BUFFER_TYPE.BUFFER_INTERVENTO);
-	buffer.startTimer(BUFFER_TYPE.BUFFER_CLIENTE);
+	buffer.stopTimer();
 	
 	// bufferIntervento.stopTimerInterventi();
 	// bufferCliente.stopTimerClienti();
@@ -235,7 +234,8 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	super.onResume();
 	
-	buffer.stopTimer();
+	buffer.startTimer(BUFFER_TYPE.BUFFER_INTERVENTO);
+	buffer.startTimer(BUFFER_TYPE.BUFFER_CLIENTE);
 	
 	// bufferIntervento.startTimerInterventi();
 	// bufferCliente.startTimerClienti();
