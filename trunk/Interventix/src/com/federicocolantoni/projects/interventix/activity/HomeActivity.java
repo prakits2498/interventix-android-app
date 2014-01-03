@@ -66,7 +66,13 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     private final static int MESSAGE_LOADER = 1;
     
     static final String[] PROJECTION = new String[] {
-	    InterventoDB.Fields._ID, InterventoDB.Fields.NUMERO_INTERVENTO, InterventoDB.Fields.CLIENTE, InterventoDB.Fields.ID_INTERVENTO, InterventoDB.Fields.DATA_ORA
+	    InterventoDB.Fields._ID,
+	    InterventoDB.Fields.NUMERO_INTERVENTO,
+	    InterventoDB.Fields.CLIENTE,
+	    InterventoDB.Fields.ID_INTERVENTO,
+	    InterventoDB.Fields.DATA_ORA,
+	    InterventoDB.Fields.CONFLITTO,
+	    InterventoDB.Fields.MODIFICATO
     };
     
     static final String SELECTION = InterventoDB.Fields.TYPE + " =? AND " + InterventoDB.Fields.CHIUSO + " =?";
@@ -96,9 +102,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     // buffer per gli interventi e i clienti
     private BufferInterventix buffer;
     
-    // BufferInvioCliente bufferCliente;
-    // BufferInvioIntervento bufferIntervento;
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	
@@ -110,9 +113,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	buffer = BufferInterventix.getBufferInterventix();
-	
-	// bufferIntervento = new BufferInvioIntervento(this);
-	// bufferCliente = new BufferInvioCliente(this);
     }
     
     @Override
@@ -224,9 +224,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	super.onPause();
 	
 	buffer.stopTimer();
-	
-	// bufferIntervento.stopTimerInterventi();
-	// bufferCliente.stopTimerClienti();
     }
     
     @Override
@@ -236,9 +233,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	buffer.startTimer(BUFFER_TYPE.BUFFER_INTERVENTO);
 	buffer.startTimer(BUFFER_TYPE.BUFFER_CLIENTE);
-	
-	// bufferIntervento.startTimerInterventi();
-	// bufferCliente.startTimerClienti();
     }
     
     private void setRefreshActionButtonState(final boolean refreshing) {
@@ -758,7 +752,8 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			newInterv.setSaldato(responseIntervs.getBoolean("saldato"));
 			newInterv.setChiuso(responseIntervs.getBoolean("chiuso"));
 			newInterv.setCancellato(responseIntervs.getBoolean("cancellato"));
-			newInterv.setModificato(Constants.NUOVO_INTERVENTO);
+			newInterv.setConflitto(responseIntervs.getBoolean("conflitto"));
+			newInterv.setModificato(Constants.INTERVENTO_AGGIORNATO);
 			
 			values = Intervento.insertSQL(newInterv);
 			
@@ -776,7 +771,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    dtInt.setIdDettaglioIntervento(newDettInterv.getLong("iddettagliointervento"));
 			    dtInt.setDescrizione(newDettInterv.getString("descrizione"));
 			    dtInt.setIntervento(responseIntervs.getLong("idintervento"));
-			    dtInt.setModificato(Constants.NUOVO_DETT_INTERVENTO);
+			    dtInt.setModificato(Constants.DETT_INTERVENTO_AGGIORNATO);
 			    dtInt.setOggetto(newDettInterv.getString("oggetto"));
 			    dtInt.setTipo(newDettInterv.getString("tipo"));
 			    dtInt.setInizio(newDettInterv.getLong("inizio"));
@@ -815,7 +810,8 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			updateInterv.setSaldato(responseIntervs.getBoolean("saldato"));
 			updateInterv.setChiuso(responseIntervs.getBoolean("chiuso"));
 			updateInterv.setCancellato(responseIntervs.getBoolean("cancellato"));
-			updateInterv.setModificato(Constants.NUOVO_INTERVENTO);
+			updateInterv.setConflitto(responseIntervs.getBoolean("conflitto"));
+			updateInterv.setModificato(Constants.INTERVENTO_AGGIORNATO);
 			
 			values = Intervento.updateSQL(updateInterv);
 			
@@ -834,7 +830,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    DettaglioIntervento dtInt = new DettaglioIntervento();
 			    dtInt.setDescrizione(dettInterv.getString("descrizione"));
 			    dtInt.setIntervento(responseIntervs.getLong("idintervento"));
-			    dtInt.setModificato(Constants.NUOVO_DETT_INTERVENTO);
+			    dtInt.setModificato(Constants.DETT_INTERVENTO_AGGIORNATO);
 			    dtInt.setOggetto(dettInterv.getString("oggetto"));
 			    dtInt.setTipo(dettInterv.getString("tipo"));
 			    dtInt.setInizio(dettInterv.getLong("inizio"));

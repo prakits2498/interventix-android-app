@@ -28,8 +28,10 @@ public final class Constants {
     public static final String NUOVO_DETT_INTERVENTO = "N";
     public static final String INTERVENTO_MODIFICATO = "M";
     public static final String DETTAGLIO_INTERVENTO_MODIFICATO = "M";
+    public static final String INTERVENTO_AGGIORNATO = "U";
+    public static final String DETT_INTERVENTO_AGGIORNATO = "U";
     
-    public static final int WHAT_MESSAGE_GET_CLIENTI = 99;
+    public static final int WHAT_MESSAGE_GET_CLIENTI = -1;
     
     // *** costanti per i fragment ***\\
     public static final String DETAILS_INTERVENTO_FRAGMENT = "DETAILS_INTERVENTO_FRAGMENT";
@@ -90,6 +92,8 @@ public final class Constants {
     public static final int TOKEN_COSTO_COMPONENTI = 15;
     public static final int TOKEN_COSTO_ACCESSORI = 16;
     public static final int TOKEN_TECNICI_DETTAGLIO = 17;
+    public static final int TOKEN_RECUPERO_INTERVENTI = 18;
+    public static final int TOKEN_RECUPERO_CLIENTI = 19;
     
     public static final String ARRAY_DETTAGLI = "arrayDettagli";
     
@@ -98,7 +102,10 @@ public final class Constants {
     public static final String USERNAME = "USERNAME";
     public static final String PASSWORD = "PASSWORD";
     
-    // *** enumerazione per il buffer ***\\
+    // *** dati per il buffer ***\\
+    public static final String ACTION_GET_INTERVENTI = Interventix.getContext().getPackageName() + "." + BUFFER_TYPE.BUFFER_INTERVENTO.name();
+    public static final String ACTION_GET_CLIENTI = Interventix.getContext().getPackageName() + "." + BUFFER_TYPE.BUFFER_CLIENTE.name();
+    
     public static enum BUFFER_TYPE {
 	
 	BUFFER_INTERVENTO,

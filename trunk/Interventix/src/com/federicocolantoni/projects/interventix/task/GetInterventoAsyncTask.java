@@ -7,7 +7,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.entity.Intervento;
 
@@ -26,7 +25,32 @@ public class GetInterventoAsyncTask extends AsyncTask<Long, Void, Intervento> {
 	ContentResolver cr = context.getContentResolver();
 	
 	String[] projection = new String[] {
-		InterventoDB.Fields._ID, InterventoDB.Fields.CANCELLATO, InterventoDB.Fields.CHIUSO, InterventoDB.Fields.CLIENTE, InterventoDB.Fields.COSTO_ACCESSORI, InterventoDB.Fields.COSTO_COMPONENTI, InterventoDB.Fields.COSTO_MANODOPERA, InterventoDB.Fields.DATA_ORA, InterventoDB.Fields.FIRMA, InterventoDB.Fields.ID_INTERVENTO, InterventoDB.Fields.IMPORTO, InterventoDB.Fields.IVA, InterventoDB.Fields.MODALITA, InterventoDB.Fields.MODIFICATO, InterventoDB.Fields.MOTIVO, InterventoDB.Fields.NOMINATIVO, InterventoDB.Fields.NOTE, InterventoDB.Fields.NUMERO_INTERVENTO, InterventoDB.Fields.PRODOTTO, InterventoDB.Fields.RIFERIMENTO_FATTURA, InterventoDB.Fields.RIFERIMENTO_SCONTRINO, InterventoDB.Fields.SALDATO, InterventoDB.Fields.TECNICO, InterventoDB.Fields.TIPOLOGIA, InterventoDB.Fields.TOTALE
+		InterventoDB.Fields._ID,
+		InterventoDB.Fields.CANCELLATO,
+		InterventoDB.Fields.CHIUSO,
+		InterventoDB.Fields.CLIENTE,
+		InterventoDB.Fields.CONFLITTO,
+		InterventoDB.Fields.COSTO_ACCESSORI,
+		InterventoDB.Fields.COSTO_COMPONENTI,
+		InterventoDB.Fields.COSTO_MANODOPERA,
+		InterventoDB.Fields.DATA_ORA,
+		InterventoDB.Fields.FIRMA,
+		InterventoDB.Fields.ID_INTERVENTO,
+		InterventoDB.Fields.IMPORTO,
+		InterventoDB.Fields.IVA,
+		InterventoDB.Fields.MODALITA,
+		InterventoDB.Fields.MODIFICATO,
+		InterventoDB.Fields.MOTIVO,
+		InterventoDB.Fields.NOMINATIVO,
+		InterventoDB.Fields.NOTE,
+		InterventoDB.Fields.NUMERO_INTERVENTO,
+		InterventoDB.Fields.PRODOTTO,
+		InterventoDB.Fields.RIFERIMENTO_FATTURA,
+		InterventoDB.Fields.RIFERIMENTO_SCONTRINO,
+		InterventoDB.Fields.SALDATO,
+		InterventoDB.Fields.TECNICO,
+		InterventoDB.Fields.TIPOLOGIA,
+		InterventoDB.Fields.TOTALE
 	};
 	
 	String selection = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
@@ -35,7 +59,7 @@ public class GetInterventoAsyncTask extends AsyncTask<Long, Void, Intervento> {
 		InterventoDB.INTERVENTO_ITEM_TYPE, "" + params[0]
 	};
 	
-	Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
+	Cursor cursor = cr.query(InterventoDB.CONTENT_URI, projection, selection, selectionArgs, null);
 	
 	Intervento intervento = new Intervento();
 	

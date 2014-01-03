@@ -3,6 +3,7 @@ package com.federicocolantoni.projects.interventix.entity;
 import java.io.Serializable;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
@@ -262,7 +263,7 @@ public class Cliente implements Serializable {
      * @param mCancellato
      *            the mCancellato to set
      */
-    public void setmCancellato(boolean mCancellato) {
+    public void setCancellato(boolean mCancellato) {
 	
 	this.mCancellato = mCancellato;
     }
@@ -287,7 +288,7 @@ public class Cliente implements Serializable {
     /**
      * @return the mConflitto
      */
-    public boolean ismConflitto() {
+    public boolean isConflitto() {
 	return mConflitto;
     }
     
@@ -295,7 +296,7 @@ public class Cliente implements Serializable {
      * @param mConflitto
      *            the mConflitto to set
      */
-    public void setmConflitto(boolean mConflitto) {
+    public void setConflitto(boolean mConflitto) {
 	this.mConflitto = mConflitto;
     }
     
@@ -319,6 +320,7 @@ public class Cliente implements Serializable {
 	values.put(Fields.TYPE, ClienteDB.CLIENTE_ITEM_TYPE);
 	values.put(ClienteDB.Fields.CITTA, cliente.getCitta());
 	values.put(ClienteDB.Fields.CODICE_FISCALE, cliente.getCodiceFiscale());
+	values.put(ClienteDB.Fields.CONFLITTO, cliente.isConflitto());
 	values.put(ClienteDB.Fields.EMAIL, cliente.getEmail());
 	values.put(ClienteDB.Fields.FAX, cliente.getFax());
 	values.put(ClienteDB.Fields.INDIRIZZO, cliente.getIndirizzo());
@@ -340,6 +342,7 @@ public class Cliente implements Serializable {
 	
 	values.put(ClienteDB.Fields.CITTA, cliente.getCitta());
 	values.put(ClienteDB.Fields.CODICE_FISCALE, cliente.getCodiceFiscale());
+	values.put(ClienteDB.Fields.CONFLITTO, cliente.isConflitto());
 	values.put(ClienteDB.Fields.EMAIL, cliente.getEmail());
 	values.put(ClienteDB.Fields.FAX, cliente.getFax());
 	values.put(ClienteDB.Fields.INDIRIZZO, cliente.getIndirizzo());
@@ -353,5 +356,29 @@ public class Cliente implements Serializable {
 	values.put(ClienteDB.Fields.UFFICIO, cliente.getUfficio());
 	
 	return values;
+    }
+    
+    public static Cliente getFromCursor(Cursor cursor) {
+	
+	Cliente cliente = new Cliente();
+	
+	cliente.setCancellato(cursor.getInt(cursor.getColumnIndex(ClienteDB.Fields.CANCELLATO)) == 1 ? true : false);
+	cliente.setCitta(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.CITTA)));
+	cliente.setCodiceFiscale(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.CODICE_FISCALE)));
+	cliente.setConflitto(cursor.getInt(cursor.getColumnIndex(ClienteDB.Fields.CONFLITTO)) == 1 ? true : false);
+	cliente.setEmail(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.EMAIL)));
+	cliente.setFax(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.FAX)));
+	cliente.setIdCliente(cursor.getLong(cursor.getColumnIndex(ClienteDB.Fields.ID_CLIENTE)));
+	cliente.setIndirizzo(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.INDIRIZZO)));
+	cliente.setInterno(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.INTERNO)));
+	cliente.setNominativo(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOMINATIVO)));
+	cliente.setNote(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOTE)));
+	cliente.setPartitaIVA(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.PARTITAIVA)));
+	cliente.setReferente(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.REFERENTE)));
+	cliente.setRevisione(cursor.getLong(cursor.getColumnIndex(ClienteDB.Fields.REVISIONE)));
+	cliente.setTelefono(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.TELEFONO)));
+	cliente.setUfficio(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.UFFICIO)));
+	
+	return cliente;
     }
 }

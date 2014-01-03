@@ -32,7 +32,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -683,7 +682,7 @@ public class DetailInterventoFragment extends Fragment {
 		
 		String[] tuttiNomiTecnici = new String[tuttiTecnici.length];
 		
-		ManagedAsyncTask<String, Void, String[]> tuttiNomiTecniciAsyncTask = getTuttiNomiTecnici(getActivity());
+		ManagedAsyncTask<String, Void, String[]> tuttiNomiTecniciAsyncTask = getTuttiNomiTecnici((ActionBarActivity) getActivity());
 		
 		try {
 		    tuttiNomiTecnici = tuttiNomiTecniciAsyncTask.execute(tuttiTecnici).get();
@@ -1382,7 +1381,7 @@ public class DetailInterventoFragment extends Fragment {
 	    //
 	    // mArrayTecnici = bundle.getString(TECNICI_DETTAGLIO);
 	    
-	    ManagedAsyncTask<Void, Void, String> tecniciOld = new ManagedAsyncTask<Void, Void, String>(getActivity()) {
+	    ManagedAsyncTask<Void, Void, String> tecniciOld = new ManagedAsyncTask<Void, Void, String>((ActionBarActivity) getActivity()) {
 		
 		@Override
 		protected String doInBackground(Void... params) {
@@ -1452,7 +1451,7 @@ public class DetailInterventoFragment extends Fragment {
 	    try {
 		tuttiTecnici = getAllTecnici(getActivity().getContentResolver());
 		
-		ManagedAsyncTask<String, Void, String[]> tuttiNomiTecniciAsyncTask = getTuttiNomiTecnici(getActivity());
+		ManagedAsyncTask<String, Void, String[]> tuttiNomiTecniciAsyncTask = getTuttiNomiTecnici((ActionBarActivity) getActivity());
 		
 		this.tuttiNomiTecnici = tuttiNomiTecniciAsyncTask.execute(tuttiTecnici).get();
 	    }
@@ -1642,13 +1641,13 @@ public class DetailInterventoFragment extends Fragment {
 	return tuttiTecnici.get();
     }
     
-    private static ManagedAsyncTask<String, Void, String[]> getTuttiNomiTecnici(FragmentActivity activity) {
+    private static ManagedAsyncTask<String, Void, String[]> getTuttiNomiTecnici(final ActionBarActivity activity) {
 	ManagedAsyncTask<String, Void, String[]> tuttiNomiTecniciAsyncTask = new ManagedAsyncTask<String, Void, String[]>(activity) {
 	    
 	    @Override
 	    protected String[] doInBackground(String... params) {
 		
-		ContentResolver cr = getActivity().getContentResolver();
+		ContentResolver cr = activity.getContentResolver();
 		
 		ArrayList<String> arrayNomiTecnici = new ArrayList<String>();
 		

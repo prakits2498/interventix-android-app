@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
@@ -27,6 +29,8 @@ public class ListInterventiAdapter extends CursorAdapter {
     private int mNumeroInterventoIndex;
     private int mClienteInterventoIndex;
     private int mDataInterventoIndex;
+    private int mConflittoInterventoIndex;
+    private int mModificatoInterventoIndex;
     
     public ListInterventiAdapter(Context context, Cursor c) {
 	
@@ -46,9 +50,19 @@ public class ListInterventiAdapter extends CursorAdapter {
 	    mNumeroInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.NUMERO_INTERVENTO);
 	    mClienteInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.CLIENTE);
 	    mDataInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.DATA_ORA);
+	    mConflittoInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.CONFLITTO);
+	    mModificatoInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.MODIFICATO);
 	    
 	    mFoundIndexes = true;
 	}
+	
+	boolean conflitto = cursor.getInt(mConflittoInterventoIndex) == 1 ? true : false;
+	if (conflitto)
+	    row.setBackgroundColor(Color.RED);
+	
+	String modificato = cursor.getString(mModificatoInterventoIndex);
+	if (modificato.equals(Constants.INTERVENTO_MODIFICATO))
+	    row.setBackgroundColor(Color.YELLOW);
 	
 	Long idInterv = cursor.getLong(mNumeroInterventoIndex);
 	
