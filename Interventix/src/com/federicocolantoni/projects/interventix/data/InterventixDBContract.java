@@ -86,7 +86,9 @@ public class InterventixDBContract {
 	    public static final String INDIRIZZO = DATA[12];
 	    public static final String UFFICIO = DATA[13];
 	    public static final String INTERNO = DATA[14];
+	    public static final String CONFLITTO = DATA[15];
 	    public static final String MODIFICATO = DATA[27];
+	    
 	}
     }
     

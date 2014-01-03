@@ -3,9 +3,12 @@ package com.federicocolantoni.projects.interventix.core;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.joda.time.DateTime;
+import android.content.Intent;
 
+import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.Constants.BUFFER_TYPE;
+import com.federicocolantoni.projects.interventix.Interventix;
+import com.federicocolantoni.projects.interventix.service.InterventixService;
 
 public class BufferInterventix {
     
@@ -41,7 +44,7 @@ public class BufferInterventix {
 		
 		interventoTask = new BufferTask(type);
 		System.out.println(this.getClass().getSimpleName() + " in esecuzione - " + type.name());
-		timerBuffer.scheduleAtFixedRate(interventoTask, 0l, 3000);
+		timerBuffer.scheduleAtFixedRate(interventoTask, 0l, 1000 * 60);
 		
 		break;
 	    
@@ -49,7 +52,7 @@ public class BufferInterventix {
 		
 		clienteTask = new BufferTask(type);
 		System.out.println(this.getClass().getSimpleName() + " in esecuzione - " + type.name());
-		timerBuffer.scheduleAtFixedRate(clienteTask, 0l, 2500);
+		timerBuffer.scheduleAtFixedRate(clienteTask, 0l, 1000 * 30);
 		
 		break;
 	}
@@ -83,7 +86,27 @@ public class BufferInterventix {
 	@Override
 	public void run() {
 	    
-	    System.out.println(this.getClass().getSimpleName() + " - " + type.name() + ": " + new DateTime(DateTime.now()).toString("dd/MM/yyyy hh:mm:ss"));
+	    Intent interventixService = new Intent(Interventix.getContext(), InterventixService.class);
+	    
+	    switch (type) {
+		case BUFFER_INTERVENTO:
+		    
+		    System.out.println(type.name() + " avviato");
+		    
+		    interventixService.setAction(Constants.ACTION_GET_INTERVENTI);
+		    
+		    Interventix.getContext().startService(interventixService);
+		    break;
+		
+		case BUFFER_CLIENTE:
+		    
+		    System.out.println(type.name() + " avviato");
+		    
+		    interventixService.setAction(Constants.ACTION_GET_CLIENTI);
+		    
+		    Interventix.getContext().startService(interventixService);
+		    break;
+	    }
 	}
     }
 }

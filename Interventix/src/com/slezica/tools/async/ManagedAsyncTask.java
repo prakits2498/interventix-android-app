@@ -25,6 +25,7 @@ import java.util.concurrent.TimeoutException;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarActivity;
 
 public abstract class ManagedAsyncTask<Params, Progress, Result> {
     
@@ -32,12 +33,12 @@ public abstract class ManagedAsyncTask<Params, Progress, Result> {
     
     private InternalAsyncTask mTask;
     
-    public ManagedAsyncTask(FragmentActivity activity) {
+    public ManagedAsyncTask(ActionBarActivity activity) {
 	
 	this(activity, TaskManagerFragment.DEFAULT_TAG);
     }
     
-    public ManagedAsyncTask(FragmentActivity activity, String fragmentTag) {
+    public ManagedAsyncTask(ActionBarActivity activity, String fragmentTag) {
 	
 	FragmentManager fragmentManager = activity.getSupportFragmentManager();
 	

@@ -522,7 +522,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		    };
 		    
 		    try {
-			cursorDB = new ManagedAsyncTask<String, Void, Cursor>(getActivity()) {
+			cursorDB = new ManagedAsyncTask<String, Void, Cursor>((ActionBarActivity) getActivity()) {
 			    
 			    @Override
 			    protected Cursor doInBackground(String... params) {
