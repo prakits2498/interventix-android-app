@@ -21,8 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.federicocolantoni.projects.interventix.Constants;
@@ -33,6 +31,7 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Int
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.federicocolantoni.projects.interventix.task.GetClientiAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
+import com.fortysevendeg.android.swipelistview.SwipeListView;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
 
@@ -41,10 +40,10 @@ import com.googlecode.androidannotations.annotations.ViewById;
 })
 @EFragment(R.layout.clienti_fragment)
 @SuppressWarnings("unchecked")
-public class ClientsInterventoFragment extends Fragment implements OnItemLongClickListener, OnItemClickListener {
+public class ClientsInterventoFragment extends Fragment implements OnItemClickListener {
     
     @ViewById(R.id.list_clients)
-    ListView listClienti;
+    SwipeListView listClienti;
     
     public static long sId_Intervento;
     
@@ -100,14 +99,7 @@ public class ClientsInterventoFragment extends Fragment implements OnItemLongCli
 	
 	new GetClientiAsyncTask(getActivity(), handler).execute();
 	
-	listClienti.setOnItemLongClickListener(this);
 	listClienti.setOnItemClickListener(this);
-    }
-    
-    @Override
-    public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
-	
-	return true;
     }
     
     @Override
