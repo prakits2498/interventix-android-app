@@ -2,6 +2,22 @@
 <changelog>
 
 	<release
+		version="0.0.450"
+		versioncode="45" >
+		<change>
+			Implementazione del service per la gestione del buffer.
+		</change>
+		<change>
+			Colorazione degli interventi nella schermata principale in base alla seguente
+			naming convention per l'attributo "Modificato":
+			- "M" quando l'oggetto viene modificato localmente al device
+			- "U" quando l'oggetto viene scaricato nuovo o aggiornato dal server
+			- "N" quando l'oggetto viene creato nuovo localmente al device (in teoria questo
+			valore non serve ai fini della determinazione degli oggetti nuovi da inviare al
+			server, per quello viene usato l'id negativo degli stessi)
+		</change>
+	</release>
+	<release
 		version="0.0.430"
 		versioncode="43" >
 		<change>
@@ -22,28 +38,6 @@
 		</change>
 		<change>
 			Aggiunta la libreria Android Annotations (http://androidannotations.org/)
-		</change>
-	</release>
-	<release
-		version="0.0.390"
-		versioncode="39" >
-		<change>
-            Implementata l'aggiunta di un nuovo dettaglio per l'intervento.
-		</change>
-		<change>
-            Reso di default l'indirizzo per la connessione al server centrale.
-		</change>
-		<change>
-            Aggiunto l'utilizzo della libreria RoboJuice.
-		</change>
-		<change>
-            Effettuato il passaggio dalla libreria ActionBarSherlock alla libreria di supporto AppCompat.
-		</change>
-		<change>
-            Refactoring del progetto: eliminati librerie e codice che non serve piu'.
-		</change>
-		<change>
-            Altri fix minori.
 		</change>
 	</release>
 

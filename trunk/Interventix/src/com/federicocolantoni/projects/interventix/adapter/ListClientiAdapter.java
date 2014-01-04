@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.caverock.androidsvg.SVGImageView;
@@ -24,6 +25,8 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> {
     
     private static SparseBooleanArray checkedItems = new SparseBooleanArray();
     
+    ViewHolder holder;
+    
     public ListClientiAdapter(Context context, int resource, int textViewResourceId, List<Cliente> objects) {
 	
 	super(context, resource, textViewResourceId, objects);
@@ -35,6 +38,7 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> {
 	}
 	
 	inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	
     }
     
     @Override
@@ -104,8 +108,6 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 	
-	ViewHolder holder;
-	
 	if (convertView == null) {
 	    convertView = inflater.inflate(R.layout.client_row, null);
 	    
@@ -115,6 +117,7 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> {
 	    holder.tv_row_cod_fis = (TextView) convertView.findViewById(R.id.tv_row_cod_fis);
 	    holder.tv_row_p_iva = (TextView) convertView.findViewById(R.id.tv_row_p_iva);
 	    holder.img_checked = (SVGImageView) convertView.findViewById(R.id.img_checked);
+	    holder.modClient = (Button) convertView.findViewById(R.id.mod_cliente);
 	    
 	    convertView.setTag(holder);
 	}
@@ -151,5 +154,6 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> {
 	TextView tv_row_cod_fis;
 	TextView tv_row_p_iva;
 	SVGImageView img_checked;
+	Button modClient;
     }
 }

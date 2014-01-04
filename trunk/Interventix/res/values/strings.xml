@@ -172,6 +172,8 @@
 	<string name="choose_tecnici_title">Seleziona i tecnici</string>
 	<string name="search_clients_hint">Cerca clienti&#8230;</string>
 	<string name="signature_content_description">immagine firma</string>
+	<string name="modify_client">Modifica</string>
+	<string name="selected_client_content_description">cliente selezionato</string>
 
 	<!-- strings for date format -->
 	<string name="date_format">dd/MM/yyyy HH:mm</string>
@@ -186,9 +188,6 @@
 	<!-- changelog -->
 	<string name="title_changelog">Change log Interventix</string>
 	<string name="changelog_close">Chiudi</string>
-
-	<!-- strings for validator -->
-	<string name="required">Campo richiesto</string>
 
 	<!-- strings for contextual menu for signature -->
 	<string name="save_signature">Salva firma</string>
