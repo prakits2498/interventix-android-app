@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:swipe="http://schemas.android.com/apk/res-auto"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical" >
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-	<com.fortysevendeg.android.SwipeListView
-		android:id="@+id/list_clients"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:layout_marginTop="8dp"
-		android:choiceMode="singleChoice"
-		swipe:swipeActionLeft="reveal"
-		swipe:swipeAnimationTime="@integer/swipe_animation_time"
-		swipe:swipeBackView="@+id/back"
-		swipe:swipeCloseAllItemsWhenMoveList="true"
-		swipe:swipeFrontView="@+id/front"
-		swipe:swipeMode="left"
-		swipe:swipeOpenOnLongPress="false" />
+    <!-- <com.fortysevendeg.android.SwipeListView -->
+    <!-- android:id="@+id/list_clients" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:layout_marginTop="8dp" -->
+    <!-- android:choiceMode="singleChoice" -->
+    <!-- swipe:swipeActionLeft="reveal" -->
+    <!-- swipe:swipeAnimationTime="@integer/swipe_animation_time" -->
+    <!-- swipe:swipeBackView="@+id/back" -->
+    <!-- swipe:swipeCloseAllItemsWhenMoveList="true" -->
+    <!-- swipe:swipeFrontView="@+id/front" -->
+    <!-- swipe:swipeMode="left" -->
+    <!-- swipe:swipeOpenOnLongPress="false" /> -->
+
+    <ListView
+        android:id="@+id/list_clients"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:choiceMode="singleChoice" >
+    </ListView>
 
 </LinearLayout>

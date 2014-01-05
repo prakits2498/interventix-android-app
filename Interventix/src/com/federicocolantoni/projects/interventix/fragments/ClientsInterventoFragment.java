@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.federicocolantoni.projects.interventix.Constants;
@@ -31,7 +32,6 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Int
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.federicocolantoni.projects.interventix.task.GetClientiAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
-import com.fortysevendeg.android.swipelistview.SwipeListView;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
 
@@ -43,7 +43,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 public class ClientsInterventoFragment extends Fragment implements OnItemClickListener {
     
     @ViewById(R.id.list_clients)
-    SwipeListView listClienti;
+    ListView listClienti;
     
     public static long sId_Intervento;
     
