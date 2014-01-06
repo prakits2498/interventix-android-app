@@ -3,6 +3,8 @@ package com.federicocolantoni.projects.interventix.fragments;
 import java.text.DecimalFormat;
 import java.util.concurrent.ExecutionException;
 
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.json.JSONObject;
@@ -33,8 +35,6 @@ import com.federicocolantoni.projects.interventix.task.GetNominativoClienteAsync
 import com.federicocolantoni.projects.interventix.task.GetOverviewInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.ViewById;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.overview_intervento_fragment)
@@ -127,7 +127,7 @@ public class OverViewInterventoFragment extends Fragment {
 		    
 		    FragmentTransaction transaction = manager.beginTransaction();
 		    
-		    ClientsInterventoFragment clientiInterv = new com.federicocolantoni.projects.interventix.fragments.ClientsInterventoFragment_();
+		    ClientsInterventoFragment_ clientiInterv = new ClientsInterventoFragment_();
 		    clientiInterv.setArguments(intervIDBundle);
 		    
 		    transaction.detach(OverViewInterventoFragment.this);
@@ -173,7 +173,7 @@ public class OverViewInterventoFragment extends Fragment {
 		    
 		    FragmentTransaction transaction = manager.beginTransaction();
 		    
-		    InformationsInterventoFragment infoInterv = new com.federicocolantoni.projects.interventix.fragments.InformationsInterventoFragment_();
+		    InformationsInterventoFragment_ infoInterv = new InformationsInterventoFragment_();
 		    infoInterv.setArguments(intervIDBundle);
 		    
 		    transaction.detach(OverViewInterventoFragment.this);
@@ -209,7 +209,7 @@ public class OverViewInterventoFragment extends Fragment {
 		    
 		    FragmentTransaction transaction = manager.beginTransaction();
 		    
-		    DetailsInterventoFragment detailsInterv = new com.federicocolantoni.projects.interventix.fragments.DetailsInterventoFragment_();
+		    DetailsInterventoFragment_ detailsInterv = new DetailsInterventoFragment_();
 		    
 		    Bundle detailsIntervBundle = new Bundle(intervIDBundle);
 		    
@@ -249,7 +249,7 @@ public class OverViewInterventoFragment extends Fragment {
 		    
 		    FragmentTransaction transaction = manager.beginTransaction();
 		    
-		    CostsInterventoFragment costsInterv = new com.federicocolantoni.projects.interventix.fragments.CostsInterventoFragment_();
+		    CostsInterventoFragment_ costsInterv = new CostsInterventoFragment_();
 		    costsInterv.setArguments(intervIDBundle);
 		    
 		    transaction.detach(OverViewInterventoFragment.this);
@@ -276,7 +276,7 @@ public class OverViewInterventoFragment extends Fragment {
 			
 			FragmentTransaction transaction = manager.beginTransaction();
 			
-			SignatureInterventoFragment signInterv = new com.federicocolantoni.projects.interventix.fragments.SignatureInterventoFragment_();
+			SignatureInterventoFragment_ signInterv = new SignatureInterventoFragment_();
 			signInterv.setArguments(intervIDBundle);
 			
 			transaction.detach(OverViewInterventoFragment.this);

@@ -3,6 +3,9 @@ package com.federicocolantoni.projects.interventix.fragments;
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.ExecutionException;
 
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import android.annotation.SuppressLint;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
@@ -38,8 +41,6 @@ import com.federicocolantoni.projects.interventix.task.GetSignatureInterventoAsy
 import com.federicocolantoni.projects.interventix.utils.DrawingView;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.ViewById;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.signature_fragment)

@@ -1,5 +1,8 @@
 package com.federicocolantoni.projects.interventix.fragments;
 
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -26,8 +29,6 @@ import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.ListDettagliInterventiAdapter;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.ViewById;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.details_intervento_fragment)
@@ -103,7 +104,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 		FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		
-		DetailInterventoFragment dettInterv = new com.federicocolantoni.projects.interventix.fragments.DetailInterventoFragment_();
+		DetailInterventoFragment_ dettInterv = new DetailInterventoFragment_();
 		dettInterv.setArguments(bundle);
 		
 		transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
