@@ -3,6 +3,12 @@ package com.federicocolantoni.projects.interventix.modules.login;
 import java.util.HashMap;
 
 import multiface.crypto.cr2.JsonCR2;
+
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.SystemService;
+import org.androidannotations.annotations.ViewById;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -20,12 +26,9 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.activity.HomeActivity;
+import com.federicocolantoni.projects.interventix.activity.HomeActivity_;
 import com.federicocolantoni.projects.interventix.task.GetLogin;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
-import com.googlecode.androidannotations.annotations.Click;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.SystemService;
-import com.googlecode.androidannotations.annotations.ViewById;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_login)
@@ -135,7 +138,7 @@ public class Login extends Fragment {
 				    
 				    InterventixToast.makeToast(getActivity(), getString(R.string.toast_offline_access), Toast.LENGTH_LONG);
 				    
-				    startActivity(new Intent(getActivity(), HomeActivity.class));
+				    startActivity(new Intent(getActivity(), HomeActivity_.class));
 				}
 			}
 			

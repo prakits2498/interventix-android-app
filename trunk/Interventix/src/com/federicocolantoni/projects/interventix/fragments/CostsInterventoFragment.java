@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.concurrent.ExecutionException;
 
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -36,8 +39,6 @@ import com.federicocolantoni.projects.interventix.entity.Intervento;
 import com.federicocolantoni.projects.interventix.task.GetCostsInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.SaveChangesInterventoAsyncQueryHandler;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.ViewById;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.costs_intervento_fragment)

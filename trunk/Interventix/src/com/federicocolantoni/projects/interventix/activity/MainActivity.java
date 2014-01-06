@@ -1,5 +1,9 @@
 package com.federicocolantoni.projects.interventix.activity;
 
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -25,14 +29,11 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.BuildConfig;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.modules.login.Login;
+import com.federicocolantoni.projects.interventix.modules.login.Login_;
 import com.federicocolantoni.projects.interventix.settings.SettingActivity;
 import com.federicocolantoni.projects.interventix.settings.SettingSupportActivity;
 import com.federicocolantoni.projects.interventix.task.ReadDefaultPreferences;
 import com.federicocolantoni.projects.interventix.utils.ChangeLogDialog;
-import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.ViewById;
-import com.googlecode.androidannotations.annotations.res.StringRes;
 
 @SuppressLint("NewApi")
 @EActivity(R.layout.activity_main)
@@ -56,7 +57,7 @@ public class MainActivity extends ActionBarActivity {
 	
 	FragmentManager manager = getSupportFragmentManager();
 	
-	Login fragLogin = new com.federicocolantoni.projects.interventix.modules.login.Login_();
+	Login_ fragLogin = new Login_();
 	
 	FragmentTransaction transaction = manager.beginTransaction();
 	

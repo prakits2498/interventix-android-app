@@ -2,6 +2,9 @@ package com.federicocolantoni.projects.interventix.fragments;
 
 import java.util.ArrayList;
 
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import android.annotation.SuppressLint;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
@@ -32,8 +35,6 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Int
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.federicocolantoni.projects.interventix.task.GetClientiAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.ViewById;
 
 @SuppressLint({
 	"InlinedApi", "NewApi"

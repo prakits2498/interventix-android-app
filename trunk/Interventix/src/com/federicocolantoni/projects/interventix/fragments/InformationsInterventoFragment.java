@@ -3,6 +3,8 @@ package com.federicocolantoni.projects.interventix.fragments;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -46,8 +48,6 @@ import com.federicocolantoni.projects.interventix.task.SaveChangesInterventoAsyn
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatcher;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.ViewById;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.information_intervento_fragment)

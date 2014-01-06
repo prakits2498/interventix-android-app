@@ -7,6 +7,9 @@ import java.util.concurrent.ExecutionException;
 
 import multiface.crypto.cr2.JsonCR2;
 
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -54,9 +57,6 @@ import com.federicocolantoni.projects.interventix.entity.Utente;
 import com.federicocolantoni.projects.interventix.task.GetNominativoUtenteAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
-import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.ViewById;
-import com.googlecode.androidannotations.annotations.res.StringRes;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
@@ -142,7 +142,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		bundle.putLong(Constants.ID_INTERVENTO, cur.getLong(cur.getColumnIndex(InterventoDB.Fields.ID_INTERVENTO)));
 		bundle.putLong(Constants.NUMERO_INTERVENTO, cur.getLong(cur.getColumnIndex(InterventoDB.Fields.NUMERO_INTERVENTO)));
 		
-		Intent intent = new Intent(HomeActivity.this, com.federicocolantoni.projects.interventix.activity.ViewInterventoActivity_.class);
+		Intent intent = new Intent(HomeActivity.this, ViewInterventoActivity_.class);
 		
 		intent.putExtras(bundle);
 		
@@ -204,7 +204,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		bundle.putLong(Constants.ID_INTERVENTO, Constants.sIdInterventoTemp);
 		bundle.putLong(Constants.NUMERO_INTERVENTO, Constants.sIdInterventoTemp);
 		
-		Intent intent = new Intent(HomeActivity.this, com.federicocolantoni.projects.interventix.activity.ViewInterventoActivity_.class);
+		Intent intent = new Intent(HomeActivity.this, ViewInterventoActivity_.class);
 		
 		intent.putExtras(bundle);
 		

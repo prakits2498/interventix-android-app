@@ -2,6 +2,7 @@ package com.federicocolantoni.projects.interventix.activity;
 
 import java.util.concurrent.ExecutionException;
 
+import org.androidannotations.annotations.EActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,11 +40,10 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Int
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.RipristinoInterventoDB;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.entity.Intervento;
-import com.federicocolantoni.projects.interventix.fragments.OverViewInterventoFragment;
+import com.federicocolantoni.projects.interventix.fragments.OverViewInterventoFragment_;
 import com.federicocolantoni.projects.interventix.task.GetInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetListaDettagliInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
-import com.googlecode.androidannotations.annotations.EActivity;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
@@ -198,24 +198,9 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		e.printStackTrace();
 		BugSenseHandler.sendException(e);
 	    }
-	    
-	    // OverViewInterventoFragment overView = new
-	    // com.federicocolantoni.projects.interventix.fragments.OverViewInterventoFragment_();
-	    
-	    // Bundle bundle = new Bundle();
-	    // bundle.putString(Constants.USER_NOMINATIVO, nominativo);
-	    // bundle.putAll(extras);
-	    //
-	    // overView.setArguments(bundle);
-	    //
-	    // transaction.add(R.id.fragments_layout, overView,
-	    // Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-	    // transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-	    // transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	    // transaction.commit();
 	}
 	
-	OverViewInterventoFragment overView = new com.federicocolantoni.projects.interventix.fragments.OverViewInterventoFragment_();
+	OverViewInterventoFragment_ overView = new OverViewInterventoFragment_();
 	
 	Bundle bundle = new Bundle();
 	bundle.putString(Constants.USER_NOMINATIVO, nominativo);
@@ -227,19 +212,6 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
 	transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 	transaction.commit();
-	
-	// else {
-	//
-	// Bundle bundle = new Bundle();
-	// bundle.putString(Constants.USER_NOMINATIVO, nominativo);
-	// bundle.putAll(extras);
-	//
-	// transaction.add(R.id.fragments_layout, overView,
-	// Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-	// transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-	// transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	// transaction.commit();
-	// }
     }
     
     @Override
