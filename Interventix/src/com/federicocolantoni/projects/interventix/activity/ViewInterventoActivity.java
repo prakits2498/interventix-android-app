@@ -40,7 +40,6 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Int
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.RipristinoInterventoDB;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.entity.Intervento;
-import com.federicocolantoni.projects.interventix.fragments.OverViewInterventoFragment_;
 import com.federicocolantoni.projects.interventix.task.GetInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetListaDettagliInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
@@ -56,7 +55,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-	
+    
 	super.onCreate(savedInstanceState);
 	
 	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
@@ -67,7 +66,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
     
     @Override
     protected void onStart() {
-	
+    
 	super.onStart();
 	
 	Bundle extras = getIntent().getExtras();
@@ -146,7 +145,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		    
 		    @Override
 		    protected Integer doInBackground(JSONObject... params) {
-			
+		    
 			int result = 0;
 			
 			ContentResolver cr = getContentResolver();
@@ -173,7 +172,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		    
 		    @Override
 		    protected void onPostExecute(Integer result) {
-			
+		    
 			if (result == RESULT_OK) {
 			    System.out.println("Salvataggio dell'intervento di ripristino avvenuto con successo");
 			}
@@ -200,7 +199,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	    }
 	}
 	
-	OverViewInterventoFragment_ overView = new OverViewInterventoFragment_();
+	com.federicocolantoni.projects.interventix.fragments.OverViewInterventoFragment_ overView = new com.federicocolantoni.projects.interventix.fragments.OverViewInterventoFragment_();
 	
 	Bundle bundle = new Bundle();
 	bundle.putString(Constants.USER_NOMINATIVO, nominativo);
@@ -216,7 +215,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
     
     @Override
     protected void onResume() {
-	
+    
 	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
 	final Editor edit = prefs.edit();
@@ -232,6 +231,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		
 		@Override
 		public void run() {
+		
 		    edit.commit();
 		}
 	    }).start();
@@ -242,7 +242,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-	
+    
 	if (keyCode == KeyEvent.KEYCODE_BACK) {
 	    
 	    if (getSupportActionBar().getNavigationMode() == ActionBar.NAVIGATION_MODE_TABS)
@@ -263,7 +263,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 			
 			@Override
 			protected void onDeleteComplete(int token, Object cookie, int result) {
-			    
+			
 			    switch (token) {
 				case Constants.TOKEN_RIPRISTINO_INTERVENTO:
 				    
@@ -275,22 +275,25 @@ public class ViewInterventoActivity extends ActionBarActivity {
 			
 			@Override
 			protected void onInsertComplete(int token, Object cookie, Uri uri) {
+			
 			    super.onInsertComplete(token, cookie, uri);
 			}
 			
 			@Override
 			protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+			
 			    super.onQueryComplete(token, cookie, cursor);
 			}
 			
 			@Override
 			protected void onUpdateComplete(int token, Object cookie, int result) {
+			
 			    super.onUpdateComplete(token, cookie, result);
 			}
 		    };
 		    
 		    writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-			    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 		    });
 		    
 		    finish();
@@ -301,8 +304,12 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		}
 	    }
 	    else {
-		manager.popBackStackImmediate();
 		
+		// if (ListClientiAdapter.isClientInEditMode()) {
+		//
+		// ListClientiAdapter.editMode = false;
+		// }
+		manager.popBackStackImmediate();
 	    }
 	    return true;
 	}
@@ -312,7 +319,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
     
     @Override
     public void onBackPressed() {
-	
+    
 	final FragmentManager manager = getSupportFragmentManager();
 	
 	if (manager.getBackStackEntryCount() == 1) {
@@ -328,7 +335,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		    
 		    @Override
 		    protected void onDeleteComplete(int token, Object cookie, int result) {
-			
+		    
 			switch (token) {
 			    case Constants.TOKEN_RIPRISTINO_INTERVENTO:
 				
@@ -340,22 +347,25 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		    
 		    @Override
 		    protected void onInsertComplete(int token, Object cookie, Uri uri) {
+		    
 			super.onInsertComplete(token, cookie, uri);
 		    }
 		    
 		    @Override
 		    protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+		    
 			super.onQueryComplete(token, cookie, cursor);
 		    }
 		    
 		    @Override
 		    protected void onUpdateComplete(int token, Object cookie, int result) {
+		    
 			super.onUpdateComplete(token, cookie, result);
 		    }
 		};
 		
 		writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-			RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+				    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 		});
 		
 		finish();
@@ -373,12 +383,12 @@ public class ViewInterventoActivity extends ActionBarActivity {
     public static class ExitIntervento extends DialogFragment implements OnClickListener {
 	
 	public ExitIntervento() {
-	    
+	
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
+	
 	    AlertDialog.Builder exit_dialog = new Builder(getActivity());
 	    
 	    exit_dialog.setTitle(R.string.interv_mod_title);
@@ -392,7 +402,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-	    
+	
 	    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	    
 	    final Editor edit = prefs.edit();
@@ -407,7 +417,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 			
 			@Override
 			protected void onDeleteComplete(int token, Object cookie, int result) {
-			    
+			
 			    switch (token) {
 				case Constants.TOKEN_RIPRISTINO_INTERVENTO:
 				    
@@ -419,22 +429,25 @@ public class ViewInterventoActivity extends ActionBarActivity {
 			
 			@Override
 			protected void onInsertComplete(int token, Object cookie, Uri uri) {
+			
 			    super.onInsertComplete(token, cookie, uri);
 			}
 			
 			@Override
 			protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+			
 			    super.onQueryComplete(token, cookie, cursor);
 			}
 			
 			@Override
 			protected void onUpdateComplete(int token, Object cookie, int result) {
+			
 			    super.onUpdateComplete(token, cookie, result);
 			}
 		    };
 		    
 		    writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-			    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 		    });
 		    
 		    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, false);
@@ -448,6 +461,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 			    
 			    @Override
 			    public void run() {
+			    
 				edit.commit();
 			    }
 			}).start();
@@ -467,7 +481,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 			
 			@Override
 			protected void onDeleteComplete(int token, Object cookie, int result) {
-			    
+			
 			    switch (token) {
 				case Constants.TOKEN_RIPRISTINO_INTERVENTO:
 				    
@@ -479,16 +493,19 @@ public class ViewInterventoActivity extends ActionBarActivity {
 			
 			@Override
 			protected void onInsertComplete(int token, Object cookie, Uri uri) {
+			
 			    super.onInsertComplete(token, cookie, uri);
 			}
 			
 			@Override
 			protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+			
 			    super.onQueryComplete(token, cookie, cursor);
 			}
 			
 			@Override
 			protected void onUpdateComplete(int token, Object cookie, int result) {
+			
 			    super.onUpdateComplete(token, cookie, result);
 			}
 		    };
@@ -498,7 +515,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 			    
 			    @Override
 			    protected Cursor doInBackground(String... params) {
-				
+			    
 				Cursor cursor = null;
 				
 				ContentResolver cr = getActivity().getContentResolver();
@@ -507,7 +524,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 					RipristinoInterventoDB.Field._ID,
 					RipristinoInterventoDB.Field.BACKUP_INTERVENTO
 				}, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-					params[0]
+						  params[0]
 				}, null);
 				
 				return cursor;
@@ -515,7 +532,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 			    
 			    @Override
 			    protected void onPostExecute(Cursor result) {
-				
+			    
 				if (result != null) {
 				    System.out.println("Lettura dell'intervento di ripristino avvenuta con successo");
 				}
@@ -571,9 +588,9 @@ public class ViewInterventoActivity extends ActionBarActivity {
 				valuesIntervento.put(InterventoDB.Fields.TOTALE, intervRipristino.getDouble(InterventoDB.Fields.TOTALE.toString()));
 				
 				queryHandlerDB.startUpdate(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, InterventoDB.CONTENT_URI, valuesIntervento,
-					InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?", new String[] {
-						InterventoDB.INTERVENTO_ITEM_TYPE, "" + intervRipristino.getLong(InterventoDB.Fields.ID_INTERVENTO.toString())
-					});
+							   InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?", new String[] {
+								   InterventoDB.INTERVENTO_ITEM_TYPE, "" + intervRipristino.getLong(InterventoDB.Fields.ID_INTERVENTO.toString())
+							   });
 				
 				JSONArray dettagliIntervento = intervRipristino.getJSONArray(Constants.ARRAY_DETTAGLI);
 				
@@ -593,17 +610,17 @@ public class ViewInterventoActivity extends ActionBarActivity {
 				    valuesDettaglio.put(DettaglioInterventoDB.Fields.TIPO, dettaglio.getString(DettaglioInterventoDB.Fields.TIPO.toString()));
 				    
 				    queryHandlerDB.startUpdate(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, DettaglioInterventoDB.CONTENT_URI, valuesDettaglio,
-					    DettaglioInterventoDB.Fields.TYPE + "=? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?", new String[] {
-						    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettaglio.getLong(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO.toString())
-					    });
+							       DettaglioInterventoDB.Fields.TYPE + "=? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?", new String[] {
+								       DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettaglio.getLong(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO.toString())
+							       });
 				}
 				
 				queryHandlerDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+							   RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 				});
 				
 				queryHandlerDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, DettaglioInterventoDB.CONTENT_URI, DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "<?", new String[] {
-					"0"
+							   "0"
 				});
 			    }
 			    catch (JSONException e) {
@@ -614,7 +631,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 			    finally {
 				
 				queryHandlerDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+							   RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 				});
 			    }
 			}
@@ -637,6 +654,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 			    
 			    @Override
 			    public void run() {
+			    
 				edit.commit();
 			    }
 			}).start();
@@ -651,7 +669,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-	
+    
 	super.onCreateOptionsMenu(menu);
 	
 	return true;
@@ -659,7 +677,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-	
+    
 	switch (item.getItemId()) {
 	
 	    case android.R.id.home:
@@ -675,7 +693,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 			
 			@Override
 			protected void onDeleteComplete(int token, Object cookie, int result) {
-			    
+			
 			    switch (token) {
 				case Constants.TOKEN_RIPRISTINO_INTERVENTO:
 				    
@@ -687,22 +705,25 @@ public class ViewInterventoActivity extends ActionBarActivity {
 			
 			@Override
 			protected void onInsertComplete(int token, Object cookie, Uri uri) {
+			
 			    super.onInsertComplete(token, cookie, uri);
 			}
 			
 			@Override
 			protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+			
 			    super.onQueryComplete(token, cookie, cursor);
 			}
 			
 			@Override
 			protected void onUpdateComplete(int token, Object cookie, int result) {
+			
 			    super.onUpdateComplete(token, cookie, result);
 			}
 		    };
 		    
 		    writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-			    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 		    });
 		    
 		    finish();
@@ -720,7 +741,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
     
     @Override
     protected void onDestroy() {
-	
+    
 	super.onDestroy();
     }
 }

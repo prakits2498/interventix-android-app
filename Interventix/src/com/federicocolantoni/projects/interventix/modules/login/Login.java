@@ -26,7 +26,6 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.activity.HomeActivity;
-import com.federicocolantoni.projects.interventix.activity.HomeActivity_;
 import com.federicocolantoni.projects.interventix.task.GetLogin;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
@@ -47,7 +46,7 @@ public class Login extends Fragment {
     
     @Override
     public void onStart() {
-	
+    
 	super.onStart();
 	
 	prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
@@ -55,6 +54,7 @@ public class Login extends Fragment {
     
     @Click(R.id.btn_login)
     void startLogin() {
+    
 	NetworkInfo info = connMgr.getActiveNetworkInfo();
 	
 	if (username.getText().toString().length() == 0 || password.getText().toString().length() == 0)
@@ -138,7 +138,7 @@ public class Login extends Fragment {
 				    
 				    InterventixToast.makeToast(getActivity(), getString(R.string.toast_offline_access), Toast.LENGTH_LONG);
 				    
-				    startActivity(new Intent(getActivity(), HomeActivity_.class));
+				    startActivity(new Intent(getActivity(), com.federicocolantoni.projects.interventix.activity.HomeActivity_.class));
 				}
 			}
 			
@@ -154,6 +154,7 @@ public class Login extends Fragment {
 		    
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
+		    
 			dialog.dismiss();
 		    }
 		});
@@ -161,7 +162,7 @@ public class Login extends Fragment {
 		    
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
-			
+		    
 			Intent intent = new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS);
 			intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			startActivity(intent);
@@ -172,7 +173,7 @@ public class Login extends Fragment {
 		    
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
-			
+		    
 			Intent intent = new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS);
 			intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			startActivity(intent);

@@ -14,7 +14,6 @@
 	</declare-styleable>
 	
 	<!-- styles for swipe list view -->
-
 	<declare-styleable name="SwipeListView">
 		<attr name="swipeOpenOnLongPress" format="boolean" />
 		<attr name="swipeAnimationTime" format="integer" />

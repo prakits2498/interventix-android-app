@@ -44,6 +44,7 @@ public class JsonCR2 {
      */
     @Deprecated
     public static JSONObject readRequest(String stringCR2) throws ParseException, Exception {
+    
 	return JsonCR2.read(stringCR2);
     }
     
@@ -56,6 +57,7 @@ public class JsonCR2 {
      * @throws Exception
      */
     public static JSONObject read(String stringCR2) throws ParseException, Exception {
+    
 	if (DEBUG_READ) {
 	    JSONObject json = (JSONObject) new JSONParser().parse(stringCR2);
 	    return json;
@@ -80,6 +82,7 @@ public class JsonCR2 {
      * @throws Exception
      */
     public static String createRequestLogin(String username, String password) throws Exception {
+    
 	Map<String, Object> m = new HashMap<String, Object>();
 	m.put("username", username);
 	m.put("password", username);
@@ -103,7 +106,7 @@ public class JsonCR2 {
      * @throws Exception
      */
     public static String createRequest(String section, String action, Map parameters, int iduser) throws Exception {
-	
+    
 	// utile per Android
 	JSONObject json = new JSONObject();
 	Random random = new Random();
@@ -161,6 +164,7 @@ public class JsonCR2 {
      * @return Stringa della risposta creata in JSON/CR2
      */
     public static String createResponse(String response, String section, String action, String code, String message, Object data) {
+    
 	JSONObject json = new JSONObject();
 	json.put("response", response);
 	
@@ -207,6 +211,7 @@ public class JsonCR2 {
      * @return
      */
     public static String createResponseError(String error_code, String error_message) {
+    
 	return JsonCR2.createResponseError(null, null, error_code, error_message, null);
     }
     
@@ -226,6 +231,7 @@ public class JsonCR2 {
      * @return Stringa della risposta creata in JSON/CR2
      */
     public static String createResponseError(String section, String action, String error_code, String error_message) {
+    
 	return JsonCR2.createResponseError(section, action, error_code, error_message, null);
     }
     
@@ -247,7 +253,7 @@ public class JsonCR2 {
      * @return Stringa della risposta creata in JSON/CR2
      */
     public static String createResponseError(String section, String action, String error_code, String error_message, Exception exception) {
-	
+    
 	JSONObject json = new JSONObject();
 	json.put("response", StaticResponse.ERROR);
 	
@@ -305,6 +311,7 @@ public class JsonCR2 {
      * @return Stringa della risposta creata in JSON/CR2
      */
     public static String createResponseSuccess(String section, String action) {
+    
 	return JsonCR2.createResponse("success", section, action, CodeResponse.SUCCESS, null, null);
     }
     
@@ -321,6 +328,7 @@ public class JsonCR2 {
      * @return Stringa della risposta creata in JSON/CR2
      */
     public static String createResponseSuccess(String section, String action, Object data) {
+    
 	return JsonCR2.createResponse(StaticResponse.SUCCESS, section, action, CodeResponse.SUCCESS, null, data);
     }
     
@@ -332,6 +340,7 @@ public class JsonCR2 {
      * @return Stringa della risposta creata in JSON/CR2
      */
     public static String createResponseLoginOK(int iduser) {
+    
 	JSONObject json = new JSONObject();
 	json.put("response", StaticResponse.SUCCESS);
 	json.put("code", CodeResponse.SUCCESS);
@@ -365,6 +374,7 @@ public class JsonCR2 {
      * @return Stringa della risposta creata in JSON/CR2
      */
     public static String createResponseLoginERROR() {
+    
 	return createResponseError(StaticResponse.LOGIN, StaticResponse.LOGIN, CodeResponse.ACCESS_DENIED, MessageResponse.ACCESS_DENIED);
     }
 }

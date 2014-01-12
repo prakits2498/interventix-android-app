@@ -52,19 +52,19 @@ public class DateTimePicker extends RelativeLayout {
     
     // Constructor start
     public DateTimePicker(Context context) {
-	
+    
 	this(context, null);
 	
 	init(context);
     }
     
     public DateTimePicker(Context context, AttributeSet attrs) {
-	
+    
 	this(context, attrs, 0);
     }
     
     public DateTimePicker(Context context, AttributeSet attrs, int defStyle) {
-	
+    
 	super(context, attrs, defStyle);
 	
 	// // Get LayoutInflater instance
@@ -80,7 +80,7 @@ public class DateTimePicker extends RelativeLayout {
     }
     
     private void init(Context mContext) {
-	
+    
 	LayoutInflater inflator = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	myPickerView = inflator.inflate(R.layout.datetimepicker, null);
 	this.addView(myPickerView);
@@ -89,7 +89,7 @@ public class DateTimePicker extends RelativeLayout {
     }
     
     private void initializeReference() {
-	
+    
 	month_plus = (Button) myPickerView.findViewById(R.id.month_plus);
 	month_plus.setOnClickListener(month_plus_listener);
 	month_display = (EditText) myPickerView.findViewById(R.id.month_display);
@@ -130,7 +130,7 @@ public class DateTimePicker extends RelativeLayout {
     }
     
     public void initData() {
-	
+    
 	cal = Calendar.getInstance();
 	
 	month_display.setText(months[cal.get(Calendar.MONTH)]);
@@ -141,20 +141,20 @@ public class DateTimePicker extends RelativeLayout {
     }
     
     private void initFilterNumericDigit() {
-	
+    
 	try {
 	    day_display.setFilters(new InputFilter[] {
-		    new InputFilterMinMax(1, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
+						      new InputFilterMinMax(1, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
 	    });
 	    
 	    InputFilter[] filterArray_year = new InputFilter[1];
 	    filterArray_year[0] = new InputFilter.LengthFilter(4);
 	    year_display.setFilters(filterArray_year);
 	    hour_display.setFilters(new InputFilter[] {
-		    new InputFilterMinMax(0, 23)
+						       new InputFilterMinMax(0, 23)
 	    });
 	    min_display.setFilters(new InputFilter[] {
-		    new InputFilterMinMax(0, 59)
+						      new InputFilterMinMax(0, 59)
 	    });
 	}
 	catch (Exception e) {
@@ -165,11 +165,11 @@ public class DateTimePicker extends RelativeLayout {
     }
     
     private void changeFilter() {
-	
+    
 	try {
 	    
 	    day_display.setFilters(new InputFilter[] {
-		    new InputFilterMinMax(1, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
+						      new InputFilterMinMax(1, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
 	    });
 	}
 	catch (Exception e) {
@@ -181,12 +181,12 @@ public class DateTimePicker extends RelativeLayout {
     }
     
     public void setTimeChangedListener(TimeWatcher listener) {
-	
+    
 	mTimeWatcher = listener;
     }
     
     public void removeTimeChangedListener() {
-	
+    
 	mTimeWatcher = null;
     }
     
@@ -194,7 +194,7 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onClick(View v) {
-	    
+	
 	    hour_display.requestFocus();
 	    
 	    try {
@@ -211,7 +211,7 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onClick(View v) {
-	    
+	
 	    hour_display.requestFocus();
 	    
 	    try {
@@ -228,7 +228,7 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onClick(View v) {
-	    
+	
 	    min_display.requestFocus();
 	    
 	    try {
@@ -246,7 +246,7 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onClick(View v) {
-	    
+	
 	    min_display.requestFocus();
 	    
 	    try {
@@ -269,7 +269,7 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onClick(View v) {
-	    
+	
 	    try {
 		cal.add(Calendar.MONTH, 1);
 		
@@ -289,7 +289,7 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onClick(View v) {
-	    
+	
 	    try {
 		cal.add(Calendar.MONTH, -1);
 		
@@ -309,7 +309,7 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onClick(View v) {
-	    
+	
 	    try {
 		day_display.requestFocus();
 		cal.add(Calendar.DAY_OF_MONTH, 1);
@@ -332,7 +332,7 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onClick(View v) {
-	    
+	
 	    try {
 		day_display.requestFocus();
 		cal.add(Calendar.DAY_OF_MONTH, -1);
@@ -354,7 +354,7 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onClick(View v) {
-	    
+	
 	    try {
 		year_display.requestFocus();
 		
@@ -387,7 +387,7 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onClick(View v) {
-	    
+	
 	    try {
 		year_display.requestFocus();
 		
@@ -421,20 +421,20 @@ public class DateTimePicker extends RelativeLayout {
 	private final int min, max;
 	
 	public InputFilterMinMax(int min, int max) {
-	    
+	
 	    this.min = min;
 	    this.max = max;
 	}
 	
 	public InputFilterMinMax(String min, String max) {
-	    
+	
 	    this.min = Integer.parseInt(min);
 	    this.max = Integer.parseInt(max);
 	}
 	
 	@Override
 	public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-	    
+	
 	    try {
 		int input = Integer.parseInt(dest.toString() + source.toString());
 		if (isInRange(min, max, input))
@@ -446,13 +446,13 @@ public class DateTimePicker extends RelativeLayout {
 	}
 	
 	private boolean isInRange(int a, int b, int c) {
-	    
+	
 	    return b > a ? c >= a && c <= b : c >= b && c <= a;
 	}
     }
     
     public void reset() {
-	
+    
 	cal = Calendar.getInstance();
 	initFilterNumericDigit();
 	initData();
@@ -460,7 +460,7 @@ public class DateTimePicker extends RelativeLayout {
     }
     
     public void setDateTime(DateTime dateTime) {
-	
+    
 	cal.setTime(dateTime.toDate());
 	initFilterNumericDigit();
 	
@@ -474,7 +474,7 @@ public class DateTimePicker extends RelativeLayout {
     }
     
     synchronized private void sendToListener() {
-	
+    
 	if (mTimeWatcher != null) {
 	    mTimeWatcher.onTimeChanged(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), -1);
 	}
@@ -484,7 +484,7 @@ public class DateTimePicker extends RelativeLayout {
     }
     
     private void sendToDisplay() {
-	
+    
 	hour_display.setText(String.valueOf(cal.get(Calendar.HOUR_OF_DAY)));
 	min_display.setText(String.valueOf(cal.get(Calendar.MINUTE)));
     }
@@ -500,17 +500,17 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-	    
+	
 	}
 	
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	    
+	
 	}
 	
 	@Override
 	public void afterTextChanged(Editable s) {
-	    
+	
 	    try {
 		if (s.toString().length() > 0) {
 		    cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(s.toString()));
@@ -530,17 +530,17 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-	    
+	
 	}
 	
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	    
+	
 	}
 	
 	@Override
 	public void afterTextChanged(Editable s) {
-	    
+	
 	    try {
 		if (s.toString().length() > 0) {
 		    cal.set(Calendar.MINUTE, Integer.parseInt(s.toString()));
@@ -557,37 +557,37 @@ public class DateTimePicker extends RelativeLayout {
     };
     
     public int getYear() {
-	
+    
 	return Integer.parseInt(year_display.getText().toString());
     }
     
     public int getDay() {
-	
+    
 	return Integer.parseInt(day_display.getText().toString());
     }
     
     public int getMonth() {
-	
+    
 	return Integer.parseInt(month_display.getText().toString());
     }
     
     public int getHour() {
-	
+    
 	return Integer.parseInt(hour_display.getText().toString());
     }
     
     public int getMinute() {
-	
+    
 	return Integer.parseInt(min_display.getText().toString());
     }
     
     public void setDateChangedListener(DateWatcher listener) {
-	
+    
 	mDateWatcher = listener;
     }
     
     public void removeDateChangedListener() {
-	
+    
 	mDateWatcher = null;
     }
     
@@ -595,7 +595,7 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onFocusChange(View v, boolean hasFocus) {
-	    
+	
 	    if (!hasFocus) {
 		
 		year_display.setText(String.valueOf(cal.get(Calendar.YEAR)));
@@ -607,17 +607,17 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-	    
+	
 	}
 	
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	    
+	
 	}
 	
 	@Override
 	public void afterTextChanged(Editable s) {
-	    
+	
 	    try {
 		if (s.toString().length() > 0) {
 		    // Log.e("", "afterTextChanged : " + s.toString());
@@ -646,17 +646,17 @@ public class DateTimePicker extends RelativeLayout {
 	
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-	    
+	
 	}
 	
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	    
+	
 	}
 	
 	@Override
 	public void afterTextChanged(Editable s) {
-	    
+	
 	    try {
 		if (s.toString().length() == 4) {
 		    int year = Integer.parseInt(s.toString());
@@ -665,12 +665,12 @@ public class DateTimePicker extends RelativeLayout {
 			cal.set(Calendar.YEAR, endYear);
 		    }
 		    else
-		    if (year < startYear) {
-			cal.set(Calendar.YEAR, startYear);
-		    }
-		    else {
-			cal.set(Calendar.YEAR, year);
-		    }
+			if (year < startYear) {
+			    cal.set(Calendar.YEAR, startYear);
+			}
+			else {
+			    cal.set(Calendar.YEAR, year);
+			}
 		}
 		
 		sendToListener();

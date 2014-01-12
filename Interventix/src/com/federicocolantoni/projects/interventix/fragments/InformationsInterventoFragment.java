@@ -86,7 +86,7 @@ public class InformationsInterventoFragment extends Fragment {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
-	
+    
 	super.onCreate(savedInstanceState);
 	
 	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
@@ -97,7 +97,7 @@ public class InformationsInterventoFragment extends Fragment {
     
     @Override
     public void onStart() {
-	
+    
 	super.onStart();
 	
 	Bundle bundle = getArguments();
@@ -126,7 +126,7 @@ public class InformationsInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 		new SetTipologiaDialog().show(getFragmentManager(), Constants.TIPOLOGIA_DIALOG_FRAGMENT);
 	    }
 	});
@@ -138,7 +138,7 @@ public class InformationsInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 		new SetModalitaDialog().show(getFragmentManager(), Constants.MODALITA_DIALOG_FRAGMENT);
 	    }
 	});
@@ -150,7 +150,7 @@ public class InformationsInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 		new SetProdottoDialog().show(getFragmentManager(), Constants.PRODOTTO_DIALOG_FRAGMENT);
 	    }
 	});
@@ -162,7 +162,7 @@ public class InformationsInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 		new SetMotivationDialog().show(getFragmentManager(), Constants.MOTIVO_DIALOG_FRAGMENT);
 	    }
 	});
@@ -174,7 +174,7 @@ public class InformationsInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 		new SetNominativoDialog().show(getFragmentManager(), Constants.NOMINATIVO_DIALOG_FRAGMENT);
 	    }
 	});
@@ -186,7 +186,7 @@ public class InformationsInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 		final TextView tv_date_interv = (TextView) date_interv.findViewById(R.id.tv_row_date);
 		
 		final Dialog dateTimeDialog = new Dialog(getActivity());
@@ -205,7 +205,7 @@ public class InformationsInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onDateChanged(Calendar c) {
-			
+		    
 		    }
 		});
 		
@@ -213,7 +213,7 @@ public class InformationsInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onClick(View v) {
-			
+		    
 			dateTimePicker.clearFocus();
 			
 			DateTime dt = new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone.forID("Europe/Rome"));
@@ -248,6 +248,7 @@ public class InformationsInterventoFragment extends Fragment {
 				
 				@Override
 				public void run() {
+				
 				    edit.commit();
 				}
 			    }).start();
@@ -261,7 +262,7 @@ public class InformationsInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onClick(View v) {
-			
+		    
 			dateTimeDialog.cancel();
 		    }
 		});
@@ -270,7 +271,7 @@ public class InformationsInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onClick(View v) {
-			
+		    
 			DateTime dt = null;
 			
 			DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
@@ -299,7 +300,7 @@ public class InformationsInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 	    }
 	});
 	
@@ -307,26 +308,26 @@ public class InformationsInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 	    }
 	});
     }
     
     @Override
     public void onPause() {
-	
+    
 	super.onPause();
     }
     
     @Override
     public void onResume() {
-	
+    
 	super.onResume();
     }
     
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	
+    
 	super.onCreateOptionsMenu(menu, inflater);
 	
 	inflater.inflate(R.menu.menu_view_intervento, menu);
@@ -338,7 +339,7 @@ public class InformationsInterventoFragment extends Fragment {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-	
+    
 	switch (item.getItemId()) {
 	    case R.id.pay:
 		
@@ -367,12 +368,12 @@ public class InformationsInterventoFragment extends Fragment {
 	private String mTipologiaChanged;
 	
 	public SetTipologiaDialog() {
-	    
+	
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
+	
 	    AlertDialog.Builder tipologia = new Builder(getActivity());
 	    
 	    tipologia.setTitle(getResources().getString(R.string.tipologia_title));
@@ -381,7 +382,7 @@ public class InformationsInterventoFragment extends Fragment {
 		
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-		    
+		
 		    TextView tv_tipology = (TextView) getActivity().findViewById(R.id.tv_row_tipology);
 		    tv_tipology.setText(choices[which]);
 		    mTipologiaChanged = choices[which];
@@ -395,7 +396,7 @@ public class InformationsInterventoFragment extends Fragment {
 	
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-	    
+	
 	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getActivity());
 	    
 	    ContentValues values = new ContentValues();
@@ -405,7 +406,7 @@ public class InformationsInterventoFragment extends Fragment {
 	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		    "" + sId_Intervento
+						   "" + sId_Intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_TIPOLOGIA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -424,6 +425,7 @@ public class InformationsInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void run() {
+		    
 			edit.commit();
 		    }
 		}).start();
@@ -438,12 +440,12 @@ public class InformationsInterventoFragment extends Fragment {
 	private String mModalitaChanged;
 	
 	public SetModalitaDialog() {
-	    
+	
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
+	
 	    AlertDialog.Builder modalita = new Builder(getActivity());
 	    
 	    modalita.setTitle(getResources().getString(R.string.modalita_title));
@@ -453,7 +455,7 @@ public class InformationsInterventoFragment extends Fragment {
 		
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-		    
+		
 		    TextView tv_mode = (TextView) getActivity().findViewById(R.id.tv_row_mode);
 		    tv_mode.setText(choices[which]);
 		    mModalitaChanged = choices[which];
@@ -467,7 +469,7 @@ public class InformationsInterventoFragment extends Fragment {
 	
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-	    
+	
 	    SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getActivity());
 	    
 	    ContentValues values = new ContentValues();
@@ -477,7 +479,7 @@ public class InformationsInterventoFragment extends Fragment {
 	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		    "" + sId_Intervento
+						   "" + sId_Intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_MODALITA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -496,6 +498,7 @@ public class InformationsInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void run() {
+		    
 			edit.commit();
 		    }
 		}).start();
@@ -510,12 +513,12 @@ public class InformationsInterventoFragment extends Fragment {
 	private EditText mEdit_prodotto;
 	
 	public SetProdottoDialog() {
-	    
+	
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
+	
 	    AlertDialog.Builder prodotto = new Builder(getActivity());
 	    
 	    prodotto.setTitle(R.string.prodotto_title);
@@ -533,7 +536,7 @@ public class InformationsInterventoFragment extends Fragment {
 	
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-	    
+	
 	    TextView tv_product = (TextView) getActivity().findViewById(R.id.tv_row_product);
 	    tv_product.setText(mEdit_prodotto.getText());
 	    
@@ -546,7 +549,7 @@ public class InformationsInterventoFragment extends Fragment {
 	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		    "" + sId_Intervento
+						   "" + sId_Intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_PRODOTTO, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -565,6 +568,7 @@ public class InformationsInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void run() {
+		    
 			edit.commit();
 		    }
 		}).start();
@@ -579,12 +583,12 @@ public class InformationsInterventoFragment extends Fragment {
 	private EditText mEdit_nominativo;
 	
 	public SetNominativoDialog() {
-	    
+	
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
+	
 	    AlertDialog.Builder nominativo = new Builder(getActivity());
 	    
 	    nominativo.setTitle(R.string.nominativo_title);
@@ -603,7 +607,7 @@ public class InformationsInterventoFragment extends Fragment {
 	
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-	    
+	
 	    TextView tv_name = (TextView) getActivity().findViewById(R.id.tv_row_name);
 	    tv_name.setText(mEdit_nominativo.getText());
 	    
@@ -616,7 +620,7 @@ public class InformationsInterventoFragment extends Fragment {
 	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		    "" + sId_Intervento
+						   "" + sId_Intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_NOMINATIVO, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -635,6 +639,7 @@ public class InformationsInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void run() {
+		    
 			edit.commit();
 		    }
 		}).start();
@@ -649,12 +654,12 @@ public class InformationsInterventoFragment extends Fragment {
 	private EditText mEdit_motivo;
 	
 	public SetMotivationDialog() {
-	    
+	
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
+	
 	    AlertDialog.Builder motivo = new Builder(getActivity());
 	    
 	    motivo.setTitle(R.string.motivation_title);
@@ -673,6 +678,7 @@ public class InformationsInterventoFragment extends Fragment {
 	
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
+	
 	    TextView tv_name = (TextView) getActivity().findViewById(R.id.tv_row_motivation);
 	    tv_name.setText(mEdit_motivo.getText());
 	    
@@ -685,7 +691,7 @@ public class InformationsInterventoFragment extends Fragment {
 	    String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		    "" + sId_Intervento
+						   "" + sId_Intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_INFO_MOTIVO, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -704,6 +710,7 @@ public class InformationsInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void run() {
+		    
 			edit.commit();
 		    }
 		}).start();

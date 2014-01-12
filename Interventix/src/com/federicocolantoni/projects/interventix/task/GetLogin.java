@@ -37,7 +37,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
     private String mUsername, mPassword;
     
     public GetLogin(Activity activity, String username, String password) {
-	
+    
 	mContext = activity;
 	
 	defaultPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -56,13 +56,13 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
     
     @Override
     protected void onPreExecute() {
-	
+    
 	progress.show();
     }
     
     @Override
     protected Integer doInBackground(String... strings) {
-	
+    
 	int result = 0;
 	
 	final String prefs_url = mContext.getResources().getString(string.prefs_key_url);
@@ -115,7 +115,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 			String selectionUpdate = UtenteDB.Fields.ID_UTENTE + " = ?";
 			
 			String[] selectionUpdateArgs = new String[] {
-				"" + data.get("idutente")
+								     "" + data.get("idutente")
 			};
 			
 			cr.update(UtenteDB.CONTENT_URI, values, selectionUpdate, selectionUpdateArgs);
@@ -198,7 +198,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
     
     @Override
     protected void onPostExecute(Integer result) {
-	
+    
 	if (result == Activity.RESULT_OK) {
 	    
 	    mContext.startActivity(new Intent(mContext, com.federicocolantoni.projects.interventix.activity.HomeActivity_.class));

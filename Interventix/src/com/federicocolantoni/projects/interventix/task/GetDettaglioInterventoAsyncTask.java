@@ -17,12 +17,13 @@ public class GetDettaglioInterventoAsyncTask extends AsyncTask<Long, Void, Detta
     private final Context context;
     
     public GetDettaglioInterventoAsyncTask(Context context) {
+    
 	this.context = context.getApplicationContext();
     }
     
     @Override
     protected DettaglioIntervento doInBackground(Long... params) {
-	
+    
 	ContentResolver cr = context.getContentResolver();
 	
 	String[] projection = new String[] {
@@ -78,6 +79,6 @@ public class GetDettaglioInterventoAsyncTask extends AsyncTask<Long, Void, Detta
     
     @Override
     protected void onPostExecute(DettaglioIntervento result) {
-	
+    
     }
 }

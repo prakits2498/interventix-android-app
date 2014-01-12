@@ -13,7 +13,7 @@ public class InterventixDBContract {
     final static Uri BASE_URI = Uri.parse("content://" + AUTHORITY);
     
     private InterventixDBContract() {
-	
+    
     }
     
     public static class Data {

@@ -39,7 +39,7 @@ public class InterventixDBHelper extends SQLiteOpenHelper {
     
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-	
+    
 	sqLiteDatabase.execSQL(CREATE_TABLE_INTERVENTIX);
 	
 	for (String sql : CREATE_INDEXES) {
@@ -49,7 +49,7 @@ public class InterventixDBHelper extends SQLiteOpenHelper {
     
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-	
+    
 	if (newVersion > oldVersion) {
 	    sqLiteDatabase.execSQL(DROP_TABLE);
 	    
@@ -61,7 +61,7 @@ public class InterventixDBHelper extends SQLiteOpenHelper {
     }
     
     public InterventixDBHelper(Context context) {
-	
+    
 	super(context, DB_NAME, null, DB_VERSION);
     }
 }

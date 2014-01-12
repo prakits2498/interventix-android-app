@@ -33,7 +33,7 @@ public class ListInterventiAdapter extends CursorAdapter {
     private int mModificatoInterventoIndex;
     
     public ListInterventiAdapter(Context context, Cursor c) {
-	
+    
 	super(context, c, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 	mInflater = LayoutInflater.from(context);
 	mFoundIndexes = false;
@@ -41,7 +41,7 @@ public class ListInterventiAdapter extends CursorAdapter {
     
     @Override
     public void bindView(View row, Context context, Cursor cursor) {
-	
+    
 	TextView tv_numero_intervento = (TextView) row.getTag(R.id.tv_numero_intervento);
 	TextView tv_cliente_intervento = (TextView) row.getTag(R.id.tv_cliente_intervento);
 	TextView tv_data_intervento = (TextView) row.getTag(R.id.tv_data_intervento);
@@ -100,7 +100,7 @@ public class ListInterventiAdapter extends CursorAdapter {
     
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup listView) {
-	
+    
 	View view = mInflater.inflate(R.layout.interv_row, listView, false);
 	
 	TextView tv_numero_intervento = (TextView) view.findViewById(R.id.tv_numero_intervento);

@@ -35,14 +35,14 @@ public class TaskManagerFragment extends Fragment implements TaskManager {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
-	
+    
 	super.onCreate(savedInstanceState);
 	setRetainInstance(true);
     }
     
     @Override
     public void onDetach() {
-	
+    
 	super.onDetach();
 	
 	synchronized (mLock) {
@@ -52,7 +52,7 @@ public class TaskManagerFragment extends Fragment implements TaskManager {
     
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-	
+    
 	super.onActivityCreated(savedInstanceState);
 	synchronized (mLock) {
 	    mReady = true;
@@ -67,21 +67,21 @@ public class TaskManagerFragment extends Fragment implements TaskManager {
     
     @Override
     public boolean isReady() {
-	
+    
 	synchronized (mLock) {
 	    return mReady;
 	}
     }
     
     protected void setReady(boolean ready) {
-	
+    
 	synchronized (mLock) {
 	    mReady = ready;
 	}
     }
     
     protected void addPending(Runnable runnable) {
-	
+    
 	synchronized (mLock) {
 	    mPendingCallbacks.add(runnable);
 	}
@@ -89,7 +89,7 @@ public class TaskManagerFragment extends Fragment implements TaskManager {
     
     @Override
     public void runWhenReady(Runnable runnable) {
-	
+    
 	if (isReady()) {
 	    runNow(runnable);
 	}
@@ -99,7 +99,7 @@ public class TaskManagerFragment extends Fragment implements TaskManager {
     }
     
     protected void runNow(Runnable runnable) {
-	
+    
 	getActivity().runOnUiThread(runnable);
     }
 }

@@ -10,12 +10,14 @@ public class CustomViewPager extends ViewPager {
     private boolean enabled;
     
     public CustomViewPager(Context context, AttributeSet attrs) {
+    
 	super(context, attrs);
 	this.enabled = false;
     }
     
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+    
 	if (this.enabled) {
 	    return super.onTouchEvent(event);
 	}
@@ -25,6 +27,7 @@ public class CustomViewPager extends ViewPager {
     
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
+    
 	if (this.enabled) {
 	    return super.onInterceptTouchEvent(event);
 	}
@@ -33,6 +36,7 @@ public class CustomViewPager extends ViewPager {
     }
     
     public void setPagingEnabled(boolean enabled) {
+    
 	this.enabled = enabled;
     }
 }

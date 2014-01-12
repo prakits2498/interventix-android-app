@@ -24,6 +24,7 @@ public class CryptoCR2 {
     };
     
     public static String encrypt(String valueToCR2) throws Exception {
+    
 	valueToCR2 = CryptoCR2.escapeUnicode(valueToCR2);
 	String crypt = encrypt_(valueToCR2);
 	byte[] dat = crypt.getBytes("UTF-8");
@@ -31,6 +32,7 @@ public class CryptoCR2 {
     }
     
     public static String decrypt(String valueToCR2) throws Exception {
+    
 	valueToCR2 = CryptoCR2.escapeUnicode(valueToCR2);
 	byte[] dat = decodeHEX(valueToCR2);
 	String crypt = new String(dat, "UTF-8");
@@ -38,6 +40,7 @@ public class CryptoCR2 {
     }
     
     private static String encrypt_(String valueToEnc) throws Exception {
+    
 	Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 	
 	Key key = generateKey();
@@ -49,7 +52,7 @@ public class CryptoCR2 {
     }
     
     private static String decrypt_(String encryptedValue) throws Exception {
-	
+    
 	Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 	
 	Key key = generateKey();
@@ -62,6 +65,7 @@ public class CryptoCR2 {
     }
     
     private static Key generateKey() throws Exception {
+    
 	// System.out.println(keyValue[0]);
 	Key key = new SecretKeySpec(keyValue, ALGORITHM);
 	
@@ -72,6 +76,7 @@ public class CryptoCR2 {
     }
     
     public static String escapeUnicode(String input) {
+    
 	StringBuilder b = new StringBuilder(input.length());
 	Formatter f = new Formatter(b);
 	for (char c : input.toCharArray()) {
@@ -88,6 +93,7 @@ public class CryptoCR2 {
     
     // HEX
     private static byte[] decodeHEX(char[] hex) {
+    
 	int length = hex.length / 2;
 	byte[] raw = new byte[length];
 	for (int i = 0; i < length; i++) {
@@ -103,11 +109,12 @@ public class CryptoCR2 {
     }
     
     public static byte[] decodeHEX(String hex) {
+    
 	return decodeHEX(hex.toCharArray());
     }
     
     public static String encodeHEX(byte[] b) {
-	
+    
 	StringBuilder s = new StringBuilder(2 * b.length);
 	
 	for (byte element : b) {

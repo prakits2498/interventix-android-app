@@ -104,7 +104,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-	
+    
 	super.onCreate(savedInstanceState);
 	
 	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
@@ -117,7 +117,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     @Override
     protected void onStart() {
-	
+    
 	super.onStart();
 	
 	getUsersSyncro();
@@ -134,7 +134,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	    
 	    @Override
 	    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-		
+	    
 		Bundle bundle = new Bundle();
 		
 		Cursor cur = (Cursor) adapter.getItemAtPosition(position);
@@ -153,7 +153,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-	
+    
 	if (keyCode == KeyEvent.KEYCODE_BACK) {
 	    
 	    finish();
@@ -164,13 +164,13 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     @Override
     public void onBackPressed() {
-	
+    
 	finish();
     }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-	
+    
 	optionsMenu = menu;
 	getMenuInflater().inflate(R.menu.menu_home, menu);
 	
@@ -181,7 +181,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-	
+    
 	switch (item.getItemId()) {
 	
 	    case android.R.id.home:
@@ -220,7 +220,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     @Override
     protected void onPause() {
-	
+    
 	super.onPause();
 	
 	buffer.stopTimer();
@@ -228,7 +228,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     @Override
     protected void onResume() {
-	
+    
 	super.onResume();
 	
 	buffer.startTimer(BUFFER_TYPE.BUFFER_INTERVENTO);
@@ -236,6 +236,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     }
     
     private void setRefreshActionButtonState(final boolean refreshing) {
+    
 	if (optionsMenu != null) {
 	    
 	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -265,7 +266,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     }
     
     private String setNominativo() throws InterruptedException, ExecutionException {
-	
+    
 	prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
 	GetNominativoUtenteAsyncTask nominativo = new GetNominativoUtenteAsyncTask(this);
@@ -278,19 +279,20 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     }
     
     private void getUsersSyncro() {
-	
+    
 	prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
 	new ManagedAsyncTask<Long, Void, Integer>(HomeActivity.this) {
 	    
 	    @Override
 	    protected void onPreExecute() {
-		
+	    
 		setRefreshActionButtonState(true);
 	    };
 	    
 	    @Override
 	    protected Integer doInBackground(Long... params) {
+	    
 		String json_req = new String();
 		
 		ContentResolver cr = getContentResolver();
@@ -333,7 +335,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				
 				@Override
 				public void run() {
-				    
+				
 				    editor.commit();
 				}
 			    }).start();
@@ -401,7 +403,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	    
 	    @Override
 	    protected void onPostExecute(Integer result) {
-		
+	    
 		if (result == RESULT_OK) {
 		    getClientsSyncro();
 		}
@@ -417,19 +419,19 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     }
     
     private void getClientsSyncro() {
-	
+    
 	prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
 	new ManagedAsyncTask<Long, Void, Integer>(HomeActivity.this) {
 	    
 	    @Override
 	    protected void onPreExecute() {
-		
+	    
 	    }
 	    
 	    @Override
 	    protected Integer doInBackground(Long... params) {
-		
+	    
 		String json_req = new String();
 		
 		ContentResolver cr = getContentResolver();
@@ -468,7 +470,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				
 				@Override
 				public void run() {
-				    
+				
 				    editor.commit();
 				}
 			    }).start();
@@ -515,9 +517,9 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				values = Cliente.updateSQL(updateCliente);
 				
 				cr.update(ClienteDB.CONTENT_URI, values,
-					ClienteDB.Fields.TYPE + "=? AND " + ClienteDB.Fields.ID_CLIENTE + "=?", new String[] {
-						ClienteDB.CLIENTE_ITEM_TYPE, "" + cliente.getLong("idcliente")
-					});
+					  ClienteDB.Fields.TYPE + "=? AND " + ClienteDB.Fields.ID_CLIENTE + "=?", new String[] {
+						  ClienteDB.CLIENTE_ITEM_TYPE, "" + cliente.getLong("idcliente")
+					  });
 				
 				cursorCliente.close();
 			    }
@@ -578,6 +580,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	    
 	    @Override
 	    protected void onPostExecute(Integer result) {
+	    
 		if (result == RESULT_OK) {
 		    getInterventionsSyncro();
 		}
@@ -592,19 +595,19 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     }
     
     private void getInterventionsSyncro() {
-	
+    
 	prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
 	new ManagedAsyncTask<Long, Void, Integer>(HomeActivity.this) {
 	    
 	    @Override
 	    protected void onPreExecute() {
-		
+	    
 	    };
 	    
 	    @Override
 	    protected Integer doInBackground(Long... params) {
-		
+	    
 		String json_req = new String();
 		
 		ContentResolver cr = getContentResolver();
@@ -647,7 +650,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				
 				@Override
 				public void run() {
-				    
+				
 				    editor.commit();
 				}
 			    }).start();
@@ -706,7 +709,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	    }
 	    
 	    private void addInterventions(JSONObject responseIntervs, int contProg) {
-		
+	    
 		ContentResolver cr = getContentResolver();
 		ContentValues values = new ContentValues();
 		
@@ -861,7 +864,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	    
 	    @Override
 	    protected void onPostExecute(Integer result) {
-		
+	    
 		if (result == RESULT_OK) {
 		    
 		    String nominativo = null;
@@ -884,7 +887,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				
 				@Override
 				public void run() {
-				    
+				
 				    editor.commit();
 				}
 			    }).start();
@@ -914,7 +917,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-	
+    
 	String sortOrder = InterventoDB.Fields.DATA_ORA + " desc";
 	
 	Loader<Cursor> loader = new CursorLoader(this, InterventoDB.CONTENT_URI, HomeActivity.PROJECTION, HomeActivity.SELECTION, HomeActivity.SELECTION_ARGS, sortOrder);
@@ -924,13 +927,13 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-	
+    
 	mAdapter.swapCursor(cursor);
     }
     
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-	
+    
 	mAdapter.swapCursor(null);
     }
 }

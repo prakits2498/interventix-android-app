@@ -14,13 +14,13 @@ import com.federicocolantoni.projects.interventix.entity.Intervento;
 public class InterventixService extends IntentService {
     
     public InterventixService() {
-	
+    
 	super("InterventixService");
     }
     
     @Override
     public void onCreate() {
-	
+    
 	super.onCreate();
 	
 	System.out.println(this.getClass().getSimpleName() + " started");
@@ -28,23 +28,24 @@ public class InterventixService extends IntentService {
     
     @Override
     protected void onHandleIntent(Intent intent) {
-	
+    
 	if (intent.getAction().equals(Constants.ACTION_GET_INTERVENTI)) {
 	    
 	    System.out.println("Action " + Constants.ACTION_GET_INTERVENTI);
 	    
 	    inviaInterventi();
 	}
-	else if (intent.getAction().equals(Constants.ACTION_GET_CLIENTI)) {
-	    
-	    System.out.println("Action " + Constants.ACTION_GET_CLIENTI);
-	    
-	    inviaClienti();
-	}
+	else
+	    if (intent.getAction().equals(Constants.ACTION_GET_CLIENTI)) {
+		
+		System.out.println("Action " + Constants.ACTION_GET_CLIENTI);
+		
+		inviaClienti();
+	    }
     }
     
     private void inviaClienti() {
-	
+    
 	ContentResolver cr = getContentResolver();
 	
 	System.out.println(this.getClass().getSimpleName() + " - inviaClienti");
@@ -82,7 +83,7 @@ public class InterventixService extends IntentService {
 	String selection = ClienteDB.Fields.TYPE + "=?";
 	
 	String[] selectionArgs = new String[] {
-		ClienteDB.CLIENTE_ITEM_TYPE
+					       ClienteDB.CLIENTE_ITEM_TYPE
 	};
 	
 	Cursor cursor = cr.query(ClienteDB.CONTENT_URI, projection, selection, selectionArgs, null);
@@ -110,7 +111,7 @@ public class InterventixService extends IntentService {
     }
     
     private void inviaInterventi() {
-	
+    
 	ContentResolver cr = getContentResolver();
 	
 	System.out.println(this.getClass().getSimpleName() + " - inviaInterventi");
@@ -145,8 +146,8 @@ public class InterventixService extends IntentService {
 	};
 	
 	String selection = InterventoDB.Fields.TYPE + "=? AND (" +
-		InterventoDB.Fields.MODIFICATO + "=? OR " +
-		InterventoDB.Fields.ID_INTERVENTO + "<?)";
+			   InterventoDB.Fields.MODIFICATO + "=? OR " +
+			   InterventoDB.Fields.ID_INTERVENTO + "<?)";
 	
 	String[] selectionArgs = new String[] {
 		InterventoDB.INTERVENTO_ITEM_TYPE,

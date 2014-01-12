@@ -17,13 +17,13 @@ public class GetOverviewInterventoAsyncTask extends AsyncTask<Long, Void, Interv
     private final Context mContext;
     
     public GetOverviewInterventoAsyncTask(Context context) {
-	
+    
 	mContext = context.getApplicationContext();
     }
     
     @Override
     protected Intervento doInBackground(Long... params) {
-	
+    
 	ContentResolver cr = mContext.getContentResolver();
 	
 	String[] projection = new String[] {
@@ -62,6 +62,6 @@ public class GetOverviewInterventoAsyncTask extends AsyncTask<Long, Void, Interv
     
     @Override
     protected void onPostExecute(Intervento result) {
-	
+    
     }
 }

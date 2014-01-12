@@ -9,7 +9,7 @@ import android.os.StrictMode;
 public class StrictModeWrapper {
     
     public static void init(Context context) {
-	
+    
 	if (BuildConfig.DEBUG) {
 	    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
 		

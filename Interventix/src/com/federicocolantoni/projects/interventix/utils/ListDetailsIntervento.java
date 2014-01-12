@@ -18,6 +18,7 @@ public final class ListDetailsIntervento implements Serializable {
      * @return the listDetails
      */
     public List<DettaglioIntervento> getListDetails() {
+    
 	return listDetails;
     }
     
@@ -26,6 +27,7 @@ public final class ListDetailsIntervento implements Serializable {
      *            the listDetails to set
      */
     public void setListDetails(List<DettaglioIntervento> listDetails) {
+    
 	this.listDetails = listDetails;
     }
 }

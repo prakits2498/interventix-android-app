@@ -9,7 +9,7 @@ public class SettingSupportActivity extends PreferenceActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-	
+    
 	super.onCreate(savedInstanceState);
 	addPreferencesFromResource(R.xml.activity_support_preferences_options);
     }

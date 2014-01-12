@@ -21,12 +21,13 @@ public class GetListaDettagliInterventoAsyncTask extends AsyncTask<Long, Void, L
     private final Context mContext;
     
     public GetListaDettagliInterventoAsyncTask(Context context) {
+    
 	mContext = context.getApplicationContext();
     }
     
     @Override
     protected ListDetailsIntervento doInBackground(Long... params) {
-	
+    
 	ContentResolver cr = mContext.getContentResolver();
 	
 	String[] projection = new String[] {

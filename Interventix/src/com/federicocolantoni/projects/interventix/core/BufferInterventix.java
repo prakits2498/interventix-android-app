@@ -18,12 +18,12 @@ public class BufferInterventix {
     private BufferTask interventoTask, clienteTask;
     
     private BufferInterventix() {
-	
+    
 	bufferSingleton = this;
     }
     
     public static synchronized BufferInterventix getBufferInterventix() {
-	
+    
 	if (bufferSingleton == null)
 	    bufferSingleton = new BufferInterventix();
 	
@@ -31,12 +31,12 @@ public class BufferInterventix {
     }
     
     public Object clone() throws CloneNotSupportedException {
-	
+    
 	throw new CloneNotSupportedException();
     }
     
     public void startTimer(BUFFER_TYPE type) {
-	
+    
 	timerBuffer = new Timer(this.getClass().getSimpleName(), true);
 	
 	switch (type) {
@@ -59,7 +59,7 @@ public class BufferInterventix {
     }
     
     public void stopTimer() {
-	
+    
 	if (interventoTask.cancel() && clienteTask.cancel()) {
 	    System.out.println(interventoTask.getClass().getSimpleName() + " - " + interventoTask.getBufferType() + " cancellato");
 	    System.out.println(clienteTask.getClass().getSimpleName() + " - " + clienteTask.getBufferType() + " cancellato");
@@ -74,18 +74,18 @@ public class BufferInterventix {
 	private BUFFER_TYPE type;
 	
 	public BufferTask(BUFFER_TYPE type) {
-	    
+	
 	    this.type = type;
 	}
 	
 	public String getBufferType() {
-	    
+	
 	    return type.name();
 	}
 	
 	@Override
 	public void run() {
-	    
+	
 	    Intent interventixService = new Intent(Interventix.getContext(), InterventixService.class);
 	    
 	    switch (type) {

@@ -22,11 +22,11 @@ public class Cliente implements Serializable {
     private Long mRevisione;
     
     public Cliente() {
-	
+    
     }
     
     public Cliente(Long idCliente) {
-	
+    
 	mIdCliente = idCliente;
     }
     
@@ -34,7 +34,7 @@ public class Cliente implements Serializable {
      * @return the mIdCliente
      */
     public Long getIdCliente() {
-	
+    
 	return mIdCliente;
     }
     
@@ -43,7 +43,7 @@ public class Cliente implements Serializable {
      *            the mIdCliente to set
      */
     public void setIdCliente(Long mIdCliente) {
-	
+    
 	this.mIdCliente = mIdCliente;
     }
     
@@ -51,7 +51,7 @@ public class Cliente implements Serializable {
      * @return the mNominativo
      */
     public String getNominativo() {
-	
+    
 	return mNominativo;
     }
     
@@ -60,7 +60,7 @@ public class Cliente implements Serializable {
      *            the mNominativo to set
      */
     public void setNominativo(String mNominativo) {
-	
+    
 	this.mNominativo = mNominativo;
     }
     
@@ -68,7 +68,7 @@ public class Cliente implements Serializable {
      * @return the mCodiceFiscale
      */
     public String getCodiceFiscale() {
-	
+    
 	return mCodiceFiscale;
     }
     
@@ -77,7 +77,7 @@ public class Cliente implements Serializable {
      *            the mCodiceFiscale to set
      */
     public void setCodiceFiscale(String mCodiceFiscale) {
-	
+    
 	this.mCodiceFiscale = mCodiceFiscale;
     }
     
@@ -85,7 +85,7 @@ public class Cliente implements Serializable {
      * @return the mPartitaIVA
      */
     public String getPartitaIVA() {
-	
+    
 	return mPartitaIVA;
     }
     
@@ -94,7 +94,7 @@ public class Cliente implements Serializable {
      *            the mPartitaIVA to set
      */
     public void setPartitaIVA(String mPartitaIVA) {
-	
+    
 	this.mPartitaIVA = mPartitaIVA;
     }
     
@@ -102,7 +102,7 @@ public class Cliente implements Serializable {
      * @return the mTelefono
      */
     public String getTelefono() {
-	
+    
 	return mTelefono;
     }
     
@@ -111,7 +111,7 @@ public class Cliente implements Serializable {
      *            the mTelefono to set
      */
     public void setTelefono(String mTelefono) {
-	
+    
 	this.mTelefono = mTelefono;
     }
     
@@ -119,7 +119,7 @@ public class Cliente implements Serializable {
      * @return the mFax
      */
     public String getFax() {
-	
+    
 	return mFax;
     }
     
@@ -128,7 +128,7 @@ public class Cliente implements Serializable {
      *            the mFax to set
      */
     public void setFax(String mFax) {
-	
+    
 	this.mFax = mFax;
     }
     
@@ -136,7 +136,7 @@ public class Cliente implements Serializable {
      * @return the mEmail
      */
     public String getEmail() {
-	
+    
 	return mEmail;
     }
     
@@ -145,7 +145,7 @@ public class Cliente implements Serializable {
      *            the mEmail to set
      */
     public void setEmail(String mEmail) {
-	
+    
 	this.mEmail = mEmail;
     }
     
@@ -153,7 +153,7 @@ public class Cliente implements Serializable {
      * @return the mReferente
      */
     public String getReferente() {
-	
+    
 	return mReferente;
     }
     
@@ -162,7 +162,7 @@ public class Cliente implements Serializable {
      *            the mReferente to set
      */
     public void setReferente(String mReferente) {
-	
+    
 	this.mReferente = mReferente;
     }
     
@@ -170,7 +170,7 @@ public class Cliente implements Serializable {
      * @return the mCitta
      */
     public String getCitta() {
-	
+    
 	return mCitta;
     }
     
@@ -179,7 +179,7 @@ public class Cliente implements Serializable {
      *            the mCitta to set
      */
     public void setCitta(String mCitta) {
-	
+    
 	this.mCitta = mCitta;
     }
     
@@ -187,7 +187,7 @@ public class Cliente implements Serializable {
      * @return the mIndirizzo
      */
     public String getIndirizzo() {
-	
+    
 	return mIndirizzo;
     }
     
@@ -196,7 +196,7 @@ public class Cliente implements Serializable {
      *            the mIndirizzo to set
      */
     public void setIndirizzo(String mIndirizzo) {
-	
+    
 	this.mIndirizzo = mIndirizzo;
     }
     
@@ -204,7 +204,7 @@ public class Cliente implements Serializable {
      * @return the mInterno
      */
     public String getInterno() {
-	
+    
 	return mInterno;
     }
     
@@ -213,7 +213,7 @@ public class Cliente implements Serializable {
      *            the mInterno to set
      */
     public void setInterno(String mInterno) {
-	
+    
 	this.mInterno = mInterno;
     }
     
@@ -221,7 +221,7 @@ public class Cliente implements Serializable {
      * @return the mUfficio
      */
     public String getUfficio() {
-	
+    
 	return mUfficio;
     }
     
@@ -230,7 +230,7 @@ public class Cliente implements Serializable {
      *            the mUfficio to set
      */
     public void setUfficio(String mUfficio) {
-	
+    
 	this.mUfficio = mUfficio;
     }
     
@@ -238,7 +238,7 @@ public class Cliente implements Serializable {
      * @return the mNote
      */
     public String getNote() {
-	
+    
 	return mNote;
     }
     
@@ -247,7 +247,7 @@ public class Cliente implements Serializable {
      *            the mNote to set
      */
     public void setNote(String mNote) {
-	
+    
 	this.mNote = mNote;
     }
     
@@ -255,7 +255,7 @@ public class Cliente implements Serializable {
      * @return the mCancellato
      */
     public boolean ismCancellato() {
-	
+    
 	return mCancellato;
     }
     
@@ -264,7 +264,7 @@ public class Cliente implements Serializable {
      *            the mCancellato to set
      */
     public void setCancellato(boolean mCancellato) {
-	
+    
 	this.mCancellato = mCancellato;
     }
     
@@ -272,7 +272,7 @@ public class Cliente implements Serializable {
      * @return the revisione
      */
     public Long getRevisione() {
-	
+    
 	return mRevisione;
     }
     
@@ -281,7 +281,7 @@ public class Cliente implements Serializable {
      *            the revisione to set
      */
     public void setRevisione(Long revisione) {
-	
+    
 	mRevisione = revisione;
     }
     
@@ -289,6 +289,7 @@ public class Cliente implements Serializable {
      * @return the mConflitto
      */
     public boolean isConflitto() {
+    
 	return mConflitto;
     }
     
@@ -297,23 +298,24 @@ public class Cliente implements Serializable {
      *            the mConflitto to set
      */
     public void setConflitto(boolean mConflitto) {
+    
 	this.mConflitto = mConflitto;
     }
     
     @Override
     public String toString() {
-	
+    
 	String result = "";
 	
 	result += "Cliente " + mIdCliente + "\nNominativo: " + mNominativo + "\nCodice fiscale: " + mCodiceFiscale + "\nCittà: " + mCitta +
-		"\nEmail: " + mEmail + "\nFax: " + mFax + "\nIndirizzo: " + mIndirizzo + "\nInterno: " + mInterno + "\nPartita IVA: " + mPartitaIVA +
-		"\nReferente: " + mReferente + "\nNote: " + mNote + "\nTelefono: " + mTelefono + "\nUfficio: " + mUfficio;
+		  "\nEmail: " + mEmail + "\nFax: " + mFax + "\nIndirizzo: " + mIndirizzo + "\nInterno: " + mInterno + "\nPartita IVA: " + mPartitaIVA +
+		  "\nReferente: " + mReferente + "\nNote: " + mNote + "\nTelefono: " + mTelefono + "\nUfficio: " + mUfficio;
 	
 	return result;
     }
     
     public static ContentValues insertSQL(Cliente cliente) {
-	
+    
 	ContentValues values = new ContentValues();
 	
 	values.put(ClienteDB.Fields.ID_CLIENTE, cliente.getIdCliente());
@@ -337,7 +339,7 @@ public class Cliente implements Serializable {
     }
     
     public static ContentValues updateSQL(Cliente cliente) {
-	
+    
 	ContentValues values = new ContentValues();
 	
 	values.put(ClienteDB.Fields.CITTA, cliente.getCitta());
@@ -359,7 +361,7 @@ public class Cliente implements Serializable {
     }
     
     public static Cliente getFromCursor(Cursor cursor) {
-	
+    
 	Cliente cliente = new Cliente();
 	
 	cliente.setCancellato(cursor.getInt(cursor.getColumnIndex(ClienteDB.Fields.CANCELLATO)) == 1 ? true : false);

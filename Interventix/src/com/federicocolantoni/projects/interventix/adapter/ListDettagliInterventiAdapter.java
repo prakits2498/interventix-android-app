@@ -20,7 +20,7 @@ public class ListDettagliInterventiAdapter extends CursorAdapter {
     private int mOggettoDettaglioInterventoIndex;
     
     public ListDettagliInterventiAdapter(Context context, Cursor c) {
-	
+    
 	super(context, c, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 	mInflater = LayoutInflater.from(context);
 	mFoundIndexes = false;
@@ -28,7 +28,7 @@ public class ListDettagliInterventiAdapter extends CursorAdapter {
     
     @Override
     public void bindView(View row, Context context, Cursor cursor) {
-	
+    
 	TextView tv_type_detail_interv = (TextView) row.getTag(R.id.tv_type_detail_interv);
 	TextView tv_object_detail_interv = (TextView) row.getTag(R.id.tv_object_detail_interv);
 	
@@ -49,7 +49,7 @@ public class ListDettagliInterventiAdapter extends CursorAdapter {
     
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-	
+    
 	View view = mInflater.inflate(R.layout.details_interv_row, parent, false);
 	
 	TextView tv_type_detail_interv = (TextView) view.findViewById(R.id.tv_type_detail_interv);
