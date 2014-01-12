@@ -74,19 +74,19 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 	
 	@Override
 	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-	    
+	
 	    return false;
 	}
 	
 	@Override
 	public void onDestroyActionMode(ActionMode mode) {
-	    
+	
 	    mActionModeSignature = null;
 	}
 	
 	@Override
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-	    
+	
 	    MenuInflater inflater = mode.getMenuInflater();
 	    inflater.inflate(R.menu.context_menu_signature, menu);
 	    
@@ -97,7 +97,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 	
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem menuItem) {
-	    
+	
 	    switch (menuItem.getItemId()) {
 	    
 		case R.id.menu_save_signature:
@@ -118,7 +118,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 			
 			@Override
 			protected void onUpdateComplete(int token, Object cookie, int result) {
-			    
+			
 			    InterventixToast.makeToast(getActivity(), "Firma aggiornata", Toast.LENGTH_SHORT);
 			    
 			    prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
@@ -135,6 +135,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 				    
 				    @Override
 				    public void run() {
+				    
 					edit.commit();
 				    }
 				}).start();
@@ -181,7 +182,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     };
     
     public void onCreate(Bundle savedInstanceState) {
-	
+    
 	super.onCreate(savedInstanceState);
 	
 	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
@@ -192,7 +193,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-	
+    
 	super.onActivityCreated(savedInstanceState);
 	
 	Bundle bundle = getArguments();
@@ -202,7 +203,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     
     @Override
     public void onStart() {
-	
+    
 	super.onStart();
 	
 	try {
@@ -239,7 +240,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 	    
 	    @Override
 	    public boolean onLongClick(View v) {
-		
+	    
 		if (mActionModeSignature != null)
 		    return false;
 		
@@ -266,7 +267,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     
     @Override
     public void onPause() {
-	
+    
 	super.onPause();
 	
 	System.out.println(this.getClass().getSimpleName() + " in pause");
@@ -274,7 +275,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     
     @Override
     public void onResume() {
-	
+    
 	super.onResume();
 	
 	System.out.println(this.getClass().getSimpleName() + " in resume");
@@ -282,7 +283,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     
     @Override
     public void onClick(View v) {
-	
+    
 	switch (v.getId()) {
 	    case R.id.brush:
 		

@@ -19,14 +19,14 @@ public class GetClientiAsyncTask extends AsyncTask<Void, Void, ArrayList<Cliente
     private Handler mHandler;
     
     public GetClientiAsyncTask(Context context, Handler handler) {
-	
+    
 	mContext = context;
 	mHandler = handler;
     }
     
     @Override
     protected ArrayList<Cliente> doInBackground(Void... params) {
-	
+    
 	ArrayList<Cliente> listaClienti = new ArrayList<Cliente>();
 	
 	String[] PROJECTION = new String[] {
@@ -36,7 +36,7 @@ public class GetClientiAsyncTask extends AsyncTask<Void, Void, ArrayList<Cliente
 	String SELECTION = ClienteDB.Fields.TYPE + "=?";
 	
 	String[] SELECTION_ARGS = new String[] {
-		ClienteDB.CLIENTE_ITEM_TYPE
+						ClienteDB.CLIENTE_ITEM_TYPE
 	};
 	
 	String sortOrder = ClienteDB.Fields.NOMINATIVO + " ASC";
@@ -64,7 +64,7 @@ public class GetClientiAsyncTask extends AsyncTask<Void, Void, ArrayList<Cliente
     
     @Override
     protected void onPostExecute(ArrayList<Cliente> result) {
-	
+    
 	Message msg = new Message();
 	
 	msg.what = Constants.WHAT_MESSAGE_GET_CLIENTI;

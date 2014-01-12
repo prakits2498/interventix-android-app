@@ -21,9 +21,6 @@ import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -41,7 +38,7 @@ import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 })
 @EFragment(R.layout.clienti_fragment)
 @SuppressWarnings("unchecked")
-public class ClientsInterventoFragment extends Fragment implements OnItemClickListener {
+public class ListClientsInterventoFragment extends Fragment {
     
     @ViewById(R.id.list_clients)
     ListView listClienti;
@@ -55,7 +52,7 @@ public class ClientsInterventoFragment extends Fragment implements OnItemClickLi
     Handler handler = new MyHandler() {
 	
 	public void handleMessage(Message msg) {
-	    
+	
 	    switch (msg.what) {
 	    
 		case Constants.WHAT_MESSAGE_GET_CLIENTI:
@@ -74,7 +71,7 @@ public class ClientsInterventoFragment extends Fragment implements OnItemClickLi
     }
     
     public void onCreate(Bundle savedInstanceState) {
-	
+    
 	super.onCreate(savedInstanceState);
 	
 	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
@@ -85,7 +82,7 @@ public class ClientsInterventoFragment extends Fragment implements OnItemClickLi
     
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-	
+    
 	super.onActivityCreated(savedInstanceState);
 	
 	Bundle bundle = getArguments();
@@ -95,23 +92,22 @@ public class ClientsInterventoFragment extends Fragment implements OnItemClickLi
     
     @Override
     public void onStart() {
-	
+    
 	super.onStart();
 	
 	new GetClientiAsyncTask(getActivity(), handler).execute();
 	
-	listClienti.setOnItemClickListener(this);
     }
     
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	
+    
 	inflater.inflate(R.menu.menu_clients, menu);
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-	
+    
 	switch (item.getItemId()) {
 	    case R.id.menu_save_client:
 		
@@ -119,7 +115,7 @@ public class ClientsInterventoFragment extends Fragment implements OnItemClickLi
 		    
 		    @Override
 		    protected void onUpdateComplete(int token, Object cookie, int result) {
-			
+		    
 			InterventixToast.makeToast(getActivity(), "Cliente modificato", Toast.LENGTH_SHORT);
 			
 			prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
@@ -136,6 +132,7 @@ public class ClientsInterventoFragment extends Fragment implements OnItemClickLi
 				
 				@Override
 				public void run() {
+				
 				    edit.commit();
 				}
 			    }).start();
@@ -173,11 +170,5 @@ public class ClientsInterventoFragment extends Fragment implements OnItemClickLi
 	}
 	
 	return getActivity().getSupportFragmentManager().popBackStackImmediate();
-    }
-    
-    @Override
-    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-	
-	mAdapter.toggleChecked(position);
     }
 }

@@ -13,13 +13,13 @@ public class GetSignatureInterventoAsyncTask extends AsyncTask<Long, Void, Inter
     private Context mContext;
     
     public GetSignatureInterventoAsyncTask(Context context) {
-	
+    
 	mContext = context.getApplicationContext();
     }
     
     @Override
     protected Intervento doInBackground(Long... params) {
-	
+    
 	ContentResolver cr = mContext.getContentResolver();
 	
 	String[] projection = new String[] {
@@ -54,7 +54,7 @@ public class GetSignatureInterventoAsyncTask extends AsyncTask<Long, Void, Inter
     
     @Override
     protected void onPostExecute(Intervento result) {
-	
+    
 	super.onPostExecute(result);
     }
 }

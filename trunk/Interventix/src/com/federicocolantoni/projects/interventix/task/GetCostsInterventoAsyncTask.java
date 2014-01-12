@@ -17,13 +17,13 @@ public class GetCostsInterventoAsyncTask extends AsyncTask<Long, Void, Intervent
     private final Context mContext;
     
     public GetCostsInterventoAsyncTask(Context context) {
-	
+    
 	mContext = context;
     }
     
     @Override
     protected Intervento doInBackground(Long... params) {
-	
+    
 	ContentResolver cr = mContext.getContentResolver();
 	
 	String[] projection = new String[] {

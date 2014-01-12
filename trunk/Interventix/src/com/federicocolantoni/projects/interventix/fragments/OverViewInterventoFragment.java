@@ -75,7 +75,7 @@ public class OverViewInterventoFragment extends Fragment {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
-	
+    
 	super.onCreate(savedInstanceState);
 	
 	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
@@ -86,7 +86,7 @@ public class OverViewInterventoFragment extends Fragment {
     
     @Override
     public void onStart() {
-	
+    
 	super.onStart();
 	
 	Bundle bundle = getArguments();
@@ -124,10 +124,10 @@ public class OverViewInterventoFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-		    
+		
 		    FragmentTransaction transaction = manager.beginTransaction();
 		    
-		    ClientsInterventoFragment_ clientiInterv = new ClientsInterventoFragment_();
+		    ListClientsInterventoFragment_ clientiInterv = new ListClientsInterventoFragment_();
 		    clientiInterv.setArguments(intervIDBundle);
 		    
 		    transaction.detach(OverViewInterventoFragment.this);
@@ -170,7 +170,7 @@ public class OverViewInterventoFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-		    
+		
 		    FragmentTransaction transaction = manager.beginTransaction();
 		    
 		    InformationsInterventoFragment_ infoInterv = new InformationsInterventoFragment_();
@@ -206,10 +206,10 @@ public class OverViewInterventoFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-		    
+		
 		    FragmentTransaction transaction = manager.beginTransaction();
 		    
-		    DetailsInterventoFragment_ detailsInterv = new DetailsInterventoFragment_();
+		    ListDetailsInterventoFragment_ detailsInterv = new ListDetailsInterventoFragment_();
 		    
 		    Bundle detailsIntervBundle = new Bundle(intervIDBundle);
 		    
@@ -246,7 +246,7 @@ public class OverViewInterventoFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-		    
+		
 		    FragmentTransaction transaction = manager.beginTransaction();
 		    
 		    CostsInterventoFragment_ costsInterv = new CostsInterventoFragment_();
@@ -273,7 +273,7 @@ public class OverViewInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onClick(View v) {
-			
+		    
 			FragmentTransaction transaction = manager.beginTransaction();
 			
 			SignatureInterventoFragment_ signInterv = new SignatureInterventoFragment_();
@@ -299,7 +299,7 @@ public class OverViewInterventoFragment extends Fragment {
     }
     
     private void addNewIntervento(Bundle bundle) {
-	
+    
 	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Intervento " + bundle.getLong(Constants.NUMERO_INTERVENTO));
 	
 	manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
@@ -331,10 +331,10 @@ public class OverViewInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 		FragmentTransaction transaction = manager.beginTransaction();
 		
-		ClientsInterventoFragment clientiInterv = new com.federicocolantoni.projects.interventix.fragments.ClientsInterventoFragment_();
+		ListClientsInterventoFragment clientiInterv = new com.federicocolantoni.projects.interventix.fragments.ListClientsInterventoFragment_();
 		clientiInterv.setArguments(intervIDBundle);
 		
 		transaction.detach(OverViewInterventoFragment.this);
@@ -369,7 +369,7 @@ public class OverViewInterventoFragment extends Fragment {
     
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	
+    
 	super.onCreateOptionsMenu(menu, inflater);
 	
 	inflater.inflate(R.menu.menu_view_intervento, menu);
@@ -381,7 +381,7 @@ public class OverViewInterventoFragment extends Fragment {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-	
+    
 	switch (item.getItemId()) {
 	    case R.id.pay:
 		

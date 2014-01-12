@@ -22,12 +22,12 @@ public class DettaglioIntervento implements Serializable {
     private JSONArray mTecnici;
     
     public DettaglioIntervento() {
-	
+    
     }
     
     @Override
     public String toString() {
-	
+    
 	String result = "";
 	
 	result += "Dettaglio " + mIdDettaglioIntervento + "\nOggetto: " + mOggetto + "\nDescrizione: " + mDescrizione + "\nTipo: " + mTipo + "\nIntervento: " + mIntervento;
@@ -37,7 +37,7 @@ public class DettaglioIntervento implements Serializable {
     }
     
     public DettaglioIntervento(Long idDettaglioIntervento) {
-	
+    
 	mIdDettaglioIntervento = idDettaglioIntervento;
     }
     
@@ -45,7 +45,7 @@ public class DettaglioIntervento implements Serializable {
      * @return the mIdDettaglioIntervento
      */
     public Long getmIdDettaglioIntervento() {
-	
+    
 	return mIdDettaglioIntervento;
     }
     
@@ -54,7 +54,7 @@ public class DettaglioIntervento implements Serializable {
      *            the mIdDettaglioIntervento to set
      */
     public void setIdDettaglioIntervento(Long mIdDettaglioIntervento) {
-	
+    
 	this.mIdDettaglioIntervento = mIdDettaglioIntervento;
     }
     
@@ -62,7 +62,7 @@ public class DettaglioIntervento implements Serializable {
      * @return the mTipo
      */
     public String getmTipo() {
-	
+    
 	return mTipo;
     }
     
@@ -71,7 +71,7 @@ public class DettaglioIntervento implements Serializable {
      *            the mTipo to set
      */
     public void setTipo(String mTipo) {
-	
+    
 	this.mTipo = mTipo;
     }
     
@@ -79,7 +79,7 @@ public class DettaglioIntervento implements Serializable {
      * @return the mOggetto
      */
     public String getmOggetto() {
-	
+    
 	return mOggetto;
     }
     
@@ -88,7 +88,7 @@ public class DettaglioIntervento implements Serializable {
      *            the mOggetto to set
      */
     public void setOggetto(String mOggetto) {
-	
+    
 	this.mOggetto = mOggetto;
     }
     
@@ -96,7 +96,7 @@ public class DettaglioIntervento implements Serializable {
      * @return the mDescrizione
      */
     public String getmDescrizione() {
-	
+    
 	return mDescrizione;
     }
     
@@ -105,7 +105,7 @@ public class DettaglioIntervento implements Serializable {
      *            the mDescrizione to set
      */
     public void setDescrizione(String mDescrizione) {
-	
+    
 	this.mDescrizione = mDescrizione;
     }
     
@@ -113,7 +113,7 @@ public class DettaglioIntervento implements Serializable {
      * @return the mIntervento
      */
     public Long getmIntervento() {
-	
+    
 	return mIntervento;
     }
     
@@ -122,23 +122,27 @@ public class DettaglioIntervento implements Serializable {
      *            the mIntervento to set
      */
     public void setIntervento(Long mIntervento) {
-	
+    
 	this.mIntervento = mIntervento;
     }
     
     public Long getmInizio() {
+    
 	return mInizio;
     }
     
     public void setInizio(Long mInizio) {
+    
 	this.mInizio = mInizio;
     }
     
     public Long getmFine() {
+    
 	return mFine;
     }
     
     public void setFine(Long mFine) {
+    
 	this.mFine = mFine;
     }
     
@@ -146,6 +150,7 @@ public class DettaglioIntervento implements Serializable {
      * @return the mTecnici
      */
     public JSONArray getmTecnici() {
+    
 	return mTecnici;
     }
     
@@ -154,6 +159,7 @@ public class DettaglioIntervento implements Serializable {
      *            the mTecnici to set
      */
     public void setTecnici(JSONArray mTecnici) {
+    
 	this.mTecnici = mTecnici;
     }
     
@@ -161,6 +167,7 @@ public class DettaglioIntervento implements Serializable {
      * @return the mModificato
      */
     public String getmModificato() {
+    
 	return mModificato;
     }
     
@@ -169,11 +176,12 @@ public class DettaglioIntervento implements Serializable {
      *            the mModificato to set
      */
     public void setModificato(String mModificato) {
+    
 	this.mModificato = mModificato;
     }
     
     public static ContentValues insertSQL(DettaglioIntervento dettIntervento) {
-	
+    
 	ContentValues values = new ContentValues();
 	
 	values.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, dettIntervento.getmIdDettaglioIntervento());
@@ -191,7 +199,7 @@ public class DettaglioIntervento implements Serializable {
     }
     
     public static ContentValues updateSQL(DettaglioIntervento dettIntervento) {
-	
+    
 	ContentValues values = new ContentValues();
 	
 	values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, dettIntervento.getmDescrizione());

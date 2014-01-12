@@ -29,17 +29,19 @@ public class DrawingView extends View {
     private boolean erase = false;
     
     public DrawingView(Context context) {
+    
 	super(context);
 	setupDrawing();
     }
     
     public DrawingView(Context context, AttributeSet attrs) {
+    
 	super(context, attrs);
 	setupDrawing();
     }
     
     private void setupDrawing() {
-	
+    
 	drawPath = new Path();
 	drawPaint = new Paint();
 	
@@ -56,7 +58,7 @@ public class DrawingView extends View {
     
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-	
+    
 	super.onSizeChanged(w, h, oldw, oldh);
 	
 	canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
@@ -65,13 +67,13 @@ public class DrawingView extends View {
     
     @Override
     protected void onDraw(Canvas canvas) {
-	
+    
 	canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
 	canvas.drawPath(drawPath, drawPaint);
     }
     
     public void setErase(boolean isErase) {
-	
+    
 	erase = isErase;
 	
 	if (erase) {
@@ -87,7 +89,7 @@ public class DrawingView extends View {
     }
     
     public void resetSignature() {
-	
+    
 	drawPath = null;
 	
 	drawPaint = null;
@@ -100,7 +102,7 @@ public class DrawingView extends View {
     
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-	
+    
 	float touchX = event.getX();
 	float touchY = event.getY();
 	

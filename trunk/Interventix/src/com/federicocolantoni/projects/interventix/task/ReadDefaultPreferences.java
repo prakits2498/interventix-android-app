@@ -10,20 +10,20 @@ public class ReadDefaultPreferences extends AsyncTask<Void, Void, SharedPreferen
     private final Context context;
     
     public ReadDefaultPreferences(Context context) {
-	
+    
 	this.context = context;
     }
     
     @Override
     protected SharedPreferences doInBackground(Void... params) {
-	
+    
 	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
 	return prefs;
     }
     
     @Override
     protected void onPostExecute(SharedPreferences result) {
-	
+    
 	super.onPostExecute(result);
     }
 }

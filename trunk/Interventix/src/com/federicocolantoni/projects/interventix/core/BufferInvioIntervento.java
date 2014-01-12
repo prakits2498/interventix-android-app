@@ -13,11 +13,11 @@ public class BufferInvioIntervento {
     private BufferInterventoTask interventoTask;
     
     public BufferInvioIntervento(Context context) {
-	
+    
     }
     
     public void startTimerInterventi() {
-	
+    
 	timerBuffer = new Timer("TimerBufferIntervento", true);
 	interventoTask = new BufferInterventoTask();
 	System.out.println(this.getClass().getSimpleName() + " in esecuzione");
@@ -25,7 +25,7 @@ public class BufferInvioIntervento {
     }
     
     public void stopTimerInterventi() {
-	
+    
 	if (interventoTask.cancel()) {
 	    System.out.println(interventoTask.getClass().getSimpleName() + " cancellato");
 	    timerBuffer.purge();
@@ -37,12 +37,12 @@ public class BufferInvioIntervento {
     private class BufferInterventoTask extends TimerTask {
 	
 	public BufferInterventoTask() {
-	    
+	
 	}
 	
 	@Override
 	public void run() {
-	    
+	
 	    System.out.println(this.getClass().getSimpleName() + ": " + new DateTime(DateTime.now()).toString("dd/MM/yyyy hh:mm:ss"));
 	}
     }

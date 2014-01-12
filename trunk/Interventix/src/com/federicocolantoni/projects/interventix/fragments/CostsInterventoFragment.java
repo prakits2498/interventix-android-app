@@ -77,7 +77,7 @@ public class CostsInterventoFragment extends Fragment {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
-	
+    
 	super.onCreate(savedInstanceState);
 	
 	BugSenseHandler.initAndStartSession(getActivity(), Constants.API_KEY);
@@ -106,7 +106,7 @@ public class CostsInterventoFragment extends Fragment {
     
     @Override
     public void onStart() {
-	
+    
 	super.onStart();
 	
 	tv_costs_intervento.setText("Costi");
@@ -133,6 +133,7 @@ public class CostsInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
+	    
 		new SetCostoManodopera().show(getFragmentManager(), Constants.MANODOPERA_DIALOG_FRAGMENT);
 	    }
 	});
@@ -145,6 +146,7 @@ public class CostsInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
+	    
 		new SetCostoComponenti().show(getFragmentManager(), Constants.COMPONENTI_DIALOG_FRAGMENT);
 	    }
 	});
@@ -157,6 +159,7 @@ public class CostsInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
+	    
 		new SetCostoAccessori().show(getFragmentManager(), Constants.ACCESSORI_DIALOG_FRAGMENT);
 	    }
 	});
@@ -180,7 +183,7 @@ public class CostsInterventoFragment extends Fragment {
     
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	
+    
 	super.onCreateOptionsMenu(menu, inflater);
 	
 	inflater.inflate(R.menu.menu_view_intervento, menu);
@@ -192,7 +195,7 @@ public class CostsInterventoFragment extends Fragment {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-	
+    
 	switch (item.getItemId()) {
 	    case R.id.pay:
 		
@@ -221,12 +224,12 @@ public class CostsInterventoFragment extends Fragment {
 	private EditText mEdit_manodopera;
 	
 	public SetCostoManodopera() {
-	    
+	
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
+	
 	    AlertDialog.Builder manodopera = new AlertDialog.Builder(getActivity());
 	    
 	    manodopera.setTitle(R.string.manodopera_title);
@@ -244,7 +247,7 @@ public class CostsInterventoFragment extends Fragment {
 	
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-	    
+	
 	    DecimalFormat formatter = new DecimalFormat("###,###,###.##");
 	    
 	    TextView tv_manodopera = (TextView) getActivity().findViewById(R.id.tv_row_manodopera);
@@ -300,6 +303,7 @@ public class CostsInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void run() {
+		    
 			edit.commit();
 		    }
 		}).start();
@@ -314,12 +318,12 @@ public class CostsInterventoFragment extends Fragment {
 	private EditText mEdit_Componenti;
 	
 	public SetCostoComponenti() {
-	    
+	
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
+	
 	    AlertDialog.Builder componenti = new Builder(getActivity());
 	    
 	    componenti.setTitle(R.string.componenti_title);
@@ -337,7 +341,7 @@ public class CostsInterventoFragment extends Fragment {
 	
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-	    
+	
 	    DecimalFormat formatter = new DecimalFormat("###,###,###.##");
 	    
 	    TextView tv_row_componenti = (TextView) getActivity().findViewById(R.id.tv_row_componenti);
@@ -393,6 +397,7 @@ public class CostsInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void run() {
+		    
 			edit.commit();
 		    }
 		}).start();
@@ -407,12 +412,12 @@ public class CostsInterventoFragment extends Fragment {
 	private EditText mEdit_Accessori;
 	
 	public SetCostoAccessori() {
-	    
+	
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
+	
 	    AlertDialog.Builder accessori = new Builder(getActivity());
 	    
 	    accessori.setTitle(R.string.accessori_title);
@@ -430,7 +435,7 @@ public class CostsInterventoFragment extends Fragment {
 	
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-	    
+	
 	    DecimalFormat formatter = new DecimalFormat("###,###,###.##");
 	    
 	    TextView tv_row_accessori = (TextView) getActivity().findViewById(R.id.tv_row_accessori);
@@ -486,6 +491,7 @@ public class CostsInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void run() {
+		    
 			edit.commit();
 		    }
 		}).start();

@@ -20,11 +20,11 @@ public class Utente implements Serializable {
     private List<Intervento> mInterventi;
     
     public Utente() {
-	
+    
     }
     
     public Utente(Long idUtente) {
-	
+    
 	mIdUtente = idUtente;
     }
     
@@ -32,7 +32,7 @@ public class Utente implements Serializable {
      * @return the mIdUtente
      */
     public Long getIdUtente() {
-	
+    
 	return mIdUtente;
     }
     
@@ -41,7 +41,7 @@ public class Utente implements Serializable {
      *            the mIdUtente to set
      */
     public void setIdUtente(Long mIdUtente) {
-	
+    
 	this.mIdUtente = mIdUtente;
     }
     
@@ -49,7 +49,7 @@ public class Utente implements Serializable {
      * @return the mNome
      */
     public String getNome() {
-	
+    
 	return mNome;
     }
     
@@ -58,7 +58,7 @@ public class Utente implements Serializable {
      *            the mNome to set
      */
     public void setNome(String mNome) {
-	
+    
 	this.mNome = mNome;
     }
     
@@ -66,7 +66,7 @@ public class Utente implements Serializable {
      * @return the mCognome
      */
     public String getCognome() {
-	
+    
 	return mCognome;
     }
     
@@ -75,7 +75,7 @@ public class Utente implements Serializable {
      *            the mCognome to set
      */
     public void setCognome(String mCognome) {
-	
+    
 	this.mCognome = mCognome;
     }
     
@@ -83,7 +83,7 @@ public class Utente implements Serializable {
      * @return the mUserName
      */
     public String getUsername() {
-	
+    
 	return mUserName;
     }
     
@@ -92,7 +92,7 @@ public class Utente implements Serializable {
      *            the mUserName to set
      */
     public void setUserName(String mUserName) {
-	
+    
 	this.mUserName = mUserName;
     }
     
@@ -100,7 +100,7 @@ public class Utente implements Serializable {
      * @return the mPassword
      */
     public String getmPassword() {
-	
+    
 	return mPassword;
     }
     
@@ -109,7 +109,7 @@ public class Utente implements Serializable {
      *            the mPassword to set
      */
     public void setmPassword(String mPassword) {
-	
+    
 	this.mPassword = mPassword;
     }
     
@@ -117,7 +117,7 @@ public class Utente implements Serializable {
      * @return the mEmail
      */
     public String getEmail() {
-	
+    
 	return mEmail;
     }
     
@@ -126,7 +126,7 @@ public class Utente implements Serializable {
      *            the mEmail to set
      */
     public void setEmail(String mEmail) {
-	
+    
 	this.mEmail = mEmail;
     }
     
@@ -134,7 +134,7 @@ public class Utente implements Serializable {
      * @return the mTipo
      */
     public String getTipo() {
-	
+    
 	return mTipo;
     }
     
@@ -143,7 +143,7 @@ public class Utente implements Serializable {
      *            the mTipo to set
      */
     public void setTipo(String mTipo) {
-	
+    
 	this.mTipo = mTipo;
     }
     
@@ -151,7 +151,7 @@ public class Utente implements Serializable {
      * @return the mCancellato
      */
     public boolean isCancellato() {
-	
+    
 	return mCancellato;
     }
     
@@ -160,7 +160,7 @@ public class Utente implements Serializable {
      *            the mCancellato to set
      */
     public void setCancellato(boolean mCancellato) {
-	
+    
 	this.mCancellato = mCancellato;
     }
     
@@ -168,6 +168,7 @@ public class Utente implements Serializable {
      * @return the mCestinato
      */
     public boolean isCestinato() {
+    
 	return mCestinato;
     }
     
@@ -176,6 +177,7 @@ public class Utente implements Serializable {
      *            the mCestinato to set
      */
     public void setCestinato(boolean mCestinato) {
+    
 	this.mCestinato = mCestinato;
     }
     
@@ -183,7 +185,7 @@ public class Utente implements Serializable {
      * @return the mInterventi
      */
     public List<Intervento> getInterventi() {
-	
+    
 	return mInterventi;
     }
     
@@ -192,7 +194,7 @@ public class Utente implements Serializable {
      *            the mInterventi to set
      */
     public void setInterventi(List<Intervento> mInterventi) {
-	
+    
 	this.mInterventi = mInterventi;
     }
     
@@ -200,7 +202,7 @@ public class Utente implements Serializable {
      * @return the mRevisione
      */
     public Long getRevisione() {
-	
+    
 	return mRevisione;
     }
     
@@ -209,7 +211,7 @@ public class Utente implements Serializable {
      *            the mRevisione to set
      */
     public void setRevisione(Long mRevisione) {
-	
+    
 	this.mRevisione = mRevisione;
     }
     
@@ -217,6 +219,7 @@ public class Utente implements Serializable {
      * @return the mConflitto
      */
     public boolean isConflitto() {
+    
 	return mConflitto;
     }
     
@@ -225,22 +228,23 @@ public class Utente implements Serializable {
      *            the mConflitto to set
      */
     public void setConflitto(boolean mConflitto) {
+    
 	this.mConflitto = mConflitto;
     }
     
     @Override
     public String toString() {
-	
+    
 	String result = "";
 	
 	result += "Utente " + mIdUtente + "\nNome: " + mNome + "\nCognome" + mCognome + "\nUsername: " + mUserName +
-		"\nEmail: " + mEmail + "\nTipo: " + mTipo + "\nRevisione: " + mRevisione + "\nCancellato: " + mCancellato + "\nCestinato: " + mCestinato;
+		  "\nEmail: " + mEmail + "\nTipo: " + mTipo + "\nRevisione: " + mRevisione + "\nCancellato: " + mCancellato + "\nCestinato: " + mCestinato;
 	
 	return result;
     }
     
     public static ContentValues insertSQL(Utente user) {
-	
+    
 	ContentValues values = new ContentValues();
 	
 	values.put(UtenteDB.Fields.ID_UTENTE, user.getIdUtente());
@@ -258,7 +262,7 @@ public class Utente implements Serializable {
     }
     
     public static ContentValues updateSQL(Utente user) {
-	
+    
 	ContentValues values = new ContentValues();
 	
 	values.put(UtenteDB.Fields.NOME, user.getNome());

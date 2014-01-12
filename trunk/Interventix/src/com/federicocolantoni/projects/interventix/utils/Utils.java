@@ -26,7 +26,7 @@ public class Utils {
     private final static char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
     
     public static JSONObject connectionForURL(String json_req, final String url_string) throws MalformedURLException, IOException, ProtocolException, ParseException, Exception, UnsupportedEncodingException {
-	
+    
 	URL url = new URL(url_string + "?DATA=" + json_req);
 	
 	HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -47,7 +47,7 @@ public class Utils {
     };
     
     private static String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
-	
+    
 	BufferedReader br = null;
 	StringBuilder sb = new StringBuilder();
 	
@@ -82,7 +82,7 @@ public class Utils {
     }
     
     public static byte[] hexToBytes(char[] hex) {
-	
+    
 	int length = hex.length / 2;
 	
 	byte[] raw = new byte[length];
@@ -101,7 +101,7 @@ public class Utils {
     }
     
     public static String bytesToHex(byte[] bytes) {
-	
+    
 	char[] hexChars = new char[bytes.length * 2];
 	
 	int v;

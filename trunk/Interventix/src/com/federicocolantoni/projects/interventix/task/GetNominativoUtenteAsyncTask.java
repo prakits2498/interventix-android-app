@@ -13,12 +13,13 @@ public class GetNominativoUtenteAsyncTask extends AsyncTask<Long, Void, Utente> 
     private Context context;
     
     public GetNominativoUtenteAsyncTask(Context context) {
+    
 	this.context = context.getApplicationContext();
     }
     
     @Override
     protected Utente doInBackground(Long... params) {
-	
+    
 	ContentResolver cr = context.getContentResolver();
 	
 	String[] projection = new String[] {
@@ -52,6 +53,6 @@ public class GetNominativoUtenteAsyncTask extends AsyncTask<Long, Void, Utente> 
     
     @Override
     protected void onPostExecute(Utente result) {
-	
+    
     }
 }

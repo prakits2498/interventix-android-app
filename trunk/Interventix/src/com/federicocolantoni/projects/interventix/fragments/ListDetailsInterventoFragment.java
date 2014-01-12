@@ -32,7 +32,7 @@ import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.details_intervento_fragment)
-public class DetailsInterventoFragment extends Fragment implements LoaderCallbacks<Cursor> {
+public class ListDetailsInterventoFragment extends Fragment implements LoaderCallbacks<Cursor> {
     
     private final static int MESSAGE_LOADER = 1;
     
@@ -61,7 +61,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
-	
+    
 	super.onCreate(savedInstanceState);
 	
 	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
@@ -72,7 +72,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
     
     @Override
     public void onStart() {
-	
+    
 	super.onStart();
 	
 	Bundle bundle = getArguments();
@@ -93,7 +93,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 	    
 	    @Override
 	    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-		
+	    
 		Bundle bundle = new Bundle();
 		
 		Cursor cur = (Cursor) adapter.getItemAtPosition(position);
@@ -119,7 +119,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
 	    
 	    @Override
 	    public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
-		
+	    
 		// aggiungere il menu contestuale per la cancellazione del
 		// dettaglio
 		
@@ -132,7 +132,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
     
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	
+    
 	super.onCreateOptionsMenu(menu, inflater);
 	
 	inflater.inflate(R.menu.menu_view_intervento, menu);
@@ -143,7 +143,7 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-	
+    
 	switch (item.getItemId()) {
 	
 	    case R.id.add_detail_interv:
@@ -193,21 +193,21 @@ public class DetailsInterventoFragment extends Fragment implements LoaderCallbac
     
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-	
-	Loader<Cursor> loader = new CursorLoader(getActivity(), DettaglioInterventoDB.CONTENT_URI, DetailsInterventoFragment.PROJECTION, DetailsInterventoFragment.SELECTION, SELECTION_ARGS, null);
+    
+	Loader<Cursor> loader = new CursorLoader(getActivity(), DettaglioInterventoDB.CONTENT_URI, ListDetailsInterventoFragment.PROJECTION, ListDetailsInterventoFragment.SELECTION, SELECTION_ARGS, null);
 	
 	return loader;
     }
     
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-	
+    
 	mAdapter.swapCursor(cursor);
     }
     
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-	
+    
 	mAdapter.swapCursor(null);
     }
 }

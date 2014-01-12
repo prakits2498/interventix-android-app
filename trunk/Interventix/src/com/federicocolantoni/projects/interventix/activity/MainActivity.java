@@ -29,7 +29,6 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.BuildConfig;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.modules.login.Login_;
 import com.federicocolantoni.projects.interventix.settings.SettingActivity;
 import com.federicocolantoni.projects.interventix.settings.SettingSupportActivity;
 import com.federicocolantoni.projects.interventix.task.ReadDefaultPreferences;
@@ -50,14 +49,14 @@ public class MainActivity extends ActionBarActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-	
+    
 	super.onCreate(savedInstanceState);
 	
 	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
 	
 	FragmentManager manager = getSupportFragmentManager();
 	
-	Login_ fragLogin = new Login_();
+	com.federicocolantoni.projects.interventix.modules.login.Login_ fragLogin = new com.federicocolantoni.projects.interventix.modules.login.Login_();
 	
 	FragmentTransaction transaction = manager.beginTransaction();
 	
@@ -76,14 +75,14 @@ public class MainActivity extends ActionBarActivity {
     
     @Override
     protected void onStart() {
-	
+    
 	super.onStart();
 	
 	tv_changelog.setOnClickListener(new OnClickListener() {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 		// Launch change log dialog
 		ChangeLogDialog changelogDialog = new ChangeLogDialog(MainActivity.this);
 		changelogDialog.show();
@@ -93,7 +92,7 @@ public class MainActivity extends ActionBarActivity {
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-	
+    
 	super.onCreateOptionsMenu(menu);
 	
 	final MenuInflater inflater = getMenuInflater();
@@ -104,7 +103,7 @@ public class MainActivity extends ActionBarActivity {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-	
+    
 	super.onOptionsItemSelected(item);
 	
 	switch (item.getItemId()) {
@@ -128,12 +127,12 @@ public class MainActivity extends ActionBarActivity {
 	private Button btn_ok;
 	
 	public FirstRunDialog() {
-	    
+	
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
+	
 	    AlertDialog.Builder first_run_dialog = new Builder(getActivity());
 	    
 	    first_run_dialog.setTitle(welcome_title);
@@ -153,7 +152,7 @@ public class MainActivity extends ActionBarActivity {
 	
 	@Override
 	public void onClick(View v) {
-	    
+	
 	    switch (v.getId()) {
 		case R.id.save_prefs_url:
 		    
@@ -165,6 +164,7 @@ public class MainActivity extends ActionBarActivity {
     
     @Override
     protected void onDestroy() {
+    
 	super.onDestroy();
 	
 	if (BuildConfig.DEBUG) {

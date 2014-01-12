@@ -11,19 +11,19 @@ public class Interventix extends Application {
     private static Interventix instance;
     
     public static Interventix getInstance() {
-	
+    
 	return instance;
     }
     
     public static Context getContext() {
-	
+    
 	return instance.getApplicationContext();
     }
     
     @SuppressLint("NewApi")
     @Override
     public void onCreate() {
-	
+    
 	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
 	
 	instance = this;
@@ -33,7 +33,7 @@ public class Interventix extends Application {
     }
     
     private void loadAsyncTask() {
-	
+    
 	try {
 	    Class.forName("android.os.AsyncTask");
 	}

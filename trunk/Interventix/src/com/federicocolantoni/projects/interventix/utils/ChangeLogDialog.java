@@ -30,10 +30,12 @@ public class ChangeLogDialog {
     private Activity fActivity;
     
     public ChangeLogDialog(Activity context) {
+    
 	fActivity = context;
     }
     
     private String GetAppVersion() {
+    
 	try {
 	    PackageInfo _info = fActivity.getPackageManager().getPackageInfo(fActivity.getPackageName(), 0);
 	    return _info.versionName;
@@ -47,6 +49,7 @@ public class ChangeLogDialog {
     }
     
     private String ParseReleaseTag(XmlResourceParser aXml) throws XmlPullParserException, IOException {
+    
 	String _Result = "<h1>Release: " + aXml.getAttributeValue(null, "version") + "</h1><ul>";
 	int eventType = aXml.getEventType();
 	while ((eventType != XmlPullParser.END_TAG) || (aXml.getName().equals("change"))) {
@@ -61,6 +64,7 @@ public class ChangeLogDialog {
     }
     
     private String GetStyle() {
+    
 	return
 	"<style type=\"text/css\">"
 		+ "h1 { margin-left: 0px; font-size: 12pt; }"
@@ -70,6 +74,7 @@ public class ChangeLogDialog {
     }
     
     private String GetHTMLChangelog(int aResourceId, Resources aResource) {
+    
 	String _Result = "<html><head>" + GetStyle() + "</head><body>";
 	XmlResourceParser _xml = aResource.getXml(aResourceId);
 	try {
@@ -97,7 +102,7 @@ public class ChangeLogDialog {
     }
     
     public void show() {
-	
+    
 	String _PackageName = fActivity.getPackageName();
 	Resources _Resource;
 	try {
@@ -129,13 +134,14 @@ public class ChangeLogDialog {
 	WebView _WebView = new WebView(fActivity);
 	_WebView.loadData(_HTML, "text/html", "utf-8");
 	AlertDialog.Builder builder = new AlertDialog.Builder(fActivity)
-		.setTitle(_Title)
-		.setView(_WebView)
-		.setPositiveButton(_Close, new Dialog.OnClickListener() {
-		    public void onClick(DialogInterface dialogInterface, int i) {
-			dialogInterface.dismiss();
-		    }
-		});
+									.setTitle(_Title)
+									.setView(_WebView)
+									.setPositiveButton(_Close, new Dialog.OnClickListener() {
+									    public void onClick(DialogInterface dialogInterface, int i) {
+									    
+										dialogInterface.dismiss();
+									    }
+									});
 	builder.create().show();
     }
 }

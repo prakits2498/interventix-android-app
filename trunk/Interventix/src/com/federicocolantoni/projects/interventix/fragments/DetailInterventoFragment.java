@@ -144,7 +144,7 @@ public class DetailInterventoFragment extends Fragment {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
-	
+    
 	super.onCreate(savedInstanceState);
 	
 	actionbar = ((ActionBarActivity) getActivity()).getSupportActionBar();
@@ -161,7 +161,7 @@ public class DetailInterventoFragment extends Fragment {
     
     @Override
     public void onStart() {
-	
+    
 	super.onStart();
 	
 	setupViewsDetailIntervernto();
@@ -169,7 +169,7 @@ public class DetailInterventoFragment extends Fragment {
     
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-	
+    
 	super.onActivityCreated(savedInstanceState);
 	
 	if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN && Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
@@ -178,7 +178,7 @@ public class DetailInterventoFragment extends Fragment {
     
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	
+    
 	super.onCreateOptionsMenu(menu, inflater);
 	
 	if (sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO))
@@ -187,7 +187,7 @@ public class DetailInterventoFragment extends Fragment {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-	
+    
 	switch (item.getItemId()) {
 	    case R.id.menu_save_detail:
 		
@@ -198,7 +198,7 @@ public class DetailInterventoFragment extends Fragment {
 			
 			@Override
 			protected void onInsertComplete(int token, Object cookie, Uri uri) {
-			    
+			
 			    InterventixToast.makeToast(getActivity(), "Nuovo dettaglio inserito", Toast.LENGTH_LONG);
 			    
 			    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
@@ -215,6 +215,7 @@ public class DetailInterventoFragment extends Fragment {
 				    
 				    @Override
 				    public void run() {
+				    
 					edit.commit();
 				    }
 				}).start();
@@ -254,7 +255,7 @@ public class DetailInterventoFragment extends Fragment {
 	    case R.id.menu_cancel_detail:
 		
 		InterventixToast.makeToast(getActivity(),
-			"Dettaglio intervento cancellato", Toast.LENGTH_SHORT);
+					   "Dettaglio intervento cancellato", Toast.LENGTH_SHORT);
 		
 		sNewDetail = null;
 		
@@ -267,6 +268,7 @@ public class DetailInterventoFragment extends Fragment {
     }
     
     private void setupViewsDetailIntervernto() {
+    
 	if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
 	    
 	    dettInterv = null;
@@ -291,7 +293,7 @@ public class DetailInterventoFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-		    
+		
 		    new SetTipo().show(getFragmentManager(), Constants.TIPO_DETTAGLIO_DIALOG_FRAGMENT);
 		}
 	    });
@@ -303,7 +305,7 @@ public class DetailInterventoFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-		    
+		
 		    new SetOggetto().show(getFragmentManager(), Constants.OGGETTO_DETTAGLIO_DIALOG_FRAGMENT);
 		}
 	    });
@@ -320,7 +322,7 @@ public class DetailInterventoFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-		    
+		
 		    // inserire una dialog con la lista di tutti i tecnici già
 		    // associati al dettaglio e che dia la possibilità di
 		    // aggiungere o togliere i tecnici. Un tasto "fatto" chiude
@@ -336,7 +338,7 @@ public class DetailInterventoFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-		    
+		
 		    new SetDecrizione().show(getFragmentManager(), Constants.DESCRIZIONE_DETTAGLIO_DIALOG_FRAGMENT);
 		}
 	    });
@@ -347,7 +349,7 @@ public class DetailInterventoFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-		    
+		
 		    final TextView tv_row_inizio_dett = (TextView) row_inizio_dett.findViewById(R.id.tv_row_inizio_dettaglio);
 		    
 		    final Dialog dateTimeDialog = new Dialog(getActivity());
@@ -366,7 +368,7 @@ public class DetailInterventoFragment extends Fragment {
 			
 			@Override
 			public void onDateChanged(Calendar c) {
-			    
+			
 			}
 		    });
 		    
@@ -374,7 +376,7 @@ public class DetailInterventoFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-			    
+			
 			    dateTimePicker.clearFocus();
 			    
 			    DateTime dt_inizio = new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone.forID("Europe/Rome"));
@@ -428,6 +430,7 @@ public class DetailInterventoFragment extends Fragment {
 					
 					@Override
 					public void run() {
+					
 					    edit.commit();
 					}
 				    }).start();
@@ -442,7 +445,7 @@ public class DetailInterventoFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-			    
+			
 			    dateTimeDialog.cancel();
 			}
 		    });
@@ -451,7 +454,7 @@ public class DetailInterventoFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-			    
+			
 			    DateTime dt = null;
 			    
 			    DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
@@ -478,7 +481,7 @@ public class DetailInterventoFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-		    
+		
 		    final TextView tv_row_fine_dett = (TextView) row_fine_dett.findViewById(R.id.tv_row_fine_dettaglio);
 		    
 		    final Dialog dateTimeDialog = new Dialog(getActivity());
@@ -497,7 +500,7 @@ public class DetailInterventoFragment extends Fragment {
 			
 			@Override
 			public void onDateChanged(Calendar c) {
-			    
+			
 			}
 		    });
 		    
@@ -505,7 +508,7 @@ public class DetailInterventoFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-			    
+			
 			    dateTimePicker.clearFocus();
 			    
 			    DateTime dt_fine = new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone.forID("Europe/Rome"));
@@ -559,6 +562,7 @@ public class DetailInterventoFragment extends Fragment {
 					
 					@Override
 					public void run() {
+					
 					    edit.commit();
 					}
 				    }).start();
@@ -573,7 +577,7 @@ public class DetailInterventoFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-			    
+			
 			    dateTimeDialog.cancel();
 			}
 		    });
@@ -582,7 +586,7 @@ public class DetailInterventoFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-			    
+			
 			    DateTime dt = null;
 			    
 			    DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
@@ -616,7 +620,7 @@ public class DetailInterventoFragment extends Fragment {
     }
     
     private void addNewDetail() {
-	
+    
 	sNewDetail = new JSONObject();
 	
 	try {
@@ -636,7 +640,7 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 		new SetTipo().show(getFragmentManager(), Constants.TIPO_DETTAGLIO_DIALOG_FRAGMENT);
 	    }
 	});
@@ -647,7 +651,7 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 		new SetOggetto().show(getFragmentManager(), Constants.OGGETTO_DETTAGLIO_DIALOG_FRAGMENT);
 	    }
 	});
@@ -660,7 +664,7 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 		AlertDialog.Builder tecniciDialog = new Builder(getActivity());
 		
 		String[] tuttiTecnici = null;
@@ -705,7 +709,7 @@ public class DetailInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-			
+		    
 			if (isChecked)
 			    tecniciChecked[which] = true;
 			else
@@ -719,7 +723,7 @@ public class DetailInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
-			
+		    
 			JSONArray tecniciSelected = new JSONArray();
 			
 			for (int i = 0; i < copiaTuttiTecnici.length; i++) {
@@ -747,7 +751,7 @@ public class DetailInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
-			
+		    
 			dialog.dismiss();
 		    }
 		});
@@ -760,7 +764,7 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 		new SetDecrizione().show(getFragmentManager(), Constants.DESCRIZIONE_DETTAGLIO_DIALOG_FRAGMENT);
 	    }
 	});
@@ -771,7 +775,7 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 		final TextView tv_row_inizio_dett = (TextView) row_inizio_dett.findViewById(R.id.tv_row_inizio_dettaglio);
 		
 		final Dialog dateTimeDialog = new Dialog(getActivity());
@@ -790,7 +794,7 @@ public class DetailInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onDateChanged(Calendar c) {
-			
+		    
 		    }
 		});
 		
@@ -798,7 +802,7 @@ public class DetailInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onClick(View v) {
-			
+		    
 			dateTimePicker.clearFocus();
 			
 			DateTime dt_inizio = new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone.forID("Europe/Rome"));
@@ -827,18 +831,18 @@ public class DetailInterventoFragment extends Fragment {
 			    if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
 				SaveChangesDettaglioInterventoAsyncQueryHandler
 				saveChanges = new
-					SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
+					      SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
 				
 				ContentValues values = new ContentValues();
 				values.put(DettaglioInterventoDB.Fields.INIZIO,
-					dt_inizio.toDate().getTime());
+					   dt_inizio.toDate().getTime());
 				values.put(DettaglioInterventoDB.Fields.MODIFICATO,
-					"M");
+					   "M");
 				
 				String selection =
-					DettaglioInterventoDB.Fields.TYPE + " = ? AND " +
-						DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO
-						+ " = ?";
+						   DettaglioInterventoDB.Fields.TYPE + " = ? AND " +
+							   DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO
+							   + " = ?";
 				
 				String[] selectionArgs = new String[] {
 					DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
@@ -846,17 +850,17 @@ public class DetailInterventoFragment extends Fragment {
 				};
 				
 				saveChanges.startUpdate(Constants.TOKEN_ORA_INIZIO_DETTAGLIO,
-					null, DettaglioInterventoDB.CONTENT_URI, values,
-					selection, selectionArgs);
+							null, DettaglioInterventoDB.CONTENT_URI, values,
+							selection, selectionArgs);
 				
 				SharedPreferences prefs =
-					getActivity().getSharedPreferences(Constants.PREFERENCES,
-						Context.MODE_PRIVATE);
+							  getActivity().getSharedPreferences(Constants.PREFERENCES,
+											     Context.MODE_PRIVATE);
 				
 				final Editor edit = prefs.edit();
 				
 				edit.putBoolean(Constants.DETT_INTERV_MODIFIED,
-					true);
+						true);
 				
 				if (Build.VERSION.SDK_INT >=
 				Build.VERSION_CODES.GINGERBREAD) {
@@ -867,6 +871,7 @@ public class DetailInterventoFragment extends Fragment {
 					
 					@Override
 					public void run() {
+					
 					    edit.commit();
 					}
 				    }).start();
@@ -893,7 +898,7 @@ public class DetailInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onClick(View v) {
-			
+		    
 			dateTimeDialog.cancel();
 		    }
 		});
@@ -902,7 +907,7 @@ public class DetailInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onClick(View v) {
-			
+		    
 			DateTime dt = null;
 			
 			DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
@@ -937,7 +942,7 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		
+	    
 		final TextView tv_row_fine_dett = (TextView) row_fine_dett.findViewById(R.id.tv_row_fine_dettaglio);
 		
 		final Dialog dateTimeDialog = new Dialog(getActivity());
@@ -956,7 +961,7 @@ public class DetailInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onDateChanged(Calendar c) {
-			
+		    
 		    }
 		});
 		
@@ -964,7 +969,7 @@ public class DetailInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onClick(View v) {
-			
+		    
 			dateTimePicker.clearFocus();
 			
 			DateTime dt_fine = new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone.forID("Europe/Rome"));
@@ -993,18 +998,18 @@ public class DetailInterventoFragment extends Fragment {
 			    if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
 				SaveChangesDettaglioInterventoAsyncQueryHandler
 				saveChanges = new
-					SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
+					      SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
 				
 				ContentValues values = new ContentValues();
 				values.put(DettaglioInterventoDB.Fields.FINE,
-					dt_fine.toDate().getTime());
+					   dt_fine.toDate().getTime());
 				values.put(DettaglioInterventoDB.Fields.MODIFICATO,
-					"M");
+					   "M");
 				
 				String selection =
-					DettaglioInterventoDB.Fields.TYPE + " = ? AND " +
-						DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO
-						+ " = ?";
+						   DettaglioInterventoDB.Fields.TYPE + " = ? AND " +
+							   DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO
+							   + " = ?";
 				
 				String[] selectionArgs = new String[] {
 					DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
@@ -1012,17 +1017,17 @@ public class DetailInterventoFragment extends Fragment {
 				};
 				
 				saveChanges.startUpdate(Constants.TOKEN_ORA_FINE_DETTAGLIO,
-					null, DettaglioInterventoDB.CONTENT_URI, values,
-					selection, selectionArgs);
+							null, DettaglioInterventoDB.CONTENT_URI, values,
+							selection, selectionArgs);
 				
 				SharedPreferences prefs =
-					getActivity().getSharedPreferences(Constants.PREFERENCES,
-						Context.MODE_PRIVATE);
+							  getActivity().getSharedPreferences(Constants.PREFERENCES,
+											     Context.MODE_PRIVATE);
 				
 				final Editor edit = prefs.edit();
 				
 				edit.putBoolean(Constants.DETT_INTERV_MODIFIED,
-					true);
+						true);
 				
 				if (Build.VERSION.SDK_INT >=
 				Build.VERSION_CODES.GINGERBREAD) {
@@ -1033,6 +1038,7 @@ public class DetailInterventoFragment extends Fragment {
 					
 					@Override
 					public void run() {
+					
 					    edit.commit();
 					}
 				    }).start();
@@ -1059,7 +1065,7 @@ public class DetailInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onClick(View v) {
-			
+		    
 			dateTimeDialog.cancel();
 		    }
 		});
@@ -1068,7 +1074,7 @@ public class DetailInterventoFragment extends Fragment {
 		    
 		    @Override
 		    public void onClick(View v) {
-			
+		    
 			DateTime dt = null;
 			
 			DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
@@ -1109,12 +1115,12 @@ public class DetailInterventoFragment extends Fragment {
 	private String mTipologiaChanged;
 	
 	public SetTipo() {
-	    
+	
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
+	
 	    AlertDialog.Builder tipo_dett = new Builder(getActivity());
 	    
 	    tipo_dett.setTitle(tipo_dett_title);
@@ -1125,6 +1131,7 @@ public class DetailInterventoFragment extends Fragment {
 		
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
+		
 		    TextView tv_tipology = (TextView) getActivity().findViewById(R.id.tv_row_tipo_dettaglio);
 		    tv_tipology.setText(tipos[which]);
 		    mTipologiaChanged = tipos[which];
@@ -1138,7 +1145,7 @@ public class DetailInterventoFragment extends Fragment {
 	
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-	    
+	
 	    if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
 		SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
 		
@@ -1168,6 +1175,7 @@ public class DetailInterventoFragment extends Fragment {
 			
 			@Override
 			public void run() {
+			
 			    edit.commit();
 			}
 		    }).start();
@@ -1194,12 +1202,12 @@ public class DetailInterventoFragment extends Fragment {
 	private EditText mEdit_oggetto_dett;
 	
 	public SetOggetto() {
-	    
+	
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
+	
 	    AlertDialog.Builder oggetto_dett = new Builder(getActivity());
 	    
 	    oggetto_dett.setTitle(R.string.oggetto_dett_title);
@@ -1218,7 +1226,7 @@ public class DetailInterventoFragment extends Fragment {
 	
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-	    
+	
 	    if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
 		TextView tv_oggetto_dett = (TextView) getActivity().findViewById(R.id.tv_row_oggetto_dettaglio);
 		tv_oggetto_dett.setText(mEdit_oggetto_dett.getText());
@@ -1251,6 +1259,7 @@ public class DetailInterventoFragment extends Fragment {
 			
 			@Override
 			public void run() {
+			
 			    edit.commit();
 			}
 		    }).start();
@@ -1280,12 +1289,12 @@ public class DetailInterventoFragment extends Fragment {
 	private EditText mEdit_descrizione_dett;
 	
 	public SetDecrizione() {
-	    
+	
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
+	
 	    AlertDialog.Builder descrizione_dett = new Builder(getActivity());
 	    
 	    descrizione_dett.setTitle(R.string.oggetto_dett_title);
@@ -1304,7 +1313,7 @@ public class DetailInterventoFragment extends Fragment {
 	
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-	    
+	
 	    if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
 		TextView tv_descrizione_dett = (TextView) getActivity().findViewById(R.id.tv_row_descrizione_dettaglio);
 		tv_descrizione_dett.setText(mEdit_descrizione_dett.getText());
@@ -1337,6 +1346,7 @@ public class DetailInterventoFragment extends Fragment {
 			
 			@Override
 			public void run() {
+			
 			    edit.commit();
 			}
 		    }).start();
@@ -1371,12 +1381,12 @@ public class DetailInterventoFragment extends Fragment {
 	private JSONArray tecnici;
 	
 	public SetTecnici() {
-	    
+	
 	}
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    
+	
 	    // Bundle bundle = getArguments();
 	    //
 	    // mArrayTecnici = bundle.getString(TECNICI_DETTAGLIO);
@@ -1385,7 +1395,7 @@ public class DetailInterventoFragment extends Fragment {
 		
 		@Override
 		protected String doInBackground(Void... params) {
-		    
+		
 		    String result = null;
 		    
 		    ContentResolver cr = getActivity().getContentResolver();
@@ -1501,7 +1511,7 @@ public class DetailInterventoFragment extends Fragment {
 		
 		@Override
 		public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-		    
+		
 		    if (isChecked)
 			tecniciChecked[which] = true;
 		    else
@@ -1516,7 +1526,7 @@ public class DetailInterventoFragment extends Fragment {
 	
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-	    
+	
 	    switch (which) {
 		case DialogInterface.BUTTON_POSITIVE:
 		    
@@ -1539,7 +1549,7 @@ public class DetailInterventoFragment extends Fragment {
 			
 			@Override
 			protected void onInsertComplete(int token, Object cookie, Uri uri) {
-			    
+			
 			}
 		    };
 		    
@@ -1569,6 +1579,7 @@ public class DetailInterventoFragment extends Fragment {
 			    
 			    @Override
 			    public void run() {
+			    
 				edit.commit();
 			    }
 			}).start();
@@ -1589,14 +1600,14 @@ public class DetailInterventoFragment extends Fragment {
     }
     
     private static String[] getAllTecnici(final ContentResolver contentResolver) throws InterruptedException, ExecutionException {
-	
+    
 	// restituisce un array degli ID di tutti i tecnici
 	
 	AsyncTask<Void, Void, String[]> tuttiTecnici = new AsyncTask<Void, Void, String[]>() {
 	    
 	    @Override
 	    protected String[] doInBackground(Void... params) {
-		
+	    
 		ContentResolver cr = contentResolver;
 		
 		String[] projection = new String[] {
@@ -1606,7 +1617,7 @@ public class DetailInterventoFragment extends Fragment {
 		String selection = UtenteDB.Fields.TYPE + "=?";
 		
 		String[] selectionArgs = new String[] {
-			UtenteDB.UTENTE_ITEM_TYPE
+						       UtenteDB.UTENTE_ITEM_TYPE
 		};
 		
 		String sortOrder = UtenteDB.Fields.COGNOME + " asc";
@@ -1632,7 +1643,7 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    @Override
 	    protected void onPostExecute(String[] result) {
-		
+	    
 	    }
 	};
 	
@@ -1642,11 +1653,12 @@ public class DetailInterventoFragment extends Fragment {
     }
     
     private static ManagedAsyncTask<String, Void, String[]> getTuttiNomiTecnici(final ActionBarActivity activity) {
+    
 	ManagedAsyncTask<String, Void, String[]> tuttiNomiTecniciAsyncTask = new ManagedAsyncTask<String, Void, String[]>(activity) {
 	    
 	    @Override
 	    protected String[] doInBackground(String... params) {
-		
+	    
 		ContentResolver cr = activity.getContentResolver();
 		
 		ArrayList<String> arrayNomiTecnici = new ArrayList<String>();
@@ -1687,7 +1699,7 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    @Override
 	    protected void onPostExecute(String[] result) {
-		
+	    
 		super.onPostExecute(result);
 	    }
 	};

@@ -13,7 +13,7 @@ import com.federicocolantoni.projects.interventix.R;
 public class InterventixToast {
     
     public static void makeToast(Context context, String text, int duration) {
-	
+    
 	Activity activity = context instanceof Activity ? (Activity) context : null;
 	
 	LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
