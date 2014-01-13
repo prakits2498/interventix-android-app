@@ -3,11 +3,11 @@
 
 	<item
 		android:id="@+id/menu_save_detail"
-		android:showAsAction="ifRoom"
+		android:showAsAction="always"
 		android:title="@string/save_detail"/>
 	<item
 		android:id="@+id/menu_cancel_detail"
-		android:showAsAction="ifRoom"
+		android:showAsAction="always"
 		android:title="@string/cancel_detail"/>
 
 </menu>

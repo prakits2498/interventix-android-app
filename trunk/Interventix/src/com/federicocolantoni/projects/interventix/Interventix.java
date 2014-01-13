@@ -1,11 +1,14 @@
 package com.federicocolantoni.projects.interventix;
 
+import org.androidannotations.annotations.EApplication;
+
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 
 import com.bugsense.trace.BugSenseHandler;
 
+@EApplication
 public class Interventix extends Application {
     
     private static Interventix instance;

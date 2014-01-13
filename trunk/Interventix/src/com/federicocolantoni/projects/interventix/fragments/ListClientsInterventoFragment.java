@@ -36,7 +36,7 @@ import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 @SuppressLint({
 	"InlinedApi", "NewApi"
 })
-@EFragment(R.layout.clienti_fragment)
+@EFragment(R.layout.list_clients_fragment)
 @SuppressWarnings("unchecked")
 public class ListClientsInterventoFragment extends Fragment {
     
@@ -57,7 +57,7 @@ public class ListClientsInterventoFragment extends Fragment {
 	    
 		case Constants.WHAT_MESSAGE_GET_CLIENTI:
 		    
-		    mAdapter = new ListClientiAdapter(getActivity(), R.layout.client_row, R.id.tv_row_nominativo, (ArrayList<Cliente>) msg.obj);
+		    mAdapter = new ListClientiAdapter(getActivity(), R.layout.list_client_row, R.id.tv_row_nominativo, (ArrayList<Cliente>) msg.obj);
 		    
 		    listClienti.setAdapter(mAdapter);
 		    

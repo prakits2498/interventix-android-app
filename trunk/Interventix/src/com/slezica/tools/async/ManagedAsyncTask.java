@@ -22,8 +22,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 
@@ -33,14 +33,14 @@ public abstract class ManagedAsyncTask<Params, Progress, Result> {
     
     private InternalAsyncTask mTask;
     
-    public ManagedAsyncTask(ActionBarActivity activity) {
+    public ManagedAsyncTask(Context context) {
     
-	this(activity, TaskManagerFragment.DEFAULT_TAG);
+	this(context, TaskManagerFragment.DEFAULT_TAG);
     }
     
-    public ManagedAsyncTask(ActionBarActivity activity, String fragmentTag) {
+    public ManagedAsyncTask(Context context, String fragmentTag) {
     
-	FragmentManager fragmentManager = activity.getSupportFragmentManager();
+	FragmentManager fragmentManager = ((ActionBarActivity) context).getSupportFragmentManager();
 	
 	mManager = (TaskManagerFragment) fragmentManager.findFragmentByTag(fragmentTag);
 	
@@ -78,9 +78,9 @@ public abstract class ManagedAsyncTask<Params, Progress, Result> {
 	return this;
     }
     
-    public FragmentActivity getActivity() {
+    public ActionBarActivity getActivity() {
     
-	return mManager.getActivity();
+	return (ActionBarActivity) mManager.getActivity();
     }
     
     public boolean cancel(boolean mayInterruptIfRunning) {

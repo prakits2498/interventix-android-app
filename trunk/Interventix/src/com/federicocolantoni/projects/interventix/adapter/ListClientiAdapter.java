@@ -119,7 +119,7 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
     public View getView(final int position, View convertView, ViewGroup parent) {
     
 	if (convertView == null) {
-	    convertView = inflater.inflate(R.layout.client_row, null);
+	    convertView = inflater.inflate(R.layout.list_client_row, null);
 	    
 	    holder = new ViewHolder();
 	    

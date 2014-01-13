@@ -31,7 +31,7 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Det
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
 @SuppressLint("NewApi")
-@EFragment(R.layout.details_intervento_fragment)
+@EFragment(R.layout.list_details_intervento_fragment)
 public class ListDetailsInterventoFragment extends Fragment implements LoaderCallbacks<Cursor> {
     
     private final static int MESSAGE_LOADER = 1;
@@ -50,8 +50,6 @@ public class ListDetailsInterventoFragment extends Fragment implements LoaderCal
     private String[] SELECTION_ARGS;
     
     private ListDettagliInterventiAdapter mAdapter;
-    
-    // retrieve views
     
     @ViewById(R.id.tv_details_intervention)
     TextView tv_details_intervento;
@@ -152,10 +150,10 @@ public class ListDetailsInterventoFragment extends Fragment implements LoaderCal
 		
 		FragmentTransaction transaction = manager.beginTransaction();
 		
-		DetailInterventoFragment newDetail = new DetailInterventoFragment();
+		DetailInterventoFragment_ newDetail = new DetailInterventoFragment_();
 		
 		Bundle bundle = new Bundle();
-		// bundle.putLong(Constants.ID_DETTAGLIO_INTERVENTO, -1l);
+		bundle.putLong(Constants.ID_DETTAGLIO_INTERVENTO, Constants.sIdDettaglio_Temp);
 		bundle.putString(Constants.NUOVO_DETTAGLIO_INTERVENTO, Constants.NUOVO_DETTAGLIO_INTERVENTO);
 		bundle.putLong(Constants.ID_INTERVENTO, mId_intervento);
 		
