@@ -41,6 +41,7 @@ import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.Constants.BUFFER_TYPE;
+import com.federicocolantoni.projects.interventix.Interventix;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.R.string;
 import com.federicocolantoni.projects.interventix.adapter.ListInterventiAdapter;
@@ -66,19 +67,13 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     private final static int MESSAGE_LOADER = 1;
     
     static final String[] PROJECTION = new String[] {
-	    InterventoDB.Fields._ID,
-	    InterventoDB.Fields.NUMERO_INTERVENTO,
-	    InterventoDB.Fields.CLIENTE,
-	    InterventoDB.Fields.ID_INTERVENTO,
-	    InterventoDB.Fields.DATA_ORA,
-	    InterventoDB.Fields.CONFLITTO,
-	    InterventoDB.Fields.MODIFICATO
+    InterventoDB.Fields._ID, InterventoDB.Fields.NUMERO_INTERVENTO, InterventoDB.Fields.CLIENTE, InterventoDB.Fields.ID_INTERVENTO, InterventoDB.Fields.DATA_ORA, InterventoDB.Fields.CONFLITTO, InterventoDB.Fields.MODIFICATO
     };
     
     static final String SELECTION = InterventoDB.Fields.TYPE + " =? AND " + InterventoDB.Fields.CHIUSO + " =?";
     
     static final String[] SELECTION_ARGS = new String[] {
-	    InterventoDB.INTERVENTO_ITEM_TYPE, "0"
+    InterventoDB.INTERVENTO_ITEM_TYPE, "0"
     };
     
     private ListInterventiAdapter mAdapter;
@@ -269,7 +264,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
 	prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 	
-	GetNominativoUtenteAsyncTask nominativo = new GetNominativoUtenteAsyncTask(this);
+	GetNominativoUtenteAsyncTask nominativo = new GetNominativoUtenteAsyncTask(Interventix.getContext());
 	
 	nominativo.execute(prefsLocal.getLong(Constants.USER_ID, 0l));
 	
@@ -376,7 +371,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				String where = UtenteDB.Fields.ID_UTENTE + " = ? AND " + Fields.TYPE + " = ?";
 				
 				String[] selectionArgs = new String[] {
-					"" + usersDEL.getLong(k), UtenteDB.UTENTE_ITEM_TYPE
+				"" + usersDEL.getLong(k), UtenteDB.UTENTE_ITEM_TYPE
 				};
 				
 				cr.delete(UtenteDB.CONTENT_URI, where, selectionArgs);
@@ -488,7 +483,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    String selectionCliente = ClienteDB.Fields.TYPE + " = ? AND " + ClienteDB.Fields.ID_CLIENTE + " = ?";
 			    
 			    String[] selectionClienteArgs = new String[] {
-				    ClienteDB.CLIENTE_ITEM_TYPE, "" + cliente.getLong("idcliente")
+			    ClienteDB.CLIENTE_ITEM_TYPE, "" + cliente.getLong("idcliente")
 			    };
 			    
 			    cursorCliente = cr.query(ClienteDB.CONTENT_URI, null, selectionCliente, selectionClienteArgs, null);
@@ -516,10 +511,9 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				
 				values = Cliente.updateSQL(updateCliente);
 				
-				cr.update(ClienteDB.CONTENT_URI, values,
-					  ClienteDB.Fields.TYPE + "=? AND " + ClienteDB.Fields.ID_CLIENTE + "=?", new String[] {
-						  ClienteDB.CLIENTE_ITEM_TYPE, "" + cliente.getLong("idcliente")
-					  });
+				cr.update(ClienteDB.CONTENT_URI, values, ClienteDB.Fields.TYPE + "=? AND " + ClienteDB.Fields.ID_CLIENTE + "=?", new String[] {
+				ClienteDB.CLIENTE_ITEM_TYPE, "" + cliente.getLong("idcliente")
+				});
 				
 				cursorCliente.close();
 			    }
@@ -557,7 +551,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    String where = ClienteDB.Fields.ID_CLIENTE + " = ? AND " + ClienteDB.Fields.TYPE + " = ?";
 			    
 			    String[] selectionArgs = new String[] {
-				    "" + clientsDEL.getLong(k), ClienteDB.CLIENTE_ITEM_TYPE
+			    "" + clientsDEL.getLong(k), ClienteDB.CLIENTE_ITEM_TYPE
 			    };
 			    
 			    cr.delete(ClienteDB.CONTENT_URI, where, selectionArgs);
@@ -679,7 +673,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				String where = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 				
 				String[] selectionArgs = new String[] {
-					InterventoDB.INTERVENTO_ITEM_TYPE, "" + intervID
+				InterventoDB.INTERVENTO_ITEM_TYPE, "" + intervID
 				};
 				
 				cr.delete(InterventoDB.CONTENT_URI, where, selectionArgs);
@@ -720,7 +714,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		    String selection = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 		    
 		    String[] selectionArgs = new String[] {
-			    InterventoDB.INTERVENTO_ITEM_TYPE, "" + responseIntervs.getLong("idintervento")
+		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + responseIntervs.getLong("idintervento")
 		    };
 		    
 		    cursorIntervento = cr.query(InterventoDB.CONTENT_URI, null, selection, selectionArgs, null);
@@ -845,7 +839,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    String selectionDettaglioIntervento = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 			    
 			    String[] selectionDettIntervArgs = new String[] {
-				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettInterv.getLong("iddettagliointervento")
+			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettInterv.getLong("iddettagliointervento")
 			    };
 			    
 			    cr.update(DettaglioInterventoDB.CONTENT_URI, values, selectionDettaglioIntervento, selectionDettIntervArgs);

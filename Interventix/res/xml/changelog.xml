@@ -5,6 +5,9 @@
 		version="0.0.450"
 		versioncode="45" >
 		<change>
+			Implementato lo swipe sulla singola cella della lista clienti per la visualizzazione del tasto "Modifica"
+		</change>
+		<change>
 			Implementazione del service per la gestione del buffer.
 		</change>
 		<change>

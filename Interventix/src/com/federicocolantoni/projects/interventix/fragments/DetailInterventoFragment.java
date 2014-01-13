@@ -51,8 +51,10 @@ import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
+import com.federicocolantoni.projects.interventix.Interventix;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.task.GetDettaglioInterventoAsyncTask;
@@ -157,6 +159,8 @@ public class DetailInterventoFragment extends Fragment {
 	sId_Dettaglio_Intervento = bundle.getLong(Constants.ID_DETTAGLIO_INTERVENTO);
 	sNuovo_Dettaglio = bundle.getString(Constants.NUOVO_DETTAGLIO_INTERVENTO);
 	sId_Intervento = bundle.getLong(Constants.ID_INTERVENTO);
+	
+	System.out.println(sNuovo_Dettaglio + " - " + sId_Dettaglio_Intervento + " - " + sId_Intervento);
     }
     
     @Override
@@ -254,8 +258,7 @@ public class DetailInterventoFragment extends Fragment {
 	    
 	    case R.id.menu_cancel_detail:
 		
-		InterventixToast.makeToast(getActivity(),
-					   "Dettaglio intervento cancellato", Toast.LENGTH_SHORT);
+		InterventixToast.makeToast(getActivity(), "Dettaglio intervento cancellato", Toast.LENGTH_SHORT);
 		
 		sNewDetail = null;
 		
@@ -411,7 +414,7 @@ public class DetailInterventoFragment extends Fragment {
 				String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 				
 				String[] selectionArgs = new String[] {
-					DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
+				DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 				};
 				
 				saveChanges.startUpdate(Constants.TOKEN_ORA_INIZIO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -543,7 +546,7 @@ public class DetailInterventoFragment extends Fragment {
 				String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 				
 				String[] selectionArgs = new String[] {
-					DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
+				DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 				};
 				
 				saveChanges.startUpdate(Constants.TOKEN_ORA_FINE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -625,7 +628,7 @@ public class DetailInterventoFragment extends Fragment {
 	
 	try {
 	    
-	    sNewDetail.put(ID_NUOVO_DETTAGLIO, Constants.sIdDettaglio_Temp);
+	    sNewDetail.put(ID_NUOVO_DETTAGLIO, sId_Dettaglio_Intervento);
 	    sNewDetail.put(INTERVENTO_NUOVO_DETTAGLIO, sId_Intervento);
 	}
 	catch (JSONException e) {
@@ -634,7 +637,8 @@ public class DetailInterventoFragment extends Fragment {
 	    BugSenseHandler.sendException(e);
 	}
 	
-	tv_dett_interv.setText("Dettaglio " + Constants.sIdDettaglio_Temp);
+	if (tv_dett_interv != null)
+	    tv_dett_interv.setText("Dettaglio " + sId_Dettaglio_Intervento);
 	
 	row_tipo_dett.setOnClickListener(new OnClickListener() {
 	    
@@ -829,41 +833,27 @@ public class DetailInterventoFragment extends Fragment {
 			    tv_dett_ore_tot.setText(dt_tot_ore.toString("HH:mm"));
 			    
 			    if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
-				SaveChangesDettaglioInterventoAsyncQueryHandler
-				saveChanges = new
-					      SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
+				SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
 				
 				ContentValues values = new ContentValues();
-				values.put(DettaglioInterventoDB.Fields.INIZIO,
-					   dt_inizio.toDate().getTime());
-				values.put(DettaglioInterventoDB.Fields.MODIFICATO,
-					   "M");
+				values.put(DettaglioInterventoDB.Fields.INIZIO, dt_inizio.toDate().getTime());
+				values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
 				
-				String selection =
-						   DettaglioInterventoDB.Fields.TYPE + " = ? AND " +
-							   DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO
-							   + " = ?";
+				String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 				
 				String[] selectionArgs = new String[] {
-					DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
-					"" + sId_Dettaglio_Intervento
+				DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 				};
 				
-				saveChanges.startUpdate(Constants.TOKEN_ORA_INIZIO_DETTAGLIO,
-							null, DettaglioInterventoDB.CONTENT_URI, values,
-							selection, selectionArgs);
+				saveChanges.startUpdate(Constants.TOKEN_ORA_INIZIO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
 				
-				SharedPreferences prefs =
-							  getActivity().getSharedPreferences(Constants.PREFERENCES,
-											     Context.MODE_PRIVATE);
+				SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 				
 				final Editor edit = prefs.edit();
 				
-				edit.putBoolean(Constants.DETT_INTERV_MODIFIED,
-						true);
+				edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
 				
-				if (Build.VERSION.SDK_INT >=
-				Build.VERSION_CODES.GINGERBREAD) {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 				    edit.apply();
 				}
 				else {
@@ -996,41 +986,27 @@ public class DetailInterventoFragment extends Fragment {
 			    tv_dett_ore_tot.setText(dt_tot_ore.toString("HH:mm"));
 			    
 			    if (!sNuovo_Dettaglio.equals(Constants.NUOVO_DETTAGLIO_INTERVENTO)) {
-				SaveChangesDettaglioInterventoAsyncQueryHandler
-				saveChanges = new
-					      SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
+				SaveChangesDettaglioInterventoAsyncQueryHandler saveChanges = new SaveChangesDettaglioInterventoAsyncQueryHandler(getActivity());
 				
 				ContentValues values = new ContentValues();
-				values.put(DettaglioInterventoDB.Fields.FINE,
-					   dt_fine.toDate().getTime());
-				values.put(DettaglioInterventoDB.Fields.MODIFICATO,
-					   "M");
+				values.put(DettaglioInterventoDB.Fields.FINE, dt_fine.toDate().getTime());
+				values.put(DettaglioInterventoDB.Fields.MODIFICATO, "M");
 				
-				String selection =
-						   DettaglioInterventoDB.Fields.TYPE + " = ? AND " +
-							   DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO
-							   + " = ?";
+				String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 				
 				String[] selectionArgs = new String[] {
-					DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
-					"" + sId_Dettaglio_Intervento
+				DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 				};
 				
-				saveChanges.startUpdate(Constants.TOKEN_ORA_FINE_DETTAGLIO,
-							null, DettaglioInterventoDB.CONTENT_URI, values,
-							selection, selectionArgs);
+				saveChanges.startUpdate(Constants.TOKEN_ORA_FINE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
 				
-				SharedPreferences prefs =
-							  getActivity().getSharedPreferences(Constants.PREFERENCES,
-											     Context.MODE_PRIVATE);
+				SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 				
 				final Editor edit = prefs.edit();
 				
-				edit.putBoolean(Constants.DETT_INTERV_MODIFIED,
-						true);
+				edit.putBoolean(Constants.DETT_INTERV_MODIFIED, true);
 				
-				if (Build.VERSION.SDK_INT >=
-				Build.VERSION_CODES.GINGERBREAD) {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 				    edit.apply();
 				}
 				else {
@@ -1156,7 +1132,7 @@ public class DetailInterventoFragment extends Fragment {
 		String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 		
 		String[] selectionArgs = new String[] {
-			DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
+		DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 		};
 		
 		saveChanges.startUpdate(Constants.TOKEN_TIPO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -1240,7 +1216,7 @@ public class DetailInterventoFragment extends Fragment {
 		String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 		
 		String[] selectionArgs = new String[] {
-			DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
+		DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 		};
 		
 		saveChanges.startUpdate(Constants.TOKEN_OGGETTO_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -1327,7 +1303,7 @@ public class DetailInterventoFragment extends Fragment {
 		String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 		
 		String[] selectionArgs = new String[] {
-			DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
+		DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 		};
 		
 		saveChanges.startUpdate(Constants.TOKEN_DESCRIZIONE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -1401,15 +1377,13 @@ public class DetailInterventoFragment extends Fragment {
 		    ContentResolver cr = getActivity().getContentResolver();
 		    
 		    String[] projection = new String[] {
-			    DettaglioInterventoDB.Fields._ID,
-			    DettaglioInterventoDB.Fields.TECNICI
+		    DettaglioInterventoDB.Fields._ID, DettaglioInterventoDB.Fields.TECNICI
 		    };
 		    
 		    String selection = DettaglioInterventoDB.Fields.TYPE + "=? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?";
 		    
 		    String[] selectionArgs = new String[] {
-			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
-			    "" + sId_Dettaglio_Intervento
+		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + sId_Dettaglio_Intervento
 		    };
 		    
 		    Cursor cursor = cr.query(DettaglioInterventoDB.CONTENT_URI, projection, selection, selectionArgs, null);
@@ -1545,25 +1519,32 @@ public class DetailInterventoFragment extends Fragment {
 		    
 		    System.out.println(tecnici.toString());
 		    
-		    AsyncQueryHandler saveChanges = new AsyncQueryHandler(getActivity().getContentResolver()) {
+		    AsyncQueryHandler saveChanges = new AsyncQueryHandler(Interventix.getContext().getContentResolver()) {
 			
-			@Override
-			protected void onInsertComplete(int token, Object cookie, Uri uri) {
-			
-			}
 		    };
 		    
 		    ContentValues values = new ContentValues();
 		    values.put(DettaglioInterventoDB.Fields.TECNICI, tecnici.toString());
+		    values.put(DettaglioInterventoDB.Fields.MODIFICATO, Constants.DETTAGLIO_INTERVENTO_MODIFICATO);
 		    
 		    String selection = DettaglioInterventoDB.Fields.TYPE + "=? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?";
 		    
 		    String[] selectionArgs = new String[] {
-			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE,
-			    sId_Dettaglio_Intervento + ""
+		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, sId_Dettaglio_Intervento + ""
 		    };
 		    
 		    saveChanges.startUpdate(Constants.TOKEN_TECNICI_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, values, selection, selectionArgs);
+		    
+		    values = new ContentValues();
+		    values.put(InterventoDB.Fields.MODIFICATO, Constants.INTERVENTO_MODIFICATO);
+		    
+		    String selectionIntervento = InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?";
+		    
+		    String[] selectionInterventoArgs = new String[] {
+		    InterventoDB.INTERVENTO_ITEM_TYPE, sId_Intervento + ""
+		    };
+		    
+		    saveChanges.startUpdate(Constants.TOKEN_INTERVENTO, null, InterventoDB.CONTENT_URI, values, selectionIntervento, selectionInterventoArgs);
 		    
 		    SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 		    
@@ -1611,13 +1592,13 @@ public class DetailInterventoFragment extends Fragment {
 		ContentResolver cr = contentResolver;
 		
 		String[] projection = new String[] {
-			UtenteDB.Fields._ID, UtenteDB.Fields.ID_UTENTE
+		UtenteDB.Fields._ID, UtenteDB.Fields.ID_UTENTE
 		};
 		
 		String selection = UtenteDB.Fields.TYPE + "=?";
 		
 		String[] selectionArgs = new String[] {
-						       UtenteDB.UTENTE_ITEM_TYPE
+		    UtenteDB.UTENTE_ITEM_TYPE
 		};
 		
 		String sortOrder = UtenteDB.Fields.COGNOME + " asc";
@@ -1666,15 +1647,13 @@ public class DetailInterventoFragment extends Fragment {
 		for (int i = 0; i < params.length; i++) {
 		    
 		    String[] projection = new String[] {
-			    UtenteDB.Fields._ID, UtenteDB.Fields.NOME,
-			    UtenteDB.Fields.COGNOME
+		    UtenteDB.Fields._ID, UtenteDB.Fields.NOME, UtenteDB.Fields.COGNOME
 		    };
 		    
 		    String selection = UtenteDB.Fields.TYPE + "=? AND " + UtenteDB.Fields.ID_UTENTE + "=?";
 		    
 		    String[] selectionArgs = new String[] {
-			    UtenteDB.UTENTE_ITEM_TYPE,
-			    params[i]
+		    UtenteDB.UTENTE_ITEM_TYPE, params[i]
 		    };
 		    
 		    String sortOrder = UtenteDB.Fields.COGNOME + " asc";

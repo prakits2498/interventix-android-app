@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
+import com.federicocolantoni.projects.interventix.Interventix;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
@@ -103,7 +104,7 @@ public class OverViewInterventoFragment extends Fragment {
 	    intervIDBundle.putAll(bundle);
 	    
 	    try {
-		interv = new GetOverviewInterventoAsyncTask(getActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
+		interv = new GetOverviewInterventoAsyncTask(Interventix.getContext()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
 	    }
 	    catch (InterruptedException e) {
 		
@@ -144,7 +145,7 @@ public class OverViewInterventoFragment extends Fragment {
 	    Cliente cliente = null;
 	    
 	    try {
-		cliente = new GetNominativoClienteAsyncTask(getActivity()).execute(interv.getIdCliente()).get();
+		cliente = new GetNominativoClienteAsyncTask(Interventix.getContext()).execute(interv.getIdCliente()).get();
 	    }
 	    catch (InterruptedException e) {
 		
@@ -189,7 +190,7 @@ public class OverViewInterventoFragment extends Fragment {
 	    
 	    try {
 		
-		listaDetailsInterv = new GetListaDettagliInterventoAsyncTask(getActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
+		listaDetailsInterv = new GetListaDettagliInterventoAsyncTask(Interventix.getContext()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
 	    }
 	    catch (InterruptedException e) {
 		
@@ -310,7 +311,7 @@ public class OverViewInterventoFragment extends Fragment {
 	intervIDBundle.putAll(bundle);
 	
 	try {
-	    interv = new GetOverviewInterventoAsyncTask(getActivity()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
+	    interv = new GetOverviewInterventoAsyncTask(Interventix.getContext()).execute(bundle.getLong(Constants.ID_INTERVENTO)).get();
 	}
 	catch (InterruptedException e) {
 	    
@@ -351,7 +352,7 @@ public class OverViewInterventoFragment extends Fragment {
 	Cliente cliente = null;
 	
 	try {
-	    cliente = new GetNominativoClienteAsyncTask(getActivity()).execute(interv.getIdCliente()).get();
+	    cliente = new GetNominativoClienteAsyncTask(Interventix.getContext()).execute(interv.getIdCliente()).get();
 	}
 	catch (InterruptedException e) {
 	    
@@ -385,19 +386,19 @@ public class OverViewInterventoFragment extends Fragment {
 	switch (item.getItemId()) {
 	    case R.id.pay:
 		
-		InterventixToast.makeToast(getActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
+		InterventixToast.makeToast(Interventix.getContext(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
 		
 		break;
 	    
 	    case R.id.send_mail:
 		
-		InterventixToast.makeToast(getActivity(), "Inviare email?", Toast.LENGTH_SHORT);
+		InterventixToast.makeToast(Interventix.getContext(), "Inviare email?", Toast.LENGTH_SHORT);
 		
 		break;
 	    
 	    case R.id.close:
 		
-		InterventixToast.makeToast(getActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
+		InterventixToast.makeToast(Interventix.getContext(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
 		
 		break;
 	}

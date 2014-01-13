@@ -94,6 +94,7 @@ public final class Constants {
     public static final int TOKEN_TECNICI_DETTAGLIO = 17;
     public static final int TOKEN_RECUPERO_INTERVENTI = 18;
     public static final int TOKEN_RECUPERO_CLIENTI = 19;
+    public static final int TOKEN_INTERVENTO = 20;
     
     public static final String ARRAY_DETTAGLI = "arrayDettagli";
     
@@ -108,7 +109,6 @@ public final class Constants {
     
     public static enum BUFFER_TYPE {
 	
-	BUFFER_INTERVENTO,
-	BUFFER_CLIENTE;
+	BUFFER_INTERVENTO, BUFFER_CLIENTE;
     }
 }

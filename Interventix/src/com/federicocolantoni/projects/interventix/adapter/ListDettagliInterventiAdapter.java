@@ -50,7 +50,7 @@ public class ListDettagliInterventiAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
     
-	View view = mInflater.inflate(R.layout.details_interv_row, parent, false);
+	View view = mInflater.inflate(R.layout.list_details_interv_row, parent, false);
 	
 	TextView tv_type_detail_interv = (TextView) view.findViewById(R.id.tv_type_detail_interv);
 	TextView tv_object_detail_interv = (TextView) view.findViewById(R.id.tv_object_detail_interv);
