@@ -284,7 +284,7 @@ public class CostsInterventoFragment extends Fragment {
 	    String selection = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_intervento
+	    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_COSTO_MANODOPERA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -378,7 +378,7 @@ public class CostsInterventoFragment extends Fragment {
 	    String selection = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_intervento
+	    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_COSTO_COMPONENTI, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
@@ -472,7 +472,7 @@ public class CostsInterventoFragment extends Fragment {
 	    String selection = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 	    
 	    String[] selectionArgs = new String[] {
-		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_intervento
+	    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_intervento
 	    };
 	    
 	    saveChange.startUpdate(Constants.TOKEN_COSTO_ACCESSORI, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);

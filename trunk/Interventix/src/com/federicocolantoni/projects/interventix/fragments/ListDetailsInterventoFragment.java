@@ -39,10 +39,7 @@ public class ListDetailsInterventoFragment extends Fragment implements LoaderCal
     private long mId_intervento;
     
     private static final String[] PROJECTION = new String[] {
-	    DettaglioInterventoDB.Fields._ID,
-	    DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
-	    DettaglioInterventoDB.Fields.TIPO,
-	    DettaglioInterventoDB.Fields.OGGETTO
+    DettaglioInterventoDB.Fields._ID, DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, DettaglioInterventoDB.Fields.TIPO, DettaglioInterventoDB.Fields.OGGETTO
     };
     
     private static final String SELECTION = DettaglioInterventoDB.Fields.TYPE + " =? AND " + DettaglioInterventoDB.Fields.INTERVENTO + " =?";
@@ -78,7 +75,7 @@ public class ListDetailsInterventoFragment extends Fragment implements LoaderCal
 	mId_intervento = bundle.getLong(Constants.ID_INTERVENTO);
 	
 	SELECTION_ARGS = new String[] {
-		DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + mId_intervento
+	DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + mId_intervento
 	};
 	
 	tv_details_intervento.setText("Dettagli");

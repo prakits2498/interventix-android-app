@@ -34,7 +34,7 @@ import com.federicocolantoni.projects.interventix.task.GetClientiAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
 @SuppressLint({
-	"InlinedApi", "NewApi"
+"InlinedApi", "NewApi"
 })
 @EFragment(R.layout.list_clients_fragment)
 @SuppressWarnings("unchecked")
@@ -161,7 +161,7 @@ public class ListClientsInterventoFragment extends Fragment {
 		String selection = InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?";
 		
 		String[] selectionArgs = new String[] {
-			InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento
+		InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento
 		};
 		
 		saveCliente.startUpdate(0, null, ClienteDB.CONTENT_URI, values, selection, selectionArgs);

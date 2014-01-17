@@ -65,12 +65,7 @@ public class ChangeLogDialog {
     
     private String GetStyle() {
     
-	return
-	"<style type=\"text/css\">"
-		+ "h1 { margin-left: 0px; font-size: 12pt; }"
-		+ "li { margin-left: 0px; font-size: 9pt;}"
-		+ "ul { padding-left: 30px;}"
-		+ "</style>";
+	return "<style type=\"text/css\">" + "h1 { margin-left: 0px; font-size: 12pt; }" + "li { margin-left: 0px; font-size: 9pt;}" + "ul { padding-left: 30px;}" + "</style>";
     }
     
     private String GetHTMLChangelog(int aResourceId, Resources aResource) {
@@ -133,15 +128,12 @@ public class ChangeLogDialog {
 	
 	WebView _WebView = new WebView(fActivity);
 	_WebView.loadData(_HTML, "text/html", "utf-8");
-	AlertDialog.Builder builder = new AlertDialog.Builder(fActivity)
-									.setTitle(_Title)
-									.setView(_WebView)
-									.setPositiveButton(_Close, new Dialog.OnClickListener() {
-									    public void onClick(DialogInterface dialogInterface, int i) {
-									    
-										dialogInterface.dismiss();
-									    }
-									});
+	AlertDialog.Builder builder = new AlertDialog.Builder(fActivity).setTitle(_Title).setView(_WebView).setPositiveButton(_Close, new Dialog.OnClickListener() {
+	    public void onClick(DialogInterface dialogInterface, int i) {
+	    
+		dialogInterface.dismiss();
+	    }
+	});
 	builder.create().show();
     }
 }

@@ -1,6 +1,8 @@
 package com.federicocolantoni.projects.interventix.activity;
 
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -56,8 +58,13 @@ import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.entity.Intervento;
 import com.federicocolantoni.projects.interventix.entity.Utente;
 import com.federicocolantoni.projects.interventix.task.GetNominativoUtenteAsyncTask;
+import com.federicocolantoni.projects.interventix.utils.BigDecimalTypeAdapter;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.slezica.tools.async.ManagedAsyncTask;
 
 @SuppressLint("NewApi")
@@ -70,7 +77,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     InterventoDB.Fields._ID, InterventoDB.Fields.NUMERO_INTERVENTO, InterventoDB.Fields.CLIENTE, InterventoDB.Fields.ID_INTERVENTO, InterventoDB.Fields.DATA_ORA, InterventoDB.Fields.CONFLITTO, InterventoDB.Fields.MODIFICATO
     };
     
-    static final String SELECTION = InterventoDB.Fields.TYPE + " =? AND " + InterventoDB.Fields.CHIUSO + " =?";
+    static final String SELECTION = InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.CHIUSO + "=?";
     
     static final String[] SELECTION_ARGS = new String[] {
     InterventoDB.INTERVENTO_ITEM_TYPE, "0"
@@ -349,15 +356,18 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    if (obj.getLong("idutente") != params[0]) {
 				
 				Utente newUser = new Utente();
-				newUser.setIdUtente(obj.getLong("idutente"));
-				newUser.setCancellato(obj.getBoolean("cancellato"));
-				newUser.setCestinato(obj.getBoolean("cestinato"));
-				newUser.setCognome(obj.getString("cognome"));
-				newUser.setEmail(obj.getString("email"));
-				newUser.setNome(obj.getString("nome"));
-				newUser.setUserName(obj.getString("username"));
-				newUser.setRevisione(obj.getLong("revisione"));
-				newUser.setTipo(obj.getString("tipo"));
+				
+				newUser = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create().fromJson(obj.toString(), Utente.class);
+				
+				// newUser.setIdUtente(obj.getLong("idutente"));
+				// newUser.setCancellato(obj.getBoolean("cancellato"));
+				// newUser.setCestinato(obj.getBoolean("cestinato"));
+				// newUser.setCognome(obj.getString("cognome"));
+				// newUser.setEmail(obj.getString("email"));
+				// newUser.setNome(obj.getString("nome"));
+				// newUser.setUserName(obj.getString("username"));
+				// newUser.setRevisione(obj.getLong("revisione"));
+				// newUser.setTipo(obj.getString("tipo"));
 				
 				values = Utente.insertSQL(newUser);
 				
@@ -495,19 +505,22 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				// *** UPDATE CLIENTE ***\\
 				
 				Cliente updateCliente = new Cliente();
-				updateCliente.setCitta(cliente.getString("citta"));
-				updateCliente.setCodiceFiscale(cliente.getString("codicefiscale"));
-				updateCliente.setEmail(cliente.getString("email"));
-				updateCliente.setFax(cliente.getString("fax"));
-				updateCliente.setIndirizzo(cliente.getString("indirizzo"));
-				updateCliente.setInterno(cliente.getString("interno"));
-				updateCliente.setNominativo(cliente.getString("nominativo"));
-				updateCliente.setNote(cliente.getString("note"));
-				updateCliente.setPartitaIVA(cliente.getString("partitaiva"));
-				updateCliente.setReferente(cliente.getString("referente"));
-				updateCliente.setRevisione(cliente.getLong("revisione"));
-				updateCliente.setTelefono(cliente.getString("telefono"));
-				updateCliente.setUfficio(cliente.getString("ufficio"));
+				
+				updateCliente = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create().fromJson(cliente.toString(), Cliente.class);
+				
+				// updateCliente.setCitta(cliente.getString("citta"));
+				// updateCliente.setCodiceFiscale(cliente.getString("codicefiscale"));
+				// updateCliente.setEmail(cliente.getString("email"));
+				// updateCliente.setFax(cliente.getString("fax"));
+				// updateCliente.setIndirizzo(cliente.getString("indirizzo"));
+				// updateCliente.setInterno(cliente.getString("interno"));
+				// updateCliente.setNominativo(cliente.getString("nominativo"));
+				// updateCliente.setNote(cliente.getString("note"));
+				// updateCliente.setPartitaIVA(cliente.getString("partitaiva"));
+				// updateCliente.setReferente(cliente.getString("referente"));
+				// updateCliente.setRevisione(cliente.getLong("revisione"));
+				// updateCliente.setTelefono(cliente.getString("telefono"));
+				// updateCliente.setUfficio(cliente.getString("ufficio"));
 				
 				values = Cliente.updateSQL(updateCliente);
 				
@@ -522,20 +535,23 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				// *** INSERT CLIENTE ***\\
 				
 				Cliente newCliente = new Cliente();
-				newCliente.setIdCliente(cliente.getLong("idcliente"));
-				newCliente.setCitta(cliente.getString("citta"));
-				newCliente.setCodiceFiscale(cliente.getString("codicefiscale"));
-				newCliente.setEmail(cliente.getString("email"));
-				newCliente.setFax(cliente.getString("fax"));
-				newCliente.setIndirizzo(cliente.getString("indirizzo"));
-				newCliente.setInterno(cliente.getString("interno"));
-				newCliente.setNominativo(cliente.getString("nominativo"));
-				newCliente.setNote(cliente.getString("note"));
-				newCliente.setPartitaIVA(cliente.getString("partitaiva"));
-				newCliente.setReferente(cliente.getString("referente"));
-				newCliente.setRevisione(cliente.getLong("revisione"));
-				newCliente.setTelefono(cliente.getString("telefono"));
-				newCliente.setUfficio(cliente.getString("ufficio"));
+				
+				newCliente = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create().fromJson(cliente.toString(), Cliente.class);
+				
+				// newCliente.setIdCliente(cliente.getLong("idcliente"));
+				// newCliente.setCitta(cliente.getString("citta"));
+				// newCliente.setCodiceFiscale(cliente.getString("codicefiscale"));
+				// newCliente.setEmail(cliente.getString("email"));
+				// newCliente.setFax(cliente.getString("fax"));
+				// newCliente.setIndirizzo(cliente.getString("indirizzo"));
+				// newCliente.setInterno(cliente.getString("interno"));
+				// newCliente.setNominativo(cliente.getString("nominativo"));
+				// newCliente.setNote(cliente.getString("note"));
+				// newCliente.setPartitaIVA(cliente.getString("partitaiva"));
+				// newCliente.setReferente(cliente.getString("referente"));
+				// newCliente.setRevisione(cliente.getLong("revisione"));
+				// newCliente.setTelefono(cliente.getString("telefono"));
+				// newCliente.setUfficio(cliente.getString("ufficio"));
 				
 				values = Cliente.insertSQL(newCliente);
 				
@@ -726,30 +742,40 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			System.out.println("Inserimento intervento " + responseIntervs.getLong("idintervento"));
 			
 			Intervento newInterv = new Intervento();
-			newInterv.setIdIntervento(responseIntervs.getLong("idintervento"));
-			newInterv.setCostoAccessori(new BigDecimal(responseIntervs.getDouble("costoaccessori")));
-			newInterv.setCostoComponenti(new BigDecimal(responseIntervs.getDouble("costocomponenti")));
-			newInterv.setCostoManodopera(new BigDecimal(responseIntervs.getDouble("costomanodopera")));
-			newInterv.setDataOra(responseIntervs.getLong("dataora"));
-			newInterv.setFirma(responseIntervs.getString("firma"));
-			newInterv.setIdCliente(responseIntervs.getLong("cliente"));
-			newInterv.setIdTecnico(responseIntervs.getLong("tecnico"));
-			newInterv.setImporto(new BigDecimal(responseIntervs.getDouble("importo")));
-			newInterv.setIva(new BigDecimal(responseIntervs.getDouble("iva")));
-			newInterv.setModalita(responseIntervs.getString("modalita"));
-			newInterv.setMotivo(responseIntervs.getString("motivo"));
-			newInterv.setNominativo(responseIntervs.getString("nominativo"));
-			newInterv.setNote(responseIntervs.getString("note"));
-			newInterv.setNumeroIntervento(responseIntervs.getLong("numero"));
-			newInterv.setProdotto(responseIntervs.getString("prodotto"));
-			newInterv.setRifFattura(responseIntervs.getString("riffattura"));
-			newInterv.setRifScontrino(responseIntervs.getString("rifscontrino"));
-			newInterv.setTipologia(responseIntervs.getString("tipologia"));
-			newInterv.setTotale(new BigDecimal(responseIntervs.getDouble("totale")));
-			newInterv.setSaldato(responseIntervs.getBoolean("saldato"));
-			newInterv.setChiuso(responseIntervs.getBoolean("chiuso"));
-			newInterv.setCancellato(responseIntervs.getBoolean("cancellato"));
-			newInterv.setConflitto(responseIntervs.getBoolean("conflitto"));
+			
+			newInterv = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).registerTypeAdapter(new TypeToken<BigDecimal>() {
+			}.getType(), new BigDecimalTypeAdapter()).create().fromJson(responseIntervs.toString(), Intervento.class);
+			
+			// newInterv.setIdIntervento(responseIntervs.getLong("idintervento"));
+			// newInterv.setCostoAccessori(new
+			// BigDecimal(responseIntervs.getDouble("costoaccessori")));
+			// newInterv.setCostoComponenti(new
+			// BigDecimal(responseIntervs.getDouble("costocomponenti")));
+			// newInterv.setCostoManodopera(new
+			// BigDecimal(responseIntervs.getDouble("costomanodopera")));
+			// newInterv.setDataOra(responseIntervs.getLong("dataora"));
+			// newInterv.setFirma(responseIntervs.getString("firma"));
+			// newInterv.setIdCliente(responseIntervs.getLong("cliente"));
+			// newInterv.setIdTecnico(responseIntervs.getLong("tecnico"));
+			// newInterv.setImporto(new
+			// BigDecimal(responseIntervs.getDouble("importo")));
+			// newInterv.setIva(new
+			// BigDecimal(responseIntervs.getDouble("iva")));
+			// newInterv.setModalita(responseIntervs.getString("modalita"));
+			// newInterv.setMotivo(responseIntervs.getString("motivo"));
+			// newInterv.setNominativo(responseIntervs.getString("nominativo"));
+			// newInterv.setNote(responseIntervs.getString("note"));
+			// newInterv.setNumeroIntervento(responseIntervs.getLong("numero"));
+			// newInterv.setProdotto(responseIntervs.getString("prodotto"));
+			// newInterv.setRifFattura(responseIntervs.getString("riffattura"));
+			// newInterv.setRifScontrino(responseIntervs.getString("rifscontrino"));
+			// newInterv.setTipologia(responseIntervs.getString("tipologia"));
+			// newInterv.setTotale(new
+			// BigDecimal(responseIntervs.getDouble("totale")));
+			// newInterv.setSaldato(responseIntervs.getBoolean("saldato"));
+			// newInterv.setChiuso(responseIntervs.getBoolean("chiuso"));
+			// newInterv.setCancellato(responseIntervs.getBoolean("cancellato"));
+			// newInterv.setConflitto(responseIntervs.getBoolean("conflitto"));
 			newInterv.setModificato(Constants.INTERVENTO_AGGIORNATO);
 			
 			values = Intervento.insertSQL(newInterv);
@@ -758,22 +784,38 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			
 			JSONArray dettagli_intervento = responseIntervs.getJSONArray("dettagliintervento");
 			
-			for (int cont = 0; cont < dettagli_intervento.length(); cont++) {
+			System.out.println(dettagli_intervento.toString(2));
+			
+			Gson gson = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+			
+			Type arrayDettagli = new TypeToken<ArrayList<DettaglioIntervento>>() {
+			}.getType();
+			
+			ArrayList<DettaglioIntervento> listaDettagli = gson.fromJson(dettagli_intervento.toString(), arrayDettagli);
+			
+			for (DettaglioIntervento dtInt : listaDettagli) {
 			    
-			    JSONObject newDettInterv = dettagli_intervento.getJSONObject(cont);
+			    // JSONObject newDettInterv =
+			    // dettagli_intervento.getJSONObject(cont);
 			    
 			    // *** INSERT DETTAGLIO INTERVENTO *** \\
 			    
-			    DettaglioIntervento dtInt = new DettaglioIntervento();
-			    dtInt.setIdDettaglioIntervento(newDettInterv.getLong("iddettagliointervento"));
-			    dtInt.setDescrizione(newDettInterv.getString("descrizione"));
-			    dtInt.setIntervento(responseIntervs.getLong("idintervento"));
+			    // DettaglioIntervento dtInt = new
+			    // DettaglioIntervento();
+			    //
+			    // dtInt = new
+			    // GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create().fromJson(newDettInterv.toString(),
+			    // DettaglioIntervento.class);
+			    
+			    // dtInt.setIdDettaglioIntervento(newDettInterv.getLong("iddettagliointervento"));
+			    // dtInt.setDescrizione(newDettInterv.getString("descrizione"));
+			    // dtInt.setIntervento(responseIntervs.getLong("idintervento"));
 			    dtInt.setModificato(Constants.DETT_INTERVENTO_AGGIORNATO);
-			    dtInt.setOggetto(newDettInterv.getString("oggetto"));
-			    dtInt.setTipo(newDettInterv.getString("tipo"));
-			    dtInt.setInizio(newDettInterv.getLong("inizio"));
-			    dtInt.setFine(newDettInterv.getLong("fine"));
-			    dtInt.setTecnici(newDettInterv.getJSONArray("tecniciintervento"));
+			    // dtInt.setOggetto(newDettInterv.getString("oggetto"));
+			    // dtInt.setTipo(newDettInterv.getString("tipo"));
+			    // dtInt.setInizio(newDettInterv.getLong("inizio"));
+			    // dtInt.setFine(newDettInterv.getLong("fine"));
+			    // dtInt.setTecnici(newDettInterv.getJSONArray("tecniciintervento"));
 			    
 			    values = DettaglioIntervento.insertSQL(dtInt);
 			    
@@ -785,29 +827,39 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			// *** UPDATE INTERVENTO *** \\
 			
 			Intervento updateInterv = new Intervento();
-			updateInterv.setCostoAccessori(new BigDecimal(responseIntervs.getDouble("costoaccessori")));
-			updateInterv.setCostoComponenti(new BigDecimal(responseIntervs.getDouble("costocomponenti")));
-			updateInterv.setCostoManodopera(new BigDecimal(responseIntervs.getDouble("costomanodopera")));
-			updateInterv.setDataOra(responseIntervs.getLong("dataora"));
-			updateInterv.setFirma(responseIntervs.getString("firma"));
-			updateInterv.setIdCliente(responseIntervs.getLong("cliente"));
-			updateInterv.setIdTecnico(responseIntervs.getLong("tecnico"));
-			updateInterv.setImporto(new BigDecimal(responseIntervs.getDouble("importo")));
-			updateInterv.setIva(new BigDecimal(responseIntervs.getDouble("iva")));
-			updateInterv.setModalita(responseIntervs.getString("modalita"));
-			updateInterv.setMotivo(responseIntervs.getString("motivo"));
-			updateInterv.setNominativo(responseIntervs.getString("nominativo"));
-			updateInterv.setNote(responseIntervs.getString("note"));
-			updateInterv.setNumeroIntervento(responseIntervs.getLong("numero"));
-			updateInterv.setProdotto(responseIntervs.getString("prodotto"));
-			updateInterv.setRifFattura(responseIntervs.getString("riffattura"));
-			updateInterv.setRifScontrino(responseIntervs.getString("rifscontrino"));
-			updateInterv.setTipologia(responseIntervs.getString("tipologia"));
-			updateInterv.setTotale(new BigDecimal(responseIntervs.getDouble("totale")));
-			updateInterv.setSaldato(responseIntervs.getBoolean("saldato"));
-			updateInterv.setChiuso(responseIntervs.getBoolean("chiuso"));
-			updateInterv.setCancellato(responseIntervs.getBoolean("cancellato"));
-			updateInterv.setConflitto(responseIntervs.getBoolean("conflitto"));
+			
+			updateInterv = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).registerTypeAdapter(new TypeToken<BigDecimal>() {
+			}.getType(), new BigDecimalTypeAdapter()).create().fromJson(responseIntervs.toString(), Intervento.class);
+			
+			// updateInterv.setCostoAccessori(new
+			// BigDecimal(responseIntervs.getDouble("costoaccessori")));
+			// updateInterv.setCostoComponenti(new
+			// BigDecimal(responseIntervs.getDouble("costocomponenti")));
+			// updateInterv.setCostoManodopera(new
+			// BigDecimal(responseIntervs.getDouble("costomanodopera")));
+			// updateInterv.setDataOra(responseIntervs.getLong("dataora"));
+			// updateInterv.setFirma(responseIntervs.getString("firma"));
+			// updateInterv.setIdCliente(responseIntervs.getLong("cliente"));
+			// updateInterv.setIdTecnico(responseIntervs.getLong("tecnico"));
+			// updateInterv.setImporto(new
+			// BigDecimal(responseIntervs.getDouble("importo")));
+			// updateInterv.setIva(new
+			// BigDecimal(responseIntervs.getDouble("iva")));
+			// updateInterv.setModalita(responseIntervs.getString("modalita"));
+			// updateInterv.setMotivo(responseIntervs.getString("motivo"));
+			// updateInterv.setNominativo(responseIntervs.getString("nominativo"));
+			// updateInterv.setNote(responseIntervs.getString("note"));
+			// updateInterv.setNumeroIntervento(responseIntervs.getLong("numero"));
+			// updateInterv.setProdotto(responseIntervs.getString("prodotto"));
+			// updateInterv.setRifFattura(responseIntervs.getString("riffattura"));
+			// updateInterv.setRifScontrino(responseIntervs.getString("rifscontrino"));
+			// updateInterv.setTipologia(responseIntervs.getString("tipologia"));
+			// updateInterv.setTotale(new
+			// BigDecimal(responseIntervs.getDouble("totale")));
+			// updateInterv.setSaldato(responseIntervs.getBoolean("saldato"));
+			// updateInterv.setChiuso(responseIntervs.getBoolean("chiuso"));
+			// updateInterv.setCancellato(responseIntervs.getBoolean("cancellato"));
+			// updateInterv.setConflitto(responseIntervs.getBoolean("conflitto"));
 			updateInterv.setModificato(Constants.INTERVENTO_AGGIORNATO);
 			
 			values = Intervento.updateSQL(updateInterv);
@@ -818,32 +870,45 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			
 			JSONArray dettagli_intervento = responseIntervs.getJSONArray("dettagliintervento");
 			
-			for (int cont = 0; cont < dettagli_intervento.length(); cont++) {
+			Gson gson = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+			
+			Type arrayDettagli = new TypeToken<ArrayList<DettaglioIntervento>>() {
+			}.getType();
+			
+			ArrayList<DettaglioIntervento> listaDettagli = gson.fromJson(dettagli_intervento.toString(), arrayDettagli);
+			
+			for (DettaglioIntervento dtInt : listaDettagli) {
 			    
-			    JSONObject dettInterv = dettagli_intervento.getJSONObject(cont);
+			    // JSONObject dettInterv =
+			    // dettagli_intervento.getJSONObject(cont);
 			    
 			    // *** UPDATE DETTAGLIO INTERVENTO *** \\
 			    
-			    DettaglioIntervento dtInt = new DettaglioIntervento();
-			    dtInt.setDescrizione(dettInterv.getString("descrizione"));
-			    dtInt.setIntervento(responseIntervs.getLong("idintervento"));
+			    // DettaglioIntervento dtInt = new
+			    // DettaglioIntervento();
+			    //
+			    // dtInt = new
+			    // GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create().fromJson(dettInterv.toString(),
+			    // DettaglioIntervento.class);
+			    
+			    // dtInt.setDescrizione(dettInterv.getString("descrizione"));
+			    // dtInt.setIntervento(responseIntervs.getLong("idintervento"));
 			    dtInt.setModificato(Constants.DETT_INTERVENTO_AGGIORNATO);
-			    dtInt.setOggetto(dettInterv.getString("oggetto"));
-			    dtInt.setTipo(dettInterv.getString("tipo"));
-			    dtInt.setInizio(dettInterv.getLong("inizio"));
-			    dtInt.setFine(dettInterv.getLong("fine"));
-			    dtInt.setTecnici(dettInterv.getJSONArray("tecniciintervento"));
+			    // dtInt.setOggetto(dettInterv.getString("oggetto"));
+			    // dtInt.setTipo(dettInterv.getString("tipo"));
+			    // dtInt.setInizio(dettInterv.getLong("inizio"));
+			    // dtInt.setFine(dettInterv.getLong("fine"));
+			    // dtInt.setTecnici(dettInterv.getJSONArray("tecniciintervento"));
 			    
 			    values = DettaglioIntervento.updateSQL(dtInt);
 			    
 			    String selectionDettaglioIntervento = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 			    
 			    String[] selectionDettIntervArgs = new String[] {
-			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettInterv.getLong("iddettagliointervento")
+			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dtInt.getIdDettaglioIntervento()
 			    };
 			    
 			    cr.update(DettaglioInterventoDB.CONTENT_URI, values, selectionDettaglioIntervento, selectionDettIntervArgs);
-			    
 			}
 		    }
 		    

@@ -2,6 +2,12 @@
 <changelog>
 
 	<release
+		version="0.0.500"
+		versioncode="50" >
+		<change>
+		</change>
+	</release>
+	<release
 		version="0.0.450"
 		versioncode="45" >
 		<change>
@@ -31,16 +37,6 @@
 		</change>
 		<change>
         	Refactoring di alcune classi e fix minori.
-		</change>
-	</release>
-	<release
-		version="0.0.400"
-		versioncode="40" >
-		<change>
-            Tolto l'utilizzo della libreria RoboJuice.
-		</change>
-		<change>
-			Aggiunta la libreria Android Annotations (http://androidannotations.org/)
 		</change>
 	</release>
 

@@ -23,13 +23,13 @@ public class GetNominativoUtenteAsyncTask extends AsyncTask<Long, Void, Utente> 
 	ContentResolver cr = context.getContentResolver();
 	
 	String[] projection = new String[] {
-		UtenteDB.Fields._ID, UtenteDB.Fields.NOME, UtenteDB.Fields.COGNOME
+	UtenteDB.Fields._ID, UtenteDB.Fields.NOME, UtenteDB.Fields.COGNOME
 	};
 	
 	String selection = UtenteDB.Fields.TYPE + " =? AND " + UtenteDB.Fields.ID_UTENTE + " = ?";
 	
 	String[] selectionArgs = new String[] {
-		UtenteDB.UTENTE_ITEM_TYPE, "" + params[0]
+	UtenteDB.UTENTE_ITEM_TYPE, "" + params[0]
 	};
 	
 	Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection, selection, selectionArgs, null);

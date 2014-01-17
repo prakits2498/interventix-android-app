@@ -2,8 +2,6 @@ package com.federicocolantoni.projects.interventix.entity;
 
 import java.io.Serializable;
 
-import org.json.JSONArray;
-
 import android.content.ContentValues;
 
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
@@ -15,11 +13,11 @@ public class DettaglioIntervento implements Serializable {
      */
     private static final long serialVersionUID = 3301272979527832708L;
     
-    private Long mIdDettaglioIntervento;
-    private String mTipo, mOggetto, mDescrizione, mModificato;
-    private Long mIntervento;
-    private Long mInizio, mFine;
-    private JSONArray mTecnici;
+    private Long iddettagliointervento;
+    private String tipo, oggetto, descrizione, modificato;
+    private Long idintervento;
+    private Long inizio, fine;
+    private String tecniciintervento;
     
     public DettaglioIntervento() {
     
@@ -28,25 +26,20 @@ public class DettaglioIntervento implements Serializable {
     @Override
     public String toString() {
     
-	String result = "";
-	
-	result += "Dettaglio " + mIdDettaglioIntervento + "\nOggetto: " + mOggetto + "\nDescrizione: " + mDescrizione + "\nTipo: " + mTipo + "\nIntervento: " + mIntervento;
-	
-	return result;
-	
+	return String.format("DettaglioIntervento [idDettaglioIntervento=%s, tipo=%s, oggetto=%s, descrizione=%s, modificato=%s, intervento=%s, inizio=%s, fine=%s, tecnici=%s]", iddettagliointervento, tipo, oggetto, descrizione, modificato, idintervento, inizio, fine, tecniciintervento);
     }
     
     public DettaglioIntervento(Long idDettaglioIntervento) {
     
-	mIdDettaglioIntervento = idDettaglioIntervento;
+	this.iddettagliointervento = idDettaglioIntervento;
     }
     
     /**
      * @return the mIdDettaglioIntervento
      */
-    public Long getmIdDettaglioIntervento() {
+    public Long getIdDettaglioIntervento() {
     
-	return mIdDettaglioIntervento;
+	return iddettagliointervento;
     }
     
     /**
@@ -55,15 +48,15 @@ public class DettaglioIntervento implements Serializable {
      */
     public void setIdDettaglioIntervento(Long mIdDettaglioIntervento) {
     
-	this.mIdDettaglioIntervento = mIdDettaglioIntervento;
+	this.iddettagliointervento = mIdDettaglioIntervento;
     }
     
     /**
      * @return the mTipo
      */
-    public String getmTipo() {
+    public String getTipo() {
     
-	return mTipo;
+	return tipo;
     }
     
     /**
@@ -72,15 +65,15 @@ public class DettaglioIntervento implements Serializable {
      */
     public void setTipo(String mTipo) {
     
-	this.mTipo = mTipo;
+	this.tipo = mTipo;
     }
     
     /**
      * @return the mOggetto
      */
-    public String getmOggetto() {
+    public String getOggetto() {
     
-	return mOggetto;
+	return oggetto;
     }
     
     /**
@@ -89,15 +82,15 @@ public class DettaglioIntervento implements Serializable {
      */
     public void setOggetto(String mOggetto) {
     
-	this.mOggetto = mOggetto;
+	this.oggetto = mOggetto;
     }
     
     /**
      * @return the mDescrizione
      */
-    public String getmDescrizione() {
+    public String getDescrizione() {
     
-	return mDescrizione;
+	return descrizione;
     }
     
     /**
@@ -106,15 +99,15 @@ public class DettaglioIntervento implements Serializable {
      */
     public void setDescrizione(String mDescrizione) {
     
-	this.mDescrizione = mDescrizione;
+	this.descrizione = mDescrizione;
     }
     
     /**
      * @return the mIntervento
      */
-    public Long getmIntervento() {
+    public Long getIntervento() {
     
-	return mIntervento;
+	return idintervento;
     }
     
     /**
@@ -123,52 +116,52 @@ public class DettaglioIntervento implements Serializable {
      */
     public void setIntervento(Long mIntervento) {
     
-	this.mIntervento = mIntervento;
+	this.idintervento = mIntervento;
     }
     
-    public Long getmInizio() {
+    public Long getInizio() {
     
-	return mInizio;
+	return inizio;
     }
     
     public void setInizio(Long mInizio) {
     
-	this.mInizio = mInizio;
+	this.inizio = mInizio;
     }
     
-    public Long getmFine() {
+    public Long getFine() {
     
-	return mFine;
+	return fine;
     }
     
     public void setFine(Long mFine) {
     
-	this.mFine = mFine;
+	this.fine = mFine;
     }
     
     /**
      * @return the mTecnici
      */
-    public JSONArray getmTecnici() {
+    public String getTecnici() {
     
-	return mTecnici;
+	return tecniciintervento;
     }
     
     /**
      * @param mTecnici
      *            the mTecnici to set
      */
-    public void setTecnici(JSONArray mTecnici) {
+    public void setTecnici(String mTecnici) {
     
-	this.mTecnici = mTecnici;
+	this.tecniciintervento = mTecnici;
     }
     
     /**
      * @return the mModificato
      */
-    public String getmModificato() {
+    public String getModificato() {
     
-	return mModificato;
+	return modificato;
     }
     
     /**
@@ -177,23 +170,23 @@ public class DettaglioIntervento implements Serializable {
      */
     public void setModificato(String mModificato) {
     
-	this.mModificato = mModificato;
+	this.modificato = mModificato;
     }
     
     public static ContentValues insertSQL(DettaglioIntervento dettIntervento) {
     
 	ContentValues values = new ContentValues();
 	
-	values.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, dettIntervento.getmIdDettaglioIntervento());
+	values.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, dettIntervento.getIdDettaglioIntervento());
 	values.put(DettaglioInterventoDB.Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
-	values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, dettIntervento.getmDescrizione());
-	values.put(DettaglioInterventoDB.Fields.INTERVENTO, dettIntervento.getmIntervento());
-	values.put(DettaglioInterventoDB.Fields.MODIFICATO, dettIntervento.getmModificato());
-	values.put(DettaglioInterventoDB.Fields.OGGETTO, dettIntervento.getmOggetto());
-	values.put(DettaglioInterventoDB.Fields.TIPO, dettIntervento.getmTipo());
-	values.put(DettaglioInterventoDB.Fields.INIZIO, dettIntervento.getmInizio());
-	values.put(DettaglioInterventoDB.Fields.FINE, dettIntervento.getmFine());
-	values.put(DettaglioInterventoDB.Fields.TECNICI, dettIntervento.getmTecnici().toString());
+	values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, dettIntervento.getDescrizione());
+	values.put(DettaglioInterventoDB.Fields.INTERVENTO, dettIntervento.getIntervento());
+	values.put(DettaglioInterventoDB.Fields.MODIFICATO, dettIntervento.getModificato());
+	values.put(DettaglioInterventoDB.Fields.OGGETTO, dettIntervento.getOggetto());
+	values.put(DettaglioInterventoDB.Fields.TIPO, dettIntervento.getTipo());
+	values.put(DettaglioInterventoDB.Fields.INIZIO, dettIntervento.getInizio());
+	values.put(DettaglioInterventoDB.Fields.FINE, dettIntervento.getFine());
+	values.put(DettaglioInterventoDB.Fields.TECNICI, dettIntervento.getTecnici().toString());
 	
 	return values;
     }
@@ -202,14 +195,14 @@ public class DettaglioIntervento implements Serializable {
     
 	ContentValues values = new ContentValues();
 	
-	values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, dettIntervento.getmDescrizione());
-	values.put(DettaglioInterventoDB.Fields.INTERVENTO, dettIntervento.getmIntervento());
-	values.put(DettaglioInterventoDB.Fields.MODIFICATO, dettIntervento.getmModificato());
-	values.put(DettaglioInterventoDB.Fields.OGGETTO, dettIntervento.getmOggetto());
-	values.put(DettaglioInterventoDB.Fields.TIPO, dettIntervento.getmTipo());
-	values.put(DettaglioInterventoDB.Fields.INIZIO, dettIntervento.getmInizio());
-	values.put(DettaglioInterventoDB.Fields.FINE, dettIntervento.getmFine());
-	values.put(DettaglioInterventoDB.Fields.TECNICI, dettIntervento.getmTecnici().toString());
+	values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, dettIntervento.getDescrizione());
+	values.put(DettaglioInterventoDB.Fields.INTERVENTO, dettIntervento.getIntervento());
+	values.put(DettaglioInterventoDB.Fields.MODIFICATO, dettIntervento.getModificato());
+	values.put(DettaglioInterventoDB.Fields.OGGETTO, dettIntervento.getOggetto());
+	values.put(DettaglioInterventoDB.Fields.TIPO, dettIntervento.getTipo());
+	values.put(DettaglioInterventoDB.Fields.INIZIO, dettIntervento.getInizio());
+	values.put(DettaglioInterventoDB.Fields.FINE, dettIntervento.getFine());
+	values.put(DettaglioInterventoDB.Fields.TECNICI, dettIntervento.getTecnici().toString());
 	
 	return values;
     }

@@ -14,10 +14,10 @@ public class Utente implements Serializable {
      */
     private static final long serialVersionUID = -460809443185110082L;
     
-    private Long mIdUtente, mRevisione;
-    private String mNome, mCognome, mUserName, mPassword, mEmail, mTipo;
-    private boolean mCancellato, mCestinato, mConflitto;
-    private List<Intervento> mInterventi;
+    private Long idutente, revisione;
+    private String nome, cognome, username, password, email, tipo;
+    private boolean cancellato, cestinato, conflitto;
+    private List<Intervento> interventi;
     
     public Utente() {
     
@@ -25,7 +25,7 @@ public class Utente implements Serializable {
     
     public Utente(Long idUtente) {
     
-	mIdUtente = idUtente;
+	this.idutente = idUtente;
     }
     
     /**
@@ -33,7 +33,7 @@ public class Utente implements Serializable {
      */
     public Long getIdUtente() {
     
-	return mIdUtente;
+	return idutente;
     }
     
     /**
@@ -42,7 +42,7 @@ public class Utente implements Serializable {
      */
     public void setIdUtente(Long mIdUtente) {
     
-	this.mIdUtente = mIdUtente;
+	this.idutente = mIdUtente;
     }
     
     /**
@@ -50,7 +50,7 @@ public class Utente implements Serializable {
      */
     public String getNome() {
     
-	return mNome;
+	return nome;
     }
     
     /**
@@ -59,7 +59,7 @@ public class Utente implements Serializable {
      */
     public void setNome(String mNome) {
     
-	this.mNome = mNome;
+	this.nome = mNome;
     }
     
     /**
@@ -67,7 +67,7 @@ public class Utente implements Serializable {
      */
     public String getCognome() {
     
-	return mCognome;
+	return cognome;
     }
     
     /**
@@ -76,7 +76,7 @@ public class Utente implements Serializable {
      */
     public void setCognome(String mCognome) {
     
-	this.mCognome = mCognome;
+	this.cognome = mCognome;
     }
     
     /**
@@ -84,7 +84,7 @@ public class Utente implements Serializable {
      */
     public String getUsername() {
     
-	return mUserName;
+	return username;
     }
     
     /**
@@ -93,7 +93,7 @@ public class Utente implements Serializable {
      */
     public void setUserName(String mUserName) {
     
-	this.mUserName = mUserName;
+	this.username = mUserName;
     }
     
     /**
@@ -101,7 +101,7 @@ public class Utente implements Serializable {
      */
     public String getmPassword() {
     
-	return mPassword;
+	return password;
     }
     
     /**
@@ -110,7 +110,7 @@ public class Utente implements Serializable {
      */
     public void setmPassword(String mPassword) {
     
-	this.mPassword = mPassword;
+	this.password = mPassword;
     }
     
     /**
@@ -118,7 +118,7 @@ public class Utente implements Serializable {
      */
     public String getEmail() {
     
-	return mEmail;
+	return email;
     }
     
     /**
@@ -127,7 +127,7 @@ public class Utente implements Serializable {
      */
     public void setEmail(String mEmail) {
     
-	this.mEmail = mEmail;
+	this.email = mEmail;
     }
     
     /**
@@ -135,7 +135,7 @@ public class Utente implements Serializable {
      */
     public String getTipo() {
     
-	return mTipo;
+	return tipo;
     }
     
     /**
@@ -144,7 +144,7 @@ public class Utente implements Serializable {
      */
     public void setTipo(String mTipo) {
     
-	this.mTipo = mTipo;
+	this.tipo = mTipo;
     }
     
     /**
@@ -152,7 +152,7 @@ public class Utente implements Serializable {
      */
     public boolean isCancellato() {
     
-	return mCancellato;
+	return cancellato;
     }
     
     /**
@@ -161,7 +161,7 @@ public class Utente implements Serializable {
      */
     public void setCancellato(boolean mCancellato) {
     
-	this.mCancellato = mCancellato;
+	this.cancellato = mCancellato;
     }
     
     /**
@@ -169,7 +169,7 @@ public class Utente implements Serializable {
      */
     public boolean isCestinato() {
     
-	return mCestinato;
+	return cestinato;
     }
     
     /**
@@ -178,7 +178,7 @@ public class Utente implements Serializable {
      */
     public void setCestinato(boolean mCestinato) {
     
-	this.mCestinato = mCestinato;
+	this.cestinato = mCestinato;
     }
     
     /**
@@ -186,7 +186,7 @@ public class Utente implements Serializable {
      */
     public List<Intervento> getInterventi() {
     
-	return mInterventi;
+	return interventi;
     }
     
     /**
@@ -195,7 +195,7 @@ public class Utente implements Serializable {
      */
     public void setInterventi(List<Intervento> mInterventi) {
     
-	this.mInterventi = mInterventi;
+	this.interventi = mInterventi;
     }
     
     /**
@@ -203,16 +203,16 @@ public class Utente implements Serializable {
      */
     public Long getRevisione() {
     
-	return mRevisione;
+	return revisione;
     }
     
     /**
-     * @param mRevisione
+     * @param revisione
      *            the mRevisione to set
      */
-    public void setRevisione(Long mRevisione) {
+    public void setRevisione(Long revisione) {
     
-	this.mRevisione = mRevisione;
+	this.revisione = revisione;
     }
     
     /**
@@ -220,7 +220,7 @@ public class Utente implements Serializable {
      */
     public boolean isConflitto() {
     
-	return mConflitto;
+	return conflitto;
     }
     
     /**
@@ -229,18 +229,13 @@ public class Utente implements Serializable {
      */
     public void setConflitto(boolean mConflitto) {
     
-	this.mConflitto = mConflitto;
+	this.conflitto = mConflitto;
     }
     
     @Override
     public String toString() {
     
-	String result = "";
-	
-	result += "Utente " + mIdUtente + "\nNome: " + mNome + "\nCognome" + mCognome + "\nUsername: " + mUserName +
-		  "\nEmail: " + mEmail + "\nTipo: " + mTipo + "\nRevisione: " + mRevisione + "\nCancellato: " + mCancellato + "\nCestinato: " + mCestinato;
-	
-	return result;
+	return String.format("Utente [idutente=%s, revisione=%s, nome=%s, cognome=%s, username=%s, password=%s, email=%s, tipo=%s, cancellato=%s, cestinato=%s, conflitto=%s, interventi=%s]", idutente, revisione, nome, cognome, username, password, email, tipo, cancellato, cestinato, conflitto, interventi);
     }
     
     public static ContentValues insertSQL(Utente user) {

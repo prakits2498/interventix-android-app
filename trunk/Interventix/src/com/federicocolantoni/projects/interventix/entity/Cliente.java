@@ -15,11 +15,10 @@ public class Cliente implements Serializable {
      */
     private static final long serialVersionUID = 6163117197009443000L;
     
-    private Long mIdCliente;
-    private String mNominativo, mCodiceFiscale, mPartitaIVA, mTelefono, mFax,
-	    mEmail, mReferente, mCitta, mIndirizzo, mInterno, mUfficio, mNote;
-    private boolean mCancellato, mConflitto;
-    private Long mRevisione;
+    private Long idcliente;
+    private String nominativo, codicefiscale, partitaiva, telefono, fax, email, referente, citta, indirizzo, interno, ufficio, note;
+    private boolean cancellato, conflitto;
+    private Long revisione;
     
     public Cliente() {
     
@@ -27,7 +26,7 @@ public class Cliente implements Serializable {
     
     public Cliente(Long idCliente) {
     
-	mIdCliente = idCliente;
+	this.idcliente = idCliente;
     }
     
     /**
@@ -35,7 +34,7 @@ public class Cliente implements Serializable {
      */
     public Long getIdCliente() {
     
-	return mIdCliente;
+	return idcliente;
     }
     
     /**
@@ -44,7 +43,7 @@ public class Cliente implements Serializable {
      */
     public void setIdCliente(Long mIdCliente) {
     
-	this.mIdCliente = mIdCliente;
+	this.idcliente = mIdCliente;
     }
     
     /**
@@ -52,7 +51,7 @@ public class Cliente implements Serializable {
      */
     public String getNominativo() {
     
-	return mNominativo;
+	return nominativo;
     }
     
     /**
@@ -61,7 +60,7 @@ public class Cliente implements Serializable {
      */
     public void setNominativo(String mNominativo) {
     
-	this.mNominativo = mNominativo;
+	this.nominativo = mNominativo;
     }
     
     /**
@@ -69,7 +68,7 @@ public class Cliente implements Serializable {
      */
     public String getCodiceFiscale() {
     
-	return mCodiceFiscale;
+	return codicefiscale;
     }
     
     /**
@@ -78,7 +77,7 @@ public class Cliente implements Serializable {
      */
     public void setCodiceFiscale(String mCodiceFiscale) {
     
-	this.mCodiceFiscale = mCodiceFiscale;
+	this.codicefiscale = mCodiceFiscale;
     }
     
     /**
@@ -86,7 +85,7 @@ public class Cliente implements Serializable {
      */
     public String getPartitaIVA() {
     
-	return mPartitaIVA;
+	return partitaiva;
     }
     
     /**
@@ -95,7 +94,7 @@ public class Cliente implements Serializable {
      */
     public void setPartitaIVA(String mPartitaIVA) {
     
-	this.mPartitaIVA = mPartitaIVA;
+	this.partitaiva = mPartitaIVA;
     }
     
     /**
@@ -103,7 +102,7 @@ public class Cliente implements Serializable {
      */
     public String getTelefono() {
     
-	return mTelefono;
+	return telefono;
     }
     
     /**
@@ -112,7 +111,7 @@ public class Cliente implements Serializable {
      */
     public void setTelefono(String mTelefono) {
     
-	this.mTelefono = mTelefono;
+	this.telefono = mTelefono;
     }
     
     /**
@@ -120,7 +119,7 @@ public class Cliente implements Serializable {
      */
     public String getFax() {
     
-	return mFax;
+	return fax;
     }
     
     /**
@@ -129,7 +128,7 @@ public class Cliente implements Serializable {
      */
     public void setFax(String mFax) {
     
-	this.mFax = mFax;
+	this.fax = mFax;
     }
     
     /**
@@ -137,7 +136,7 @@ public class Cliente implements Serializable {
      */
     public String getEmail() {
     
-	return mEmail;
+	return email;
     }
     
     /**
@@ -146,7 +145,7 @@ public class Cliente implements Serializable {
      */
     public void setEmail(String mEmail) {
     
-	this.mEmail = mEmail;
+	this.email = mEmail;
     }
     
     /**
@@ -154,7 +153,7 @@ public class Cliente implements Serializable {
      */
     public String getReferente() {
     
-	return mReferente;
+	return referente;
     }
     
     /**
@@ -163,7 +162,7 @@ public class Cliente implements Serializable {
      */
     public void setReferente(String mReferente) {
     
-	this.mReferente = mReferente;
+	this.referente = mReferente;
     }
     
     /**
@@ -171,7 +170,7 @@ public class Cliente implements Serializable {
      */
     public String getCitta() {
     
-	return mCitta;
+	return citta;
     }
     
     /**
@@ -180,7 +179,7 @@ public class Cliente implements Serializable {
      */
     public void setCitta(String mCitta) {
     
-	this.mCitta = mCitta;
+	this.citta = mCitta;
     }
     
     /**
@@ -188,7 +187,7 @@ public class Cliente implements Serializable {
      */
     public String getIndirizzo() {
     
-	return mIndirizzo;
+	return indirizzo;
     }
     
     /**
@@ -197,7 +196,7 @@ public class Cliente implements Serializable {
      */
     public void setIndirizzo(String mIndirizzo) {
     
-	this.mIndirizzo = mIndirizzo;
+	this.indirizzo = mIndirizzo;
     }
     
     /**
@@ -205,7 +204,7 @@ public class Cliente implements Serializable {
      */
     public String getInterno() {
     
-	return mInterno;
+	return interno;
     }
     
     /**
@@ -214,7 +213,7 @@ public class Cliente implements Serializable {
      */
     public void setInterno(String mInterno) {
     
-	this.mInterno = mInterno;
+	this.interno = mInterno;
     }
     
     /**
@@ -222,7 +221,7 @@ public class Cliente implements Serializable {
      */
     public String getUfficio() {
     
-	return mUfficio;
+	return ufficio;
     }
     
     /**
@@ -231,7 +230,7 @@ public class Cliente implements Serializable {
      */
     public void setUfficio(String mUfficio) {
     
-	this.mUfficio = mUfficio;
+	this.ufficio = mUfficio;
     }
     
     /**
@@ -239,7 +238,7 @@ public class Cliente implements Serializable {
      */
     public String getNote() {
     
-	return mNote;
+	return note;
     }
     
     /**
@@ -248,7 +247,7 @@ public class Cliente implements Serializable {
      */
     public void setNote(String mNote) {
     
-	this.mNote = mNote;
+	this.note = mNote;
     }
     
     /**
@@ -256,7 +255,7 @@ public class Cliente implements Serializable {
      */
     public boolean ismCancellato() {
     
-	return mCancellato;
+	return cancellato;
     }
     
     /**
@@ -265,7 +264,7 @@ public class Cliente implements Serializable {
      */
     public void setCancellato(boolean mCancellato) {
     
-	this.mCancellato = mCancellato;
+	this.cancellato = mCancellato;
     }
     
     /**
@@ -273,7 +272,7 @@ public class Cliente implements Serializable {
      */
     public Long getRevisione() {
     
-	return mRevisione;
+	return revisione;
     }
     
     /**
@@ -282,7 +281,7 @@ public class Cliente implements Serializable {
      */
     public void setRevisione(Long revisione) {
     
-	mRevisione = revisione;
+	this.revisione = revisione;
     }
     
     /**
@@ -290,7 +289,7 @@ public class Cliente implements Serializable {
      */
     public boolean isConflitto() {
     
-	return mConflitto;
+	return conflitto;
     }
     
     /**
@@ -299,19 +298,13 @@ public class Cliente implements Serializable {
      */
     public void setConflitto(boolean mConflitto) {
     
-	this.mConflitto = mConflitto;
+	this.conflitto = mConflitto;
     }
     
     @Override
     public String toString() {
     
-	String result = "";
-	
-	result += "Cliente " + mIdCliente + "\nNominativo: " + mNominativo + "\nCodice fiscale: " + mCodiceFiscale + "\nCittà: " + mCitta +
-		  "\nEmail: " + mEmail + "\nFax: " + mFax + "\nIndirizzo: " + mIndirizzo + "\nInterno: " + mInterno + "\nPartita IVA: " + mPartitaIVA +
-		  "\nReferente: " + mReferente + "\nNote: " + mNote + "\nTelefono: " + mTelefono + "\nUfficio: " + mUfficio;
-	
-	return result;
+	return String.format("Cliente [idcliente=%s, nominativo=%s, codicefiscale=%s, partitaiva=%s, telefono=%s, fax=%s, email=%s, referente=%s, citta=%s, indirizzo=%s, interno=%s, ufficio=%s, note=%s, cancellato=%s, conflitto=%s, revisione=%s]", idcliente, nominativo, codicefiscale, partitaiva, telefono, fax, email, referente, citta, indirizzo, interno, ufficio, note, cancellato, conflitto, revisione);
     }
     
     public static ContentValues insertSQL(Cliente cliente) {
