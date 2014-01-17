@@ -14,13 +14,13 @@ public class CryptoCR2 {
     
     private static final String ALGORITHM = "AES/ECB/PKCS7Padding";
     private static final byte[] keyValue = new byte[] {
-	    'a', 'b', 'c', '7', '8', 'j', 'N', 'i', 'K', 'u', 'm', 'H', '6', '5', '6', 'p'
+    'a', 'b', 'c', '7', '8', 'j', 'N', 'i', 'K', 'u', 'm', 'H', '6', '5', '6', 'p'
     };
     protected static final char[] kDigits = {
-	    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
     };
     protected static final byte[] Hexhars = {
-	    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
     };
     
     public static String encrypt(String valueToCR2) throws Exception {

@@ -231,7 +231,7 @@ public class OverViewInterventoFragment extends Fragment {
 	    
 	    for (DettaglioIntervento obj : listaDetailsInterv.getListDetails()) {
 		
-		numOre += obj.getmFine() - obj.getmInizio();
+		numOre += obj.getFine() - obj.getInizio();
 	    }
 	    
 	    DateTime dt = new DateTime(numOre, DateTimeZone.forID("Europe/Rome"));

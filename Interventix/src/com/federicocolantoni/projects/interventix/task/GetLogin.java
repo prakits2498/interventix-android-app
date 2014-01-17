@@ -26,6 +26,9 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Ute
 import com.federicocolantoni.projects.interventix.entity.Utente;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.Utils;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class GetLogin extends AsyncTask<String, Void, Integer> {
     
@@ -76,8 +79,6 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 	// in this case, make a connection to the server to make login
 	if (!defaultPrefs.getBoolean(prefs_auto_login, false)) {
 	    
-	    System.out.println("auto-login false");
-	    
 	    try {
 		
 		JSONObject response = new JSONObject(Utils.connectionForURL(strings[0], url).toJSONString());
@@ -92,7 +93,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 		    String selection = Fields.TYPE + " = ? AND " + UtenteDB.Fields.USERNAME + " = ?";
 		    
 		    String[] selectionArgs = new String[] {
-			    UtenteDB.UTENTE_ITEM_TYPE, mUsername
+		    UtenteDB.UTENTE_ITEM_TYPE, mUsername
 		    };
 		    
 		    Cursor cursor = cr.query(UtenteDB.CONTENT_URI, null, selection, selectionArgs, null);
@@ -101,21 +102,18 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 			
 			// Update user's informations
 			
+			Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+			
 			Utente updateUser = new Utente();
-			updateUser.setCancellato(data.getBoolean("cancellato"));
-			updateUser.setCestinato(data.getBoolean("cestinato"));
-			updateUser.setCognome(data.getString("cognome"));
-			updateUser.setEmail(data.getString("email"));
-			updateUser.setNome(data.getString("nome"));
-			updateUser.setRevisione(data.getLong("revisione"));
-			updateUser.setTipo(data.getString("tipo"));
+			
+			updateUser = gson.fromJson(data.toString(), Utente.class);
 			
 			values = Utente.updateSQL(updateUser);
 			
 			String selectionUpdate = UtenteDB.Fields.ID_UTENTE + " = ?";
 			
 			String[] selectionUpdateArgs = new String[] {
-								     "" + data.get("idutente")
+			    "" + data.get("idutente")
 			};
 			
 			cr.update(UtenteDB.CONTENT_URI, values, selectionUpdate, selectionUpdateArgs);
@@ -141,15 +139,10 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 			// Insert user's informations
 			
 			Utente newUser = new Utente();
-			newUser.setIdUtente(data.getLong("idutente"));
-			newUser.setCancellato(data.getBoolean("cancellato"));
-			newUser.setCestinato(data.getBoolean("cestinato"));
-			newUser.setCognome(data.getString("cognome"));
-			newUser.setEmail(data.getString("email"));
-			newUser.setNome(data.getString("nome"));
-			newUser.setUserName(data.getString("username"));
-			newUser.setRevisione(data.getLong("revisione"));
-			newUser.setTipo(data.getString("tipo"));
+			
+			Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+			
+			newUser = gson.fromJson(data.toString(), Utente.class);
 			
 			values = Utente.insertSQL(newUser);
 			

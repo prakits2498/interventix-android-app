@@ -126,15 +126,15 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		    JSONObject dettaglioIntervento = new JSONObject();
 		    
 		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
-		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO.toString(), dettaglio.getmIdDettaglioIntervento());
-		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.DESCRIZIONE.toString(), dettaglio.getmDescrizione());
-		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.FINE.toString(), dettaglio.getmFine());
-		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.INIZIO.toString(), dettaglio.getmInizio());
-		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.INTERVENTO.toString(), dettaglio.getmIntervento());
-		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.MODIFICATO.toString(), dettaglio.getmModificato());
-		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.OGGETTO.toString(), dettaglio.getmOggetto());
-		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.TIPO.toString(), dettaglio.getmTipo());
-		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.TECNICI.toString(), dettaglio.getmTecnici());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO.toString(), dettaglio.getIdDettaglioIntervento());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.DESCRIZIONE.toString(), dettaglio.getDescrizione());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.FINE.toString(), dettaglio.getFine());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.INIZIO.toString(), dettaglio.getInizio());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.INTERVENTO.toString(), dettaglio.getIntervento());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.MODIFICATO.toString(), dettaglio.getModificato());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.OGGETTO.toString(), dettaglio.getOggetto());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.TIPO.toString(), dettaglio.getTipo());
+		    dettaglioIntervento.put(DettaglioInterventoDB.Fields.TECNICI.toString(), dettaglio.getTecnici());
 		    
 		    arrayDettagli.put(dettaglioIntervento);
 		}
@@ -293,7 +293,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		    };
 		    
 		    writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+			RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 		    });
 		    
 		    finish();
@@ -365,7 +365,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		};
 		
 		writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-				    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+		    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 		});
 		
 		finish();
@@ -447,7 +447,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		    };
 		    
 		    writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+			RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 		    });
 		    
 		    edit.putBoolean(Constants.DETT_INTERV_MODIFIED, false);
@@ -521,10 +521,9 @@ public class ViewInterventoActivity extends ActionBarActivity {
 				ContentResolver cr = getActivity().getContentResolver();
 				
 				cursor = cr.query(RipristinoInterventoDB.CONTENT_URI, new String[] {
-					RipristinoInterventoDB.Field._ID,
-					RipristinoInterventoDB.Field.BACKUP_INTERVENTO
+				RipristinoInterventoDB.Field._ID, RipristinoInterventoDB.Field.BACKUP_INTERVENTO
 				}, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-						  params[0]
+				    params[0]
 				}, null);
 				
 				return cursor;
@@ -587,10 +586,9 @@ public class ViewInterventoActivity extends ActionBarActivity {
 				valuesIntervento.put(InterventoDB.Fields.TIPOLOGIA, intervRipristino.getString(InterventoDB.Fields.TIPOLOGIA.toString()));
 				valuesIntervento.put(InterventoDB.Fields.TOTALE, intervRipristino.getDouble(InterventoDB.Fields.TOTALE.toString()));
 				
-				queryHandlerDB.startUpdate(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, InterventoDB.CONTENT_URI, valuesIntervento,
-							   InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?", new String[] {
-								   InterventoDB.INTERVENTO_ITEM_TYPE, "" + intervRipristino.getLong(InterventoDB.Fields.ID_INTERVENTO.toString())
-							   });
+				queryHandlerDB.startUpdate(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, InterventoDB.CONTENT_URI, valuesIntervento, InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?", new String[] {
+				InterventoDB.INTERVENTO_ITEM_TYPE, "" + intervRipristino.getLong(InterventoDB.Fields.ID_INTERVENTO.toString())
+				});
 				
 				JSONArray dettagliIntervento = intervRipristino.getJSONArray(Constants.ARRAY_DETTAGLI);
 				
@@ -609,18 +607,17 @@ public class ViewInterventoActivity extends ActionBarActivity {
 				    valuesDettaglio.put(DettaglioInterventoDB.Fields.TECNICI, dettaglio.getJSONArray(DettaglioInterventoDB.Fields.TECNICI.toString()).toString());
 				    valuesDettaglio.put(DettaglioInterventoDB.Fields.TIPO, dettaglio.getString(DettaglioInterventoDB.Fields.TIPO.toString()));
 				    
-				    queryHandlerDB.startUpdate(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, DettaglioInterventoDB.CONTENT_URI, valuesDettaglio,
-							       DettaglioInterventoDB.Fields.TYPE + "=? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?", new String[] {
-								       DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettaglio.getLong(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO.toString())
-							       });
+				    queryHandlerDB.startUpdate(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, DettaglioInterventoDB.CONTENT_URI, valuesDettaglio, DettaglioInterventoDB.Fields.TYPE + "=? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?", new String[] {
+				    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettaglio.getLong(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO.toString())
+				    });
 				}
 				
 				queryHandlerDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-							   RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+				    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 				});
 				
 				queryHandlerDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, DettaglioInterventoDB.CONTENT_URI, DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "<?", new String[] {
-							   "0"
+				    "0"
 				});
 			    }
 			    catch (JSONException e) {
@@ -631,7 +628,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 			    finally {
 				
 				queryHandlerDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-							   RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+				    RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 				});
 			    }
 			}
@@ -723,7 +720,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		    };
 		    
 		    writeDB.startDelete(Constants.TOKEN_RIPRISTINO_INTERVENTO, null, RipristinoInterventoDB.CONTENT_URI, RipristinoInterventoDB.Field.TYPE + "=?", new String[] {
-					RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
+			RipristinoInterventoDB.RIPRISTINO_INTERVENTO_ITEM_TYPE
 		    });
 		    
 		    finish();

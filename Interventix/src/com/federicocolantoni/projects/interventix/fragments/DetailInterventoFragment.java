@@ -302,7 +302,7 @@ public class DetailInterventoFragment extends Fragment {
 	    });
 	    
 	    tv_row_tipo_dett = (TextView) row_tipo_dett.findViewById(R.id.tv_row_tipo_dettaglio);
-	    tv_row_tipo_dett.setText(dettInterv.getmTipo());
+	    tv_row_tipo_dett.setText(dettInterv.getTipo());
 	    
 	    row_oggetto_dett.setOnClickListener(new OnClickListener() {
 		
@@ -313,11 +313,20 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    
-	    tv_row_oggetto_dett.setText(dettInterv.getmOggetto());
+	    tv_row_oggetto_dett.setText(dettInterv.getOggetto());
 	    
-	    tv_row_tecnici_dett.setText("" + dettInterv.getmTecnici().length());
+	    tv_row_tecnici_dett.setText("" + dettInterv.getTecnici().length());
 	    
-	    final JSONArray tecnici = dettInterv.getmTecnici();
+	    JSONArray tecnici = null;
+	    
+	    try {
+		tecnici = new JSONArray(dettInterv.getTecnici());
+	    }
+	    catch (JSONException e) {
+		
+		BugSenseHandler.sendException(e);
+		e.printStackTrace();
+	    }
 	    
 	    System.out.println(this.getClass().getName() + " - Array tecnici: " + tecnici.toString());
 	    
@@ -346,7 +355,7 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    
-	    tv_row_descr_dett.setText(dettInterv.getmDescrizione());
+	    tv_row_descr_dett.setText(dettInterv.getDescrizione());
 	    
 	    row_inizio_dett.setOnClickListener(new OnClickListener() {
 		
@@ -476,7 +485,7 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    
-	    DateTime dt_inizio = new DateTime(dettInterv.getmInizio(), DateTimeZone.forID("Europe/Rome"));
+	    DateTime dt_inizio = new DateTime(dettInterv.getInizio(), DateTimeZone.forID("Europe/Rome"));
 	    
 	    tv_row_inizio_dett.setText(dt_inizio.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
 	    
@@ -608,7 +617,7 @@ public class DetailInterventoFragment extends Fragment {
 		}
 	    });
 	    
-	    DateTime dt_fine = new DateTime(dettInterv.getmFine(), DateTimeZone.forID("Europe/Rome"));
+	    DateTime dt_fine = new DateTime(dettInterv.getFine(), DateTimeZone.forID("Europe/Rome"));
 	    
 	    tv_row_fine_dett.setText(dt_fine.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
 	    

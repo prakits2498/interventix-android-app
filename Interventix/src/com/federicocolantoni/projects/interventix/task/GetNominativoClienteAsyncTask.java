@@ -23,13 +23,13 @@ public class GetNominativoClienteAsyncTask extends AsyncTask<Long, Void, Cliente
 	ContentResolver cr = context.getContentResolver();
 	
 	String[] projection = new String[] {
-		ClienteDB.Fields._ID, ClienteDB.Fields.NOMINATIVO
+	ClienteDB.Fields._ID, ClienteDB.Fields.NOMINATIVO
 	};
 	
 	String selection = ClienteDB.Fields.TYPE + " =? AND " + ClienteDB.Fields.ID_CLIENTE + " = ?";
 	
 	String[] selectionArgs = new String[] {
-		ClienteDB.CLIENTE_ITEM_TYPE, "" + params[0]
+	ClienteDB.CLIENTE_ITEM_TYPE, "" + params[0]
 	};
 	
 	Cursor cursor = cr.query(ClienteDB.CONTENT_URI, projection, selection, selectionArgs, null);

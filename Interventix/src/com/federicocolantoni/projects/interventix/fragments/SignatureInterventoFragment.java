@@ -152,7 +152,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 		    String selection = InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?";
 		    
 		    String[] selectionArgs = new String[] {
-			    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento
+		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento
 		    };
 		    
 		    saveSignature.startUpdate(0, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);

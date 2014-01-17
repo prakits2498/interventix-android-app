@@ -30,13 +30,13 @@ public class GetClientiAsyncTask extends AsyncTask<Void, Void, ArrayList<Cliente
 	ArrayList<Cliente> listaClienti = new ArrayList<Cliente>();
 	
 	String[] PROJECTION = new String[] {
-		ClienteDB.Fields._ID, ClienteDB.Fields.NOMINATIVO, ClienteDB.Fields.CODICE_FISCALE, ClienteDB.Fields.PARTITAIVA, ClienteDB.Fields.ID_CLIENTE
+	ClienteDB.Fields._ID, ClienteDB.Fields.NOMINATIVO, ClienteDB.Fields.CODICE_FISCALE, ClienteDB.Fields.PARTITAIVA, ClienteDB.Fields.ID_CLIENTE
 	};
 	
 	String SELECTION = ClienteDB.Fields.TYPE + "=?";
 	
 	String[] SELECTION_ARGS = new String[] {
-						ClienteDB.CLIENTE_ITEM_TYPE
+	    ClienteDB.CLIENTE_ITEM_TYPE
 	};
 	
 	String sortOrder = ClienteDB.Fields.NOMINATIVO + " ASC";

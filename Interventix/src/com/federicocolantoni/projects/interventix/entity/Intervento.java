@@ -16,18 +16,16 @@ public class Intervento implements Serializable {
      */
     private static final long serialVersionUID = -6145022542420590261L;
     
-    private Long mIdIntervento;
-    private String mTipologia, mProdotto, mMotivo, mNominativo, mRifFattura,
-	    mRifScontrino, mNote, mModalita, mModificato;
-    private String mFirma;
-    private boolean mSaldato, mCancellato, mChiuso, mConflitto;
-    private Long mDataOra;
-    private Long mIdCliente;
-    private Long mIdTecnico;
-    private BigDecimal mCostoManodopera, mCostoComponenti, mCostoAccessori,
-	    mImporto, mTotale;
-    private BigDecimal mIva;
-    private Long mNumeroIntervento;
+    private Long idintervento;
+    private String tipologia, prodotto, motivo, nominativo, riffattura, rifscontrino, note, modalita, modificato;
+    private String firma;
+    private boolean saldato, cancellato, chiuso, conflitto;
+    private Long dataora;
+    private Long cliente;
+    private Long tecnico;
+    private BigDecimal costomanodopera, costocomponenti, costoaccessori, importo, totale;
+    private BigDecimal iva;
+    private Long numero;
     
     public Intervento() {
     
@@ -35,7 +33,7 @@ public class Intervento implements Serializable {
     
     public Intervento(Long mIdIntervento) {
     
-	this.mIdIntervento = mIdIntervento;
+	this.idintervento = mIdIntervento;
     }
     
     /**
@@ -43,7 +41,7 @@ public class Intervento implements Serializable {
      */
     public Long getIdIntervento() {
     
-	return mIdIntervento;
+	return idintervento;
     }
     
     /**
@@ -52,7 +50,7 @@ public class Intervento implements Serializable {
      */
     public void setIdIntervento(Long mIdIntervento) {
     
-	this.mIdIntervento = mIdIntervento;
+	this.idintervento = mIdIntervento;
     }
     
     /**
@@ -60,7 +58,7 @@ public class Intervento implements Serializable {
      */
     public String getTipologia() {
     
-	return mTipologia;
+	return tipologia;
     }
     
     /**
@@ -69,7 +67,7 @@ public class Intervento implements Serializable {
      */
     public void setTipologia(String mTipologia) {
     
-	this.mTipologia = mTipologia;
+	this.tipologia = mTipologia;
     }
     
     /**
@@ -77,7 +75,7 @@ public class Intervento implements Serializable {
      */
     public String getProdotto() {
     
-	return mProdotto;
+	return prodotto;
     }
     
     /**
@@ -86,7 +84,7 @@ public class Intervento implements Serializable {
      */
     public void setProdotto(String mProdotto) {
     
-	this.mProdotto = mProdotto;
+	this.prodotto = mProdotto;
     }
     
     /**
@@ -94,7 +92,7 @@ public class Intervento implements Serializable {
      */
     public String getMotivo() {
     
-	return mMotivo;
+	return motivo;
     }
     
     /**
@@ -103,7 +101,7 @@ public class Intervento implements Serializable {
      */
     public void setMotivo(String mMotivo) {
     
-	this.mMotivo = mMotivo;
+	this.motivo = mMotivo;
     }
     
     /**
@@ -111,7 +109,7 @@ public class Intervento implements Serializable {
      */
     public String getNominativo() {
     
-	return mNominativo;
+	return nominativo;
     }
     
     /**
@@ -120,7 +118,7 @@ public class Intervento implements Serializable {
      */
     public void setNominativo(String mNominativo) {
     
-	this.mNominativo = mNominativo;
+	this.nominativo = mNominativo;
     }
     
     /**
@@ -128,7 +126,7 @@ public class Intervento implements Serializable {
      */
     public String getRifFattura() {
     
-	return mRifFattura;
+	return riffattura;
     }
     
     /**
@@ -137,7 +135,7 @@ public class Intervento implements Serializable {
      */
     public void setRifFattura(String mRifFattura) {
     
-	this.mRifFattura = mRifFattura;
+	this.riffattura = mRifFattura;
     }
     
     /**
@@ -145,7 +143,7 @@ public class Intervento implements Serializable {
      */
     public String getRifScontrino() {
     
-	return mRifScontrino;
+	return rifscontrino;
     }
     
     /**
@@ -154,7 +152,7 @@ public class Intervento implements Serializable {
      */
     public void setRifScontrino(String mRifScontrino) {
     
-	this.mRifScontrino = mRifScontrino;
+	this.rifscontrino = mRifScontrino;
     }
     
     /**
@@ -162,7 +160,7 @@ public class Intervento implements Serializable {
      */
     public String getNote() {
     
-	return mNote;
+	return note;
     }
     
     /**
@@ -171,7 +169,7 @@ public class Intervento implements Serializable {
      */
     public void setNote(String mNote) {
     
-	this.mNote = mNote;
+	this.note = mNote;
     }
     
     /**
@@ -179,7 +177,7 @@ public class Intervento implements Serializable {
      */
     public String getFirma() {
     
-	return mFirma;
+	return firma;
     }
     
     /**
@@ -188,7 +186,7 @@ public class Intervento implements Serializable {
      */
     public void setFirma(String mFirma) {
     
-	this.mFirma = mFirma;
+	this.firma = mFirma;
     }
     
     /**
@@ -196,7 +194,7 @@ public class Intervento implements Serializable {
      */
     public boolean isSaldato() {
     
-	return mSaldato;
+	return saldato;
     }
     
     /**
@@ -205,7 +203,7 @@ public class Intervento implements Serializable {
      */
     public void setSaldato(boolean mSaldato) {
     
-	this.mSaldato = mSaldato;
+	this.saldato = mSaldato;
     }
     
     /**
@@ -213,7 +211,7 @@ public class Intervento implements Serializable {
      */
     public boolean isCancellato() {
     
-	return mCancellato;
+	return cancellato;
     }
     
     /**
@@ -222,7 +220,7 @@ public class Intervento implements Serializable {
      */
     public void setCancellato(boolean mCancellato) {
     
-	this.mCancellato = mCancellato;
+	this.cancellato = mCancellato;
     }
     
     /**
@@ -230,7 +228,7 @@ public class Intervento implements Serializable {
      */
     public boolean isChiuso() {
     
-	return mChiuso;
+	return chiuso;
     }
     
     /**
@@ -239,7 +237,7 @@ public class Intervento implements Serializable {
      */
     public void setChiuso(boolean mChiuso) {
     
-	this.mChiuso = mChiuso;
+	this.chiuso = mChiuso;
     }
     
     /**
@@ -247,7 +245,7 @@ public class Intervento implements Serializable {
      */
     public Long getDataOra() {
     
-	return mDataOra;
+	return dataora;
     }
     
     /**
@@ -256,7 +254,7 @@ public class Intervento implements Serializable {
      */
     public void setDataOra(Long mDataOra) {
     
-	this.mDataOra = mDataOra;
+	this.dataora = mDataOra;
     }
     
     /**
@@ -264,7 +262,7 @@ public class Intervento implements Serializable {
      */
     public Long getIdCliente() {
     
-	return mIdCliente;
+	return cliente;
     }
     
     /**
@@ -273,7 +271,7 @@ public class Intervento implements Serializable {
      */
     public void setIdCliente(Long mIdCliente) {
     
-	this.mIdCliente = mIdCliente;
+	this.cliente = mIdCliente;
     }
     
     /**
@@ -281,7 +279,7 @@ public class Intervento implements Serializable {
      */
     public Long getIdTecnico() {
     
-	return mIdTecnico;
+	return tecnico;
     }
     
     /**
@@ -290,7 +288,7 @@ public class Intervento implements Serializable {
      */
     public void setIdTecnico(Long mIdTecnico) {
     
-	this.mIdTecnico = mIdTecnico;
+	this.tecnico = mIdTecnico;
     }
     
     /**
@@ -298,7 +296,7 @@ public class Intervento implements Serializable {
      */
     public BigDecimal getCostoManodopera() {
     
-	return mCostoManodopera;
+	return costomanodopera;
     }
     
     /**
@@ -307,7 +305,7 @@ public class Intervento implements Serializable {
      */
     public void setCostoManodopera(BigDecimal mCostoManodopera) {
     
-	this.mCostoManodopera = mCostoManodopera;
+	this.costomanodopera = mCostoManodopera;
     }
     
     /**
@@ -315,7 +313,7 @@ public class Intervento implements Serializable {
      */
     public BigDecimal getCostoComponenti() {
     
-	return mCostoComponenti;
+	return costocomponenti;
     }
     
     /**
@@ -324,7 +322,7 @@ public class Intervento implements Serializable {
      */
     public void setCostoComponenti(BigDecimal mCostoComponenti) {
     
-	this.mCostoComponenti = mCostoComponenti;
+	this.costocomponenti = mCostoComponenti;
     }
     
     /**
@@ -332,7 +330,7 @@ public class Intervento implements Serializable {
      */
     public BigDecimal getCostoAccessori() {
     
-	return mCostoAccessori;
+	return costoaccessori;
     }
     
     /**
@@ -341,7 +339,7 @@ public class Intervento implements Serializable {
      */
     public void setCostoAccessori(BigDecimal mCostoAccessori) {
     
-	this.mCostoAccessori = mCostoAccessori;
+	this.costoaccessori = mCostoAccessori;
     }
     
     /**
@@ -349,7 +347,7 @@ public class Intervento implements Serializable {
      */
     public BigDecimal getImporto() {
     
-	return mImporto;
+	return importo;
     }
     
     /**
@@ -358,7 +356,7 @@ public class Intervento implements Serializable {
      */
     public void setImporto(BigDecimal mImporto) {
     
-	this.mImporto = mImporto;
+	this.importo = mImporto;
     }
     
     /**
@@ -366,7 +364,7 @@ public class Intervento implements Serializable {
      */
     public BigDecimal getTotale() {
     
-	return mTotale;
+	return totale;
     }
     
     /**
@@ -375,7 +373,7 @@ public class Intervento implements Serializable {
      */
     public void setTotale(BigDecimal mTotale) {
     
-	this.mTotale = mTotale;
+	this.totale = mTotale;
     }
     
     /**
@@ -383,7 +381,7 @@ public class Intervento implements Serializable {
      */
     public BigDecimal getIva() {
     
-	return mIva;
+	return iva;
     }
     
     /**
@@ -392,7 +390,7 @@ public class Intervento implements Serializable {
      */
     public void setIva(BigDecimal mIva) {
     
-	this.mIva = mIva;
+	this.iva = mIva;
     }
     
     /**
@@ -400,7 +398,7 @@ public class Intervento implements Serializable {
      */
     public String getModalita() {
     
-	return mModalita;
+	return modalita;
     }
     
     /**
@@ -409,7 +407,7 @@ public class Intervento implements Serializable {
      */
     public void setModalita(String mModalita) {
     
-	this.mModalita = mModalita;
+	this.modalita = mModalita;
     }
     
     /**
@@ -417,7 +415,7 @@ public class Intervento implements Serializable {
      */
     public Long getNumeroIntervento() {
     
-	return mNumeroIntervento;
+	return numero;
     }
     
     /**
@@ -426,7 +424,7 @@ public class Intervento implements Serializable {
      */
     public void setNumeroIntervento(Long mNumeroIntervento) {
     
-	this.mNumeroIntervento = mNumeroIntervento;
+	this.numero = mNumeroIntervento;
     }
     
     /**
@@ -434,7 +432,7 @@ public class Intervento implements Serializable {
      */
     public String getModificato() {
     
-	return mModificato;
+	return modificato;
     }
     
     /**
@@ -443,7 +441,7 @@ public class Intervento implements Serializable {
      */
     public void setModificato(String mModificato) {
     
-	this.mModificato = mModificato;
+	this.modificato = mModificato;
     }
     
     /**
@@ -451,7 +449,7 @@ public class Intervento implements Serializable {
      */
     public boolean isConflitto() {
     
-	return mConflitto;
+	return conflitto;
     }
     
     /**
@@ -460,15 +458,13 @@ public class Intervento implements Serializable {
      */
     public void setConflitto(boolean mConflitto) {
     
-	this.mConflitto = mConflitto;
+	this.conflitto = mConflitto;
     }
     
     @Override
     public String toString() {
     
-	String result = "";
-	
-	return result;
+	return String.format("Intervento [idintervento=%s, tipologia=%s, prodotto=%s, motivo=%s, nominativo=%s, riffattura=%s, rifscontrino=%s, note=%s, modalita=%s, modificato=%s, firma=%s, saldato=%s, cancellato=%s, chiuso=%s, conflitto=%s, dataora=%s, cliente=%s, tecnico=%s, costomanodopera=%s, costocomponenti=%s, costoaccessori=%s, importo=%s, totale=%s, iva=%s, numero=%s]", idintervento, tipologia, prodotto, motivo, nominativo, riffattura, rifscontrino, note, modalita, modificato, firma, saldato, cancellato, chiuso, conflitto, dataora, cliente, tecnico, costomanodopera, costocomponenti, costoaccessori, importo, totale, iva, numero);
     }
     
     public static ContentValues insertSQL(Intervento intervento) {
