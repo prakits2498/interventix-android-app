@@ -33,142 +33,137 @@ import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.federicocolantoni.projects.interventix.task.GetClientiAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
-@SuppressLint({
-"InlinedApi", "NewApi"
-})
+@SuppressLint({ "InlinedApi", "NewApi" })
 @EFragment(R.layout.list_clients_fragment)
 @SuppressWarnings("unchecked")
 public class ListClientsInterventoFragment extends Fragment {
-    
-    @ViewById(R.id.list_clients)
-    ListView listClienti;
-    
-    public static long sId_Intervento;
-    
-    private SharedPreferences prefs;
-    
-    private ListClientiAdapter mAdapter;
-    
-    Handler handler = new MyHandler() {
-	
-	public void handleMessage(Message msg) {
-	
-	    switch (msg.what) {
-	    
-		case Constants.WHAT_MESSAGE_GET_CLIENTI:
-		    
-		    mAdapter = new ListClientiAdapter(getActivity(), R.layout.list_client_row, R.id.tv_row_nominativo, (ArrayList<Cliente>) msg.obj);
-		    
-		    listClienti.setAdapter(mAdapter);
-		    
-		    break;
-	    }
+
+	@ViewById(R.id.list_clients)
+	ListView listClienti;
+
+	public static long sId_Intervento;
+
+	private SharedPreferences prefs;
+
+	private ListClientiAdapter mAdapter;
+
+	Handler handler = new MyHandler() {
+
+		public void handleMessage(Message msg) {
+
+			switch (msg.what) {
+
+			case Constants.WHAT_MESSAGE_GET_CLIENTI:
+
+				mAdapter = new ListClientiAdapter(getActivity(), R.layout.list_client_row, R.id.tv_row_nominativo, (ArrayList<Cliente>) msg.obj);
+
+				listClienti.setAdapter(mAdapter);
+
+				break;
+			}
+		};
 	};
-    };
-    
-    private static class MyHandler extends Handler {
-	
-    }
-    
-    public void onCreate(Bundle savedInstanceState) {
-    
-	super.onCreate(savedInstanceState);
-	
-	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	
-	setHasOptionsMenu(true);
-    };
-    
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-    
-	super.onActivityCreated(savedInstanceState);
-	
-	Bundle bundle = getArguments();
-	
-	sId_Intervento = bundle.getLong(Constants.ID_INTERVENTO);
-    }
-    
-    @Override
-    public void onStart() {
-    
-	super.onStart();
-	
-	new GetClientiAsyncTask(getActivity(), handler).execute();
-	
-    }
-    
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    
-	inflater.inflate(R.menu.menu_clients, menu);
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    
-	switch (item.getItemId()) {
-	    case R.id.menu_save_client:
-		
-		AsyncQueryHandler saveCliente = new AsyncQueryHandler(getActivity().getContentResolver()) {
-		    
-		    @Override
-		    protected void onUpdateComplete(int token, Object cookie, int result) {
-		    
-			InterventixToast.makeToast(getActivity(), "Cliente modificato", Toast.LENGTH_SHORT);
-			
-			prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-			
-			final Editor edit = prefs.edit();
-			
-			edit.putBoolean(Constants.INTERV_MODIFIED, true);
-			
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			    edit.apply();
-			}
-			else {
-			    new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-				
-				    edit.commit();
-				}
-			    }).start();
-			}
-		    }
-		};
-		
-		int cliente_checked = 0;
-		
-		SparseBooleanArray sparseArray = mAdapter.getBooleanArray();
-		
-		for (int i = 0; i < sparseArray.size(); i++) {
-		    
-		    if (sparseArray.get(i))
-			cliente_checked = i;
-		}
-		
-		Cliente clChecked = mAdapter.getItem(cliente_checked);
-		
-		System.out.println("Cliente selezionato: " + clChecked.getNominativo());
-		
-		ContentValues values = new ContentValues();
-		values.put(InterventoDB.Fields.CLIENTE, clChecked.getIdCliente());
-		values.put(InterventoDB.Fields.MODIFICATO, "M");
-		
-		String selection = InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?";
-		
-		String[] selectionArgs = new String[] {
-		InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento
-		};
-		
-		saveCliente.startUpdate(0, null, ClienteDB.CONTENT_URI, values, selection, selectionArgs);
-		
-		break;
+
+	private static class MyHandler extends Handler {
+
 	}
-	
-	return getActivity().getSupportFragmentManager().popBackStackImmediate();
-    }
+
+	public void onCreate(Bundle savedInstanceState) {
+
+		super.onCreate(savedInstanceState);
+
+		((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+		((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		setHasOptionsMenu(true);
+	};
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+
+		super.onActivityCreated(savedInstanceState);
+
+		Bundle bundle = getArguments();
+
+		sId_Intervento = bundle.getLong(Constants.ID_INTERVENTO);
+	}
+
+	@Override
+	public void onStart() {
+
+		super.onStart();
+
+		new GetClientiAsyncTask(getActivity(), handler).execute();
+
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+		inflater.inflate(R.menu.menu_clients, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+		case R.id.menu_save_client:
+
+			AsyncQueryHandler saveCliente = new AsyncQueryHandler(getActivity().getContentResolver()) {
+
+				@Override
+				protected void onUpdateComplete(int token, Object cookie, int result) {
+
+					InterventixToast.makeToast(getActivity(), "Cliente modificato", Toast.LENGTH_SHORT);
+
+					prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+
+					final Editor edit = prefs.edit();
+
+					edit.putBoolean(Constants.INTERV_MODIFIED, true);
+
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+						edit.apply();
+					} else {
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								edit.commit();
+							}
+						}).start();
+					}
+				}
+			};
+
+			int cliente_checked = 0;
+
+			SparseBooleanArray sparseArray = mAdapter.getBooleanArray();
+
+			for (int i = 0; i < sparseArray.size(); i++) {
+
+				if (sparseArray.get(i))
+					cliente_checked = i;
+			}
+
+			Cliente clChecked = mAdapter.getItem(cliente_checked);
+
+			System.out.println("Cliente selezionato: " + clChecked.getNominativo());
+
+			ContentValues values = new ContentValues();
+			values.put(InterventoDB.Fields.CLIENTE, clChecked.getIdCliente());
+			values.put(InterventoDB.Fields.MODIFICATO, "M");
+
+			String selection = InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?";
+
+			String[] selectionArgs = new String[] { InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento };
+
+			saveCliente.startUpdate(0, null, ClienteDB.CONTENT_URI, values, selection, selectionArgs);
+
+			break;
+		}
+
+		return getActivity().getSupportFragmentManager().popBackStackImmediate();
+	}
 }
