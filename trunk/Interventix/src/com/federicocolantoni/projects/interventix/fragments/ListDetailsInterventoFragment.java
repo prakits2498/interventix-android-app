@@ -4,14 +4,10 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import android.annotation.SuppressLint;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,23 +23,12 @@ import android.widget.Toast;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.ListDettagliInterventiAdapter;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
+import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.list_details_intervento_fragment)
-public class ListDetailsInterventoFragment extends Fragment implements LoaderCallbacks<Cursor> {
-
-	private final static int MESSAGE_LOADER = 1;
-
-	private long mId_intervento;
-
-	private static final String[] PROJECTION = new String[] { DettaglioInterventoDB.Fields._ID, DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO,
-			DettaglioInterventoDB.Fields.TIPO, DettaglioInterventoDB.Fields.OGGETTO };
-
-	private static final String SELECTION = DettaglioInterventoDB.Fields.TYPE + " =? AND " + DettaglioInterventoDB.Fields.INTERVENTO + " =?";
-
-	private String[] SELECTION_ARGS;
+public class ListDetailsInterventoFragment extends Fragment {
 
 	private ListDettagliInterventiAdapter mAdapter;
 
@@ -69,15 +54,9 @@ public class ListDetailsInterventoFragment extends Fragment implements LoaderCal
 
 		super.onStart();
 
-		Bundle bundle = getArguments();
-
-		mId_intervento = bundle.getLong(Constants.ID_INTERVENTO);
-
-		SELECTION_ARGS = new String[] { DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + mId_intervento };
-
 		tv_details_intervento.setText("Dettagli");
 
-		mAdapter = new ListDettagliInterventiAdapter(getActivity(), null);
+		mAdapter = new ListDettagliInterventiAdapter(getActivity());
 
 		detailsList.setAdapter(mAdapter);
 
@@ -88,9 +67,7 @@ public class ListDetailsInterventoFragment extends Fragment implements LoaderCal
 
 				Bundle bundle = new Bundle();
 
-				Cursor cur = (Cursor) adapter.getItemAtPosition(position);
-
-				bundle.putLong(Constants.ID_DETTAGLIO_INTERVENTO, cur.getInt(cur.getColumnIndex(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO)));
+				bundle.putSerializable(Constants.DETTAGLIO_NESIMO, InterventoController.controller.getListaDettagli().get(position));
 				bundle.putString(Constants.NUOVO_DETTAGLIO_INTERVENTO, Constants.DETTAGLIO_INTERVENTO_ESISTENTE);
 
 				FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
@@ -118,8 +95,6 @@ public class ListDetailsInterventoFragment extends Fragment implements LoaderCal
 				return false;
 			}
 		});
-
-		getActivity().getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
 	}
 
 	@Override
@@ -138,69 +113,29 @@ public class ListDetailsInterventoFragment extends Fragment implements LoaderCal
 
 		switch (item.getItemId()) {
 
-		case R.id.add_detail_interv:
+			case R.id.add_detail_interv:
 
-			FragmentManager manager = getActivity().getSupportFragmentManager();
+				break;
 
-			FragmentTransaction transaction = manager.beginTransaction();
+			case R.id.pay:
 
-			DetailInterventoFragment_ newDetail = new DetailInterventoFragment_();
+				InterventixToast.makeToast(getActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
 
-			Bundle bundle = new Bundle();
-			bundle.putLong(Constants.ID_DETTAGLIO_INTERVENTO, Constants.sIdDettaglio_Temp);
-			bundle.putString(Constants.NUOVO_DETTAGLIO_INTERVENTO, Constants.NUOVO_DETTAGLIO_INTERVENTO);
-			bundle.putLong(Constants.ID_INTERVENTO, mId_intervento);
+				break;
 
-			newDetail.setArguments(bundle);
+			case R.id.send_mail:
 
-			transaction.replace(R.id.fragments_layout, newDetail, Constants.NEW_DETAIL_INTERVENTO_FRAGMENT);
-			transaction.addToBackStack(Constants.NEW_DETAIL_INTERVENTO_FRAGMENT);
-			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+				InterventixToast.makeToast(getActivity(), "Inviare email?", Toast.LENGTH_SHORT);
 
-			transaction.commit();
+				break;
 
-			break;
+			case R.id.close:
 
-		case R.id.pay:
+				InterventixToast.makeToast(getActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
 
-			InterventixToast.makeToast(getActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
-
-			break;
-
-		case R.id.send_mail:
-
-			InterventixToast.makeToast(getActivity(), "Inviare email?", Toast.LENGTH_SHORT);
-
-			break;
-
-		case R.id.close:
-
-			InterventixToast.makeToast(getActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
-
-			break;
+				break;
 		}
 
 		return true;
-	}
-
-	@Override
-	public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-
-		Loader<Cursor> loader = new CursorLoader(getActivity(), DettaglioInterventoDB.CONTENT_URI, ListDetailsInterventoFragment.PROJECTION,
-				ListDetailsInterventoFragment.SELECTION, SELECTION_ARGS, null);
-
-		return loader;
-	}
-
-	@Override
-	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-
-		mAdapter.swapCursor(cursor);
-	}
-
-	@Override
-	public void onLoaderReset(Loader<Cursor> loader) {
-
-		mAdapter.swapCursor(null);
 	}
 }

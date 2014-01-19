@@ -107,18 +107,18 @@ public class MainActivity extends ActionBarActivity {
 		super.onOptionsItemSelected(item);
 
 		switch (item.getItemId()) {
-		case R.id.menu_options:
+			case R.id.menu_options:
 
-			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
-				startActivity(new Intent(this, SettingActivity.class));
-			else
-				startActivity(new Intent(this, SettingSupportActivity.class));
-			return true;
-		default:
-			if (super.onOptionsItemSelected(item))
+				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
+					startActivity(new Intent(this, SettingActivity.class));
+				else
+					startActivity(new Intent(this, SettingSupportActivity.class));
 				return true;
-			else
-				return false;
+			default:
+				if (super.onOptionsItemSelected(item))
+					return true;
+				else
+					return false;
 		}
 	}
 
@@ -154,10 +154,10 @@ public class MainActivity extends ActionBarActivity {
 		public void onClick(View v) {
 
 			switch (v.getId()) {
-			case R.id.save_prefs_url:
+				case R.id.save_prefs_url:
 
-				dismiss();
-				break;
+					dismiss();
+					break;
 			}
 		}
 	}

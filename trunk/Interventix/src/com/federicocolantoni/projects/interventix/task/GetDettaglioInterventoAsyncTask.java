@@ -46,11 +46,8 @@ public class GetDettaglioInterventoAsyncTask extends AsyncTask<Long, Void, Detta
 			dettInterv.setTecnici(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TECNICI)));
 		}
 
-		if (!cursor.isClosed()) {
+		if (!cursor.isClosed())
 			cursor.close();
-		} else {
-			System.out.println("Cursor for GetDettaglioIntervento is closed");
-		}
 
 		return dettInterv;
 	}

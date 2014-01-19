@@ -47,11 +47,8 @@ public class GetCostsInterventoAsyncTask extends AsyncTask<Long, Void, Intervent
 			costsIntervento.setTotale(BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(InterventoDB.Fields.TOTALE))));
 		}
 
-		if (!cursor.isClosed()) {
+		if (!cursor.isClosed())
 			cursor.close();
-		} else {
-			System.out.println("Cursor for " + this.getClass().getSimpleName() + " is closed");
-		}
 
 		return costsIntervento;
 	}

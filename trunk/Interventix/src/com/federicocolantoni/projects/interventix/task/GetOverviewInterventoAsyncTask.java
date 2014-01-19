@@ -45,11 +45,8 @@ public class GetOverviewInterventoAsyncTask extends AsyncTask<Long, Void, Interv
 				overviewIntervento.setDataOra(cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.DATA_ORA)));
 			}
 
-			if (!cursor.isClosed()) {
+			if (!cursor.isClosed())
 				cursor.close();
-			} else {
-				System.out.println("Cursor for " + this.getClass().getSimpleName() + " is closed");
-			}
 		}
 
 		return overviewIntervento;

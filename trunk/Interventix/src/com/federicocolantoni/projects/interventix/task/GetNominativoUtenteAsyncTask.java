@@ -37,11 +37,8 @@ public class GetNominativoUtenteAsyncTask extends AsyncTask<Long, Void, Utente> 
 			utente.setCognome(cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.COGNOME)));
 		}
 
-		if (!cursor.isClosed()) {
+		if (!cursor.isClosed())
 			cursor.close();
-		} else {
-			System.out.println("Cursor for " + this.getClass().getSimpleName() + " is closed");
-		}
 
 		return utente;
 	}

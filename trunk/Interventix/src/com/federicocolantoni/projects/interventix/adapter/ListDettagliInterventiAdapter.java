@@ -1,63 +1,59 @@
 package com.federicocolantoni.projects.interventix.adapter;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
+import com.federicocolantoni.projects.interventix.controller.InterventoController;
+import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 
-public class ListDettagliInterventiAdapter extends CursorAdapter {
+public class ListDettagliInterventiAdapter extends BaseAdapter {
 
 	private final LayoutInflater mInflater;
-	private boolean mFoundIndexes;
 
-	private int mTipoDettaglioInterventoIndex;
-	private int mOggettoDettaglioInterventoIndex;
+	public ListDettagliInterventiAdapter(Context context) {
 
-	public ListDettagliInterventiAdapter(Context context, Cursor c) {
-
-		super(context, c, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-		mInflater = LayoutInflater.from(context);
-		mFoundIndexes = false;
+		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
-	public void bindView(View row, Context context, Cursor cursor) {
+	public int getCount() {
 
-		TextView tv_type_detail_interv = (TextView) row.getTag(R.id.tv_type_detail_interv);
-		TextView tv_object_detail_interv = (TextView) row.getTag(R.id.tv_object_detail_interv);
+		return InterventoController.controller.getListaDettagli().size();
+	}
 
-		if (!mFoundIndexes) {
+	@Override
+	public DettaglioIntervento getItem(int position) {
 
-			mTipoDettaglioInterventoIndex = cursor.getColumnIndex(DettaglioInterventoDB.Fields.TIPO);
-			mOggettoDettaglioInterventoIndex = cursor.getColumnIndex(DettaglioInterventoDB.Fields.OGGETTO);
+		return InterventoController.controller.getListaDettagli().get(position);
+	}
 
-			mFoundIndexes = true;
+	@Override
+	public long getItemId(int position) {
+
+		return position;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+
+		if (convertView == null) {
+
+			convertView = mInflater.inflate(R.layout.list_details_interv_row, parent, false);
 		}
 
-		String tipoDettInterv = cursor.getString(mTipoDettaglioInterventoIndex);
-		String oggettoDettInterv = cursor.getString(mOggettoDettaglioInterventoIndex);
+		DettaglioIntervento dettaglio = getItem(position);
 
-		tv_type_detail_interv.setText(tipoDettInterv);
-		tv_object_detail_interv.setText(oggettoDettInterv);
-	}
+		TextView tv_type_detail_interv = (TextView) convertView.findViewById(R.id.tv_type_detail_interv);
+		TextView tv_object_detail_interv = (TextView) convertView.findViewById(R.id.tv_object_detail_interv);
 
-	@Override
-	public View newView(Context context, Cursor cursor, ViewGroup parent) {
+		tv_type_detail_interv.setText(dettaglio.getTipo());
+		tv_object_detail_interv.setText(dettaglio.getOggetto());
 
-		View view = mInflater.inflate(R.layout.list_details_interv_row, parent, false);
-
-		TextView tv_type_detail_interv = (TextView) view.findViewById(R.id.tv_type_detail_interv);
-		TextView tv_object_detail_interv = (TextView) view.findViewById(R.id.tv_object_detail_interv);
-
-		view.setTag(R.id.tv_type_detail_interv, tv_type_detail_interv);
-		view.setTag(R.id.tv_object_detail_interv, tv_object_detail_interv);
-
-		return view;
+		return convertView;
 	}
 }

@@ -54,7 +54,6 @@ public class GetInterventoAsyncTask extends AsyncTask<Long, Void, Intervento> {
 			intervento.setIdIntervento(cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.ID_INTERVENTO)));
 			intervento.setIva(BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(InterventoDB.Fields.IVA))));
 			intervento.setModalita(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.MODALITA)));
-			intervento.setModificato(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.MODIFICATO)));
 			intervento.setMotivo(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.MOTIVO)));
 			intervento.setNominativo(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.NOMINATIVO)));
 			intervento.setNote(cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.NOTE)));
@@ -67,11 +66,8 @@ public class GetInterventoAsyncTask extends AsyncTask<Long, Void, Intervento> {
 			intervento.setTotale(BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(InterventoDB.Fields.TOTALE))));
 		}
 
-		if (!cursor.isClosed()) {
+		if (!cursor.isClosed())
 			cursor.close();
-		} else {
-			System.out.println("Cursor for GetIntervento is closed");
-		}
 
 		return intervento;
 	}

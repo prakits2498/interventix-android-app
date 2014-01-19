@@ -127,8 +127,6 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 
 						if (!cursor.isClosed())
 							cursor.close();
-						else
-							System.out.println("Cursor for GetLogin - UPDATE MODE is closed");
 					} else {
 
 						// Insert user's informations
@@ -156,8 +154,6 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 
 						if (!cursor.isClosed())
 							cursor.close();
-						else
-							System.out.println("Cursor for GetLogin - INSERT MODE is closed");
 
 					}
 				} else {

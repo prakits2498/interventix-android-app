@@ -52,6 +52,7 @@ public class InterventixDBContract {
 			public static final String REVISIONE = DATA[7];
 			public static final String ID_UTENTE = DATA[8];
 			public static final String CESTINATO = DATA[9];
+			public static final String CONFLITTO = DATA[26];
 			public static final String MODIFICATO = DATA[27];
 		}
 	}
@@ -77,7 +78,7 @@ public class InterventixDBContract {
 			public static final String INDIRIZZO = DATA[12];
 			public static final String UFFICIO = DATA[13];
 			public static final String INTERNO = DATA[14];
-			public static final String CONFLITTO = DATA[15];
+			public static final String CONFLITTO = DATA[26];
 			public static final String MODIFICATO = DATA[27];
 
 		}

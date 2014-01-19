@@ -66,82 +66,82 @@ public class Login extends Fragment {
 			if (info != null)
 				switch (info.getType()) {
 
-				case ConnectivityManager.TYPE_WIFI:
+					case ConnectivityManager.TYPE_WIFI:
 
-					if (info.isAvailable() && info.isConnected())
-						try {
-							HashMap<String, String> parameters = new HashMap<String, String>();
+						if (info.isAvailable() && info.isConnected())
+							try {
+								HashMap<String, String> parameters = new HashMap<String, String>();
 
-							parameters.put("username", username.getText().toString());
-							parameters.put("password", password.getText().toString());
-							parameters.put("type", "TECNICO");
+								parameters.put("username", username.getText().toString());
+								parameters.put("password", password.getText().toString());
+								parameters.put("type", "TECNICO");
 
-							json_req = JsonCR2.createRequest("users", "login", parameters, -1);
+								json_req = JsonCR2.createRequest("users", "login", parameters, -1);
 
-							new GetLogin(getActivity(), username.getText().toString(), password.getText().toString()).execute(json_req);
-
-							password.setText("");
-						} catch (Exception e) {
-
-							e.printStackTrace();
-							BugSenseHandler.sendException(e);
-						}
-					else {
-
-						String usrnm = prefs.getString(Constants.USERNAME, null);
-						String psswrd = prefs.getString(Constants.PASSWORD, null);
-
-						if (usrnm != null && psswrd != null)
-							if (usrnm.equals(username.getText().toString()) && psswrd.equals(password.getText().toString())) {
+								new GetLogin(getActivity(), username.getText().toString(), password.getText().toString()).execute(json_req);
 
 								password.setText("");
+							} catch (Exception e) {
 
-								InterventixToast.makeToast(getActivity(), getString(R.string.toast_offline_access), Toast.LENGTH_LONG);
-
-								startActivity(new Intent(getActivity(), HomeActivity.class));
+								e.printStackTrace();
+								BugSenseHandler.sendException(e);
 							}
-					}
+						else {
 
-					break;
+							String usrnm = prefs.getString(Constants.USERNAME, null);
+							String psswrd = prefs.getString(Constants.PASSWORD, null);
 
-				case ConnectivityManager.TYPE_MOBILE:
+							if (usrnm != null && psswrd != null)
+								if (usrnm.equals(username.getText().toString()) && psswrd.equals(password.getText().toString())) {
 
-					if (info.isAvailable() && info.isConnected())
-						try {
-							HashMap<String, String> parameters = new HashMap<String, String>();
+									password.setText("");
 
-							parameters.put("username", username.getText().toString());
-							parameters.put("password", password.getText().toString());
-							parameters.put("type", "TECNICO");
+									InterventixToast.makeToast(getActivity(), getString(R.string.toast_offline_access), Toast.LENGTH_LONG);
 
-							json_req = JsonCR2.createRequest("users", "login", parameters, -1);
-
-							new GetLogin(getActivity(), username.getText().toString(), password.getText().toString()).execute(json_req, username.getText().toString(), password
-									.getText().toString());
-
-							password.setText("");
-						} catch (Exception e) {
-
-							e.printStackTrace();
-							BugSenseHandler.sendException(e);
+									startActivity(new Intent(getActivity(), HomeActivity.class));
+								}
 						}
-					else {
 
-						String usrnm = prefs.getString(Constants.USERNAME, null);
-						String psswrd = prefs.getString(Constants.PASSWORD, null);
+						break;
 
-						if (usrnm != null && psswrd != null)
-							if (usrnm.equals(username.getText().toString()) && psswrd.equals(password.getText().toString())) {
+					case ConnectivityManager.TYPE_MOBILE:
+
+						if (info.isAvailable() && info.isConnected())
+							try {
+								HashMap<String, String> parameters = new HashMap<String, String>();
+
+								parameters.put("username", username.getText().toString());
+								parameters.put("password", password.getText().toString());
+								parameters.put("type", "TECNICO");
+
+								json_req = JsonCR2.createRequest("users", "login", parameters, -1);
+
+								new GetLogin(getActivity(), username.getText().toString(), password.getText().toString()).execute(json_req, username.getText().toString(), password
+										.getText().toString());
 
 								password.setText("");
+							} catch (Exception e) {
 
-								InterventixToast.makeToast(getActivity(), getString(R.string.toast_offline_access), Toast.LENGTH_LONG);
-
-								startActivity(new Intent(getActivity(), com.federicocolantoni.projects.interventix.activity.HomeActivity_.class));
+								e.printStackTrace();
+								BugSenseHandler.sendException(e);
 							}
-					}
+						else {
 
-					break;
+							String usrnm = prefs.getString(Constants.USERNAME, null);
+							String psswrd = prefs.getString(Constants.PASSWORD, null);
+
+							if (usrnm != null && psswrd != null)
+								if (usrnm.equals(username.getText().toString()) && psswrd.equals(password.getText().toString())) {
+
+									password.setText("");
+
+									InterventixToast.makeToast(getActivity(), getString(R.string.toast_offline_access), Toast.LENGTH_LONG);
+
+									startActivity(new Intent(getActivity(), com.federicocolantoni.projects.interventix.activity.HomeActivity_.class));
+								}
+						}
+
+						break;
 				}
 			else {
 

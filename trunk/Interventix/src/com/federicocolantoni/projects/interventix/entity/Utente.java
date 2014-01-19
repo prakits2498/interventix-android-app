@@ -108,7 +108,7 @@ public class Utente implements Serializable {
 	 * @param mPassword
 	 *            the mPassword to set
 	 */
-	public void setmPassword(String mPassword) {
+	public void setPassword(String mPassword) {
 
 		this.password = mPassword;
 	}
@@ -238,6 +238,114 @@ public class Utente implements Serializable {
 		return String.format(
 				"Utente [idutente=%s, revisione=%s, nome=%s, cognome=%s, username=%s, password=%s, email=%s, tipo=%s, cancellato=%s, cestinato=%s, conflitto=%s, interventi=%s]",
 				idutente, revisione, nome, cognome, username, password, email, tipo, cancellato, cestinato, conflitto, interventi);
+	}
+
+	@Override
+	public int hashCode() {
+
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (cancellato ? 1231 : 1237);
+		result = prime * result + (cestinato ? 1231 : 1237);
+		result = prime * result + ((cognome == null) ? 0 : cognome.hashCode());
+		result = prime * result + (conflitto ? 1231 : 1237);
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((idutente == null) ? 0 : idutente.hashCode());
+		result = prime * result + ((interventi == null) ? 0 : interventi.hashCode());
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((revisione == null) ? 0 : revisione.hashCode());
+		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Utente)) {
+			return false;
+		}
+		Utente other = (Utente) obj;
+		if (cancellato != other.cancellato) {
+			return false;
+		}
+		if (cestinato != other.cestinato) {
+			return false;
+		}
+		if (cognome == null) {
+			if (other.cognome != null) {
+				return false;
+			}
+		} else if (!cognome.equals(other.cognome)) {
+			return false;
+		}
+		if (conflitto != other.conflitto) {
+			return false;
+		}
+		if (email == null) {
+			if (other.email != null) {
+				return false;
+			}
+		} else if (!email.equals(other.email)) {
+			return false;
+		}
+		if (idutente == null) {
+			if (other.idutente != null) {
+				return false;
+			}
+		} else if (!idutente.equals(other.idutente)) {
+			return false;
+		}
+		if (interventi == null) {
+			if (other.interventi != null) {
+				return false;
+			}
+		} else if (!interventi.equals(other.interventi)) {
+			return false;
+		}
+		if (nome == null) {
+			if (other.nome != null) {
+				return false;
+			}
+		} else if (!nome.equals(other.nome)) {
+			return false;
+		}
+		if (password == null) {
+			if (other.password != null) {
+				return false;
+			}
+		} else if (!password.equals(other.password)) {
+			return false;
+		}
+		if (revisione == null) {
+			if (other.revisione != null) {
+				return false;
+			}
+		} else if (!revisione.equals(other.revisione)) {
+			return false;
+		}
+		if (tipo == null) {
+			if (other.tipo != null) {
+				return false;
+			}
+		} else if (!tipo.equals(other.tipo)) {
+			return false;
+		}
+		if (username == null) {
+			if (other.username != null) {
+				return false;
+			}
+		} else if (!username.equals(other.username)) {
+			return false;
+		}
+		return true;
 	}
 
 	public static ContentValues insertSQL(Utente user) {
