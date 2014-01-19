@@ -49,17 +49,13 @@ public class GetListaDettagliInterventoAsyncTask extends AsyncTask<Long, Void, L
 			detailInterv.setTipo(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TIPO)));
 			detailInterv.setInizio(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.INIZIO)));
 			detailInterv.setFine(cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.FINE)));
-			detailInterv.setModificato(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.MODIFICATO)));
 			detailInterv.setTecnici(cursor.getString(cursor.getColumnIndex(DettaglioInterventoDB.Fields.TECNICI)));
 
 			listaDettagliInterv.add(detailInterv);
 		}
 
-		if (!cursor.isClosed()) {
+		if (!cursor.isClosed())
 			cursor.close();
-		} else {
-			System.out.println("Cursor for GetDettaglioIntervento is closed");
-		}
 
 		ListDetailsIntervento listDetails = new ListDetailsIntervento();
 		listDetails.setListDetails(listaDettagliInterv);

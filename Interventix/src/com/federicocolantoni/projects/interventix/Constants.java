@@ -12,12 +12,12 @@ public final class Constants {
 	public static final String INTERVENTIX_TITLE = "Interventix";
 	public static final String USER_ID = "USER_ID";
 	public static final String USER_NOMINATIVO = "USER_NOMINATIVO";
-	public static final int CONNECTION_TIMEOUT = 16000;
-	public static final String INTERV_MODIFIED = "INTERV_MODIFIED";
-	public static final String DETT_INTERV_MODIFIED = "DETT_INTERV_MODIFIED";
-	public static final String REVISION_INTERVENTIONS = "REVISION_INTERVENTIONS";
-	public static final String REVISION_USERS = "REVISION_USERS";
-	public static final String REVISION_CLIENTS = "REVISION_CLIENTS";
+	public static final int CONNECTION_TIMEOUT = Integer.MAX_VALUE;
+	// public static final String INTERV_MODIFIED = "INTERV_MODIFIED";
+	// public static final String DETT_INTERV_MODIFIED = "DETT_INTERV_MODIFIED";
+	public static final String REVISION_INTERVENTI = "REVISION_INTERVENTI";
+	public static final String REVISION_TECNICI = "REVISION_TECNICI";
+	public static final String REVISION_CLIENTI = "REVISION_CLIENTI";
 	public static final String NUOVO_DETTAGLIO_INTERVENTO = "NUOVO_DETTAGLIO_INTERVENTO";
 	public static final String DETTAGLIO_INTERVENTO_ESISTENTE = "DETTAGLIO_INTERVENTO_ESISTENTE";
 
@@ -67,11 +67,12 @@ public final class Constants {
 	public static final String INTERVENTO = "INTERVENTO";
 	public static final String ID_INTERVENTO = "ID_INTERVENTO";
 	public static final String ID_DETTAGLIO_INTERVENTO = "ID_DETTAGLIO_INTERVENTO";
+	public static final String DETTAGLIO_NESIMO = "DETTAGLIO_NESIMO";
 	public static final String NUMERO_INTERVENTO = "NUMERO_INTERVENTO";
 	public static final String NOMINATIVO = "NOMINATIVO";
 	public static final String CLIENTE = "CLIENTE";
 	public static final String LIST_DETAILS_INTERVENTO = "LIST_DETAILS_INTERVENTO";
-	public static final Double IVA = 0.21;
+	public static final double IVA = 0.21;
 
 	// *** costanti per il token delle AsyncQueryHandler ***\\
 	public static final int WRITE_INTERV_TOKEN = 0;
@@ -96,7 +97,9 @@ public final class Constants {
 	public static final int TOKEN_RECUPERO_CLIENTI = 19;
 	public static final int TOKEN_INTERVENTO = 20;
 
-	public static final String ARRAY_DETTAGLI = "arrayDettagli";
+	public static final String ARRAY_DETTAGLI = "ARRAY_DETTAGLI";
+
+	public static final String HASH_CODE_INTERVENTO_SINGLETON = "HASH_CODE_INTERVENTO_SINGLETON";
 
 	// *** costanti per i dati di login ***\\
 	public static final String LOGIN_DATA = "LOGIN_DATA";

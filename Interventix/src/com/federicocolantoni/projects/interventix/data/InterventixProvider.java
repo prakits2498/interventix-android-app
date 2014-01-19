@@ -63,12 +63,12 @@ public class InterventixProvider extends ContentProvider {
 	public String getType(Uri uri) {
 
 		switch (MATCHER.match(uri)) {
-		case SINGLE_ITEM:
-			return InterventixDBContract.Data.SINGLE_ITEM_TYPE;
-		case COLLECTION:
-			return InterventixDBContract.Data.COLLECTION_TYPE;
-		default:
-			throw new IllegalArgumentException("URI " + uri + " not supported!");
+			case SINGLE_ITEM:
+				return InterventixDBContract.Data.SINGLE_ITEM_TYPE;
+			case COLLECTION:
+				return InterventixDBContract.Data.COLLECTION_TYPE;
+			default:
+				throw new IllegalArgumentException("URI " + uri + " not supported!");
 		}
 	}
 

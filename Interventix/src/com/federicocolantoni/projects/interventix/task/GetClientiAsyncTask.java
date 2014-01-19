@@ -29,8 +29,10 @@ public class GetClientiAsyncTask extends AsyncTask<Void, Void, ArrayList<Cliente
 
 		ArrayList<Cliente> listaClienti = new ArrayList<Cliente>();
 
-		String[] PROJECTION = new String[] { ClienteDB.Fields._ID, ClienteDB.Fields.NOMINATIVO, ClienteDB.Fields.CODICE_FISCALE, ClienteDB.Fields.PARTITAIVA,
-				ClienteDB.Fields.ID_CLIENTE };
+		String[] PROJECTION = new String[] { ClienteDB.Fields._ID, ClienteDB.Fields.CANCELLATO, ClienteDB.Fields.CITTA, ClienteDB.Fields.CODICE_FISCALE,
+				ClienteDB.Fields.CONFLITTO, ClienteDB.Fields.EMAIL, ClienteDB.Fields.FAX, ClienteDB.Fields.ID_CLIENTE, ClienteDB.Fields.INDIRIZZO, ClienteDB.Fields.INTERNO,
+				ClienteDB.Fields.NOMINATIVO, ClienteDB.Fields.NOTE, ClienteDB.Fields.PARTITAIVA, ClienteDB.Fields.REFERENTE, ClienteDB.Fields.REVISIONE, ClienteDB.Fields.TELEFONO,
+				ClienteDB.Fields.UFFICIO };
 
 		String SELECTION = ClienteDB.Fields.TYPE + "=?";
 
@@ -47,14 +49,28 @@ public class GetClientiAsyncTask extends AsyncTask<Void, Void, ArrayList<Cliente
 			while (cursor.moveToNext()) {
 
 				Cliente cliente = new Cliente(cursor.getLong(cursor.getColumnIndex(ClienteDB.Fields.ID_CLIENTE)));
-
-				cliente.setNominativo(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOMINATIVO)));
+				cliente.setCancellato(cursor.getInt(cursor.getColumnIndex(ClienteDB.Fields.CANCELLATO)) == 1 ? true : false);
+				cliente.setCitta(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.CITTA)));
 				cliente.setCodiceFiscale(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.CODICE_FISCALE)));
+				cliente.setConflitto(cursor.getInt(cursor.getColumnIndex(ClienteDB.Fields.CONFLITTO)) == 1 ? true : false);
+				cliente.setEmail(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.EMAIL)));
+				cliente.setFax(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.FAX)));
+				cliente.setIndirizzo(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.INDIRIZZO)));
+				cliente.setInterno(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.INTERNO)));
+				cliente.setNominativo(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOMINATIVO)));
+				cliente.setNote(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOTE)));
 				cliente.setPartitaIVA(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.PARTITAIVA)));
+				cliente.setReferente(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.REFERENTE)));
+				cliente.setRevisione(cursor.getLong(cursor.getColumnIndex(ClienteDB.Fields.REVISIONE)));
+				cliente.setTelefono(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.TELEFONO)));
+				cliente.setUfficio(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.UFFICIO)));
 
 				listaClienti.add(cliente);
 			}
 		}
+
+		if (!cursor.isClosed())
+			cursor.close();
 
 		return listaClienti;
 	}

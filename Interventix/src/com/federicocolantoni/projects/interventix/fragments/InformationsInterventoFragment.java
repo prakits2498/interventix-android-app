@@ -1,8 +1,8 @@
 package com.federicocolantoni.projects.interventix.fragments;
 
 import java.util.Calendar;
-import java.util.concurrent.ExecutionException;
 
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.joda.time.DateTime;
@@ -14,15 +14,8 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -37,14 +30,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bugsense.trace.BugSenseHandler;
-import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
-import com.federicocolantoni.projects.interventix.entity.Intervento;
-import com.federicocolantoni.projects.interventix.task.GetInformationsInterventoAsyncTask;
-import com.federicocolantoni.projects.interventix.task.SaveChangesInterventoAsyncQueryHandler;
+import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatcher;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
@@ -53,30 +40,29 @@ import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 @EFragment(R.layout.information_intervento_fragment)
 public class InformationsInterventoFragment extends Fragment {
 
-	public static long sId_Intervento;
-
-	// retrieve views
-
 	@ViewById(R.id.tv_info_intervention)
 	TextView info_interv;
 
-	@ViewById(R.id.row_tipology)
-	View tipologia;
+	@ViewById(R.id.tv_row_tipology)
+	TextView tv_tipology;
 
-	@ViewById(R.id.row_mode)
-	View mode;
+	@ViewById(R.id.tv_row_mode)
+	TextView tv_mode;
 
-	@ViewById(R.id.row_product)
-	View product;
+	@ViewById(R.id.tv_row_product)
+	TextView tv_product;
 
-	@ViewById(R.id.row_motivation)
-	View motivation;
+	@ViewById(R.id.tv_row_motivation)
+	TextView tv_motivation;
 
-	@ViewById(R.id.row_name)
-	View nominativo;
+	@ViewById(R.id.tv_row_name)
+	TextView tv_nominativo;
 
 	@ViewById(R.id.row_date)
 	View date_interv;
+
+	@ViewById(R.id.tv_row_date)
+	TextView tv_date_interv;
 
 	@ViewById(R.id.row_references)
 	LinearLayout row_references;
@@ -100,92 +86,12 @@ public class InformationsInterventoFragment extends Fragment {
 
 		super.onStart();
 
-		Bundle bundle = getArguments();
-
-		sId_Intervento = bundle.getLong(Constants.ID_INTERVENTO);
-
-		Intervento interv = null;
-
-		try {
-			interv = new GetInformationsInterventoAsyncTask(getActivity()).execute(sId_Intervento).get();
-		} catch (InterruptedException e) {
-
-			e.printStackTrace();
-			BugSenseHandler.sendException(e);
-		} catch (ExecutionException e) {
-
-			e.printStackTrace();
-			BugSenseHandler.sendException(e);
-		}
-
-		info_interv.setText("Informazioni");
-
-		tipologia.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				new SetTipologiaDialog().show(getFragmentManager(), Constants.TIPOLOGIA_DIALOG_FRAGMENT);
-			}
-		});
-
-		TextView tv_tipology = (TextView) tipologia.findViewById(R.id.tv_row_tipology);
-		tv_tipology.setText(interv.getTipologia());
-
-		mode.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				new SetModalitaDialog().show(getFragmentManager(), Constants.MODALITA_DIALOG_FRAGMENT);
-			}
-		});
-
-		TextView tv_mode = (TextView) mode.findViewById(R.id.tv_row_mode);
-		tv_mode.setText(interv.getModalita());
-
-		product.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				new SetProdottoDialog().show(getFragmentManager(), Constants.PRODOTTO_DIALOG_FRAGMENT);
-			}
-		});
-
-		TextView tv_product = (TextView) product.findViewById(R.id.tv_row_product);
-		tv_product.setText(interv.getProdotto());
-
-		motivation.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				new SetMotivationDialog().show(getFragmentManager(), Constants.MOTIVO_DIALOG_FRAGMENT);
-			}
-		});
-
-		TextView tv_motivation = (TextView) motivation.findViewById(R.id.tv_row_motivation);
-		tv_motivation.setText(interv.getMotivo());
-
-		nominativo.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				new SetNominativoDialog().show(getFragmentManager(), Constants.NOMINATIVO_DIALOG_FRAGMENT);
-			}
-		});
-
-		TextView tv_nominativo = (TextView) nominativo.findViewById(R.id.tv_row_name);
-		tv_nominativo.setText(interv.getNominativo());
+		info_interv.setText(R.string.row_informations);
 
 		date_interv.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-
-				final TextView tv_date_interv = (TextView) date_interv.findViewById(R.id.tv_row_date);
 
 				final Dialog dateTimeDialog = new Dialog(getActivity());
 
@@ -219,36 +125,7 @@ public class InformationsInterventoFragment extends Fragment {
 
 						tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
 
-						SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getActivity());
-
-						ContentValues values = new ContentValues();
-						values.put(InterventoDB.Fields.DATA_ORA, dt.toDate().getTime());
-						values.put(InterventoDB.Fields.MODIFICATO, "M");
-
-						String selection = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
-
-						String[] selectionArgs = new String[] { InterventoDB.INTERVENTO_ITEM_TYPE, "" + sId_Intervento };
-
-						saveChange.startUpdate(Constants.TOKEN_INFO_DATA_ORA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
-
-						SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-
-						final Editor edit = prefs.edit();
-
-						edit.putBoolean(Constants.INTERV_MODIFIED, true);
-
-						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-							edit.apply();
-						} else {
-							new Thread(new Runnable() {
-
-								@Override
-								public void run() {
-
-									edit.commit();
-								}
-							}).start();
-						}
+						InterventoController.controller.getIntervento().setDataOra(dt.toDate().getTime());
 
 						dateTimeDialog.dismiss();
 					}
@@ -285,40 +162,31 @@ public class InformationsInterventoFragment extends Fragment {
 				dateTimeDialog.show();
 			}
 		});
-
-		TextView tv_date_interv = (TextView) date_interv.findViewById(R.id.tv_row_date);
-
-		DateTime dt = new DateTime(interv.getDataOra(), DateTimeZone.forID("Europe/Rome"));
-
-		tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
-
-		row_references.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
-
-		row_notes.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
-	}
-
-	@Override
-	public void onPause() {
-
-		super.onPause();
 	}
 
 	@Override
 	public void onResume() {
 
 		super.onResume();
+
+		updateUI();
+	}
+
+	private void updateUI() {
+
+		tv_tipology.setText(InterventoController.controller.getIntervento().getTipologia());
+
+		tv_product.setText(InterventoController.controller.getIntervento().getProdotto());
+
+		tv_mode.setText(InterventoController.controller.getIntervento().getModalita());
+
+		tv_motivation.setText(InterventoController.controller.getIntervento().getMotivo());
+
+		tv_nominativo.setText(InterventoController.controller.getIntervento().getNominativo());
+
+		DateTime dt = new DateTime(InterventoController.controller.getIntervento().getDataOra(), DateTimeZone.forID("Europe/Rome"));
+
+		tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
 	}
 
 	@Override
@@ -337,367 +205,176 @@ public class InformationsInterventoFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-		case R.id.pay:
+			case R.id.pay:
 
-			InterventixToast.makeToast(getActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
+				InterventixToast.makeToast(getActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
 
-			break;
+				break;
 
-		case R.id.send_mail:
+			case R.id.send_mail:
 
-			InterventixToast.makeToast(getActivity(), "Inviare email?", Toast.LENGTH_SHORT);
+				InterventixToast.makeToast(getActivity(), "Inviare email?", Toast.LENGTH_SHORT);
 
-			break;
+				break;
 
-		case R.id.close:
+			case R.id.close:
 
-			InterventixToast.makeToast(getActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
+				InterventixToast.makeToast(getActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
 
-			break;
+				break;
 		}
 
 		return true;
 	}
 
-	public static class SetTipologiaDialog extends DialogFragment implements OnClickListener {
+	@Click(R.id.row_tipology)
+	void showDialogTipologia() {
 
-		private String mTipologiaChanged;
+		AlertDialog.Builder tipologia = new Builder(getActivity());
 
-		public SetTipologiaDialog() {
+		tipologia.setTitle(getResources().getString(R.string.tipologia_title));
+		final String[] choices = getResources().getStringArray(R.array.tipologia_choose);
+		tipologia.setSingleChoiceItems(choices, -1, new DialogInterface.OnClickListener() {
 
-		}
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-			AlertDialog.Builder tipologia = new Builder(getActivity());
-
-			tipologia.setTitle(getResources().getString(R.string.tipologia_title));
-			final String[] choices = getResources().getStringArray(R.array.tipologia_choose);
-			tipologia.setSingleChoiceItems(choices, -1, new DialogInterface.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-
-					TextView tv_tipology = (TextView) getActivity().findViewById(R.id.tv_row_tipology);
-					tv_tipology.setText(choices[which]);
-					mTipologiaChanged = choices[which];
-				}
-			});
-
-			tipologia.setPositiveButton(getResources().getString(R.string.ok_btn), this);
-
-			return tipologia.create();
-		}
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-
-			SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getActivity());
-
-			ContentValues values = new ContentValues();
-			values.put(InterventoDB.Fields.TIPOLOGIA, mTipologiaChanged);
-			values.put(InterventoDB.Fields.MODIFICATO, "M");
-
-			String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
-
-			String[] selectionArgs = new String[] { "" + sId_Intervento };
-
-			saveChange.startUpdate(Constants.TOKEN_INFO_TIPOLOGIA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
-
-			SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-
-			final Editor edit = prefs.edit();
-
-			edit.putBoolean(Constants.INTERV_MODIFIED, true);
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-				edit.apply();
-			} else {
-				new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-
-						edit.commit();
-					}
-				}).start();
+				InterventoController.controller.getIntervento().setTipologia(choices[which]);
 			}
+		});
 
-			dialog.dismiss();
-		}
+		tipologia.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				dialog.dismiss();
+
+				updateUI();
+			}
+		});
+
+		tipologia.create().show();
 	}
 
-	public static class SetModalitaDialog extends DialogFragment implements OnClickListener {
+	@Click(R.id.row_mode)
+	void showDialogModalita() {
 
-		private String mModalitaChanged;
+		AlertDialog.Builder modalita = new Builder(getActivity());
 
-		public SetModalitaDialog() {
+		modalita.setTitle(getResources().getString(R.string.modalita_title));
+		final String[] choices = getResources().getStringArray(R.array.modalita_choose);
+		modalita.setSingleChoiceItems(choices, -1, new DialogInterface.OnClickListener() {
 
-		}
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-			AlertDialog.Builder modalita = new Builder(getActivity());
-
-			modalita.setTitle(getResources().getString(R.string.modalita_title));
-			final String[] choices = getResources().getStringArray(R.array.modalita_choose);
-
-			modalita.setSingleChoiceItems(choices, -1, new DialogInterface.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-
-					TextView tv_mode = (TextView) getActivity().findViewById(R.id.tv_row_mode);
-					tv_mode.setText(choices[which]);
-					mModalitaChanged = choices[which];
-				}
-			});
-
-			modalita.setPositiveButton(getResources().getString(R.string.ok_btn), this);
-
-			return modalita.create();
-		}
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-
-			SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getActivity());
-
-			ContentValues values = new ContentValues();
-			values.put(InterventoDB.Fields.MODALITA, mModalitaChanged);
-			values.put(InterventoDB.Fields.MODIFICATO, "M");
-
-			String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
-
-			String[] selectionArgs = new String[] { "" + sId_Intervento };
-
-			saveChange.startUpdate(Constants.TOKEN_INFO_MODALITA, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
-
-			SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-
-			final Editor edit = prefs.edit();
-
-			edit.putBoolean(Constants.INTERV_MODIFIED, true);
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-				edit.apply();
-			} else {
-				new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-
-						edit.commit();
-					}
-				}).start();
+				InterventoController.controller.getIntervento().setModalita(choices[which]);
 			}
+		});
 
-			dialog.dismiss();
-		}
+		modalita.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				dialog.dismiss();
+
+				updateUI();
+			}
+		});
+
+		modalita.create().show();
 	}
 
-	public static class SetProdottoDialog extends DialogFragment implements OnClickListener {
+	@Click(R.id.row_product)
+	void showDialogProdotto() {
 
-		private EditText mEdit_prodotto;
+		final EditText mEdit_prodotto;
 
-		public SetProdottoDialog() {
+		AlertDialog.Builder prodotto = new Builder(getActivity());
 
-		}
+		prodotto.setTitle(R.string.prodotto_title);
 
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
+		mEdit_prodotto = new EditText(getActivity());
+		mEdit_prodotto.setText(tv_product.getText());
 
-			AlertDialog.Builder prodotto = new Builder(getActivity());
+		prodotto.setView(mEdit_prodotto);
+		prodotto.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
 
-			prodotto.setTitle(R.string.prodotto_title);
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 
-			TextView tv_product = (TextView) getActivity().findViewById(R.id.tv_row_product);
+				dialog.dismiss();
 
-			mEdit_prodotto = new EditText(getActivity());
-			mEdit_prodotto.setText(tv_product.getText());
+				InterventoController.controller.getIntervento().setProdotto(mEdit_prodotto.getText().toString());
 
-			prodotto.setView(mEdit_prodotto);
-			prodotto.setPositiveButton(getResources().getString(R.string.ok_btn), this);
-
-			return prodotto.create();
-		}
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-
-			TextView tv_product = (TextView) getActivity().findViewById(R.id.tv_row_product);
-			tv_product.setText(mEdit_prodotto.getText());
-
-			SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getActivity());
-
-			ContentValues values = new ContentValues();
-			values.put(InterventoDB.Fields.PRODOTTO, mEdit_prodotto.getText().toString());
-			values.put(InterventoDB.Fields.MODIFICATO, "M");
-
-			String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
-
-			String[] selectionArgs = new String[] { "" + sId_Intervento };
-
-			saveChange.startUpdate(Constants.TOKEN_INFO_PRODOTTO, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
-
-			SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-
-			final Editor edit = prefs.edit();
-
-			edit.putBoolean(Constants.INTERV_MODIFIED, true);
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-				edit.apply();
-			} else {
-				new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-
-						edit.commit();
-					}
-				}).start();
+				updateUI();
 			}
+		});
 
-			dialog.dismiss();
-		}
+		prodotto.create().show();
 	}
 
-	public static class SetNominativoDialog extends DialogFragment implements OnClickListener {
+	@Click(R.id.row_name)
+	void showDialogNominativo() {
 
-		private EditText mEdit_nominativo;
+		final EditText mEdit_nominativo;
 
-		public SetNominativoDialog() {
+		AlertDialog.Builder nominativo = new Builder(getActivity());
 
-		}
+		nominativo.setTitle(R.string.nominativo_title);
 
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
+		mEdit_nominativo = new EditText(getActivity());
+		mEdit_nominativo.setText(tv_nominativo.getText());
 
-			AlertDialog.Builder nominativo = new Builder(getActivity());
+		nominativo.setView(mEdit_nominativo);
 
-			nominativo.setTitle(R.string.nominativo_title);
+		nominativo.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
 
-			TextView tv_nominativo = (TextView) getActivity().findViewById(R.id.tv_row_name);
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 
-			mEdit_nominativo = new EditText(getActivity());
-			mEdit_nominativo.setText(tv_nominativo.getText());
+				dialog.dismiss();
 
-			nominativo.setView(mEdit_nominativo);
+				InterventoController.controller.getIntervento().setNominativo(mEdit_nominativo.getText().toString());
 
-			nominativo.setPositiveButton(getResources().getString(R.string.ok_btn), this);
-
-			return nominativo.create();
-		}
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-
-			TextView tv_name = (TextView) getActivity().findViewById(R.id.tv_row_name);
-			tv_name.setText(mEdit_nominativo.getText());
-
-			SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getActivity());
-
-			ContentValues values = new ContentValues();
-			values.put(InterventoDB.Fields.NOMINATIVO, mEdit_nominativo.getText().toString());
-			values.put(InterventoDB.Fields.MODIFICATO, "M");
-
-			String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
-
-			String[] selectionArgs = new String[] { "" + sId_Intervento };
-
-			saveChange.startUpdate(Constants.TOKEN_INFO_NOMINATIVO, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
-
-			SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-
-			final Editor edit = prefs.edit();
-
-			edit.putBoolean(Constants.INTERV_MODIFIED, true);
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-				edit.apply();
-			} else {
-				new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-
-						edit.commit();
-					}
-				}).start();
+				updateUI();
 			}
+		});
 
-			dialog.dismiss();
-		}
+		nominativo.create().show();
 	}
 
-	public static class SetMotivationDialog extends DialogFragment implements OnClickListener {
+	@Click(R.id.row_motivation)
+	void showDialogMotivazione() {
 
-		private EditText mEdit_motivo;
+		final EditText mEdit_motivo;
 
-		public SetMotivationDialog() {
+		AlertDialog.Builder motivo = new Builder(getActivity());
 
-		}
+		motivo.setTitle(R.string.motivation_title);
 
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
+		TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_motivation);
 
-			AlertDialog.Builder motivo = new Builder(getActivity());
+		mEdit_motivo = new EditText(getActivity());
+		mEdit_motivo.setText(tv_motivo.getText());
 
-			motivo.setTitle(R.string.motivation_title);
+		motivo.setView(mEdit_motivo);
 
-			TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_motivation);
+		motivo.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
 
-			mEdit_motivo = new EditText(getActivity());
-			mEdit_motivo.setText(tv_motivo.getText());
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 
-			motivo.setView(mEdit_motivo);
+				dialog.dismiss();
 
-			motivo.setPositiveButton(R.string.ok_btn, this);
+				InterventoController.controller.getIntervento().setMotivo(mEdit_motivo.getText().toString());
 
-			return motivo.create();
-		}
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-
-			TextView tv_name = (TextView) getActivity().findViewById(R.id.tv_row_motivation);
-			tv_name.setText(mEdit_motivo.getText());
-
-			SaveChangesInterventoAsyncQueryHandler saveChange = new SaveChangesInterventoAsyncQueryHandler(getActivity());
-
-			ContentValues values = new ContentValues();
-			values.put(InterventoDB.Fields.MOTIVO, mEdit_motivo.getText().toString());
-			values.put(InterventoDB.Fields.MODIFICATO, "M");
-
-			String selection = Fields.TYPE + " = '" + InterventoDB.INTERVENTO_ITEM_TYPE + "' AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
-
-			String[] selectionArgs = new String[] { "" + sId_Intervento };
-
-			saveChange.startUpdate(Constants.TOKEN_INFO_MOTIVO, null, InterventoDB.CONTENT_URI, values, selection, selectionArgs);
-
-			SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-
-			final Editor edit = prefs.edit();
-
-			edit.putBoolean(Constants.INTERV_MODIFIED, true);
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-				edit.apply();
-			} else {
-				new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-
-						edit.commit();
-					}
-				}).start();
+				updateUI();
 			}
+		});
 
-			dialog.dismiss();
-		}
+		motivo.create().show();
 	}
 }

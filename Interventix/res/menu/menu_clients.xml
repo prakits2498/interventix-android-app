@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-	<item
-		android:id="@+id/menu_save_client"
-		android:showAsAction="always"
-		android:icon="@drawable/ic_action_done"
-		android:title="@string/save_detail"/>
+    <item
+        android:id="@+id/menu_save_client"
+        android:icon="@drawable/ic_action_done"
+        android:showAsAction="always"
+        android:title="@string/save_detail"/>
 
 </menu>

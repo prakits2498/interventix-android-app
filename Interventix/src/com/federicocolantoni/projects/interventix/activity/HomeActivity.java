@@ -185,35 +185,35 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 
 		switch (item.getItemId()) {
 
-		case android.R.id.home:
+			case android.R.id.home:
 
-			finish();
+				finish();
 
-			break;
+				break;
 
-		case R.id.refresh_menu:
+			case R.id.refresh_menu:
 
-			getUsersSyncro();
-			setRefreshActionButtonState(true);
+				getUsersSyncro();
+				setRefreshActionButtonState(true);
 
-			break;
+				break;
 
-		case R.id.add_menu:
+			case R.id.add_menu:
 
-			Bundle bundle = new Bundle();
+				Bundle bundle = new Bundle();
 
-			bundle.putLong(Constants.ID_INTERVENTO, Constants.sIdInterventoTemp);
-			bundle.putLong(Constants.NUMERO_INTERVENTO, Constants.sIdInterventoTemp);
+				bundle.putLong(Constants.ID_INTERVENTO, Constants.sIdInterventoTemp);
+				bundle.putLong(Constants.NUMERO_INTERVENTO, Constants.sIdInterventoTemp);
 
-			Intent intent = new Intent(HomeActivity.this, ViewInterventoActivity_.class);
+				Intent intent = new Intent(HomeActivity.this, ViewInterventoActivity_.class);
 
-			intent.putExtras(bundle);
+				intent.putExtras(bundle);
 
-			startActivity(intent);
+				startActivity(intent);
 
-			// Constants.sIdInterventoTemp -= 1;
+				// Constants.sIdInterventoTemp -= 1;
 
-			break;
+				break;
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -296,7 +296,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				ContentResolver cr = getContentResolver();
 
 				Map<String, Object> parameters = new HashMap<String, Object>();
-				parameters.put("revision", prefsLocal.getLong(Constants.REVISION_USERS, 0));
+				parameters.put("revision", prefsLocal.getLong(Constants.REVISION_TECNICI, 0));
 
 				int result = 0;
 
@@ -323,7 +323,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 
 						final Editor editor = prefsLocal.edit();
 
-						editor.putLong(Constants.REVISION_USERS, data.getLong("revision"));
+						editor.putLong(Constants.REVISION_TECNICI, data.getLong("revision"));
 
 						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 							editor.apply();
@@ -431,7 +431,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				ContentResolver cr = getContentResolver();
 
 				Map<String, Object> parameters = new HashMap<String, Object>();
-				parameters.put("revision", prefsLocal.getLong(Constants.REVISION_CLIENTS, 0));
+				parameters.put("revision", prefsLocal.getLong(Constants.REVISION_CLIENTI, 0));
 
 				int result = 0;
 
@@ -454,7 +454,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 
 						final Editor editor = prefsLocal.edit();
 
-						editor.putLong(Constants.REVISION_CLIENTS, data.getLong("revision"));
+						editor.putLong(Constants.REVISION_CLIENTI, data.getLong("revision"));
 
 						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 							editor.apply();
@@ -604,7 +604,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				ContentResolver cr = getContentResolver();
 
 				Map<String, Object> parameters = new HashMap<String, Object>();
-				parameters.put("revision", prefsLocal.getLong(Constants.REVISION_INTERVENTIONS, 0));
+				parameters.put("revision", prefsLocal.getLong(Constants.REVISION_INTERVENTI, 0));
 
 				int result = 0;
 
@@ -631,7 +631,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 
 						final Editor editor = prefsLocal.edit();
 
-						editor.putLong(Constants.REVISION_INTERVENTIONS, data.getLong("revision"));
+						editor.putLong(Constants.REVISION_INTERVENTI, data.getLong("revision"));
 
 						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 							editor.apply();
@@ -720,8 +720,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 						newInterv = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).registerTypeAdapter(new TypeToken<BigDecimal>() {
 						}.getType(), new BigDecimalTypeAdapter()).create().fromJson(responseIntervs.toString(), Intervento.class);
 
-						newInterv.setModificato(Constants.INTERVENTO_AGGIORNATO);
-
 						values = Intervento.insertSQL(newInterv);
 
 						cr.insert(InterventoDB.CONTENT_URI, values);
@@ -761,10 +759,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 							}).setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create().fromJson(newDettInterv.toString(), DettaglioIntervento.class);
 
 							dtInt.setIntervento(newInterv.getIdIntervento());
-							dtInt.setModificato(Constants.DETT_INTERVENTO_AGGIORNATO);
 							dtInt.setTecnici(tecnici.toString());
-
-							System.out.println(dtInt);
 
 							values = DettaglioIntervento.insertSQL(dtInt);
 
@@ -778,8 +773,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 
 						updateInterv = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).registerTypeAdapter(new TypeToken<BigDecimal>() {
 						}.getType(), new BigDecimalTypeAdapter()).create().fromJson(responseIntervs.toString(), Intervento.class);
-
-						updateInterv.setModificato(Constants.INTERVENTO_AGGIORNATO);
 
 						values = Intervento.updateSQL(updateInterv);
 
@@ -822,10 +815,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 							}).setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create().fromJson(dettInterv.toString(), DettaglioIntervento.class);
 
 							dtInt.setIntervento(updateInterv.getIdIntervento());
-							dtInt.setModificato(Constants.DETT_INTERVENTO_AGGIORNATO);
 							dtInt.setTecnici(tecnici.toString());
-
-							System.out.println(dtInt);
 
 							values = DettaglioIntervento.updateSQL(dtInt);
 

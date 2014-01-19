@@ -40,21 +40,21 @@ public class BufferInterventix {
 		timerBuffer = new Timer(this.getClass().getSimpleName(), true);
 
 		switch (type) {
-		case BUFFER_INTERVENTO:
+			case BUFFER_INTERVENTO:
 
-			interventoTask = new BufferTask(type);
-			System.out.println(this.getClass().getSimpleName() + " in esecuzione - " + type.name());
-			timerBuffer.scheduleAtFixedRate(interventoTask, 0l, 1000 * 60);
+				interventoTask = new BufferTask(type);
+				System.out.println(this.getClass().getSimpleName() + " in esecuzione - " + type.name());
+				timerBuffer.scheduleAtFixedRate(interventoTask, 0l, 1000 * 60);
 
-			break;
+				break;
 
-		case BUFFER_CLIENTE:
+			case BUFFER_CLIENTE:
 
-			clienteTask = new BufferTask(type);
-			System.out.println(this.getClass().getSimpleName() + " in esecuzione - " + type.name());
-			timerBuffer.scheduleAtFixedRate(clienteTask, 0l, 1000 * 30);
+				clienteTask = new BufferTask(type);
+				System.out.println(this.getClass().getSimpleName() + " in esecuzione - " + type.name());
+				timerBuffer.scheduleAtFixedRate(clienteTask, 0l, 1000 * 30);
 
-			break;
+				break;
 		}
 	}
 
@@ -89,23 +89,23 @@ public class BufferInterventix {
 			Intent interventixService = new Intent(Interventix.getContext(), InterventixService.class);
 
 			switch (type) {
-			case BUFFER_INTERVENTO:
+				case BUFFER_INTERVENTO:
 
-				System.out.println(type.name() + " avviato");
+					System.out.println(type.name() + " avviato");
 
-				interventixService.setAction(Constants.ACTION_GET_INTERVENTI);
+					interventixService.setAction(Constants.ACTION_GET_INTERVENTI);
 
-				Interventix.getContext().startService(interventixService);
-				break;
+					Interventix.getContext().startService(interventixService);
+					break;
 
-			case BUFFER_CLIENTE:
+				case BUFFER_CLIENTE:
 
-				System.out.println(type.name() + " avviato");
+					System.out.println(type.name() + " avviato");
 
-				interventixService.setAction(Constants.ACTION_GET_CLIENTI);
+					interventixService.setAction(Constants.ACTION_GET_CLIENTI);
 
-				Interventix.getContext().startService(interventixService);
-				break;
+					Interventix.getContext().startService(interventixService);
+					break;
 			}
 		}
 	}

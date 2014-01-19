@@ -38,11 +38,8 @@ public class GetSignatureInterventoAsyncTask extends AsyncTask<Long, Void, Inter
 			signatureIntervento.setDataOra(cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.DATA_ORA)));
 		}
 
-		if (!cursor.isClosed()) {
+		if (!cursor.isClosed())
 			cursor.close();
-		} else {
-			System.out.println("Cursor for " + this.getClass().getSimpleName() + " is closed");
-		}
 
 		return signatureIntervento;
 	}

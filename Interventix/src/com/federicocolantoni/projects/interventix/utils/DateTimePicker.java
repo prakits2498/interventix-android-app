@@ -2,6 +2,7 @@ package com.federicocolantoni.projects.interventix.utils;
 
 import java.util.Calendar;
 
+import org.androidannotations.annotations.EViewGroup;
 import org.joda.time.DateTime;
 
 import android.content.Context;
@@ -20,6 +21,7 @@ import android.widget.RelativeLayout;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
 
+@EViewGroup
 public class DateTimePicker extends RelativeLayout {
 
 	// DatePicker reference
