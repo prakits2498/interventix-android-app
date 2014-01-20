@@ -97,6 +97,12 @@ public final class Constants {
 	public static final int TOKEN_RECUPERO_CLIENTI = 19;
 	public static final int TOKEN_INTERVENTO = 20;
 
+	// token per il salvataggio dei dati del singleton
+	public static final int TOKEN_SAVE_TECNICO = 21;
+	public static final int TOKEN_SAVE_CLIENTE = 22;
+	public static final int TOKEN_SAVE_DETTAGLIO = 23;
+	public static final int TOKEN_SAVE_INTERVENTO = 24;
+
 	public static final String ARRAY_DETTAGLI = "ARRAY_DETTAGLI";
 
 	public static final String HASH_CODE_INTERVENTO_SINGLETON = "HASH_CODE_INTERVENTO_SINGLETON";

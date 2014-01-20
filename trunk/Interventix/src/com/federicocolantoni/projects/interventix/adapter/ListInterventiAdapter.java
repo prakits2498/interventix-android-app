@@ -61,8 +61,10 @@ public class ListInterventiAdapter extends CursorAdapter {
 			row.setBackgroundColor(Color.RED);
 
 		String modificato = cursor.getString(mModificatoInterventoIndex);
-		if (modificato.equals(Constants.INTERVENTO_MODIFICATO))
-			row.setBackgroundColor(Color.YELLOW);
+
+		if (modificato != null)
+			if (modificato.equals(Constants.INTERVENTO_MODIFICATO))
+				row.setBackgroundColor(Color.YELLOW);
 
 		Long idInterv = cursor.getLong(mNumeroInterventoIndex);
 

@@ -157,12 +157,8 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 					finish();
 
-					InterventixToast.makeToast(this, "Nessuna modifica all'intervento", Toast.LENGTH_SHORT);
-
 					InterventoController.controller = null;
 				} else {
-
-					InterventixToast.makeToast(this, "Intervento modificato", Toast.LENGTH_SHORT);
 
 					new ExitIntervento().show(getSupportFragmentManager(), Constants.EXIT_INTERVENTO_DIALOG_FRAGMENT);
 				}
@@ -189,12 +185,8 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 				finish();
 
-				InterventixToast.makeToast(this, getString(R.string.toast_message_intervento_no_modified), Toast.LENGTH_SHORT);
-
 				InterventoController.controller = null;
 			} else {
-
-				InterventixToast.makeToast(this, getString(R.string.toast_message_intervento_modified), Toast.LENGTH_SHORT);
 
 				new ExitIntervento().show(getSupportFragmentManager(), Constants.EXIT_INTERVENTO_DIALOG_FRAGMENT);
 			}
@@ -234,6 +226,8 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 					saveInterventoOnDB();
 
+					InterventixToast.makeToast(getActivity(), "Intervento modificato con successo!", Toast.LENGTH_SHORT);
+
 					getActivity().finish();
 
 					break;
@@ -261,7 +255,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 	private static void saveInterventoOnDB() {
 
-		// TODO salvare le informazioni modificate dell'intervento su DB
+		InterventoController.saveOnDB();
 	}
 
 	@Override
