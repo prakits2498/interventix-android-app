@@ -6,11 +6,11 @@ import android.preference.PreferenceActivity;
 import com.federicocolantoni.projects.interventix.R;
 
 public class SettingSupportActivity extends PreferenceActivity {
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-
-		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.xml.activity_support_preferences_options);
-	}
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+    
+	super.onCreate(savedInstanceState);
+	addPreferencesFromResource(R.xml.activity_support_preferences_options);
+    }
 }

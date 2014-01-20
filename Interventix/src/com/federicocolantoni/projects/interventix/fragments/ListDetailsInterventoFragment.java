@@ -29,113 +29,113 @@ import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 @SuppressLint("NewApi")
 @EFragment(R.layout.list_details_intervento_fragment)
 public class ListDetailsInterventoFragment extends Fragment {
-
-	private ListDettagliInterventiAdapter mAdapter;
-
-	@ViewById(R.id.tv_details_intervention)
-	TextView tv_details_intervento;
-
-	@ViewById(R.id.list_details_intervento)
-	ListView detailsList;
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-
-		super.onCreate(savedInstanceState);
-
-		((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-		((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		setHasOptionsMenu(true);
+    
+    private ListDettagliInterventiAdapter mAdapter;
+    
+    @ViewById(R.id.tv_details_intervention)
+    TextView tv_details_intervento;
+    
+    @ViewById(R.id.list_details_intervento)
+    ListView detailsList;
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+    
+	super.onCreate(savedInstanceState);
+	
+	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	
+	setHasOptionsMenu(true);
+    }
+    
+    @Override
+    public void onStart() {
+    
+	super.onStart();
+	
+	tv_details_intervento.setText("Dettagli");
+	
+	mAdapter = new ListDettagliInterventiAdapter(getActivity());
+	
+	detailsList.setAdapter(mAdapter);
+	
+	detailsList.setOnItemClickListener(new OnItemClickListener() {
+	    
+	    @Override
+	    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+	    
+		Bundle bundle = new Bundle();
+		
+		bundle.putSerializable(Constants.DETTAGLIO_NESIMO, InterventoController.controller.getListaDettagli().get(position));
+		bundle.putString(Constants.NUOVO_DETTAGLIO_INTERVENTO, Constants.DETTAGLIO_INTERVENTO_ESISTENTE);
+		
+		FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
+		FragmentTransaction transaction = manager.beginTransaction();
+		
+		DetailInterventoFragment_ dettInterv = new DetailInterventoFragment_();
+		dettInterv.setArguments(bundle);
+		
+		transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
+		transaction.addToBackStack(Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
+		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		
+		transaction.commit();
+	    }
+	});
+	
+	detailsList.setOnItemLongClickListener(new OnItemLongClickListener() {
+	    
+	    @Override
+	    public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
+	    
+		// aggiungere il menu contestuale per la cancellazione del
+		// dettaglio
+		
+		return false;
+	    }
+	});
+    }
+    
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    
+	super.onCreateOptionsMenu(menu, inflater);
+	
+	inflater.inflate(R.menu.menu_view_intervento, menu);
+	
+	MenuItem itemAddDetail = menu.findItem(R.id.add_detail_interv);
+	itemAddDetail.setVisible(true);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    
+	switch (item.getItemId()) {
+	
+	    case R.id.add_detail_interv:
+		
+		break;
+	    
+	    case R.id.pay:
+		
+		InterventixToast.makeToast(getActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
+		
+		break;
+	    
+	    case R.id.send_mail:
+		
+		InterventixToast.makeToast(getActivity(), "Inviare email?", Toast.LENGTH_SHORT);
+		
+		break;
+	    
+	    case R.id.close:
+		
+		InterventixToast.makeToast(getActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
+		
+		break;
 	}
-
-	@Override
-	public void onStart() {
-
-		super.onStart();
-
-		tv_details_intervento.setText("Dettagli");
-
-		mAdapter = new ListDettagliInterventiAdapter(getActivity());
-
-		detailsList.setAdapter(mAdapter);
-
-		detailsList.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-
-				Bundle bundle = new Bundle();
-
-				bundle.putSerializable(Constants.DETTAGLIO_NESIMO, InterventoController.controller.getListaDettagli().get(position));
-				bundle.putString(Constants.NUOVO_DETTAGLIO_INTERVENTO, Constants.DETTAGLIO_INTERVENTO_ESISTENTE);
-
-				FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
-				FragmentTransaction transaction = manager.beginTransaction();
-
-				DetailInterventoFragment_ dettInterv = new DetailInterventoFragment_();
-				dettInterv.setArguments(bundle);
-
-				transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
-				transaction.addToBackStack(Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
-				transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-
-				transaction.commit();
-			}
-		});
-
-		detailsList.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
-
-				// aggiungere il menu contestuale per la cancellazione del
-				// dettaglio
-
-				return false;
-			}
-		});
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-		super.onCreateOptionsMenu(menu, inflater);
-
-		inflater.inflate(R.menu.menu_view_intervento, menu);
-
-		MenuItem itemAddDetail = menu.findItem(R.id.add_detail_interv);
-		itemAddDetail.setVisible(true);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
-
-			case R.id.add_detail_interv:
-
-				break;
-
-			case R.id.pay:
-
-				InterventixToast.makeToast(getActivity(), "Saldare l'intervento?", Toast.LENGTH_SHORT);
-
-				break;
-
-			case R.id.send_mail:
-
-				InterventixToast.makeToast(getActivity(), "Inviare email?", Toast.LENGTH_SHORT);
-
-				break;
-
-			case R.id.close:
-
-				InterventixToast.makeToast(getActivity(), "Chiudere l'intervento?", Toast.LENGTH_SHORT);
-
-				break;
-		}
-
-		return true;
-	}
+	
+	return true;
+    }
 }
