@@ -9,16 +9,16 @@ import com.federicocolantoni.projects.interventix.R;
 
 @EFragment(R.layout.client_detail_fragment)
 public class ClientInterventoFragment extends Fragment {
-    
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-    
-	super.onCreate(savedInstanceState);
-    }
-    
-    @Override
-    public void onStart() {
-    
-	super.onStart();
-    }
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public void onStart() {
+
+		super.onStart();
+	}
 }
