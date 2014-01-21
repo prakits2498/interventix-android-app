@@ -9,46 +9,42 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Ute
 import com.federicocolantoni.projects.interventix.entity.Utente;
 
 public class GetNominativoUtenteAsyncTask extends AsyncTask<Long, Void, Utente> {
-    
-    private Context context;
-    
-    public GetNominativoUtenteAsyncTask(Context context) {
-    
-	this.context = context.getApplicationContext();
-    }
-    
-    @Override
-    protected Utente doInBackground(Long... params) {
-    
-	ContentResolver cr = context.getContentResolver();
-	
-	String[] projection = new String[] {
-	UtenteDB.Fields._ID, UtenteDB.Fields.NOME, UtenteDB.Fields.COGNOME
-	};
-	
-	String selection = UtenteDB.Fields.TYPE + " =? AND " + UtenteDB.Fields.ID_UTENTE + " = ?";
-	
-	String[] selectionArgs = new String[] {
-	UtenteDB.UTENTE_ITEM_TYPE, "" + params[0]
-	};
-	
-	Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection, selection, selectionArgs, null);
-	
-	Utente utente = new Utente();
-	
-	if (cursor.moveToFirst()) {
-	    utente.setNome(cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.NOME)));
-	    utente.setCognome(cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.COGNOME)));
+
+	private Context context;
+
+	public GetNominativoUtenteAsyncTask(Context context) {
+
+		this.context = context.getApplicationContext();
 	}
-	
-	if (!cursor.isClosed())
-	    cursor.close();
-	
-	return utente;
-    }
-    
-    @Override
-    protected void onPostExecute(Utente result) {
-    
-    }
+
+	@Override
+	protected Utente doInBackground(Long... params) {
+
+		ContentResolver cr = context.getContentResolver();
+
+		String[] projection = new String[] { UtenteDB.Fields._ID, UtenteDB.Fields.NOME, UtenteDB.Fields.COGNOME };
+
+		String selection = UtenteDB.Fields.TYPE + " =? AND " + UtenteDB.Fields.ID_UTENTE + " = ?";
+
+		String[] selectionArgs = new String[] { UtenteDB.UTENTE_ITEM_TYPE, "" + params[0] };
+
+		Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection, selection, selectionArgs, null);
+
+		Utente utente = new Utente();
+
+		if (cursor.moveToFirst()) {
+			utente.setNome(cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.NOME)));
+			utente.setCognome(cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.COGNOME)));
+		}
+
+		if (!cursor.isClosed())
+			cursor.close();
+
+		return utente;
+	}
+
+	@Override
+	protected void onPostExecute(Utente result) {
+
+	}
 }

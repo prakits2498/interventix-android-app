@@ -22,97 +22,95 @@ import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.federicocolantoni.projects.interventix.task.GetNominativoClienteAsyncTask;
 
 public class ListInterventiAdapter extends CursorAdapter {
-    
-    private final LayoutInflater mInflater;
-    private boolean mFoundIndexes;
-    
-    private int mNumeroInterventoIndex;
-    private int mClienteInterventoIndex;
-    private int mDataInterventoIndex;
-    private int mConflittoInterventoIndex;
-    private int mModificatoInterventoIndex;
-    
-    public ListInterventiAdapter(Context context, Cursor c) {
-    
-	super(context, c, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-	mInflater = LayoutInflater.from(context);
-	mFoundIndexes = false;
-    }
-    
-    @Override
-    public void bindView(View row, Context context, Cursor cursor) {
-    
-	TextView tv_numero_intervento = (TextView) row.getTag(R.id.tv_numero_intervento);
-	TextView tv_cliente_intervento = (TextView) row.getTag(R.id.tv_cliente_intervento);
-	TextView tv_data_intervento = (TextView) row.getTag(R.id.tv_data_intervento);
-	
-	if (!mFoundIndexes) {
-	    mNumeroInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.NUMERO_INTERVENTO);
-	    mClienteInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.CLIENTE);
-	    mDataInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.DATA_ORA);
-	    mConflittoInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.CONFLITTO);
-	    mModificatoInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.MODIFICATO);
-	    
-	    mFoundIndexes = true;
+
+	private final LayoutInflater mInflater;
+	private boolean mFoundIndexes;
+
+	private int mNumeroInterventoIndex;
+	private int mClienteInterventoIndex;
+	private int mDataInterventoIndex;
+	private int mConflittoInterventoIndex;
+	private int mModificatoInterventoIndex;
+
+	public ListInterventiAdapter(Context context, Cursor c) {
+
+		super(context, c, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+		mInflater = LayoutInflater.from(context);
+		mFoundIndexes = false;
 	}
-	
-	boolean conflitto = cursor.getInt(mConflittoInterventoIndex) == 1 ? true : false;
-	if (conflitto)
-	    row.setBackgroundColor(Color.RED);
-	
-	String modificato = cursor.getString(mModificatoInterventoIndex);
-	
-	if (modificato != null)
-	    if (modificato.equals(Constants.INTERVENTO_MODIFICATO))
-		row.setBackgroundColor(Color.YELLOW);
-	
-	Long idInterv = cursor.getLong(mNumeroInterventoIndex);
-	
-	Long idCliente = cursor.getLong(mClienteInterventoIndex);
-	
-	String numeroInterv = mContext.getString(R.string.numero_intervento) + idInterv;
-	
-	tv_numero_intervento.setText(numeroInterv);
-	
-	GetNominativoClienteAsyncTask clienteAsyncTask = new GetNominativoClienteAsyncTask(mContext);
-	clienteAsyncTask.execute(idCliente);
-	
-	Cliente cliente = null;
-	try {
-	    cliente = clienteAsyncTask.get();
-	    tv_cliente_intervento.setText(cliente.getNominativo() + " - ");
+
+	@Override
+	public void bindView(View row, Context context, Cursor cursor) {
+
+		TextView tv_numero_intervento = (TextView) row.getTag(R.id.tv_numero_intervento);
+		TextView tv_cliente_intervento = (TextView) row.getTag(R.id.tv_cliente_intervento);
+		TextView tv_data_intervento = (TextView) row.getTag(R.id.tv_data_intervento);
+
+		if (!mFoundIndexes) {
+			mNumeroInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.NUMERO_INTERVENTO);
+			mClienteInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.CLIENTE);
+			mDataInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.DATA_ORA);
+			mConflittoInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.CONFLITTO);
+			mModificatoInterventoIndex = cursor.getColumnIndex(InterventoDB.Fields.MODIFICATO);
+
+			mFoundIndexes = true;
+		}
+
+		boolean conflitto = cursor.getInt(mConflittoInterventoIndex) == 1 ? true : false;
+		if (conflitto)
+			row.setBackgroundColor(Color.RED);
+
+		String modificato = cursor.getString(mModificatoInterventoIndex);
+
+		if (modificato != null)
+			if (modificato.equals(Constants.INTERVENTO_MODIFICATO))
+				row.setBackgroundColor(Color.YELLOW);
+
+		Long idInterv = cursor.getLong(mNumeroInterventoIndex);
+
+		Long idCliente = cursor.getLong(mClienteInterventoIndex);
+
+		String numeroInterv = mContext.getString(R.string.numero_intervento) + idInterv;
+
+		tv_numero_intervento.setText(numeroInterv);
+
+		GetNominativoClienteAsyncTask clienteAsyncTask = new GetNominativoClienteAsyncTask(mContext);
+		clienteAsyncTask.execute(idCliente);
+
+		Cliente cliente = null;
+		try {
+			cliente = clienteAsyncTask.get();
+			tv_cliente_intervento.setText(cliente.getNominativo() + " - ");
+		} catch (InterruptedException e) {
+
+			BugSenseHandler.sendException(e);
+
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+
+			BugSenseHandler.sendException(e);
+
+			e.printStackTrace();
+		}
+
+		DateTime dt = new DateTime(cursor.getLong(mDataInterventoIndex));
+
+		tv_data_intervento.setText(dt.toString(mContext.getString(R.string.date_format), Locale.ITALY));
 	}
-	catch (InterruptedException e) {
-	    
-	    BugSenseHandler.sendException(e);
-	    
-	    e.printStackTrace();
+
+	@Override
+	public View newView(Context context, Cursor cursor, ViewGroup listView) {
+
+		View view = mInflater.inflate(R.layout.interv_row, listView, false);
+
+		TextView tv_numero_intervento = (TextView) view.findViewById(R.id.tv_numero_intervento);
+		TextView tv_cliente_intervento = (TextView) view.findViewById(R.id.tv_cliente_intervento);
+		TextView tv_data_intervento = (TextView) view.findViewById(R.id.tv_data_intervento);
+
+		view.setTag(R.id.tv_numero_intervento, tv_numero_intervento);
+		view.setTag(R.id.tv_cliente_intervento, tv_cliente_intervento);
+		view.setTag(R.id.tv_data_intervento, tv_data_intervento);
+
+		return view;
 	}
-	catch (ExecutionException e) {
-	    
-	    BugSenseHandler.sendException(e);
-	    
-	    e.printStackTrace();
-	}
-	
-	DateTime dt = new DateTime(cursor.getLong(mDataInterventoIndex));
-	
-	tv_data_intervento.setText(dt.toString(mContext.getString(R.string.date_format), Locale.ITALY));
-    }
-    
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup listView) {
-    
-	View view = mInflater.inflate(R.layout.interv_row, listView, false);
-	
-	TextView tv_numero_intervento = (TextView) view.findViewById(R.id.tv_numero_intervento);
-	TextView tv_cliente_intervento = (TextView) view.findViewById(R.id.tv_cliente_intervento);
-	TextView tv_data_intervento = (TextView) view.findViewById(R.id.tv_data_intervento);
-	
-	view.setTag(R.id.tv_numero_intervento, tv_numero_intervento);
-	view.setTag(R.id.tv_cliente_intervento, tv_cliente_intervento);
-	view.setTag(R.id.tv_data_intervento, tv_data_intervento);
-	
-	return view;
-    }
 }
