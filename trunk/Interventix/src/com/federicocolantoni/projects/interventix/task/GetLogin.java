@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.R.string;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
 import com.federicocolantoni.projects.interventix.entity.Utente;
@@ -68,8 +68,8 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
     
 	int result = 0;
 	
-	final String prefs_url = mContext.getResources().getString(string.prefs_key_url);
-	final String prefs_auto_login = mContext.getResources().getString(string.prefs_key_auto_login);
+	final String prefs_url = mContext.getResources().getString(R.string.prefs_key_url);
+	final String prefs_auto_login = mContext.getResources().getString(R.string.prefs_key_auto_login);
 	
 	final String url = defaultPrefs.getString(prefs_url, null);
 	
@@ -96,7 +96,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 		    UtenteDB.UTENTE_ITEM_TYPE, mUsername
 		    };
 		    
-		    Cursor cursor = cr.query(UtenteDB.CONTENT_URI, null, selection, selectionArgs, null);
+		    Cursor cursor = cr.query(Data.CONTENT_URI, null, selection, selectionArgs, null);
 		    
 		    if (cursor.getCount() > 0) {
 			
@@ -116,7 +116,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 			    "" + data.get("idutente")
 			};
 			
-			cr.update(UtenteDB.CONTENT_URI, values, selectionUpdate, selectionUpdateArgs);
+			cr.update(Data.CONTENT_URI, values, selectionUpdate, selectionUpdateArgs);
 			
 			SharedPreferences localPrefs = mContext.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 			
@@ -144,7 +144,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 			
 			values = Utente.insertSQL(newUser);
 			
-			cr.insert(UtenteDB.CONTENT_URI, values);
+			cr.insert(Data.CONTENT_URI, values);
 			
 			SharedPreferences localPrefs = mContext.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 			

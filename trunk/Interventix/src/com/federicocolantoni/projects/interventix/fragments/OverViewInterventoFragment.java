@@ -34,9 +34,6 @@ import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 @EFragment(R.layout.overview_intervento_fragment)
 public class OverViewInterventoFragment extends Fragment {
     
-    @ViewById(R.id.tv_summary_intervention)
-    TextView summary;
-    
     @ViewById(R.id.tv_row_client)
     TextView tv_row_client;
     
@@ -45,6 +42,9 @@ public class OverViewInterventoFragment extends Fragment {
     
     @ViewById(R.id.tv_row_user)
     TextView tv_row_tecnico;
+    
+    @ViewById(R.id.tv_row_informations)
+    TextView tv_row_informazioni;
     
     @ViewById(R.id.tv_row_details)
     TextView tv_row_details;
@@ -77,14 +77,13 @@ public class OverViewInterventoFragment extends Fragment {
     
 	super.onStart();
 	
+	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().getNumeroIntervento());
+	
 	manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
 	
 	// *** nuova gestione - inizio ***\\
 	
 	if (InterventoController.controller != null) {
-	    
-	    DateTime dt_interv = new DateTime(InterventoController.controller.getIntervento().getDataOra(), DateTimeZone.forID("Europe/Rome"));
-	    summary.setText("Interv. " + InterventoController.controller.getIntervento().getNumeroIntervento() + " del " + dt_interv.toString("dd/MM/yyyy HH:mm"));
 	    
 	    rowTecnico.setEnabled(false);
 	}
@@ -108,10 +107,6 @@ public class OverViewInterventoFragment extends Fragment {
     
     private void addNewIntervento() {
     
-	// ((ActionBarActivity)
-	// getActivity()).getSupportActionBar().setSubtitle("Intervento " +
-	// Constants.sIdInterventoTemp);
-	
 	manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
     }
     
@@ -125,6 +120,9 @@ public class OverViewInterventoFragment extends Fragment {
 	
 	rowTecnico.setEnabled(false);
 	
+	DateTime dt = new DateTime(InterventoController.controller.getIntervento().getDataOra(), DateTimeZone.forID("Europe/Rome"));
+	tv_row_informazioni.setText(dt.toString("dd/MM/yyyy HH:mm"));
+	
 	long numOre = 0l;
 	
 	for (DettaglioIntervento obj : InterventoController.controller.getListaDettagli()) {
@@ -132,11 +130,11 @@ public class OverViewInterventoFragment extends Fragment {
 	    numOre += obj.getFine() - obj.getInizio();
 	}
 	
-	DateTime dt = new DateTime(numOre, DateTimeZone.forID("Europe/Rome"));
+	DateTime dtDetails = new DateTime(numOre, DateTimeZone.forID("Europe/Rome"));
 	
 	if (InterventoController.controller.getListaDettagli().size() > 0) {
 	    
-	    tv_row_details.setText(InterventoController.controller.getListaDettagli().size() + " - " + dt.toString("HH:mm"));
+	    tv_row_details.setText(InterventoController.controller.getListaDettagli().size() + " - " + dtDetails.toString("HH:mm"));
 	}
 	else {
 	    

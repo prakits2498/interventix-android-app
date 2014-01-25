@@ -40,9 +40,6 @@ import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 @EFragment(R.layout.information_intervento_fragment)
 public class InformationsInterventoFragment extends Fragment {
     
-    @ViewById(R.id.tv_info_intervention)
-    TextView info_interv;
-    
     @ViewById(R.id.tv_row_tipology)
     TextView tv_tipology;
     
@@ -86,7 +83,7 @@ public class InformationsInterventoFragment extends Fragment {
     
 	super.onStart();
 	
-	info_interv.setText(R.string.row_informations);
+	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().getNumeroIntervento() + " - " + getString(R.string.row_informations));
 	
 	date_interv.setOnClickListener(new View.OnClickListener() {
 	    

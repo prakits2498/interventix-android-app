@@ -2,8 +2,11 @@ package com.federicocolantoni.projects.interventix.entity;
 
 import java.io.Serializable;
 
+import org.json.JSONArray;
+
 import android.content.ContentValues;
 
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 
 public class DettaglioIntervento implements Serializable {
@@ -15,6 +18,7 @@ public class DettaglioIntervento implements Serializable {
     
     private Long iddettagliointervento, idintervento, inizio, fine;
     private String tipo, oggetto, descrizione, tecniciintervento;
+    private boolean nuovo;
     
     public DettaglioIntervento() {
     
@@ -25,7 +29,8 @@ public class DettaglioIntervento implements Serializable {
 	tipo = new String();
 	oggetto = new String();
 	descrizione = new String();
-	tecniciintervento = new String();
+	tecniciintervento = new JSONArray().toString();
+	nuovo = false;
     }
     
     public DettaglioIntervento(Long idDettaglioIntervento) {
@@ -155,10 +160,27 @@ public class DettaglioIntervento implements Serializable {
 	this.tecniciintervento = mTecnici;
     }
     
+    /**
+     * @return the nuovo
+     */
+    public boolean isNuovo() {
+    
+	return nuovo;
+    }
+    
+    /**
+     * @param nuovo
+     *            the nuovo to set
+     */
+    public void setNuovo(boolean nuovo) {
+    
+	this.nuovo = nuovo;
+    }
+    
     @Override
     public String toString() {
     
-	return String.format("DettaglioIntervento [idDettaglioIntervento=%s, tipo=%s, oggetto=%s, descrizione=%s, intervento=%s, inizio=%s, fine=%s, tecnici=%s]", iddettagliointervento, tipo, oggetto, descrizione, idintervento, inizio, fine, tecniciintervento);
+	return String.format("DettaglioIntervento [iddettagliointervento=%s, idintervento=%s, inizio=%s, fine=%s, tipo=%s, oggetto=%s, descrizione=%s, tecniciintervento=%s, nuovo=%s]", iddettagliointervento, idintervento, inizio, fine, tipo, oggetto, descrizione, tecniciintervento, nuovo);
     }
     
     @Override
@@ -171,6 +193,7 @@ public class DettaglioIntervento implements Serializable {
 	result = prime * result + ((iddettagliointervento == null) ? 0 : iddettagliointervento.hashCode());
 	result = prime * result + ((idintervento == null) ? 0 : idintervento.hashCode());
 	result = prime * result + ((inizio == null) ? 0 : inizio.hashCode());
+	result = prime * result + (nuovo ? 1231 : 1237);
 	result = prime * result + ((oggetto == null) ? 0 : oggetto.hashCode());
 	result = prime * result + ((tecniciintervento == null) ? 0 : tecniciintervento.hashCode());
 	result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
@@ -180,88 +203,71 @@ public class DettaglioIntervento implements Serializable {
     @Override
     public boolean equals(Object obj) {
     
-	if (this == obj) {
+	if (this == obj)
 	    return true;
-	}
-	if (obj == null) {
+	if (obj == null)
 	    return false;
-	}
-	if (!(obj instanceof DettaglioIntervento)) {
+	if (!(obj instanceof DettaglioIntervento))
 	    return false;
-	}
 	DettaglioIntervento other = (DettaglioIntervento) obj;
 	if (descrizione == null) {
-	    if (other.descrizione != null) {
+	    if (other.descrizione != null)
 		return false;
-	    }
 	}
 	else
-	    if (!descrizione.equals(other.descrizione)) {
+	    if (!descrizione.equals(other.descrizione))
 		return false;
-	    }
 	if (fine == null) {
-	    if (other.fine != null) {
+	    if (other.fine != null)
 		return false;
-	    }
 	}
 	else
-	    if (!fine.equals(other.fine)) {
+	    if (!fine.equals(other.fine))
 		return false;
-	    }
 	if (iddettagliointervento == null) {
-	    if (other.iddettagliointervento != null) {
+	    if (other.iddettagliointervento != null)
 		return false;
-	    }
 	}
 	else
-	    if (!iddettagliointervento.equals(other.iddettagliointervento)) {
+	    if (!iddettagliointervento.equals(other.iddettagliointervento))
 		return false;
-	    }
 	if (idintervento == null) {
-	    if (other.idintervento != null) {
+	    if (other.idintervento != null)
 		return false;
-	    }
 	}
 	else
-	    if (!idintervento.equals(other.idintervento)) {
+	    if (!idintervento.equals(other.idintervento))
 		return false;
-	    }
 	if (inizio == null) {
-	    if (other.inizio != null) {
+	    if (other.inizio != null)
 		return false;
-	    }
 	}
 	else
-	    if (!inizio.equals(other.inizio)) {
+	    if (!inizio.equals(other.inizio))
 		return false;
-	    }
+	if (nuovo != other.nuovo)
+	    return false;
 	if (oggetto == null) {
-	    if (other.oggetto != null) {
+	    if (other.oggetto != null)
 		return false;
-	    }
 	}
 	else
-	    if (!oggetto.equals(other.oggetto)) {
+	    if (!oggetto.equals(other.oggetto))
 		return false;
-	    }
 	if (tecniciintervento == null) {
-	    if (other.tecniciintervento != null) {
+	    if (other.tecniciintervento != null)
 		return false;
-	    }
 	}
 	else
-	    if (!tecniciintervento.equals(other.tecniciintervento)) {
+	    if (!tecniciintervento.equals(other.tecniciintervento))
 		return false;
-	    }
 	if (tipo == null) {
-	    if (other.tipo != null) {
+	    if (other.tipo != null)
 		return false;
-	    }
 	}
 	else
-	    if (!tipo.equals(other.tipo)) {
+	    if (!tipo.equals(other.tipo))
 		return false;
-	    }
 	return true;
     }
     
@@ -270,7 +276,7 @@ public class DettaglioIntervento implements Serializable {
 	ContentValues values = new ContentValues();
 	
 	values.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, dettIntervento.getIdDettaglioIntervento());
-	values.put(DettaglioInterventoDB.Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
+	values.put(Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
 	values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, dettIntervento.getDescrizione());
 	values.put(DettaglioInterventoDB.Fields.INTERVENTO, dettIntervento.getIntervento());
 	values.put(DettaglioInterventoDB.Fields.OGGETTO, dettIntervento.getOggetto());

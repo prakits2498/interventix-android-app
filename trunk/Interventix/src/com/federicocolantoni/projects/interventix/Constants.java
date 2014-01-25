@@ -59,7 +59,7 @@ public final class Constants {
     public static final String INTERVENTO = "INTERVENTO";
     public static final String ID_INTERVENTO = "ID_INTERVENTO";
     public static final String ID_DETTAGLIO_INTERVENTO = "ID_DETTAGLIO_INTERVENTO";
-    public static final String DETTAGLIO_NESIMO = "DETTAGLIO_NESIMO";
+    public static final String DETTAGLIO_N_ESIMO = "DETTAGLIO_NESIMO";
     public static final String NUMERO_INTERVENTO = "NUMERO_INTERVENTO";
     public static final String NOMINATIVO = "NOMINATIVO";
     public static final String CLIENTE = "CLIENTE";

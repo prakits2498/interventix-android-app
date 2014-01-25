@@ -129,6 +129,7 @@ public class ChangeLogDialog {
 	WebView _WebView = new WebView(fActivity);
 	_WebView.loadData(_HTML, "text/html", "utf-8");
 	AlertDialog.Builder builder = new AlertDialog.Builder(fActivity).setTitle(_Title).setView(_WebView).setPositiveButton(_Close, new Dialog.OnClickListener() {
+	    @Override
 	    public void onClick(DialogInterface dialogInterface, int i) {
 	    
 		dialogInterface.dismiss();

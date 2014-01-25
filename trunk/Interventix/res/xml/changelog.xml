@@ -5,6 +5,13 @@
 		version="0.0.500"
 		versioncode="50" >
 		<change>
+			Aggiornamento della libreria AndroidAnnotations alla versione 3.0.1
+		</change>
+		<change>
+			Implementazione del mapping JSON-Java tramite la libreria Gson
+		</change>
+		<change>
+			Ristrutturazione del progetto.
 		</change>
 	</release>
 	<release
@@ -21,22 +28,7 @@
 			naming convention per l'attributo "Modificato":
 			- "M" quando l'oggetto viene modificato localmente al device
 			- "U" quando l'oggetto viene scaricato nuovo o aggiornato dal server
-			- "N" quando l'oggetto viene creato nuovo localmente al device (in teoria questo
-			valore non serve ai fini della determinazione degli oggetti nuovi da inviare al
-			server, per quello viene usato l'id negativo degli stessi)
-		</change>
-	</release>
-	<release
-		version="0.0.430"
-		versioncode="43" >
-		<change>
-            Completata l'implementazione della firma per l'intervento.
-		</change>
-		<change>
-			Fix sulla schermata iniziale: sugli schermi troppo piccoli la tastiera impediva la corretta visualizzazione dei campi di testo per l'username e la password.
-		</change>
-		<change>
-        	Refactoring di alcune classi e fix minori.
+			- "N" quando l'oggetto viene creato nuovo localmente al device
 		</change>
 	</release>
 

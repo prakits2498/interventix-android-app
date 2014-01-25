@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
 import com.federicocolantoni.projects.interventix.entity.Utente;
 
@@ -23,16 +25,16 @@ public class GetUtenteAsyncTack extends AsyncTask<Long, Void, Utente> {
 	ContentResolver cr = context.getContentResolver();
 	
 	String[] projection = new String[] {
-	UtenteDB.Fields._ID, UtenteDB.Fields.CANCELLATO, UtenteDB.Fields.CESTINATO, UtenteDB.Fields.COGNOME, UtenteDB.Fields.CONFLITTO, UtenteDB.Fields.EMAIL, UtenteDB.Fields.ID_UTENTE, UtenteDB.Fields.NOME, UtenteDB.Fields.PASSWORD, UtenteDB.Fields.REVISIONE, UtenteDB.Fields.TIPO, UtenteDB.Fields.USERNAME
+	Fields._ID, UtenteDB.Fields.CANCELLATO, UtenteDB.Fields.CESTINATO, UtenteDB.Fields.COGNOME, UtenteDB.Fields.CONFLITTO, UtenteDB.Fields.EMAIL, UtenteDB.Fields.ID_UTENTE, UtenteDB.Fields.NOME, UtenteDB.Fields.PASSWORD, UtenteDB.Fields.REVISIONE, UtenteDB.Fields.TIPO, UtenteDB.Fields.USERNAME
 	};
 	
-	String selection = UtenteDB.Fields.TYPE + " = ? AND " + UtenteDB.Fields.ID_UTENTE + " = ?";
+	String selection = Fields.TYPE + " = ? AND " + UtenteDB.Fields.ID_UTENTE + " = ?";
 	
 	String[] selectionArgs = new String[] {
 	UtenteDB.UTENTE_ITEM_TYPE, "" + params[0]
 	};
 	
-	Cursor cursor = cr.query(UtenteDB.CONTENT_URI, projection, selection, selectionArgs, null);
+	Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
 	
 	Utente utente = new Utente();
 	

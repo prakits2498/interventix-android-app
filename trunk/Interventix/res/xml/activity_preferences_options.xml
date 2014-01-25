@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE PreferenceScreen PUBLIC "//UNKNOWN/" "unknown.dtd">
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
 	<PreferenceCategory android:title="Opzioni di connessione" >

@@ -12,6 +12,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
     
     private final GestureDetector gestureDetector = new GestureDetector(Interventix.getContext(), new GestureListener());
     
+    @Override
     public boolean onTouch(final View view, final MotionEvent motionEvent) {
     
 	return gestureDetector.onTouchEvent(motionEvent);

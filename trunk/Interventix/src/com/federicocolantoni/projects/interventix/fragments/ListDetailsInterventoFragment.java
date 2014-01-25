@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.federicocolantoni.projects.interventix.Constants;
@@ -31,9 +30,6 @@ import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 public class ListDetailsInterventoFragment extends Fragment {
     
     private ListDettagliInterventiAdapter mAdapter;
-    
-    @ViewById(R.id.tv_details_intervention)
-    TextView tv_details_intervento;
     
     @ViewById(R.id.list_details_intervento)
     ListView detailsList;
@@ -54,7 +50,7 @@ public class ListDetailsInterventoFragment extends Fragment {
     
 	super.onStart();
 	
-	tv_details_intervento.setText("Dettagli");
+	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().getNumeroIntervento() + " - " + getString(R.string.row_details));
 	
 	mAdapter = new ListDettagliInterventiAdapter(getActivity());
 	
@@ -67,13 +63,13 @@ public class ListDetailsInterventoFragment extends Fragment {
 	    
 		Bundle bundle = new Bundle();
 		
-		bundle.putSerializable(Constants.DETTAGLIO_NESIMO, InterventoController.controller.getListaDettagli().get(position));
-		bundle.putString(Constants.NUOVO_DETTAGLIO_INTERVENTO, Constants.DETTAGLIO_INTERVENTO_ESISTENTE);
+		bundle.putSerializable(Constants.DETTAGLIO_N_ESIMO, InterventoController.controller.getListaDettagli().get(position));
 		
 		FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		
 		DetailInterventoFragment_ dettInterv = new DetailInterventoFragment_();
+		
 		dettInterv.setArguments(bundle);
 		
 		transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
@@ -114,6 +110,21 @@ public class ListDetailsInterventoFragment extends Fragment {
 	switch (item.getItemId()) {
 	
 	    case R.id.add_detail_interv:
+		
+		FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
+		FragmentTransaction transaction = manager.beginTransaction();
+		
+		Bundle bundle = new Bundle();
+		bundle.putString(Constants.NUOVO_DETTAGLIO_INTERVENTO, Constants.NUOVO_DETTAGLIO_INTERVENTO);
+		
+		DetailInterventoFragment_ dettInterv = new DetailInterventoFragment_();
+		dettInterv.setArguments(bundle);
+		
+		transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
+		transaction.addToBackStack(Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
+		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		
+		transaction.commit();
 		
 		break;
 	    

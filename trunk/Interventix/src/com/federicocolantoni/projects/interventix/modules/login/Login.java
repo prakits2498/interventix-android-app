@@ -67,6 +67,7 @@ public class Login extends Fragment {
 		switch (info.getType()) {
 		
 		    case ConnectivityManager.TYPE_WIFI:
+		    case ConnectivityManager.TYPE_MOBILE:
 			
 			if (info.isAvailable() && info.isConnected())
 			    try {
@@ -104,45 +105,6 @@ public class Login extends Fragment {
 			}
 			
 			break;
-		    
-		    case ConnectivityManager.TYPE_MOBILE:
-			
-			if (info.isAvailable() && info.isConnected())
-			    try {
-				HashMap<String, String> parameters = new HashMap<String, String>();
-				
-				parameters.put("username", username.getText().toString());
-				parameters.put("password", password.getText().toString());
-				parameters.put("type", "TECNICO");
-				
-				json_req = JsonCR2.createRequest("users", "login", parameters, -1);
-				
-				new GetLogin(getActivity(), username.getText().toString(), password.getText().toString()).execute(json_req, username.getText().toString(), password.getText().toString());
-				
-				password.setText("");
-			    }
-			    catch (Exception e) {
-				
-				e.printStackTrace();
-				BugSenseHandler.sendException(e);
-			    }
-			else {
-			    
-			    String usrnm = prefs.getString(Constants.USERNAME, null);
-			    String psswrd = prefs.getString(Constants.PASSWORD, null);
-			    
-			    if (usrnm != null && psswrd != null)
-				if (usrnm.equals(username.getText().toString()) && psswrd.equals(password.getText().toString())) {
-				    
-				    password.setText("");
-				    
-				    InterventixToast.makeToast(getString(R.string.toast_offline_access), Toast.LENGTH_LONG);
-				    
-				    startActivity(new Intent(getActivity(), com.federicocolantoni.projects.interventix.activity.HomeActivity_.class));
-				}
-			}
-			
-			break;
 		}
 	    else {
 		
@@ -150,7 +112,7 @@ public class Login extends Fragment {
 		
 		connUnavailable.setTitle(getString(R.string.no_active_connection));
 		connUnavailable.setMessage(R.string.conn_unavailable_text);
-		connUnavailable.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
+		connUnavailable.setNegativeButton(getString(R.string.cancel_btn), new DialogInterface.OnClickListener() {
 		    
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {

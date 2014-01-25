@@ -5,19 +5,13 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical" >
 
-<!-- 	<com.fortysevendeg.android.SwipeListView -->
-<!-- 		android:id="@+id/list_clients" -->
-<!-- 		android:layout_width="match_parent" -->
-<!-- 		android:layout_height="match_parent" -->
-<!-- 		android:layout_marginTop="8dp" -->
-<!-- 		android:choiceMode="singleChoice" -->
-<!-- 		swipe:swipeActionLeft="reveal" -->
-<!-- 		swipe:swipeAnimationTime="@integer/swipe_animation_time" -->
-<!-- 		swipe:swipeBackView="@+id/back" -->
-<!-- 		swipe:swipeCloseAllItemsWhenMoveList="true" -->
-<!-- 		swipe:swipeFrontView="@+id/front" -->
-<!-- 		swipe:swipeMode="left" -->
-<!-- 		swipe:swipeOpenOnLongPress="false" /> -->
+	<EditText
+		android:id="@+id/search_client"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:drawableLeft="@android:drawable/ic_menu_search"
+		android:hint="@string/search_client"
+		android:inputType="text" />
 
 	<ListView
 		android:id="@+id/list_clients"

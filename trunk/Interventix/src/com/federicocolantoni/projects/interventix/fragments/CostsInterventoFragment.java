@@ -32,10 +32,6 @@ import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 @EFragment(R.layout.costs_intervento_fragment)
 public class CostsInterventoFragment extends Fragment {
     
-    // retrieve views using annotations
-    @ViewById(R.id.tv_costs_intervention)
-    TextView tv_costs_intervento;
-    
     @ViewById(R.id.tv_row_manodopera)
     TextView tv_row_manodopera;
     
@@ -72,7 +68,7 @@ public class CostsInterventoFragment extends Fragment {
     
 	super.onStart();
 	
-	tv_costs_intervento.setText("Costi");
+	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().getNumeroIntervento() + " - " + getString(R.string.row_costs));
     }
     
     @Override

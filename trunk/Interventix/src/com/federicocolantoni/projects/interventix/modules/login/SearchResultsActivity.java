@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 public class SearchResultsActivity extends ListActivity {
     
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
     
 	super.onCreate(savedInstanceState);
