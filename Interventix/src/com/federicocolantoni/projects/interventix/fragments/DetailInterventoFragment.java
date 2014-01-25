@@ -137,6 +137,8 @@ public class DetailInterventoFragment extends Fragment {
     public void onStart() {
     
 	super.onStart();
+	
+	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().getNumeroIntervento() + " - " + getString(R.string.detail) + dettaglio.getIdDettaglioIntervento());
     }
     
     @Override
