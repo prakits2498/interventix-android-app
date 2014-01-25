@@ -30,6 +30,7 @@ public class BufferInterventix {
 	return bufferSingleton;
     }
     
+    @Override
     public Object clone() throws CloneNotSupportedException {
     
 	throw new CloneNotSupportedException();

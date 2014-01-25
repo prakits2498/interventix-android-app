@@ -8,6 +8,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
@@ -27,16 +29,16 @@ public class GetListaDettagliInterventoAsyncTask extends AsyncTask<Long, Void, L
 	ContentResolver cr = mContext.getContentResolver();
 	
 	String[] projection = new String[] {
-	DettaglioInterventoDB.Fields._ID, DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, DettaglioInterventoDB.Fields.INTERVENTO, DettaglioInterventoDB.Fields.DESCRIZIONE, DettaglioInterventoDB.Fields.OGGETTO, DettaglioInterventoDB.Fields.TIPO, DettaglioInterventoDB.Fields.INIZIO, DettaglioInterventoDB.Fields.FINE, DettaglioInterventoDB.Fields.MODIFICATO, DettaglioInterventoDB.Fields.TECNICI
+	Fields._ID, DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, DettaglioInterventoDB.Fields.INTERVENTO, DettaglioInterventoDB.Fields.DESCRIZIONE, DettaglioInterventoDB.Fields.OGGETTO, DettaglioInterventoDB.Fields.TIPO, DettaglioInterventoDB.Fields.INIZIO, DettaglioInterventoDB.Fields.FINE, DettaglioInterventoDB.Fields.MODIFICATO, DettaglioInterventoDB.Fields.TECNICI
 	};
 	
-	String selection = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.INTERVENTO + " = ?";
+	String selection = Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.INTERVENTO + " = ?";
 	
 	String[] selectionArgs = new String[] {
 	DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + params[0]
 	};
 	
-	Cursor cursor = cr.query(DettaglioInterventoDB.CONTENT_URI, projection, selection, selectionArgs, null);
+	Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
 	
 	List<DettaglioIntervento> listaDettagliInterv = new ArrayList<DettaglioIntervento>();
 	

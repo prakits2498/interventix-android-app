@@ -7,6 +7,8 @@ import android.database.Cursor;
 
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.federicocolantoni.projects.interventix.entity.Intervento;
@@ -51,7 +53,7 @@ public class InterventixService extends IntentService {
 	System.out.println(this.getClass().getSimpleName() + " - inviaClienti");
 	
 	String[] projection = new String[] {
-	ClienteDB.Fields._ID, ClienteDB.Fields.ID_CLIENTE, ClienteDB.Fields.CANCELLATO, ClienteDB.Fields.CITTA, ClienteDB.Fields.CODICE_FISCALE, ClienteDB.Fields.CONFLITTO, ClienteDB.Fields.EMAIL, ClienteDB.Fields.FAX, ClienteDB.Fields.INDIRIZZO, ClienteDB.Fields.INTERNO, ClienteDB.Fields.NOMINATIVO, ClienteDB.Fields.NOTE, ClienteDB.Fields.PARTITAIVA, ClienteDB.Fields.REFERENTE, ClienteDB.Fields.REVISIONE, ClienteDB.Fields.TELEFONO, ClienteDB.Fields.UFFICIO
+	Fields._ID, ClienteDB.Fields.ID_CLIENTE, ClienteDB.Fields.CANCELLATO, ClienteDB.Fields.CITTA, ClienteDB.Fields.CODICE_FISCALE, ClienteDB.Fields.CONFLITTO, ClienteDB.Fields.EMAIL, ClienteDB.Fields.FAX, ClienteDB.Fields.INDIRIZZO, ClienteDB.Fields.INTERNO, ClienteDB.Fields.NOMINATIVO, ClienteDB.Fields.NOTE, ClienteDB.Fields.PARTITAIVA, ClienteDB.Fields.REFERENTE, ClienteDB.Fields.REVISIONE, ClienteDB.Fields.TELEFONO, ClienteDB.Fields.UFFICIO
 	};
 	
 	// String selection = ClienteDB.Fields.TYPE + "=? AND (" +
@@ -64,13 +66,13 @@ public class InterventixService extends IntentService {
 	// "0"
 	// };
 	
-	String selection = ClienteDB.Fields.TYPE + "=?";
+	String selection = Fields.TYPE + "=?";
 	
 	String[] selectionArgs = new String[] {
 	    ClienteDB.CLIENTE_ITEM_TYPE
 	};
 	
-	Cursor cursor = cr.query(ClienteDB.CONTENT_URI, projection, selection, selectionArgs, null);
+	Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
 	
 	if (cursor != null) {
 	    
@@ -101,16 +103,16 @@ public class InterventixService extends IntentService {
 	System.out.println(this.getClass().getSimpleName() + " - inviaInterventi");
 	
 	String[] projection = new String[] {
-	InterventoDB.Fields._ID, InterventoDB.Fields.CANCELLATO, InterventoDB.Fields.CHIUSO, InterventoDB.Fields.CLIENTE, InterventoDB.Fields.CONFLITTO, InterventoDB.Fields.COSTO_ACCESSORI, InterventoDB.Fields.COSTO_COMPONENTI, InterventoDB.Fields.COSTO_MANODOPERA, InterventoDB.Fields.DATA_ORA, InterventoDB.Fields.FIRMA, InterventoDB.Fields.ID_INTERVENTO, InterventoDB.Fields.IMPORTO, InterventoDB.Fields.IVA, InterventoDB.Fields.MODALITA, InterventoDB.Fields.MODIFICATO, InterventoDB.Fields.MOTIVO, InterventoDB.Fields.NOMINATIVO, InterventoDB.Fields.NOTE, InterventoDB.Fields.NUMERO_INTERVENTO, InterventoDB.Fields.PRODOTTO, InterventoDB.Fields.RIFERIMENTO_FATTURA, InterventoDB.Fields.RIFERIMENTO_SCONTRINO, InterventoDB.Fields.SALDATO, InterventoDB.Fields.TECNICO, InterventoDB.Fields.TIPOLOGIA, InterventoDB.Fields.TOTALE
+	Fields._ID, InterventoDB.Fields.CANCELLATO, InterventoDB.Fields.CHIUSO, InterventoDB.Fields.CLIENTE, InterventoDB.Fields.CONFLITTO, InterventoDB.Fields.COSTO_ACCESSORI, InterventoDB.Fields.COSTO_COMPONENTI, InterventoDB.Fields.COSTO_MANODOPERA, InterventoDB.Fields.DATA_ORA, InterventoDB.Fields.FIRMA, InterventoDB.Fields.ID_INTERVENTO, InterventoDB.Fields.IMPORTO, InterventoDB.Fields.IVA, InterventoDB.Fields.MODALITA, InterventoDB.Fields.MODIFICATO, InterventoDB.Fields.MOTIVO, InterventoDB.Fields.NOMINATIVO, InterventoDB.Fields.NOTE, InterventoDB.Fields.NUMERO_INTERVENTO, InterventoDB.Fields.PRODOTTO, InterventoDB.Fields.RIFERIMENTO_FATTURA, InterventoDB.Fields.RIFERIMENTO_SCONTRINO, InterventoDB.Fields.SALDATO, InterventoDB.Fields.TECNICO, InterventoDB.Fields.TIPOLOGIA, InterventoDB.Fields.TOTALE
 	};
 	
-	String selection = InterventoDB.Fields.TYPE + "=? AND (" + InterventoDB.Fields.MODIFICATO + "=? OR " + InterventoDB.Fields.ID_INTERVENTO + "<?)";
+	String selection = Fields.TYPE + "=? AND (" + InterventoDB.Fields.MODIFICATO + "=? OR " + InterventoDB.Fields.ID_INTERVENTO + "<?)";
 	
 	String[] selectionArgs = new String[] {
 	InterventoDB.INTERVENTO_ITEM_TYPE, "M", "0"
 	};
 	
-	Cursor cursor = cr.query(InterventoDB.CONTENT_URI, projection, selection, selectionArgs, null);
+	Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
 	
 	if (cursor != null) {
 	    

@@ -43,12 +43,12 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.Constants.BUFFER_TYPE;
 import com.federicocolantoni.projects.interventix.Interventix;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.R.string;
 import com.federicocolantoni.projects.interventix.adapter.ListInterventiAdapter;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.controller.InterventoSingleton;
 import com.federicocolantoni.projects.interventix.core.BufferInterventix;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
@@ -311,7 +311,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		    
 		    final SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
 		    
-		    final String prefs_url = getResources().getString(string.prefs_key_url);
+		    final String prefs_url = getResources().getString(R.string.prefs_key_url);
 		    
 		    final String url_string = prefsDefault.getString(prefs_url, null);
 		    
@@ -370,7 +370,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				
 				values = Utente.insertSQL(newUser);
 				
-				cr.insert(UtenteDB.CONTENT_URI, values);
+				cr.insert(Data.CONTENT_URI, values);
 			    }
 			}
 			
@@ -383,7 +383,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				"" + usersDEL.getLong(k), UtenteDB.UTENTE_ITEM_TYPE
 				};
 				
-				cr.delete(UtenteDB.CONTENT_URI, where, selectionArgs);
+				cr.delete(Data.CONTENT_URI, where, selectionArgs);
 			    }
 			}
 			else {
@@ -451,7 +451,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		    
 		    final SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
 		    
-		    final String prefs_url = getResources().getString(string.prefs_key_url);
+		    final String prefs_url = getResources().getString(R.string.prefs_key_url);
 		    
 		    final String url_string = prefsDefault.getString(prefs_url, null);
 		    
@@ -489,13 +489,13 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    
 			    JSONObject cliente = clientsMOD.getJSONObject(i);
 			    
-			    String selectionCliente = ClienteDB.Fields.TYPE + " = ? AND " + ClienteDB.Fields.ID_CLIENTE + " = ?";
+			    String selectionCliente = Fields.TYPE + " = ? AND " + ClienteDB.Fields.ID_CLIENTE + " = ?";
 			    
 			    String[] selectionClienteArgs = new String[] {
 			    ClienteDB.CLIENTE_ITEM_TYPE, "" + cliente.getLong("idcliente")
 			    };
 			    
-			    cursorCliente = cr.query(ClienteDB.CONTENT_URI, null, selectionCliente, selectionClienteArgs, null);
+			    cursorCliente = cr.query(Data.CONTENT_URI, null, selectionCliente, selectionClienteArgs, null);
 			    
 			    ContentValues values = new ContentValues();
 			    
@@ -507,23 +507,9 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				
 				updateCliente = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create().fromJson(cliente.toString(), Cliente.class);
 				
-				// updateCliente.setCitta(cliente.getString("citta"));
-				// updateCliente.setCodiceFiscale(cliente.getString("codicefiscale"));
-				// updateCliente.setEmail(cliente.getString("email"));
-				// updateCliente.setFax(cliente.getString("fax"));
-				// updateCliente.setIndirizzo(cliente.getString("indirizzo"));
-				// updateCliente.setInterno(cliente.getString("interno"));
-				// updateCliente.setNominativo(cliente.getString("nominativo"));
-				// updateCliente.setNote(cliente.getString("note"));
-				// updateCliente.setPartitaIVA(cliente.getString("partitaiva"));
-				// updateCliente.setReferente(cliente.getString("referente"));
-				// updateCliente.setRevisione(cliente.getLong("revisione"));
-				// updateCliente.setTelefono(cliente.getString("telefono"));
-				// updateCliente.setUfficio(cliente.getString("ufficio"));
-				
 				values = Cliente.updateSQL(updateCliente);
 				
-				cr.update(ClienteDB.CONTENT_URI, values, ClienteDB.Fields.TYPE + "=? AND " + ClienteDB.Fields.ID_CLIENTE + "=?", new String[] {
+				cr.update(Data.CONTENT_URI, values, Fields.TYPE + "=? AND " + ClienteDB.Fields.ID_CLIENTE + "=?", new String[] {
 				ClienteDB.CLIENTE_ITEM_TYPE, "" + cliente.getLong("idcliente")
 				});
 				
@@ -539,7 +525,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				
 				values = Cliente.insertSQL(newCliente);
 				
-				cr.insert(ClienteDB.CONTENT_URI, values);
+				cr.insert(Data.CONTENT_URI, values);
 				
 				cursorCliente.close();
 				
@@ -548,13 +534,13 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			
 			for (int k = 0; k < clientsDEL.length(); k++) {
 			    
-			    String where = ClienteDB.Fields.ID_CLIENTE + " = ? AND " + ClienteDB.Fields.TYPE + " = ?";
+			    String where = ClienteDB.Fields.ID_CLIENTE + " = ? AND " + Fields.TYPE + " = ?";
 			    
 			    String[] selectionArgs = new String[] {
 			    "" + clientsDEL.getLong(k), ClienteDB.CLIENTE_ITEM_TYPE
 			    };
 			    
-			    cr.delete(ClienteDB.CONTENT_URI, where, selectionArgs);
+			    cr.delete(Data.CONTENT_URI, where, selectionArgs);
 			    
 			}
 			
@@ -620,7 +606,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		    
 		    final SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
 		    
-		    final String prefs_url = getResources().getString(string.prefs_key_url);
+		    final String prefs_url = getResources().getString(R.string.prefs_key_url);
 		    
 		    final String url_string = prefsDefault.getString(prefs_url, null);
 		    
@@ -670,13 +656,13 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 				
 				long intervID = intervDEL.getLong(i);
 				
-				String where = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+				String where = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 				
 				String[] selectionArgs = new String[] {
 				InterventoDB.INTERVENTO_ITEM_TYPE, "" + intervID
 				};
 				
-				cr.delete(InterventoDB.CONTENT_URI, where, selectionArgs);
+				cr.delete(Data.CONTENT_URI, where, selectionArgs);
 				
 				System.out.println("Eliminato l'intervento " + intervID);
 				
@@ -711,13 +697,13 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		
 		try {
 		    
-		    String selection = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+		    String selection = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 		    
 		    String[] selectionArgs = new String[] {
 		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + responseIntervs.getLong("idintervento")
 		    };
 		    
-		    cursorIntervento = cr.query(InterventoDB.CONTENT_URI, null, selection, selectionArgs, null);
+		    cursorIntervento = cr.query(Data.CONTENT_URI, null, selection, selectionArgs, null);
 		    
 		    if (cursorIntervento.getCount() == 0) {
 			
@@ -732,7 +718,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			
 			values = Intervento.insertSQL(newInterv, true);
 			
-			cr.insert(InterventoDB.CONTENT_URI, values);
+			cr.insert(Data.CONTENT_URI, values);
 			
 			JSONArray dettagli_intervento = responseIntervs.getJSONArray("dettagliintervento");
 			
@@ -773,7 +759,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    
 			    values = DettaglioIntervento.insertSQL(dtInt);
 			    
-			    cr.insert(DettaglioInterventoDB.CONTENT_URI, values);
+			    cr.insert(Data.CONTENT_URI, values);
 			}
 		    }
 		    else {
@@ -787,9 +773,9 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			
 			values = Intervento.updateSQL(updateInterv, true);
 			
-			String where = InterventoDB.Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+			String where = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 			
-			cr.update(InterventoDB.CONTENT_URI, values, where, selectionArgs);
+			cr.update(Data.CONTENT_URI, values, where, selectionArgs);
 			
 			JSONArray dettagli_intervento = responseIntervs.getJSONArray("dettagliintervento");
 			
@@ -830,13 +816,13 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			    
 			    values = DettaglioIntervento.updateSQL(dtInt);
 			    
-			    String selectionDettaglioIntervento = DettaglioInterventoDB.Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
+			    String selectionDettaglioIntervento = Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
 			    
 			    String[] selectionDettIntervArgs = new String[] {
 			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dtInt.getIdDettaglioIntervento()
 			    };
 			    
-			    cr.update(DettaglioInterventoDB.CONTENT_URI, values, selectionDettaglioIntervento, selectionDettIntervArgs);
+			    cr.update(Data.CONTENT_URI, values, selectionDettaglioIntervento, selectionDettIntervArgs);
 			}
 		    }
 		    
@@ -907,7 +893,7 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
 	String sortOrder = InterventoDB.Fields.DATA_ORA + " desc";
 	
-	Loader<Cursor> loader = new CursorLoader(this, InterventoDB.CONTENT_URI, HomeActivity.PROJECTION, HomeActivity.SELECTION, HomeActivity.SELECTION_ARGS, sortOrder);
+	Loader<Cursor> loader = new CursorLoader(this, Data.CONTENT_URI, HomeActivity.PROJECTION, HomeActivity.SELECTION, HomeActivity.SELECTION_ARGS, sortOrder);
 	
 	return loader;
     }

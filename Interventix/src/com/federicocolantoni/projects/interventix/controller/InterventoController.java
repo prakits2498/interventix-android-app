@@ -1,5 +1,7 @@
 package com.federicocolantoni.projects.interventix.controller;
 
+import java.util.ArrayList;
+
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.net.Uri;
@@ -7,6 +9,8 @@ import android.net.Uri;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.Interventix_;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
@@ -18,6 +22,7 @@ import com.federicocolantoni.projects.interventix.entity.Utente;
 public class InterventoController {
     
     public static InterventoSingleton controller;
+    public static ArrayList<Cliente> listaClienti = new ArrayList<Cliente>();
     
     public static void insertOnDB() {
     
@@ -41,7 +46,7 @@ public class InterventoController {
 		    
 		    case Constants.TOKEN_SAVE_DETTAGLIO:
 			
-			System.out.println("Dettaglio aggiunto correttamente sul DB");
+			System.out.println("Dettaglio aggiunto correttamente sul DB\n" + uri.toString());
 			
 			break;
 		    
@@ -58,7 +63,7 @@ public class InterventoController {
 	
 	ContentValues valuesUtente = Utente.insertSQL(controller.getTecnico());
 	
-	saveOnDB.startInsert(Constants.TOKEN_SAVE_TECNICO, null, UtenteDB.CONTENT_URI, valuesUtente);
+	saveOnDB.startInsert(Constants.TOKEN_SAVE_TECNICO, null, Data.CONTENT_URI, valuesUtente);
 	
 	// *** salvataggio dati tecnico - fine ***\\
 	
@@ -66,34 +71,38 @@ public class InterventoController {
 	
 	ContentValues valuesCliente = Cliente.insertSQL(controller.getCliente());
 	
-	saveOnDB.startInsert(Constants.TOKEN_SAVE_CLIENTE, null, ClienteDB.CONTENT_URI, valuesCliente);
+	saveOnDB.startInsert(Constants.TOKEN_SAVE_CLIENTE, null, Data.CONTENT_URI, valuesCliente);
 	
 	// *** salvataggio dati cliente - fine ***\\
-	
-	// *** salvataggio dati dettagli - inizio ***\\
-	
-	for (DettaglioIntervento dettaglio : controller.getListaDettagli()) {
-	    
-	    ContentValues valuesDettaglio = DettaglioIntervento.insertSQL(dettaglio);
-	    
-	    saveOnDB.startInsert(Constants.TOKEN_SAVE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, valuesDettaglio);
-	}
-	
-	// *** salvataggio dati dettagli - fine ***\\
 	
 	// *** salvataggio dati intervento - inizio ***\\
 	
 	ContentValues valuesIntervento = Intervento.insertSQL(controller.getIntervento(), false);
 	valuesIntervento.put(InterventoDB.Fields.CHIUSO, false);
 	
-	saveOnDB.startInsert(Constants.TOKEN_SAVE_INTERVENTO, null, InterventoDB.CONTENT_URI, valuesIntervento);
+	saveOnDB.startInsert(Constants.TOKEN_SAVE_INTERVENTO, null, Data.CONTENT_URI, valuesIntervento);
 	
 	// *** salvataggio dati intervento - fine ***\\
+	
+	putDettaglioOnDB(saveOnDB);
     }
     
     public static void updateOnDB() {
     
 	AsyncQueryHandler updateOnDB = new AsyncQueryHandler(Interventix_.getContext().getContentResolver()) {
+	    
+	    @Override
+	    protected void onInsertComplete(int token, Object cookie, Uri uri) {
+	    
+		switch (token) {
+		
+		    case Constants.TOKEN_SAVE_DETTAGLIO:
+			
+			System.out.println("Dettaglio aggiunto correttamente sul DB\n" + uri.toString());
+			
+			break;
+		}
+	    }
 	    
 	    @Override
 	    protected void onUpdateComplete(int token, Object cookie, int result) {
@@ -130,13 +139,13 @@ public class InterventoController {
 	
 	ContentValues valuesUtente = Utente.updateSQL(controller.getTecnico());
 	
-	String selectionTecnico = UtenteDB.Fields.TYPE + "=? AND " + UtenteDB.Fields.ID_UTENTE + "=?";
+	String selectionTecnico = Fields.TYPE + "=? AND " + UtenteDB.Fields.ID_UTENTE + "=?";
 	
 	String[] selectionArgsTecnico = new String[] {
 	UtenteDB.UTENTE_ITEM_TYPE, "" + controller.getTecnico().getIdUtente()
 	};
 	
-	updateOnDB.startUpdate(Constants.TOKEN_SAVE_TECNICO, null, UtenteDB.CONTENT_URI, valuesUtente, selectionTecnico, selectionArgsTecnico);
+	updateOnDB.startUpdate(Constants.TOKEN_SAVE_TECNICO, null, Data.CONTENT_URI, valuesUtente, selectionTecnico, selectionArgsTecnico);
 	
 	// *** salvataggio dati tecnico - fine ***\\
 	
@@ -144,46 +153,64 @@ public class InterventoController {
 	
 	ContentValues valuesCliente = Cliente.updateSQL(controller.getCliente());
 	
-	String selectionCliente = ClienteDB.Fields.TYPE + "=? AND " + ClienteDB.Fields.ID_CLIENTE + "=?";
+	String selectionCliente = Fields.TYPE + "=? AND " + ClienteDB.Fields.ID_CLIENTE + "=?";
 	
 	String[] selectionArgsCliente = new String[] {
 	ClienteDB.CLIENTE_ITEM_TYPE, "" + controller.getCliente().getIdCliente()
 	};
 	
-	updateOnDB.startUpdate(Constants.TOKEN_SAVE_CLIENTE, null, ClienteDB.CONTENT_URI, valuesCliente, selectionCliente, selectionArgsCliente);
+	updateOnDB.startUpdate(Constants.TOKEN_SAVE_CLIENTE, null, Data.CONTENT_URI, valuesCliente, selectionCliente, selectionArgsCliente);
 	
 	// *** salvataggio dati cliente - fine ***\\
-	
-	// *** salvataggio dati dettagli - inizio ***\\
-	
-	for (DettaglioIntervento dettaglio : controller.getListaDettagli()) {
-	    
-	    ContentValues valuesDettaglio = DettaglioIntervento.updateSQL(dettaglio);
-	    
-	    String selectionDettaglio = DettaglioInterventoDB.Fields.TYPE + "=? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?";
-	    
-	    String[] selectionArgsDettaglio = new String[] {
-	    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettaglio.getIdDettaglioIntervento()
-	    };
-	    
-	    updateOnDB.startUpdate(Constants.TOKEN_SAVE_DETTAGLIO, null, DettaglioInterventoDB.CONTENT_URI, valuesDettaglio, selectionDettaglio, selectionArgsDettaglio);
-	}
-	
-	// *** salvataggio dati dettagli - fine ***\\
 	
 	// *** salvataggio dati intervento - inizio ***\\
 	
 	ContentValues valuesIntervento = Intervento.updateSQL(controller.getIntervento(), false);
 	valuesIntervento.put(InterventoDB.Fields.CHIUSO, false);
 	
-	String selectionIntervento = InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?";
+	String selectionIntervento = Fields.TYPE + "=? AND " + InterventoDB.Fields.ID_INTERVENTO + "=?";
 	
 	String[] selectionArgsIntervento = new String[] {
 	InterventoDB.INTERVENTO_ITEM_TYPE, "" + controller.getIntervento().getIdIntervento()
 	};
 	
-	updateOnDB.startUpdate(Constants.TOKEN_SAVE_INTERVENTO, null, InterventoDB.CONTENT_URI, valuesIntervento, selectionIntervento, selectionArgsIntervento);
+	updateOnDB.startUpdate(Constants.TOKEN_SAVE_INTERVENTO, null, Data.CONTENT_URI, valuesIntervento, selectionIntervento, selectionArgsIntervento);
 	
 	// *** salvataggio dati intervento - fine ***\\
+	
+	putDettaglioOnDB(updateOnDB);
+    }
+    
+    public static void putDettaglioOnDB(AsyncQueryHandler queryHandler) {
+    
+	// *** salvataggio dati dettagli - inizio ***\\
+	
+	for (DettaglioIntervento dettaglio : controller.getListaDettagli()) {
+	    
+	    if (dettaglio.isNuovo()) {
+		
+		System.out.println("Dettaglio nuovo!");
+		
+		ContentValues valuesDettaglio = DettaglioIntervento.insertSQL(dettaglio);
+		
+		queryHandler.startInsert(Constants.TOKEN_SAVE_DETTAGLIO, null, Data.CONTENT_URI, valuesDettaglio);
+	    }
+	    else {
+		
+		System.out.println("Dettaglio esistente!");
+		
+		ContentValues valuesDettaglio = DettaglioIntervento.updateSQL(dettaglio);
+		
+		String selectionDettaglio = Fields.TYPE + "=? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + "=?";
+		
+		String[] selectionArgsDettaglio = new String[] {
+		DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dettaglio.getIdDettaglioIntervento()
+		};
+		
+		queryHandler.startUpdate(Constants.TOKEN_SAVE_DETTAGLIO, null, Data.CONTENT_URI, valuesDettaglio, selectionDettaglio, selectionArgsDettaglio);
+	    }
+	}
+	
+	// *** salvataggio dati dettagli - fine ***\\
     }
 }

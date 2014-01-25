@@ -17,13 +17,12 @@ import android.widget.Toast;
 
 import com.caverock.androidsvg.SVGImageView;
 import com.federicocolantoni.projects.interventix.R;
+import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.OnSwipeTouchListener;
 
 public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClickListener {
-    
-    private ArrayList<Cliente> listaClienti;
     
     private LayoutInflater inflater;
     
@@ -34,31 +33,28 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
     
     ViewHolder holder;
     
-    public ListClientiAdapter(Context context, int resource, int textViewResourceId, List<Cliente> objects) {
+    public ListClientiAdapter(Context context, int resource, int textViewResourceId) {
     
-	super(context, resource, textViewResourceId, objects);
+	super(context, resource, textViewResourceId);
 	
-	listaClienti = (ArrayList<Cliente>) objects;
-	
-	for (int i = 0; i < objects.size(); i++) {
+	for (int i = 0; i < InterventoController.listaClienti.size(); i++) {
 	    checkedItems.put(i, false);
 	    swipedItems.put(i, false);
 	}
 	
 	inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	
     }
     
     @Override
     public int getCount() {
     
-	return listaClienti.size();
+	return InterventoController.listaClienti.size();
     }
     
     @Override
     public Cliente getItem(int position) {
     
-	return listaClienti.get(position);
+	return InterventoController.listaClienti.get(position);
     }
     
     @Override

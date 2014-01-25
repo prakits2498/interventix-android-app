@@ -6,22 +6,20 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 
-import com.federicocolantoni.projects.interventix.Constants;
+import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 
 public class GetClientiAsyncTask extends AsyncTask<Void, Void, ArrayList<Cliente>> {
     
     private Context mContext;
-    private Handler mHandler;
     
-    public GetClientiAsyncTask(Context context, Handler handler) {
+    public GetClientiAsyncTask(Context context) {
     
 	mContext = context;
-	mHandler = handler;
     }
     
     @Override
@@ -30,10 +28,10 @@ public class GetClientiAsyncTask extends AsyncTask<Void, Void, ArrayList<Cliente
 	ArrayList<Cliente> listaClienti = new ArrayList<Cliente>();
 	
 	String[] PROJECTION = new String[] {
-	ClienteDB.Fields._ID, ClienteDB.Fields.CANCELLATO, ClienteDB.Fields.CITTA, ClienteDB.Fields.CODICE_FISCALE, ClienteDB.Fields.CONFLITTO, ClienteDB.Fields.EMAIL, ClienteDB.Fields.FAX, ClienteDB.Fields.ID_CLIENTE, ClienteDB.Fields.INDIRIZZO, ClienteDB.Fields.INTERNO, ClienteDB.Fields.NOMINATIVO, ClienteDB.Fields.NOTE, ClienteDB.Fields.PARTITAIVA, ClienteDB.Fields.REFERENTE, ClienteDB.Fields.REVISIONE, ClienteDB.Fields.TELEFONO, ClienteDB.Fields.UFFICIO
+	Fields._ID, ClienteDB.Fields.CANCELLATO, ClienteDB.Fields.CITTA, ClienteDB.Fields.CODICE_FISCALE, ClienteDB.Fields.CONFLITTO, ClienteDB.Fields.EMAIL, ClienteDB.Fields.FAX, ClienteDB.Fields.ID_CLIENTE, ClienteDB.Fields.INDIRIZZO, ClienteDB.Fields.INTERNO, ClienteDB.Fields.NOMINATIVO, ClienteDB.Fields.NOTE, ClienteDB.Fields.PARTITAIVA, ClienteDB.Fields.REFERENTE, ClienteDB.Fields.REVISIONE, ClienteDB.Fields.TELEFONO, ClienteDB.Fields.UFFICIO
 	};
 	
-	String SELECTION = ClienteDB.Fields.TYPE + "=?";
+	String SELECTION = Fields.TYPE + "=?";
 	
 	String[] SELECTION_ARGS = new String[] {
 	    ClienteDB.CLIENTE_ITEM_TYPE
@@ -43,7 +41,7 @@ public class GetClientiAsyncTask extends AsyncTask<Void, Void, ArrayList<Cliente
 	
 	ContentResolver cr = mContext.getContentResolver();
 	
-	Cursor cursor = cr.query(ClienteDB.CONTENT_URI, PROJECTION, SELECTION, SELECTION_ARGS, sortOrder);
+	Cursor cursor = cr.query(Data.CONTENT_URI, PROJECTION, SELECTION, SELECTION_ARGS, sortOrder);
 	
 	if (cursor.moveToFirst()) {
 	    
@@ -79,11 +77,6 @@ public class GetClientiAsyncTask extends AsyncTask<Void, Void, ArrayList<Cliente
     @Override
     protected void onPostExecute(ArrayList<Cliente> result) {
     
-	Message msg = new Message();
-	
-	msg.what = Constants.WHAT_MESSAGE_GET_CLIENTI;
-	msg.obj = (ArrayList<Cliente>) result;
-	
-	mHandler.sendMessage(msg);
+	InterventoController.listaClienti = result;
     }
 }

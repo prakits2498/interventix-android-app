@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 
 public class GetNominativoClienteAsyncTask extends AsyncTask<Long, Void, Cliente> {
@@ -23,16 +25,16 @@ public class GetNominativoClienteAsyncTask extends AsyncTask<Long, Void, Cliente
 	ContentResolver cr = context.getContentResolver();
 	
 	String[] projection = new String[] {
-	ClienteDB.Fields._ID, ClienteDB.Fields.NOMINATIVO
+	Fields._ID, ClienteDB.Fields.NOMINATIVO
 	};
 	
-	String selection = ClienteDB.Fields.TYPE + " =? AND " + ClienteDB.Fields.ID_CLIENTE + " = ?";
+	String selection = Fields.TYPE + " =? AND " + ClienteDB.Fields.ID_CLIENTE + " = ?";
 	
 	String[] selectionArgs = new String[] {
 	ClienteDB.CLIENTE_ITEM_TYPE, "" + params[0]
 	};
 	
-	Cursor cursor = cr.query(ClienteDB.CONTENT_URI, projection, selection, selectionArgs, null);
+	Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
 	
 	Cliente cliente = new Cliente();
 	

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import android.content.ContentValues;
 
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
 
 public class Utente implements Serializable {
@@ -355,7 +356,7 @@ public class Utente implements Serializable {
 	ContentValues values = new ContentValues();
 	
 	values.put(UtenteDB.Fields.ID_UTENTE, user.getIdUtente());
-	values.put(UtenteDB.Fields.TYPE, UtenteDB.UTENTE_ITEM_TYPE);
+	values.put(Fields.TYPE, UtenteDB.UTENTE_ITEM_TYPE);
 	values.put(UtenteDB.Fields.NOME, user.getNome());
 	values.put(UtenteDB.Fields.COGNOME, user.getCognome());
 	values.put(UtenteDB.Fields.USERNAME, user.getUsername());

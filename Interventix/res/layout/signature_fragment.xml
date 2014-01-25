@@ -5,19 +5,10 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical" >
 
-	<TextView
-		android:id="@+id/tv_summary_intervention"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center_horizontal|center_vertical"
-		android:textSize="18sp"
-		android:textStyle="bold" />
-
 	<ImageView
 		android:id="@+id/signature"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_marginTop="8dp"
 		android:contentDescription="@string/signature_content_description" />
 
 	<LinearLayout
@@ -53,7 +44,6 @@
 				android:background="@drawable/pressed_item"
 				svgimageview:svg="@drawable/eraser" />
 		</LinearLayout>
-
 	</LinearLayout>
 
 </LinearLayout>

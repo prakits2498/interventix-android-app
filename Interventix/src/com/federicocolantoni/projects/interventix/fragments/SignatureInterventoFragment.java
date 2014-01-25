@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.caverock.androidsvg.SVGImageView;
 import com.federicocolantoni.projects.interventix.R;
@@ -46,9 +45,6 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     LinearLayout layout_drawer;
     
     DrawingView drawer;
-    
-    @ViewById(R.id.tv_summary_intervention)
-    TextView summary;
     
     private ActionMode mActionModeSignature;
     
@@ -124,6 +120,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 	}
     };
     
+    @Override
     public void onCreate(Bundle savedInstanceState) {
     
 	super.onCreate(savedInstanceState);
@@ -145,9 +142,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     
 	super.onStart();
 	
-	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Intervento " + InterventoController.controller.getIntervento().getIdIntervento());
-	
-	summary.setText(R.string.signature);
+	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().getNumeroIntervento() + " - " + getString(R.string.row_signature));
 	
 	signature.setDrawingCacheEnabled(true);
 	

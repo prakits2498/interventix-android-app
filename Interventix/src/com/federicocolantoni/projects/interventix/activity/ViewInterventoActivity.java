@@ -33,8 +33,11 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.controller.InterventoSingleton;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.task.GetClienteAsyncTask;
+import com.federicocolantoni.projects.interventix.task.GetClientiAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetListaDettagliInterventoAsyncTask;
 import com.federicocolantoni.projects.interventix.task.GetUtenteAsyncTack;
@@ -57,6 +60,8 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	
+	new GetClientiAsyncTask(this).execute();
     }
     
     @Override
@@ -142,6 +147,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	else {
 	    
 	    new Thread(new Runnable() {
+		@Override
 		public void run() {
 		
 		    edit.commit();
@@ -163,7 +169,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		    InterventoDB.Fields.ID_INTERVENTO
 		};
 		
-		String selection = InterventoDB.Fields.TYPE + "=?";
+		String selection = Fields.TYPE + "=?";
 		
 		String[] selectionArgs = new String[] {
 		    InterventoDB.INTERVENTO_ITEM_TYPE
@@ -171,7 +177,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		
 		long max = 0;
 		
-		Cursor cursor = cr.query(InterventoDB.CONTENT_URI, projection, selection, selectionArgs, null);
+		Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
 		
 		while (cursor.moveToNext()) {
 		    
@@ -210,7 +216,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		    InterventoDB.Fields.NUMERO_INTERVENTO
 		};
 		
-		String selection = InterventoDB.Fields.TYPE + "=?";
+		String selection = Fields.TYPE + "=?";
 		
 		String[] selectionArgs = new String[] {
 		    InterventoDB.INTERVENTO_ITEM_TYPE
@@ -218,7 +224,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		
 		long max = 0;
 		
-		Cursor cursor = cr.query(InterventoDB.CONTENT_URI, projection, selection, selectionArgs, null);
+		Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
 		
 		while (cursor.moveToNext()) {
 		    

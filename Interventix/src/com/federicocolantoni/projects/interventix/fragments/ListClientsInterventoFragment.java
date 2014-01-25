@@ -1,62 +1,41 @@
 package com.federicocolantoni.projects.interventix.fragments;
 
-import java.util.ArrayList;
-
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ListView;
 
-import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.ListClientiAdapter;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
-import com.federicocolantoni.projects.interventix.task.GetClientiAsyncTask;
 
 @SuppressLint({
 "InlinedApi", "NewApi"
 })
 @EFragment(R.layout.list_clients_fragment)
-@SuppressWarnings("unchecked")
 public class ListClientsInterventoFragment extends Fragment {
+    
+    @ViewById(R.id.search_client)
+    EditText searchClient;
     
     @ViewById(R.id.list_clients)
     ListView listClienti;
     
     private ListClientiAdapter mAdapter;
     
-    Handler handler = new MyHandler() {
-	
-	public void handleMessage(Message msg) {
-	
-	    switch (msg.what) {
-	    
-		case Constants.WHAT_MESSAGE_GET_CLIENTI:
-		    
-		    mAdapter = new ListClientiAdapter(getActivity(), R.layout.list_client_row, R.id.tv_row_nominativo, (ArrayList<Cliente>) msg.obj);
-		    
-		    listClienti.setAdapter(mAdapter);
-		    
-		    break;
-	    }
-	};
-    };
-    
-    private static class MyHandler extends Handler {
-	
-    }
-    
+    @Override
     public void onCreate(Bundle savedInstanceState) {
     
 	super.onCreate(savedInstanceState);
@@ -78,8 +57,28 @@ public class ListClientsInterventoFragment extends Fragment {
     
 	super.onStart();
 	
-	new GetClientiAsyncTask(getActivity(), handler).execute();
+	mAdapter = new ListClientiAdapter(getActivity(), R.layout.list_client_row, R.id.tv_row_nominativo);
 	
+	listClienti.setAdapter(mAdapter);
+	
+	searchClient.addTextChangedListener(new TextWatcher() {
+	    
+	    @Override
+	    public void onTextChanged(CharSequence s, int start, int before, int count) {
+	    
+		mAdapter.getFilter().filter(s);
+	    }
+	    
+	    @Override
+	    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+	    
+	    }
+	    
+	    @Override
+	    public void afterTextChanged(Editable s) {
+	    
+	    }
+	});
     }
     
     @Override
@@ -101,8 +100,10 @@ public class ListClientsInterventoFragment extends Fragment {
 		
 		for (int i = 0; i < sparseArray.size(); i++) {
 		    
-		    if (sparseArray.get(i))
+		    if (sparseArray.get(i)) {
 			cliente_checked = i;
+			break;
+		    }
 		}
 		
 		Cliente clChecked = mAdapter.getItem(cliente_checked);
