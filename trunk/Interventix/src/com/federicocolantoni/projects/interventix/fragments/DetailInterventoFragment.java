@@ -48,6 +48,7 @@ import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
+import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
@@ -137,8 +138,6 @@ public class DetailInterventoFragment extends Fragment {
     public void onStart() {
     
 	super.onStart();
-	
-	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().getNumeroIntervento() + " - " + getString(R.string.detail) + dettaglio.getIdDettaglioIntervento());
     }
     
     @Override
@@ -154,6 +153,11 @@ public class DetailInterventoFragment extends Fragment {
 	// *** nuova gestione - inizio ***\\
 	
 	if (dettaglio != null) {
+	    
+	    if (!InterventoController.controller.getIntervento().isNuovo() && !dettaglio.isNuovo())
+		((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().getNumeroIntervento() + " - " + getString(R.string.detail) + dettaglio.getIdDettaglioIntervento());
+	    else
+		((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Nuovo intervento");
 	    
 	    tv_row_tipo_dett.setText(dettaglio.getTipo());
 	    
@@ -184,27 +188,82 @@ public class DetailInterventoFragment extends Fragment {
 	}
 	else {
 	    
-	    dettaglio = new DettaglioIntervento();
-	    dettaglio.setNuovo(true);
-	    dettaglio.setIntervento(InterventoController.controller.getIntervento().getIdIntervento());
-	    
-	    DateTime dt_inizio = new DateTime(new Date().getTime(), DateTimeZone.forID("Europe/Rome"));
-	    
-	    tv_row_inizio_dett.setText(dt_inizio.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
-	    
-	    dettaglio.setInizio(dt_inizio.getMillis());
-	    
-	    DateTime dt_fine = new DateTime(new Date().getTime(), DateTimeZone.forID("Europe/Rome"));
-	    
-	    tv_row_fine_dett.setText(dt_fine.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
-	    
-	    dettaglio.setFine(dt_fine.getMillis());
-	    
-	    DateTime dt_tot_ore = new DateTime(dt_fine.toDate().getTime() - dt_inizio.toDate().getTime(), DateTimeZone.forID("Europe/Rome"));
-	    
-	    tv_row_tot_ore_dett.setText(dt_tot_ore.toString(DateTimeFormat.forPattern("HH:mm")));
+	    addNewDettaglio();
 	}
 	// *** nuova gestione - fine ***\\
+    }
+    
+    private void addNewDettaglio() {
+    
+	getMaxIdDettaglioIntervento();
+    }
+    
+    private void getMaxIdDettaglioIntervento() {
+    
+	new AsyncTask<Void, Void, Long>() {
+	    
+	    @Override
+	    protected Long doInBackground(Void... params) {
+	    
+		ContentResolver cr = getActivity().getContentResolver();
+		
+		String[] projection = new String[] {
+		    DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO
+		};
+		
+		String selection = Fields.TYPE + "=?";
+		
+		String[] selectionArgs = new String[] {
+		    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE
+		};
+		
+		long max = 0;
+		
+		Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
+		
+		while (cursor.moveToNext()) {
+		    
+		    long temp = cursor.getLong(cursor.getColumnIndex(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO));
+		    
+		    if (temp > max)
+			max = temp;
+		}
+		
+		if (!cursor.isClosed())
+		    cursor.close();
+		
+		return max;
+	    }
+	    
+	    @Override
+	    protected void onPostExecute(Long result) {
+	    
+		if (InterventoController.controller.getIntervento().isNuovo())
+		    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Nuovo intervento" + " - Nuovo dettaglio");
+		
+		dettaglio = new DettaglioIntervento();
+		
+		dettaglio.setIdDettaglioIntervento(result + 1);
+		dettaglio.setNuovo(true);
+		dettaglio.setIntervento(InterventoController.controller.getIntervento().getIdIntervento());
+		
+		DateTime dt_inizio = new DateTime(new Date().getTime(), DateTimeZone.forID("Europe/Rome"));
+		
+		tv_row_inizio_dett.setText(dt_inizio.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
+		
+		dettaglio.setInizio(dt_inizio.getMillis());
+		
+		DateTime dt_fine = new DateTime(new Date().getTime(), DateTimeZone.forID("Europe/Rome"));
+		
+		tv_row_fine_dett.setText(dt_fine.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
+		
+		dettaglio.setFine(dt_fine.getMillis());
+		
+		DateTime dt_tot_ore = new DateTime(dt_fine.toDate().getTime() - dt_inizio.toDate().getTime(), DateTimeZone.forID("Europe/Rome"));
+		
+		tv_row_tot_ore_dett.setText(dt_tot_ore.toString(DateTimeFormat.forPattern("HH:mm")));
+	    }
+	}.execute();
     }
     
     @Override
@@ -709,7 +768,7 @@ public class DetailInterventoFragment extends Fragment {
 		
 		ArrayList<String> arrayNomiTecnici = new ArrayList<String>();
 		
-		for (int i = 0; i < params.length; i++) {
+		for (String param : params) {
 		    
 		    String[] projection = new String[] {
 		    Fields._ID, UtenteDB.Fields.NOME, UtenteDB.Fields.COGNOME
@@ -718,7 +777,7 @@ public class DetailInterventoFragment extends Fragment {
 		    String selection = Fields.TYPE + "=? AND " + UtenteDB.Fields.ID_UTENTE + "=?";
 		    
 		    String[] selectionArgs = new String[] {
-		    UtenteDB.UTENTE_ITEM_TYPE, params[i]
+		    UtenteDB.UTENTE_ITEM_TYPE, param
 		    };
 		    
 		    String sortOrder = UtenteDB.Fields.COGNOME + " asc";

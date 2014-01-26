@@ -130,10 +130,10 @@ public class InterventoSingleton implements Serializable {
     
 	final int prime = 31;
 	int result = 1;
-	result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
-	result = prime * result + ((intervento == null) ? 0 : intervento.hashCode());
-	result = prime * result + ((listaDettagli == null) ? 0 : listaDettagli.hashCode());
-	result = prime * result + ((tecnico == null) ? 0 : tecnico.hashCode());
+	result = prime * result + (cliente == null ? 0 : cliente.hashCode());
+	result = prime * result + (intervento == null ? 0 : intervento.hashCode());
+	result = prime * result + (listaDettagli == null ? 0 : listaDettagli.hashCode());
+	result = prime * result + (tecnico == null ? 0 : tecnico.hashCode());
 	return result;
     }
     

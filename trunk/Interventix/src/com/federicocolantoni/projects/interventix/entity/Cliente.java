@@ -41,7 +41,7 @@ public class Cliente implements Serializable {
     
     public Cliente(Long idCliente) {
     
-	this.idcliente = idCliente;
+	idcliente = idCliente;
     }
     
     /**
@@ -58,7 +58,7 @@ public class Cliente implements Serializable {
      */
     public void setIdCliente(Long mIdCliente) {
     
-	this.idcliente = mIdCliente;
+	idcliente = mIdCliente;
     }
     
     /**
@@ -75,7 +75,7 @@ public class Cliente implements Serializable {
      */
     public void setNominativo(String mNominativo) {
     
-	this.nominativo = mNominativo;
+	nominativo = mNominativo;
     }
     
     /**
@@ -92,7 +92,7 @@ public class Cliente implements Serializable {
      */
     public void setCodiceFiscale(String mCodiceFiscale) {
     
-	this.codicefiscale = mCodiceFiscale;
+	codicefiscale = mCodiceFiscale;
     }
     
     /**
@@ -109,7 +109,7 @@ public class Cliente implements Serializable {
      */
     public void setPartitaIVA(String mPartitaIVA) {
     
-	this.partitaiva = mPartitaIVA;
+	partitaiva = mPartitaIVA;
     }
     
     /**
@@ -126,7 +126,7 @@ public class Cliente implements Serializable {
      */
     public void setTelefono(String mTelefono) {
     
-	this.telefono = mTelefono;
+	telefono = mTelefono;
     }
     
     /**
@@ -143,7 +143,7 @@ public class Cliente implements Serializable {
      */
     public void setFax(String mFax) {
     
-	this.fax = mFax;
+	fax = mFax;
     }
     
     /**
@@ -160,7 +160,7 @@ public class Cliente implements Serializable {
      */
     public void setEmail(String mEmail) {
     
-	this.email = mEmail;
+	email = mEmail;
     }
     
     /**
@@ -177,7 +177,7 @@ public class Cliente implements Serializable {
      */
     public void setReferente(String mReferente) {
     
-	this.referente = mReferente;
+	referente = mReferente;
     }
     
     /**
@@ -194,7 +194,7 @@ public class Cliente implements Serializable {
      */
     public void setCitta(String mCitta) {
     
-	this.citta = mCitta;
+	citta = mCitta;
     }
     
     /**
@@ -211,7 +211,7 @@ public class Cliente implements Serializable {
      */
     public void setIndirizzo(String mIndirizzo) {
     
-	this.indirizzo = mIndirizzo;
+	indirizzo = mIndirizzo;
     }
     
     /**
@@ -228,7 +228,7 @@ public class Cliente implements Serializable {
      */
     public void setInterno(String mInterno) {
     
-	this.interno = mInterno;
+	interno = mInterno;
     }
     
     /**
@@ -245,7 +245,7 @@ public class Cliente implements Serializable {
      */
     public void setUfficio(String mUfficio) {
     
-	this.ufficio = mUfficio;
+	ufficio = mUfficio;
     }
     
     /**
@@ -262,7 +262,7 @@ public class Cliente implements Serializable {
      */
     public void setNote(String mNote) {
     
-	this.note = mNote;
+	note = mNote;
     }
     
     /**
@@ -279,7 +279,7 @@ public class Cliente implements Serializable {
      */
     public void setCancellato(boolean mCancellato) {
     
-	this.cancellato = mCancellato;
+	cancellato = mCancellato;
     }
     
     /**
@@ -313,7 +313,7 @@ public class Cliente implements Serializable {
      */
     public void setConflitto(boolean mConflitto) {
     
-	this.conflitto = mConflitto;
+	conflitto = mConflitto;
     }
     
     @Override
@@ -328,21 +328,21 @@ public class Cliente implements Serializable {
 	final int prime = 31;
 	int result = 1;
 	result = prime * result + (cancellato ? 1231 : 1237);
-	result = prime * result + ((citta == null) ? 0 : citta.hashCode());
-	result = prime * result + ((codicefiscale == null) ? 0 : codicefiscale.hashCode());
+	result = prime * result + (citta == null ? 0 : citta.hashCode());
+	result = prime * result + (codicefiscale == null ? 0 : codicefiscale.hashCode());
 	result = prime * result + (conflitto ? 1231 : 1237);
-	result = prime * result + ((email == null) ? 0 : email.hashCode());
-	result = prime * result + ((fax == null) ? 0 : fax.hashCode());
-	result = prime * result + ((idcliente == null) ? 0 : idcliente.hashCode());
-	result = prime * result + ((indirizzo == null) ? 0 : indirizzo.hashCode());
-	result = prime * result + ((interno == null) ? 0 : interno.hashCode());
-	result = prime * result + ((nominativo == null) ? 0 : nominativo.hashCode());
-	result = prime * result + ((note == null) ? 0 : note.hashCode());
-	result = prime * result + ((partitaiva == null) ? 0 : partitaiva.hashCode());
-	result = prime * result + ((referente == null) ? 0 : referente.hashCode());
-	result = prime * result + ((revisione == null) ? 0 : revisione.hashCode());
-	result = prime * result + ((telefono == null) ? 0 : telefono.hashCode());
-	result = prime * result + ((ufficio == null) ? 0 : ufficio.hashCode());
+	result = prime * result + (email == null ? 0 : email.hashCode());
+	result = prime * result + (fax == null ? 0 : fax.hashCode());
+	result = prime * result + (idcliente == null ? 0 : idcliente.hashCode());
+	result = prime * result + (indirizzo == null ? 0 : indirizzo.hashCode());
+	result = prime * result + (interno == null ? 0 : interno.hashCode());
+	result = prime * result + (nominativo == null ? 0 : nominativo.hashCode());
+	result = prime * result + (note == null ? 0 : note.hashCode());
+	result = prime * result + (partitaiva == null ? 0 : partitaiva.hashCode());
+	result = prime * result + (referente == null ? 0 : referente.hashCode());
+	result = prime * result + (revisione == null ? 0 : revisione.hashCode());
+	result = prime * result + (telefono == null ? 0 : telefono.hashCode());
+	result = prime * result + (ufficio == null ? 0 : ufficio.hashCode());
 	return result;
     }
     

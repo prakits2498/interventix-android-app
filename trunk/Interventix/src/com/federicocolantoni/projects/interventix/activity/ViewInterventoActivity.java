@@ -91,13 +91,6 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		
 		InterventoController.controller.getIntervento().setNuovo(false);
 		
-		if (InterventoController.controller != null) {
-		    System.out.println("Controller intervento non nullo");
-		}
-		else {
-		    System.out.println("Controller intervento nullo");
-		}
-		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 		    InterventoController.controller.setIntervento(new GetInterventoAsyncTask(this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, idIntervento).get());
 		    InterventoController.controller.setCliente(new GetClienteAsyncTask(this).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, InterventoController.controller.getIntervento().getIdCliente()).get());
@@ -123,7 +116,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		InterventixToast.makeToast("Nuovo intervento", Toast.LENGTH_SHORT);
 		
 		InterventoController.controller = InterventoSingleton.getInstance();
-		getMaxId();
+		getMaxIdIntervento();
 		
 		InterventoController.controller.getIntervento().setDataOra(new DateTime().getMillis());
 		InterventoController.controller.getIntervento().setNuovo(true);
@@ -156,7 +149,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	}
     }
     
-    private void getMaxId() {
+    private void getMaxIdIntervento() {
     
 	new AsyncTask<Void, Void, Long>() {
 	    
@@ -198,12 +191,12 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	    
 		InterventoController.controller.getIntervento().setIdIntervento(result + 1);
 		
-		getMaxNumero();
+		getMaxNumeroIntervento();
 	    }
 	}.execute();
     }
     
-    private void getMaxNumero() {
+    private void getMaxNumeroIntervento() {
     
 	new AsyncTask<Void, Void, Long>() {
 	    

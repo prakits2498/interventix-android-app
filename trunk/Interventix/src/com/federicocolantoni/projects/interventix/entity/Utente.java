@@ -35,7 +35,7 @@ public class Utente implements Serializable {
     
     public Utente(Long idUtente) {
     
-	this.idutente = idUtente;
+	idutente = idUtente;
     }
     
     /**
@@ -52,7 +52,7 @@ public class Utente implements Serializable {
      */
     public void setIdUtente(Long mIdUtente) {
     
-	this.idutente = mIdUtente;
+	idutente = mIdUtente;
     }
     
     /**
@@ -69,7 +69,7 @@ public class Utente implements Serializable {
      */
     public void setNome(String mNome) {
     
-	this.nome = mNome;
+	nome = mNome;
     }
     
     /**
@@ -86,7 +86,7 @@ public class Utente implements Serializable {
      */
     public void setCognome(String mCognome) {
     
-	this.cognome = mCognome;
+	cognome = mCognome;
     }
     
     /**
@@ -103,7 +103,7 @@ public class Utente implements Serializable {
      */
     public void setUserName(String mUserName) {
     
-	this.username = mUserName;
+	username = mUserName;
     }
     
     /**
@@ -120,7 +120,7 @@ public class Utente implements Serializable {
      */
     public void setPassword(String mPassword) {
     
-	this.password = mPassword;
+	password = mPassword;
     }
     
     /**
@@ -137,7 +137,7 @@ public class Utente implements Serializable {
      */
     public void setEmail(String mEmail) {
     
-	this.email = mEmail;
+	email = mEmail;
     }
     
     /**
@@ -154,7 +154,7 @@ public class Utente implements Serializable {
      */
     public void setTipo(String mTipo) {
     
-	this.tipo = mTipo;
+	tipo = mTipo;
     }
     
     /**
@@ -171,7 +171,7 @@ public class Utente implements Serializable {
      */
     public void setCancellato(boolean mCancellato) {
     
-	this.cancellato = mCancellato;
+	cancellato = mCancellato;
     }
     
     /**
@@ -188,7 +188,7 @@ public class Utente implements Serializable {
      */
     public void setCestinato(boolean mCestinato) {
     
-	this.cestinato = mCestinato;
+	cestinato = mCestinato;
     }
     
     /**
@@ -222,7 +222,7 @@ public class Utente implements Serializable {
      */
     public void setConflitto(boolean mConflitto) {
     
-	this.conflitto = mConflitto;
+	conflitto = mConflitto;
     }
     
     /*
@@ -242,15 +242,15 @@ public class Utente implements Serializable {
 	int result = 1;
 	result = prime * result + (cancellato ? 1231 : 1237);
 	result = prime * result + (cestinato ? 1231 : 1237);
-	result = prime * result + ((cognome == null) ? 0 : cognome.hashCode());
+	result = prime * result + (cognome == null ? 0 : cognome.hashCode());
 	result = prime * result + (conflitto ? 1231 : 1237);
-	result = prime * result + ((email == null) ? 0 : email.hashCode());
-	result = prime * result + ((idutente == null) ? 0 : idutente.hashCode());
-	result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-	result = prime * result + ((password == null) ? 0 : password.hashCode());
-	result = prime * result + ((revisione == null) ? 0 : revisione.hashCode());
-	result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
-	result = prime * result + ((username == null) ? 0 : username.hashCode());
+	result = prime * result + (email == null ? 0 : email.hashCode());
+	result = prime * result + (idutente == null ? 0 : idutente.hashCode());
+	result = prime * result + (nome == null ? 0 : nome.hashCode());
+	result = prime * result + (password == null ? 0 : password.hashCode());
+	result = prime * result + (revisione == null ? 0 : revisione.hashCode());
+	result = prime * result + (tipo == null ? 0 : tipo.hashCode());
+	result = prime * result + (username == null ? 0 : username.hashCode());
 	return result;
     }
     

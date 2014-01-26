@@ -77,7 +77,10 @@ public class OverViewInterventoFragment extends Fragment {
     
 	super.onStart();
 	
-	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().getNumeroIntervento());
+	if (!InterventoController.controller.getIntervento().isNuovo())
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().getNumeroIntervento());
+	else
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Nuovo intervento");
 	
 	manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
 	
@@ -108,6 +111,8 @@ public class OverViewInterventoFragment extends Fragment {
     private void addNewIntervento() {
     
 	manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
+	
+	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Nuovo intervento");
     }
     
     private void updateUI() {

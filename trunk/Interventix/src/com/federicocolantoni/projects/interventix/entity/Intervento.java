@@ -52,7 +52,7 @@ public class Intervento implements Serializable {
     
     public Intervento(Long mIdIntervento) {
     
-	this.idintervento = mIdIntervento;
+	idintervento = mIdIntervento;
     }
     
     /**
@@ -69,7 +69,7 @@ public class Intervento implements Serializable {
      */
     public void setIdIntervento(Long mIdIntervento) {
     
-	this.idintervento = mIdIntervento;
+	idintervento = mIdIntervento;
     }
     
     /**
@@ -86,7 +86,7 @@ public class Intervento implements Serializable {
      */
     public void setTipologia(String mTipologia) {
     
-	this.tipologia = mTipologia;
+	tipologia = mTipologia;
     }
     
     /**
@@ -103,7 +103,7 @@ public class Intervento implements Serializable {
      */
     public void setProdotto(String mProdotto) {
     
-	this.prodotto = mProdotto;
+	prodotto = mProdotto;
     }
     
     /**
@@ -120,7 +120,7 @@ public class Intervento implements Serializable {
      */
     public void setMotivo(String mMotivo) {
     
-	this.motivo = mMotivo;
+	motivo = mMotivo;
     }
     
     /**
@@ -137,7 +137,7 @@ public class Intervento implements Serializable {
      */
     public void setNominativo(String mNominativo) {
     
-	this.nominativo = mNominativo;
+	nominativo = mNominativo;
     }
     
     /**
@@ -154,7 +154,7 @@ public class Intervento implements Serializable {
      */
     public void setRifFattura(String mRifFattura) {
     
-	this.riffattura = mRifFattura;
+	riffattura = mRifFattura;
     }
     
     /**
@@ -171,7 +171,7 @@ public class Intervento implements Serializable {
      */
     public void setRifScontrino(String mRifScontrino) {
     
-	this.rifscontrino = mRifScontrino;
+	rifscontrino = mRifScontrino;
     }
     
     /**
@@ -188,7 +188,7 @@ public class Intervento implements Serializable {
      */
     public void setNote(String mNote) {
     
-	this.note = mNote;
+	note = mNote;
     }
     
     /**
@@ -205,7 +205,7 @@ public class Intervento implements Serializable {
      */
     public void setFirma(String mFirma) {
     
-	this.firma = mFirma;
+	firma = mFirma;
     }
     
     /**
@@ -222,7 +222,7 @@ public class Intervento implements Serializable {
      */
     public void setSaldato(boolean mSaldato) {
     
-	this.saldato = mSaldato;
+	saldato = mSaldato;
     }
     
     /**
@@ -239,7 +239,7 @@ public class Intervento implements Serializable {
      */
     public void setCancellato(boolean mCancellato) {
     
-	this.cancellato = mCancellato;
+	cancellato = mCancellato;
     }
     
     /**
@@ -256,7 +256,7 @@ public class Intervento implements Serializable {
      */
     public void setChiuso(boolean mChiuso) {
     
-	this.chiuso = mChiuso;
+	chiuso = mChiuso;
     }
     
     /**
@@ -273,7 +273,7 @@ public class Intervento implements Serializable {
      */
     public void setDataOra(Long mDataOra) {
     
-	this.dataora = mDataOra;
+	dataora = mDataOra;
     }
     
     /**
@@ -290,7 +290,7 @@ public class Intervento implements Serializable {
      */
     public void setIdCliente(Long mIdCliente) {
     
-	this.cliente = mIdCliente;
+	cliente = mIdCliente;
     }
     
     /**
@@ -307,7 +307,7 @@ public class Intervento implements Serializable {
      */
     public void setIdTecnico(Long mIdTecnico) {
     
-	this.tecnico = mIdTecnico;
+	tecnico = mIdTecnico;
     }
     
     /**
@@ -324,7 +324,7 @@ public class Intervento implements Serializable {
      */
     public void setCostoManodopera(BigDecimal mCostoManodopera) {
     
-	this.costomanodopera = mCostoManodopera;
+	costomanodopera = mCostoManodopera;
     }
     
     /**
@@ -341,7 +341,7 @@ public class Intervento implements Serializable {
      */
     public void setCostoComponenti(BigDecimal mCostoComponenti) {
     
-	this.costocomponenti = mCostoComponenti;
+	costocomponenti = mCostoComponenti;
     }
     
     /**
@@ -358,7 +358,7 @@ public class Intervento implements Serializable {
      */
     public void setCostoAccessori(BigDecimal mCostoAccessori) {
     
-	this.costoaccessori = mCostoAccessori;
+	costoaccessori = mCostoAccessori;
     }
     
     /**
@@ -375,7 +375,7 @@ public class Intervento implements Serializable {
      */
     public void setImporto(BigDecimal mImporto) {
     
-	this.importo = mImporto;
+	importo = mImporto;
     }
     
     /**
@@ -392,7 +392,7 @@ public class Intervento implements Serializable {
      */
     public void setTotale(BigDecimal mTotale) {
     
-	this.totale = mTotale;
+	totale = mTotale;
     }
     
     /**
@@ -409,7 +409,7 @@ public class Intervento implements Serializable {
      */
     public void setIva(BigDecimal mIva) {
     
-	this.iva = mIva;
+	iva = mIva;
     }
     
     /**
@@ -426,7 +426,7 @@ public class Intervento implements Serializable {
      */
     public void setModalita(String mModalita) {
     
-	this.modalita = mModalita;
+	modalita = mModalita;
     }
     
     /**
@@ -443,7 +443,7 @@ public class Intervento implements Serializable {
      */
     public void setNumeroIntervento(Long mNumeroIntervento) {
     
-	this.numero = mNumeroIntervento;
+	numero = mNumeroIntervento;
     }
     
     /**
@@ -460,7 +460,7 @@ public class Intervento implements Serializable {
      */
     public void setConflitto(boolean mConflitto) {
     
-	this.conflitto = mConflitto;
+	conflitto = mConflitto;
     }
     
     /**
@@ -493,29 +493,29 @@ public class Intervento implements Serializable {
 	int result = 1;
 	result = prime * result + (cancellato ? 1231 : 1237);
 	result = prime * result + (chiuso ? 1231 : 1237);
-	result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
+	result = prime * result + (cliente == null ? 0 : cliente.hashCode());
 	result = prime * result + (conflitto ? 1231 : 1237);
-	result = prime * result + ((costoaccessori == null) ? 0 : costoaccessori.hashCode());
-	result = prime * result + ((costocomponenti == null) ? 0 : costocomponenti.hashCode());
-	result = prime * result + ((costomanodopera == null) ? 0 : costomanodopera.hashCode());
-	result = prime * result + ((dataora == null) ? 0 : dataora.hashCode());
-	result = prime * result + ((firma == null) ? 0 : firma.hashCode());
-	result = prime * result + ((idintervento == null) ? 0 : idintervento.hashCode());
-	result = prime * result + ((importo == null) ? 0 : importo.hashCode());
-	result = prime * result + ((iva == null) ? 0 : iva.hashCode());
-	result = prime * result + ((modalita == null) ? 0 : modalita.hashCode());
-	result = prime * result + ((motivo == null) ? 0 : motivo.hashCode());
-	result = prime * result + ((nominativo == null) ? 0 : nominativo.hashCode());
-	result = prime * result + ((note == null) ? 0 : note.hashCode());
-	result = prime * result + ((numero == null) ? 0 : numero.hashCode());
+	result = prime * result + (costoaccessori == null ? 0 : costoaccessori.hashCode());
+	result = prime * result + (costocomponenti == null ? 0 : costocomponenti.hashCode());
+	result = prime * result + (costomanodopera == null ? 0 : costomanodopera.hashCode());
+	result = prime * result + (dataora == null ? 0 : dataora.hashCode());
+	result = prime * result + (firma == null ? 0 : firma.hashCode());
+	result = prime * result + (idintervento == null ? 0 : idintervento.hashCode());
+	result = prime * result + (importo == null ? 0 : importo.hashCode());
+	result = prime * result + (iva == null ? 0 : iva.hashCode());
+	result = prime * result + (modalita == null ? 0 : modalita.hashCode());
+	result = prime * result + (motivo == null ? 0 : motivo.hashCode());
+	result = prime * result + (nominativo == null ? 0 : nominativo.hashCode());
+	result = prime * result + (note == null ? 0 : note.hashCode());
+	result = prime * result + (numero == null ? 0 : numero.hashCode());
 	result = prime * result + (nuovo ? 1231 : 1237);
-	result = prime * result + ((prodotto == null) ? 0 : prodotto.hashCode());
-	result = prime * result + ((riffattura == null) ? 0 : riffattura.hashCode());
-	result = prime * result + ((rifscontrino == null) ? 0 : rifscontrino.hashCode());
+	result = prime * result + (prodotto == null ? 0 : prodotto.hashCode());
+	result = prime * result + (riffattura == null ? 0 : riffattura.hashCode());
+	result = prime * result + (rifscontrino == null ? 0 : rifscontrino.hashCode());
 	result = prime * result + (saldato ? 1231 : 1237);
-	result = prime * result + ((tecnico == null) ? 0 : tecnico.hashCode());
-	result = prime * result + ((tipologia == null) ? 0 : tipologia.hashCode());
-	result = prime * result + ((totale == null) ? 0 : totale.hashCode());
+	result = prime * result + (tecnico == null ? 0 : tecnico.hashCode());
+	result = prime * result + (tipologia == null ? 0 : tipologia.hashCode());
+	result = prime * result + (totale == null ? 0 : totale.hashCode());
 	return result;
     }
     

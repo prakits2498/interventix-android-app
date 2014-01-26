@@ -87,12 +87,15 @@
 	<!-- strings for toasts -->
 	<string name="toast_username_and_password_required">You must fill fields Username and Password</string>
 	<string name="toast_offline_access">Accesso in modalità offline</string>
-	<string name="toast_login_error">An error is occurred during login</string>
-	<string name="toast_error_syncro_users">An error is occurred during users\' synchronization</string>
-	<string name="toast_error_syncro_clients">An error is occurred during clients\' synchronization</string>
-	<string name="toast_error_syncro_interventions">An error is occurred during interventions\' synchronization</string>
+	<string name="toast_login_error">Si è verificato un errore nel login</string>
+	<string name="toast_error_syncro_users">Si è verificato un errore nella sincronizzazione degli utenti</string>
+	<string name="toast_error_syncro_clients">Si è verificato un errore nella sincronizzazione dei clienti</string>
+	<string name="toast_error_syncro_interventions">Si è verificato un errore nella sincronizzazione degli interventi</string>
+	<string name="toast_message_intervento_no_modified">Nessuna modifica all\'intervento</string>
+	<string name="toast_message_intervento_modified">Intervento modificato</string>
 
 	<!-- other strings -->
+	<string name="search_client">Ricerca Cliente</string>
 	<string name="login_">Login</string>
 	<string name="logo_">Logo Interventix</string>
 	<string name="title_activity_index">IndexActivity</string>
@@ -153,13 +156,15 @@
 	<string name="row_name">Nominativo</string>
 	<string name="row_date">Data</string>
 	<string name="row_references">Riferimenti</string>
-	<string name="row_notes">Annotazioni</string>
+	<string name="row_annotations">Annotazioni</string>
+	<string name="row_rif_fattura">Riferimento Fattura</string>
+	<string name="row_rif_scontrino">Riferimento Scontrino</string>
 	<string name="reset">Ripristina</string>
 	<string name="row_manodopera">Manodopera</string>
 	<string name="row_componenti">Componenti</string>
 	<string name="row_accessori">Accessori</string>
 	<string name="row_importo">Importo</string>
-	<string name="row_iva">IVA (21.00 %)</string>
+	<string name="row_iva">IVA</string>
 	<string name="row_totale">Totale</string>
 	<string name="content_right_nav">Right Navigation</string>
 	<string name="no_details_interv">Nessun dettaglio</string>
@@ -173,6 +178,9 @@
 	<string name="choose_tecnici_title">Seleziona i tecnici</string>
 	<string name="search_clients_hint">Cerca clienti&#8230;</string>
 	<string name="signature_content_description">immagine firma</string>
+	<string name="modify_client">Modifica</string>
+	<string name="selected_client_content_description">cliente selezionato</string>
+	<string name="no_details">Nessun dettaglio</string>
 
 	<!-- strings for date format -->
 	<string name="date_format">MM/dd/yyyy HH:mm</string>
@@ -186,10 +194,7 @@
 
 	<!-- changelog -->
 	<string name="title_changelog">Change log Interventix</string>
-	<string name="changelog_close">Close</string>
-
-	<!-- strings for validator -->
-	<string name="required">Campo richiesto</string>
+	<string name="changelog_close">Chiudi</string>
 
 	<!-- strings for contextual menu for signature -->
 	<string name="save_signature">Salva firma</string>
