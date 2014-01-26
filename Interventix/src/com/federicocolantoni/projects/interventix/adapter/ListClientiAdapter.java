@@ -5,6 +5,8 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarActivity;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +33,15 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
     private static SparseBooleanArray checkedItems = new SparseBooleanArray();
     private static SparseBooleanArray swipedItems = new SparseBooleanArray();
     
+    private ActionBarActivity context;
+    
     ViewHolder holder;
     
     public ListClientiAdapter(Context context, int resource, int textViewResourceId) {
     
 	super(context, resource, textViewResourceId);
+	
+	this.context = (ActionBarActivity) context;
 	
 	for (int i = 0; i < InterventoController.listaClienti.size(); i++) {
 	    checkedItems.put(i, false);
@@ -188,8 +194,17 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 		@Override
 		public void onTouchUp() {
 		
-		    if (!blockClick)
+		    if (!blockClick) {
 			toggleChecked(position);
+			
+			Cliente clChecked = getItem(position);
+			
+			InterventoController.controller.setCliente(clChecked);
+			InterventoController.controller.getIntervento().setIdCliente(clChecked.getIdCliente());
+			
+			FragmentManager manager = context.getSupportFragmentManager();
+			manager.popBackStackImmediate();
+		    }
 		}
 		
 		@Override
@@ -218,6 +233,8 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 			modClient.setVisibility(View.INVISIBLE);
 			swipedItems.put(position, false);
 			blockClick = false;
+			
+			notifyDataSetChanged();
 		    }
 		}
 	    });

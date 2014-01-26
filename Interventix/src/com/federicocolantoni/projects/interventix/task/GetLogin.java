@@ -45,8 +45,8 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 	
 	defaultPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 	
-	this.mUsername = username;
-	this.mPassword = password;
+	mUsername = username;
+	mPassword = password;
 	
 	progress = new ProgressDialog(mContext);
 	progress.setIndeterminate(true);

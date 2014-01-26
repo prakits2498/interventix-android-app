@@ -2,6 +2,16 @@
 <changelog>
 
 	<release
+		version="0.0.550"
+		versioncode="55" >
+		<change>
+			Modificata la gestione della selezione del cliente.
+		</change>
+		<change>
+			Modifiche all'interfaccia grafica.
+		</change>
+	</release>
+	<release
 		version="0.0.500"
 		versioncode="50" >
 		<change>

@@ -26,6 +26,7 @@
 	<string name="refresh_interventi_menu">Aggiorna Interventi</string>
 	<string name="add_intervento_menu">Aggiungi Intervento</string>
 	<string name="add_dettaglio_menu">Aggiungi Dettaglio</string>
+	<string name="search_title">Cerca clienti o tecnici&#8230;</string>
 	<string name="send_mail">Invia mail</string>
 	<string name="pay">Salda</string>
 	<string name="close_interv">Chiudi</string>
@@ -39,6 +40,7 @@
 	<string name="logout_title">Richiesta di logout</string>
 	<string name="logout_message">Sei sicuro di voler effettuare il logout?</string>
 	<string name="logout_positive_btn">Logout</string>
+	<string name="btn_cancel">Cancel</string>
 	<string name="tipologia_title">Scegli una tipologia di intervento</string>
 	<string name="tipo_dett_title">Scegli il tipo di dettaglio</string>
 	<string name="oggetto_dett_title">Inserisci l\'oggetto del dettaglio</string>
@@ -96,11 +98,14 @@
 	<string name="search_client">Ricerca Cliente</string>
 	<string name="login_">Login</string>
 	<string name="logo_">Logo Interventix</string>
+	<string name="title_activity_index">IndexActivity</string>
 	<string name="add_interv">AGGIUNGI INTERVENTO</string>
 	<string name="my_interv">I MIEI INTERVENTI</string>
 	<string name="exit">ESCI</string>
+	<string name="title_activity_my_interventions">MyInterventionsActivity</string>
 	<string name="others">ALTRI</string>
 	<string name="back">INDIETRO</string>
+	<string name="title_activity_tab_bar">TabBarActivity</string>
 	<string name="interv">Interventi</string>
 	<string name="clients">Clienti</string>
 	<string name="signature">Firma</string>
@@ -126,6 +131,7 @@
 	<string name="hint_nomin">Nominativo</string>
 	<string name="hint_cod_fis">Codice Fiscale</string>
 	<string name="hint_p_iva">Partita IVA</string>
+	<string name="reload_clients">Ricarica lista clienti</string>
 	<string name="client_dtl">Dettagli Cliente</string>
 	<string name="hint_telefono">0123456789</string>
 	<string name="hint_email">nome@dominio.com</string>
@@ -135,6 +141,8 @@
 	<string name="hint_referente">Paolo</string>
 	<string name="hint_note">Note</string>
 	<string name="hint_indirizzo">via Camino Palmero, 10</string>
+	<string name="interventi_aperti">Interventi aperti</string>
+	<string name="interventi_chiusi">Interventi chiusi</string>
 	<string name="row_client">Cliente</string>
 	<string name="row_user">Tecnico</string>
 	<string name="row_informations">Informazioni</string>
@@ -149,6 +157,8 @@
 	<string name="row_date">Data</string>
 	<string name="row_references">Riferimenti</string>
 	<string name="row_annotations">Annotazioni</string>
+	<string name="row_rif_fattura">Riferimento Fattura</string>
+	<string name="row_rif_scontrino">Riferimento Scontrino</string>
 	<string name="reset">Ripristina</string>
 	<string name="row_manodopera">Manodopera</string>
 	<string name="row_componenti">Componenti</string>
@@ -166,9 +176,11 @@
 	<string name="add_user_list_users">Tecnici</string>
 	<string name="add_user_list_admin">Amministratori</string>
 	<string name="choose_tecnici_title">Seleziona i tecnici</string>
+	<string name="search_clients_hint">Cerca clienti&#8230;</string>
 	<string name="signature_content_description">immagine firma</string>
 	<string name="modify_client">Modifica</string>
 	<string name="selected_client_content_description">cliente selezionato</string>
+	<string name="no_details">Nessun dettaglio</string>
 
 	<!-- strings for date format -->
 	<string name="date_format">dd/MM/yyyy HH:mm</string>

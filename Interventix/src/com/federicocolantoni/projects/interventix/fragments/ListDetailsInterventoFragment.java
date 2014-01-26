@@ -16,7 +16,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.federicocolantoni.projects.interventix.Constants;
@@ -31,8 +33,14 @@ public class ListDetailsInterventoFragment extends Fragment {
     
     private ListDettagliInterventiAdapter mAdapter;
     
+    @ViewById(R.id.layout_list_details_intervento)
+    LinearLayout layoutListDetails;
+    
     @ViewById(R.id.list_details_intervento)
     ListView detailsList;
+    
+    @ViewById(R.id.tv_no_details)
+    TextView noDetails;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +58,20 @@ public class ListDetailsInterventoFragment extends Fragment {
     
 	super.onStart();
 	
-	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().getNumeroIntervento() + " - " + getString(R.string.row_details));
+	if (!InterventoController.controller.getIntervento().isNuovo())
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().getNumeroIntervento() + " - " + getString(R.string.row_details));
+	else
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle("Nuovo intervento");
+	
+	if (InterventoController.controller.getListaDettagli().size() == 0) {
+	    layoutListDetails.setVisibility(View.INVISIBLE);
+	    noDetails.setText("Nessun dettaglio presente");
+	    noDetails.setVisibility(View.VISIBLE);
+	}
+	else {
+	    layoutListDetails.setVisibility(View.VISIBLE);
+	    noDetails.setVisibility(View.INVISIBLE);
+	}
 	
 	mAdapter = new ListDettagliInterventiAdapter(getActivity());
 	

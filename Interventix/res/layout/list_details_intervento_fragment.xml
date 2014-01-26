@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@android:color/transparent"
@@ -11,6 +11,7 @@
 		android:background="@android:color/transparent" >
 
 		<LinearLayout
+			android:id="@+id/layout_list_details_intervento"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:background="@android:color/black" >
@@ -32,4 +33,12 @@
 		</LinearLayout>
 	</LinearLayout>
 
-</LinearLayout>
+	<TextView
+		android:id="@+id/tv_no_details"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:gravity="center"
+		android:textStyle="bold" />
+
+</RelativeLayout>

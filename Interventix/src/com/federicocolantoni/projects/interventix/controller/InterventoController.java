@@ -7,7 +7,7 @@ import android.content.ContentValues;
 import android.net.Uri;
 
 import com.federicocolantoni.projects.interventix.Constants;
-import com.federicocolantoni.projects.interventix.Interventix_;
+import com.federicocolantoni.projects.interventix.Interventix;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
@@ -26,7 +26,7 @@ public class InterventoController {
     
     public static void insertOnDB() {
     
-	AsyncQueryHandler saveOnDB = new AsyncQueryHandler(Interventix_.getContext().getContentResolver()) {
+	AsyncQueryHandler saveOnDB = new AsyncQueryHandler(Interventix.getContext().getContentResolver()) {
 	    
 	    @Override
 	    protected void onInsertComplete(int token, Object cookie, Uri uri) {
@@ -89,7 +89,7 @@ public class InterventoController {
     
     public static void updateOnDB() {
     
-	AsyncQueryHandler updateOnDB = new AsyncQueryHandler(Interventix_.getContext().getContentResolver()) {
+	AsyncQueryHandler updateOnDB = new AsyncQueryHandler(Interventix.getContext().getContentResolver()) {
 	    
 	    @Override
 	    protected void onInsertComplete(int token, Object cookie, Uri uri) {

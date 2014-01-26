@@ -52,8 +52,8 @@ public class ChangeLogDialog {
     
 	String _Result = "<h1>Release: " + aXml.getAttributeValue(null, "version") + "</h1><ul>";
 	int eventType = aXml.getEventType();
-	while ((eventType != XmlPullParser.END_TAG) || (aXml.getName().equals("change"))) {
-	    if ((eventType == XmlPullParser.START_TAG) && (aXml.getName().equals("change"))) {
+	while (eventType != XmlPullParser.END_TAG || aXml.getName().equals("change")) {
+	    if (eventType == XmlPullParser.START_TAG && aXml.getName().equals("change")) {
 		eventType = aXml.next();
 		_Result = _Result + "<li>" + aXml.getText() + "</li>";
 	    }
@@ -75,7 +75,7 @@ public class ChangeLogDialog {
 	try {
 	    int eventType = _xml.getEventType();
 	    while (eventType != XmlPullParser.END_DOCUMENT) {
-		if ((eventType == XmlPullParser.START_TAG) && (_xml.getName().equals("release"))) {
+		if (eventType == XmlPullParser.START_TAG && _xml.getName().equals("release")) {
 		    _Result = _Result + ParseReleaseTag(_xml);
 		    
 		}

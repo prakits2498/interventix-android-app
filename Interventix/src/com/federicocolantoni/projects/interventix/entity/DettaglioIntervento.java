@@ -35,7 +35,7 @@ public class DettaglioIntervento implements Serializable {
     
     public DettaglioIntervento(Long idDettaglioIntervento) {
     
-	this.iddettagliointervento = idDettaglioIntervento;
+	iddettagliointervento = idDettaglioIntervento;
     }
     
     /**
@@ -52,7 +52,7 @@ public class DettaglioIntervento implements Serializable {
      */
     public void setIdDettaglioIntervento(Long mIdDettaglioIntervento) {
     
-	this.iddettagliointervento = mIdDettaglioIntervento;
+	iddettagliointervento = mIdDettaglioIntervento;
     }
     
     /**
@@ -69,7 +69,7 @@ public class DettaglioIntervento implements Serializable {
      */
     public void setTipo(String mTipo) {
     
-	this.tipo = mTipo;
+	tipo = mTipo;
     }
     
     /**
@@ -86,7 +86,7 @@ public class DettaglioIntervento implements Serializable {
      */
     public void setOggetto(String mOggetto) {
     
-	this.oggetto = mOggetto;
+	oggetto = mOggetto;
     }
     
     /**
@@ -103,7 +103,7 @@ public class DettaglioIntervento implements Serializable {
      */
     public void setDescrizione(String mDescrizione) {
     
-	this.descrizione = mDescrizione;
+	descrizione = mDescrizione;
     }
     
     /**
@@ -120,7 +120,7 @@ public class DettaglioIntervento implements Serializable {
      */
     public void setIntervento(Long mIntervento) {
     
-	this.idintervento = mIntervento;
+	idintervento = mIntervento;
     }
     
     public Long getInizio() {
@@ -130,7 +130,7 @@ public class DettaglioIntervento implements Serializable {
     
     public void setInizio(Long mInizio) {
     
-	this.inizio = mInizio;
+	inizio = mInizio;
     }
     
     public Long getFine() {
@@ -140,7 +140,7 @@ public class DettaglioIntervento implements Serializable {
     
     public void setFine(Long mFine) {
     
-	this.fine = mFine;
+	fine = mFine;
     }
     
     /**
@@ -157,7 +157,7 @@ public class DettaglioIntervento implements Serializable {
      */
     public void setTecnici(String mTecnici) {
     
-	this.tecniciintervento = mTecnici;
+	tecniciintervento = mTecnici;
     }
     
     /**
@@ -188,15 +188,15 @@ public class DettaglioIntervento implements Serializable {
     
 	final int prime = 31;
 	int result = 1;
-	result = prime * result + ((descrizione == null) ? 0 : descrizione.hashCode());
-	result = prime * result + ((fine == null) ? 0 : fine.hashCode());
-	result = prime * result + ((iddettagliointervento == null) ? 0 : iddettagliointervento.hashCode());
-	result = prime * result + ((idintervento == null) ? 0 : idintervento.hashCode());
-	result = prime * result + ((inizio == null) ? 0 : inizio.hashCode());
+	result = prime * result + (descrizione == null ? 0 : descrizione.hashCode());
+	result = prime * result + (fine == null ? 0 : fine.hashCode());
+	result = prime * result + (iddettagliointervento == null ? 0 : iddettagliointervento.hashCode());
+	result = prime * result + (idintervento == null ? 0 : idintervento.hashCode());
+	result = prime * result + (inizio == null ? 0 : inizio.hashCode());
 	result = prime * result + (nuovo ? 1231 : 1237);
-	result = prime * result + ((oggetto == null) ? 0 : oggetto.hashCode());
-	result = prime * result + ((tecniciintervento == null) ? 0 : tecniciintervento.hashCode());
-	result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
+	result = prime * result + (oggetto == null ? 0 : oggetto.hashCode());
+	result = prime * result + (tecniciintervento == null ? 0 : tecniciintervento.hashCode());
+	result = prime * result + (tipo == null ? 0 : tipo.hashCode());
 	return result;
     }
     
