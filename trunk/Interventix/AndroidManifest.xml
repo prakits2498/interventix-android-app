@@ -75,7 +75,7 @@
 		</service>
 
 		<provider
-			android:name="com.federicocolantoni.projects.interventix.data.InterventixProvider"
+			android:name="com.federicocolantoni.projects.interventix.data.InterventixContentProvider"
 			android:authorities="com.federicocolantoni.projects.interventix"
 			android:exported="false" >
 		</provider>
