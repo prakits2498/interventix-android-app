@@ -4,9 +4,13 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -60,15 +64,71 @@ public class ReferencesFragment extends Fragment {
     
     private void updateUI() {
     
+	tvRifFattura.setText(InterventoController.controller.getIntervento().getRifFattura());
+	tvRifScontrino.setText(InterventoController.controller.getIntervento().getRifScontrino());
     }
     
     @Click(R.id.row_rif_fattura)
     void showDialogRifFattura() {
     
+	final EditText mEditRiferimentiFattura;
+	
+	AlertDialog.Builder rifFatturaDialog = new Builder(getActivity());
+	
+	rifFatturaDialog.setTitle(R.string.riferimenti_fattura_title);
+	
+	TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_rif_fattura);
+	
+	mEditRiferimentiFattura = new EditText(getActivity());
+	mEditRiferimentiFattura.setText(tv_motivo.getText());
+	
+	rifFatturaDialog.setView(mEditRiferimentiFattura);
+	
+	rifFatturaDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
+	    
+	    @Override
+	    public void onClick(DialogInterface dialog, int which) {
+	    
+		dialog.dismiss();
+		
+		InterventoController.controller.getIntervento().setRifFattura(mEditRiferimentiFattura.getText().toString());
+		
+		updateUI();
+	    }
+	});
+	
+	rifFatturaDialog.create().show();
     }
     
     @Click(R.id.row_rif_scontrino)
     void showDialogRifScontrino() {
     
+	final EditText mEditRiferimentiScontrino;
+	
+	AlertDialog.Builder rifScontrinoDialog = new Builder(getActivity());
+	
+	rifScontrinoDialog.setTitle(R.string.riferimenti_scontrino_title);
+	
+	TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_rif_scontrino);
+	
+	mEditRiferimentiScontrino = new EditText(getActivity());
+	mEditRiferimentiScontrino.setText(tv_motivo.getText());
+	
+	rifScontrinoDialog.setView(mEditRiferimentiScontrino);
+	
+	rifScontrinoDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
+	    
+	    @Override
+	    public void onClick(DialogInterface dialog, int which) {
+	    
+		dialog.dismiss();
+		
+		InterventoController.controller.getIntervento().setRifScontrino(mEditRiferimentiScontrino.getText().toString());
+		
+		updateUI();
+	    }
+	});
+	
+	rifScontrinoDialog.create().show();
     }
 }

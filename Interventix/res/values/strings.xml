@@ -72,6 +72,8 @@
 	<string name="manodopera_title">Inserisci il costo della manodopera</string>
 	<string name="componenti_title">Inserisci il costo dei componenti</string>
 	<string name="accessori_title">Inserisci il costo degli accessori</string>
+	<string name="riferimenti_fattura_title">Fattura</string>
+	<string name="riferimenti_scontrino_title">Scontrino</string>
 	<string name="ok_btn">OK</string>
 	<string name="yes_btn">SI</string>
 	<string name="no_btn">NO</string>
