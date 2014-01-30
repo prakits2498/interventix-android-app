@@ -17,6 +17,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
@@ -67,6 +70,8 @@ public class InformationsInterventoFragment extends Fragment {
     @ViewById(R.id.row_notes)
     LinearLayout row_notes;
     
+    private FragmentManager manager;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
     
@@ -82,6 +87,8 @@ public class InformationsInterventoFragment extends Fragment {
     public void onStart() {
     
 	super.onStart();
+	
+	manager = getActivity().getSupportFragmentManager();
 	
 	((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().getNumeroIntervento() + " - " + getString(R.string.row_informations));
 	
@@ -372,5 +379,33 @@ public class InformationsInterventoFragment extends Fragment {
 	});
 	
 	motivo.create().show();
+    }
+    
+    @Click(R.id.row_references)
+    void showRiferimenti() {
+    
+	FragmentTransaction transaction = manager.beginTransaction();
+	
+	ReferencesFragment_ referencesInterv = new ReferencesFragment_();
+	
+	transaction.replace(R.id.fragments_layout, referencesInterv, Constants.REFERENCES_INTERVENTO_FRAGMENT);
+	transaction.addToBackStack(Constants.REFERENCES_INTERVENTO_FRAGMENT);
+	transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	
+	transaction.commit();
+    }
+    
+    @Click(R.id.row_notes)
+    void showAnnotazioni() {
+    
+	FragmentTransaction transaction = manager.beginTransaction();
+	
+	AnnotationsFragment_ annotationsInterv = new AnnotationsFragment_();
+	
+	transaction.replace(R.id.fragments_layout, annotationsInterv, Constants.ANNOTATIONS_INTERVENTO_FRAGMENT);
+	transaction.addToBackStack(Constants.ANNOTATIONS_INTERVENTO_FRAGMENT);
+	transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	
+	transaction.commit();
     }
 }

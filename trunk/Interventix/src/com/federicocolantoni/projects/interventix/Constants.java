@@ -37,6 +37,8 @@ public final class Constants {
     public static final String ADD_USERS_TO_DETAIL_FRAGMENT = "ADD_USERS_TO_DETAIL_FRAGMENT";
     public static final String TECHNICIANS_DETAIL_FRAGMENT = "TECHNICIANS_DETAIL_FRAGMENT";
     public static final String CLIENTS_INTERVENTO_FRAGMENT = "CLIENTS_INTERVENTO_FRAGMENT";
+    public static final String REFERENCES_INTERVENTO_FRAGMENT = "REFERENCES_INTERVENTO_FRAGMENT";
+    public static final String ANNOTATIONS_INTERVENTO_FRAGMENT = "ANNOTATIONS_INTERVENTO_FRAGMENT";
     
     // *** costanti per le dialog ***\\
     public static final String FIRST_RUN_DIALOG_FRAGMENT = "FIRST_RUN_DIALOG_FRAGMENT";
