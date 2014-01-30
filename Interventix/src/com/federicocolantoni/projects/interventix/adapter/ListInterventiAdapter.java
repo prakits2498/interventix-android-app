@@ -99,7 +99,7 @@ public class ListInterventiAdapter extends CursorAdapter {
 	Cliente cliente = null;
 	try {
 	    cliente = clienteAsyncTask.get();
-	    tv_cliente_intervento.setText(cliente.getNominativo() + " - ");
+	    tv_cliente_intervento.setText(cliente.getNominativo());
 	}
 	catch (InterruptedException e) {
 	    
@@ -116,7 +116,7 @@ public class ListInterventiAdapter extends CursorAdapter {
 	
 	DateTime dt = new DateTime(cursor.getLong(mDataInterventoIndex));
 	
-	tv_data_intervento.setText(dt.toString(mContext.getString(R.string.date_format), Locale.ITALY));
+	tv_data_intervento.setText(dt.toString(mContext.getString(R.string.date_format), Locale.ITALY) + " - ");
     }
     
     @Override
