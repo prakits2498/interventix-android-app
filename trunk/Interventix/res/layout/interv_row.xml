@@ -30,23 +30,27 @@
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:orientation="horizontal"
 		android:paddingBottom="2dp"
 		android:paddingLeft="8dp"
 		android:paddingRight="8dp" >
 
 		<TextView
-			android:id="@+id/tv_cliente_intervento"
+			android:id="@+id/tv_data_intervento"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:ellipsize="end"
+			android:gravity="left|center_vertical"
 			android:singleLine="true"
 			android:textSize="14sp" />
 
 		<TextView
-			android:id="@+id/tv_data_intervento"
-			android:layout_width="wrap_content"
+			android:id="@+id/tv_cliente_intervento"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_toRightOf="@id/tv_cliente_intervento"
+			android:layout_toRightOf="@id/tv_data_intervento"
+			android:ellipsize="end"
+			android:gravity="left|center_vertical"
+			android:singleLine="true"
 			android:textSize="14sp" />
 	</RelativeLayout>
 

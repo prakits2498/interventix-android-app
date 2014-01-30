@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res/com.federicocolantoni.projects.interventix"
 	android:id="@+id/swipe_item"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
@@ -51,7 +50,8 @@
 		android:layout_width="0dip"
 		android:layout_height="match_parent"
 		android:layout_weight="1.5"
-		android:orientation="horizontal" >
+		android:orientation="horizontal"
+		android:padding="4dp" >
 
 		<Button
 			android:id="@+id/mod_cliente"
@@ -62,15 +62,6 @@
 			android:text="@string/modify_client"
 			android:textColor="@android:color/white"
 			android:visibility="invisible" />
-
-		<com.caverock.androidsvg.SVGImageView
-			android:id="@+id/img_checked"
-			android:layout_width="48dp"
-			android:layout_height="48dp"
-			android:layout_centerInParent="true"
-			android:contentDescription="@string/selected_client_content_description"
-			android:visibility="invisible"
-			app:svg="@drawable/done_svg" />
 	</RelativeLayout>
 
 </LinearLayout>
