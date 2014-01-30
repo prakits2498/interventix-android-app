@@ -271,7 +271,7 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 		
 		for (Cliente cl : listaClientiTemp) {
 		    
-		    if (cl.getNominativo().toUpperCase(Locale.ITALIAN).startsWith(constraint.toString().toUpperCase(Locale.ITALIAN)))
+		    if (cl.getNominativo().toUpperCase(Locale.ITALIAN).contains(constraint.toString().toUpperCase(Locale.ITALIAN)))
 			listClientiFiltered.add(cl);
 		}
 		
