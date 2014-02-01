@@ -142,7 +142,7 @@
 					android:layout_height="match_parent"
 					android:gravity="center_vertical|left"
 					android:paddingLeft="4dp"
-					android:text="@string/row_details"
+					android:text="@string/row_list_details"
 					android:textColor="@android:color/black"
 					android:textSize="18sp"
 					android:textStyle="bold" />
