@@ -31,144 +31,140 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.settings.SettingActivity;
 import com.federicocolantoni.projects.interventix.settings.SettingSupportActivity;
-import com.federicocolantoni.projects.interventix.task.ReadDefaultPreferences;
 import com.federicocolantoni.projects.interventix.utils.ChangeLogDialog;
 
 @SuppressLint("NewApi")
 @EActivity(R.layout.activity_main)
 public class MainActivity extends ActionBarActivity {
-    
-    @ViewById(R.id.tv_changelog)
-    TextView tv_changelog;
-    
-    @StringRes(R.string.welcome_title)
-    static String welcome_title;
-    
-    @StringRes(R.string.welcome_message)
-    static String welcome_message;
-    
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-    
-	super.onCreate(savedInstanceState);
-	
-	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
-	
-	FragmentManager manager = getSupportFragmentManager();
-	
-	com.federicocolantoni.projects.interventix.modules.login.Login_ fragLogin = new com.federicocolantoni.projects.interventix.modules.login.Login_();
-	
-	FragmentTransaction transaction = manager.beginTransaction();
-	
-	transaction.replace(R.id.frag_login, fragLogin);
-	transaction.setCustomAnimations(R.anim.fade_out, R.anim.fade_in);
-	transaction.commit();
-	
-	ReadDefaultPreferences readPref = new ReadDefaultPreferences(MainActivity.this);
-	readPref.execute();
-	
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-	    PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_preferences_options, true);
-	else
-	    PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_support_preferences_options, true);
-    }
-    
-    @Override
-    protected void onStart() {
-    
-	super.onStart();
-	
-	tv_changelog.setOnClickListener(new OnClickListener() {
-	    
-	    @Override
-	    public void onClick(View v) {
-	    
-		// Launch change log dialog
-		ChangeLogDialog changelogDialog = new ChangeLogDialog(MainActivity.this);
-		changelogDialog.show();
-	    }
-	});
-    }
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-    
-	super.onCreateOptionsMenu(menu);
-	
-	final MenuInflater inflater = getMenuInflater();
-	inflater.inflate(R.menu.menu_main, menu);
-	
-	return true;
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    
-	super.onOptionsItemSelected(item);
-	
-	switch (item.getItemId()) {
-	    case R.id.menu_options:
-		
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
-		    startActivity(new Intent(this, SettingActivity.class));
+
+	@ViewById(R.id.tv_changelog)
+	TextView tvChangelog;
+
+	@StringRes(R.string.welcome_title)
+	static String welcomeTitle;
+
+	@StringRes(R.string.welcome_message)
+	static String welcomeMessage;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+
+		super.onCreate(savedInstanceState);
+
+		BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
+
+		FragmentManager manager = getSupportFragmentManager();
+
+		com.federicocolantoni.projects.interventix.modules.login.Login_ fragLogin = new com.federicocolantoni.projects.interventix.modules.login.Login_();
+
+		FragmentTransaction transaction = manager.beginTransaction();
+
+		transaction.replace(R.id.frag_login, fragLogin);
+		transaction.setCustomAnimations(R.anim.fade_out, R.anim.fade_in);
+		transaction.commit();
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_preferences_options, true);
 		else
-		    startActivity(new Intent(this, SettingSupportActivity.class));
+			PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_support_preferences_options, true);
+	}
+
+	@Override
+	protected void onStart() {
+
+		super.onStart();
+
+		tvChangelog.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				// Launch change log dialog
+				ChangeLogDialog changelogDialog = new ChangeLogDialog(MainActivity.this);
+				changelogDialog.show();
+			}
+		});
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+
+		super.onCreateOptionsMenu(menu);
+
+		final MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_main, menu);
+
 		return true;
-	    default:
-		if (super.onOptionsItemSelected(item))
-		    return true;
-		else
-		    return false;
 	}
-    }
-    
-    public static class FirstRunDialog extends DialogFragment implements OnClickListener {
-	
-	private Button btn_ok;
-	
-	public FirstRunDialog() {
-	
-	}
-	
+
 	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	
-	    AlertDialog.Builder first_run_dialog = new Builder(getActivity());
-	    
-	    first_run_dialog.setTitle(welcome_title);
-	    first_run_dialog.setMessage(welcome_message);
-	    first_run_dialog.setIcon(R.drawable.ic_launcher);
-	    
-	    LayoutInflater inflater = getActivity().getLayoutInflater();
-	    View view = inflater.inflate(R.layout.first_run, null);
-	    
-	    first_run_dialog.setView(view);
-	    
-	    btn_ok = (Button) view.findViewById(R.id.save_prefs_url);
-	    btn_ok.setOnClickListener(this);
-	    
-	    return first_run_dialog.create();
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		super.onOptionsItemSelected(item);
+
+		switch (item.getItemId()) {
+			case R.id.menu_options:
+
+				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
+					startActivity(new Intent(this, SettingActivity.class));
+				else
+					startActivity(new Intent(this, SettingSupportActivity.class));
+				return true;
+			default:
+				if (super.onOptionsItemSelected(item))
+					return true;
+				else
+					return false;
+		}
 	}
-	
+
+	public static class FirstRunDialog extends DialogFragment implements OnClickListener {
+
+		private Button btn_ok;
+
+		public FirstRunDialog() {
+
+		}
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+			AlertDialog.Builder firstRunDialog = new Builder(getActivity());
+
+			firstRunDialog.setTitle(welcomeTitle);
+			firstRunDialog.setMessage(welcomeMessage);
+			firstRunDialog.setIcon(R.drawable.ic_launcher);
+
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+			View view = inflater.inflate(R.layout.first_run, null);
+
+			firstRunDialog.setView(view);
+
+			btn_ok = (Button) view.findViewById(R.id.save_prefs_url);
+			btn_ok.setOnClickListener(this);
+
+			return firstRunDialog.create();
+		}
+
+		@Override
+		public void onClick(View v) {
+
+			switch (v.getId()) {
+				case R.id.save_prefs_url:
+
+					dismiss();
+					break;
+			}
+		}
+	}
+
 	@Override
-	public void onClick(View v) {
-	
-	    switch (v.getId()) {
-		case R.id.save_prefs_url:
-		    
-		    dismiss();
-		    break;
-	    }
+	protected void onDestroy() {
+
+		super.onDestroy();
+
+		if (BuildConfig.DEBUG) {
+			System.gc();
+		}
 	}
-    }
-    
-    @Override
-    protected void onDestroy() {
-    
-	super.onDestroy();
-	
-	if (BuildConfig.DEBUG) {
-	    System.gc();
-	}
-    }
 }

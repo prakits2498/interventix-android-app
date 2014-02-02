@@ -10,41 +10,40 @@ import com.bugsense.trace.BugSenseHandler;
 
 @EApplication
 public class Interventix extends Application {
-    
-    private static Interventix instance;
-    
-    public static Interventix getInstance() {
-    
-	return instance;
-    }
-    
-    public static Context getContext() {
-    
-	return instance.getApplicationContext();
-    }
-    
-    @SuppressLint("NewApi")
-    @Override
-    public void onCreate() {
-    
-	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
-	
-	instance = this;
-	
-	super.onCreate();
-	loadAsyncTask();
-    }
-    
-    private void loadAsyncTask() {
-    
-	try {
-	    Class.forName("android.os.AsyncTask");
+
+	private static Interventix instance;
+
+	public static Interventix getInstance() {
+
+		return instance;
 	}
-	catch (ClassNotFoundException e) {
-	    
-	    BugSenseHandler.sendException(e);
-	    
-	    e.printStackTrace();
+
+	public static Context getContext() {
+
+		return instance.getApplicationContext();
 	}
-    }
+
+	@SuppressLint("NewApi")
+	@Override
+	public void onCreate() {
+
+		BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
+
+		instance = this;
+
+		super.onCreate();
+		loadAsyncTask();
+	}
+
+	private void loadAsyncTask() {
+
+		try {
+			Class.forName("android.os.AsyncTask");
+		} catch (ClassNotFoundException e) {
+
+			BugSenseHandler.sendException(e);
+
+			e.printStackTrace();
+		}
+	}
 }
