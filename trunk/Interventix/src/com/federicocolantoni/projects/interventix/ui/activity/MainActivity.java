@@ -1,9 +1,12 @@
 package com.federicocolantoni.projects.interventix.ui.activity;
 
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -17,9 +20,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -29,8 +29,6 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.BuildConfig;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.settings.SettingActivity;
-import com.federicocolantoni.projects.interventix.settings.SettingSupportActivity;
 import com.federicocolantoni.projects.interventix.utils.ChangeLogDialog;
 
 @SuppressLint("NewApi")
@@ -46,6 +44,11 @@ public class MainActivity extends ActionBarActivity {
 	@StringRes(R.string.welcome_message)
 	static String welcomeMessage;
 
+	boolean authenticated = false;
+
+	@SystemService
+	AccountManager accountManager;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -53,20 +56,39 @@ public class MainActivity extends ActionBarActivity {
 
 		BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
 
-		FragmentManager manager = getSupportFragmentManager();
+		Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
 
-		com.federicocolantoni.projects.interventix.modules.login.Login_ fragLogin = new com.federicocolantoni.projects.interventix.modules.login.Login_();
+		for (Account account : accounts) {
 
-		FragmentTransaction transaction = manager.beginTransaction();
+			if (account.type.equals(Constants.ACCOUNT_TYPE_INTERVENTIX)) {
+				authenticated = true;
+				break;
+			}
+		}
 
-		transaction.replace(R.id.frag_login, fragLogin);
-		transaction.setCustomAnimations(R.anim.fade_out, R.anim.fade_in);
-		transaction.commit();
+		if (!authenticated) {
+			FragmentManager manager = getSupportFragmentManager();
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_preferences_options, true);
-		else
-			PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_support_preferences_options, true);
+			com.federicocolantoni.projects.interventix.modules.login.Login_ fragLogin = new com.federicocolantoni.projects.interventix.modules.login.Login_();
+
+			Bundle bundle = new Bundle();
+			bundle.putString(AccountManager.KEY_AUTHTOKEN, Constants.ACCOUNT_AUTH_TOKEN);
+
+			fragLogin.setArguments(bundle);
+
+			FragmentTransaction transaction = manager.beginTransaction();
+
+			transaction.replace(R.id.frag_login, fragLogin);
+			transaction.setCustomAnimations(R.anim.fade_out, R.anim.fade_in);
+			transaction.commit();
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+				PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_preferences_options, true);
+			else
+				PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_support_preferences_options, true);
+		} else {
+			startActivity(new Intent(this, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
+		}
 	}
 
 	@Override
@@ -87,34 +109,23 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	protected void onResume() {
 
-		super.onCreateOptionsMenu(menu);
+		super.onResume();
 
-		final MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu_main, menu);
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+			Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
 
-		return true;
-	}
+			for (Account account : accounts) {
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+				if (account.type.equals(Constants.ACCOUNT_TYPE_INTERVENTIX)) {
+					authenticated = true;
+					break;
+				}
+			}
 
-		super.onOptionsItemSelected(item);
-
-		switch (item.getItemId()) {
-			case R.id.menu_options:
-
-				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
-					startActivity(new Intent(this, SettingActivity.class));
-				else
-					startActivity(new Intent(this, SettingSupportActivity.class));
-				return true;
-			default:
-				if (super.onOptionsItemSelected(item))
-					return true;
-				else
-					return false;
+			if (authenticated)
+				startActivity(new Intent(this, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
 		}
 	}
 

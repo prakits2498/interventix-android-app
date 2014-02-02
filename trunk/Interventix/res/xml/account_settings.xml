@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/menu_settings" />
+
+    <PreferenceScreen
+        android:key="@string/account_settings_key"
+        android:summary=""
+        android:title="@string/account_settings_title" >
+        <intent
+            android:action="com.federicocolantoni.projects.interventix.OPEN_SETTINGS"
+            android:targetClass="com.federicocolantoni.projects.interventix.settings.SettingActivity" />
+    </PreferenceScreen>
+
+</PreferenceScreen>

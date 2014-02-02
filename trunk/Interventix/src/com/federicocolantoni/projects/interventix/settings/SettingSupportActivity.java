@@ -7,6 +7,7 @@ import com.federicocolantoni.projects.interventix.R;
 
 public class SettingSupportActivity extends PreferenceActivity {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
