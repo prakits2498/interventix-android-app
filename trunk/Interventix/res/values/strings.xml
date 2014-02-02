@@ -114,6 +114,7 @@
     <string name="costs">Costi</string>
     <string name="details">Dettagli</string>
     <string name="detail">Dettaglio n° </string>
+    <string name="new_detail">Nuovo Dettaglio</string>
     <string name="new_interv">NUOVO INTERVENTO</string>
     <string name="numero_intervento">Intervento n° </string>
     <string name="type_interv">Tipologia</string>

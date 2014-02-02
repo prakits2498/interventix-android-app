@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-	<item
-		android:id="@+id/menu_save_detail"
-		android:showAsAction="always"
-		android:title="@string/save_detail"/>
-	<item
-		android:id="@+id/menu_cancel_detail"
-		android:showAsAction="always"
-		android:title="@string/cancel_detail"/>
+    <item
+        android:id="@+id/menu_save_detail"
+        android:showAsAction="never"
+        android:title="@string/save_detail"/>
+    <item
+        android:id="@+id/menu_cancel_detail"
+        android:showAsAction="never"
+        android:title="@string/cancel_detail"/>
 
 </menu>
