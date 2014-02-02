@@ -7,8 +7,10 @@ public final class Constants {
 
 	// *** Account Type for AccountManager ***\\
 	public static final String ACCOUNT_TYPE_INTERVENTIX = "com.multiface.interventix";
-	public static final String ACCOUNT_AUTH_TOKEN = "InterventixAuthenticatorToken";
+	public static final String ACCOUNT_AUTH_TOKEN = "com.multiface.interventix://auth_token";
+	public static final String AUTHENTICATOR_TOKEN = "AUTHEHTICATOR_TOKEN";
 	public static final String ACCOUNT_NAME = "ACCOUNT_NAME";
+	public static final String ACCOUNT_TYPE = "ACCOUNT_TYPE";
 	public static final String TAG_AUTHENTICATOR = "InterventiAuthenticator";
 	public static final String ADDING_NEW_ACCOUNT = "ADDING_NEW_ACCOUNT";
 

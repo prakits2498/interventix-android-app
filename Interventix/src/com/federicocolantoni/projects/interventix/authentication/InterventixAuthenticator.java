@@ -31,7 +31,7 @@ public class InterventixAuthenticator extends AbstractAccountAuthenticator {
 
 		final Intent intent = new Intent(context, MainActivity_.class);
 		intent.putExtra(Constants.ACCOUNT_TYPE_INTERVENTIX, accountType);
-		intent.putExtra(Constants.ACCOUNT_AUTH_TOKEN, authTokenType);
+		intent.putExtra(Constants.AUTHENTICATOR_TOKEN, authTokenType);
 		intent.putExtra(Constants.ADDING_NEW_ACCOUNT, true);
 		intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
 
@@ -55,7 +55,7 @@ public class InterventixAuthenticator extends AbstractAccountAuthenticator {
 	@Override
 	public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options) throws NetworkErrorException {
 
-		if (!authTokenType.equals(Constants.ACCOUNT_AUTH_TOKEN)) {
+		if (!authTokenType.equals(Constants.AUTHENTICATOR_TOKEN)) {
 			final Bundle result = new Bundle();
 			result.putString(AccountManager.KEY_ERROR_MESSAGE, "invalid authTokenType");
 			return result;
@@ -76,7 +76,7 @@ public class InterventixAuthenticator extends AbstractAccountAuthenticator {
 		final Intent intent = new Intent(context, MainActivity_.class);
 		intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
 		intent.putExtra(Constants.ACCOUNT_TYPE_INTERVENTIX, account.type);
-		intent.putExtra(Constants.ACCOUNT_AUTH_TOKEN, authTokenType);
+		intent.putExtra(Constants.AUTHENTICATOR_TOKEN, authTokenType);
 		intent.putExtra(Constants.ACCOUNT_NAME, account.name);
 		final Bundle bundle = new Bundle();
 		bundle.putParcelable(AccountManager.KEY_INTENT, intent);
@@ -102,5 +102,4 @@ public class InterventixAuthenticator extends AbstractAccountAuthenticator {
 
 		return null;
 	}
-
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.federicocolantoni.projects.interventix"
-    android:versionCode="60"
-    android:versionName="0.0.600" >
+    android:versionCode="70"
+    android:versionName="0.0.700" >
 
     <uses-sdk
         android:maxSdkVersion="19"
@@ -51,7 +51,13 @@
         <activity
             android:name=".settings.SettingActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.federicocolantoni.projects.interventix.OPEN_SETTINGS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".settings.SettingSupportActivity"
             android:configChanges="orientation"
@@ -61,6 +67,15 @@
         <service
             android:name="com.federicocolantoni.projects.interventix.service.InterventixService"
             android:exported="false" >
+        </service>
+        <service android:name="com.federicocolantoni.projects.interventix.authentication.InterventixAuthenticatorService" >
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
         </service>
 
         <provider

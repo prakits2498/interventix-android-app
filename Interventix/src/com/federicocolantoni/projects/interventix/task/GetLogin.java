@@ -4,6 +4,8 @@ import java.net.SocketTimeoutException;
 
 import org.json.JSONObject;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -37,9 +39,11 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 
 	private SharedPreferences defaultPrefs;
 
-	private String mUsername, mPassword;
+	private String mUsername, mPassword, mAuthToken;
 
-	public GetLogin(Activity activity, String username, String password) {
+	private AccountManager accountManager;
+
+	public GetLogin(Activity activity, String username, String password, String authToken) {
 
 		mContext = activity;
 
@@ -47,6 +51,9 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 
 		mUsername = username;
 		mPassword = password;
+		mAuthToken = authToken;
+
+		accountManager = AccountManager.get(mContext);
 
 		progress = new ProgressDialog(mContext);
 		progress.setIndeterminate(true);
@@ -183,6 +190,11 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 	protected void onPostExecute(Integer result) {
 
 		if (result == Activity.RESULT_OK) {
+
+			final Account account = new Account(mUsername, Constants.ACCOUNT_TYPE_INTERVENTIX);
+
+			accountManager.addAccountExplicitly(account, mPassword, null);
+			accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, mAuthToken);
 
 			mContext.startActivity(new Intent(mContext, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
 		} else

@@ -19,6 +19,9 @@
     <string name="changelog_row_bulletpoint">\u2022"</string>
 
     <!-- String resources for Interventix app -->
+    <string name="account_type_interventix">com.multiface.interventix</string>
+    <string name="account_settings_key">ACCOUNT_SETTINGS</string>
+    <string name="account_settings_title">Opzioni account</string>
     <string name="string_badge">Nuovi interventi!</string>
     <string name="app_name">Interventix</string>
     <string name="menu_settings">Opzioni</string>

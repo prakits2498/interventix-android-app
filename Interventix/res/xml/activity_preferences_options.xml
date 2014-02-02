@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-	<PreferenceCategory android:title="Opzioni di connessione" >
-		<EditTextPreference
-			android:defaultValue="@string/default_url"
-			android:hint="@string/prefs_url_hint"
-			android:key="@string/prefs_key_url"
-			android:summary="@string/prefs_url_title"
-			android:title="URL Connection" />
-	</PreferenceCategory>
+    <PreferenceCategory android:title="Opzioni di connessione" >
+        <EditTextPreference
+            android:defaultValue="@string/default_url"
+            android:hint="@string/prefs_url_hint"
+            android:key="@string/prefs_key_url"
+            android:summary="@string/prefs_url_title"
+            android:title="URL server Interventix" />
+    </PreferenceCategory>
 
 </PreferenceScreen>
