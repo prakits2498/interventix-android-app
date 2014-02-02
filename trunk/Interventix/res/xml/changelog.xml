@@ -1,45 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-	<release
-		version="0.0.550"
-		versioncode="55" >
-		<change>
+    <release
+        version="0.0.700"
+        versioncode="70" >
+        <change>
+            Aggiunta la gestione dell'account dell'applicazione integrandolo nella sezione "Account" delle impostazioni di Android.
+        </change>
+    </release>
+    <release
+        version="0.0.600"
+        versioncode="60" >
+        <change>
+            Aggiunta la modifica dei riferimenti alla fattura e allo scontrino.
+        </change>
+        <change>
+            Refactoring dei packages delle classi della UI e dei nomi dei layouts.
+        </change>
+        <change>
+            Modifiche alla gestione dei dettagli di un intervento.
+        </change>
+        <change>
+            Altre modifiche minori.
+        </change>
+    </release>
+    <release
+        version="0.0.550"
+        versioncode="55" >
+        <change>
 			Modificata la gestione della selezione del cliente.
-		</change>
-		<change>
+        </change>
+        <change>
 			Modifiche all'interfaccia grafica.
-		</change>
-	</release>
-	<release
-		version="0.0.500"
-		versioncode="50" >
-		<change>
-			Aggiornamento della libreria AndroidAnnotations alla versione 3.0.1
-		</change>
-		<change>
-			Implementazione del mapping JSON-Java tramite la libreria Gson
-		</change>
-		<change>
-			Ristrutturazione del progetto.
-		</change>
-	</release>
-	<release
-		version="0.0.450"
-		versioncode="45" >
-		<change>
-			Implementato lo swipe sulla singola cella della lista clienti per la visualizzazione del tasto "Modifica"
-		</change>
-		<change>
-			Implementazione del service per la gestione del buffer.
-		</change>
-		<change>
-			Colorazione degli interventi nella schermata principale in base alla seguente
-			naming convention per l'attributo "Modificato":
-			- "M" quando l'oggetto viene modificato localmente al device
-			- "U" quando l'oggetto viene scaricato nuovo o aggiornato dal server
-			- "N" quando l'oggetto viene creato nuovo localmente al device
-		</change>
-	</release>
+        </change>
+    </release>
 
 </changelog>
