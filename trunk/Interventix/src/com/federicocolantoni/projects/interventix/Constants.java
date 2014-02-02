@@ -5,6 +5,13 @@ public final class Constants {
 	// *** API key BugSense ***\\
 	public static final String API_KEY = "0ec355e8";
 
+	// *** Account Type for AccountManager ***\\
+	public static final String ACCOUNT_TYPE_INTERVENTIX = "com.multiface.interventix";
+	public static final String ACCOUNT_AUTH_TOKEN = "InterventixAuthenticatorToken";
+	public static final String ACCOUNT_NAME = "ACCOUNT_NAME";
+	public static final String TAG_AUTHENTICATOR = "InterventiAuthenticator";
+	public static final String ADDING_NEW_ACCOUNT = "ADDING_NEW_ACCOUNT";
+
 	// *** costanti generali ***\\
 	public static final String ACCESS_ALLOWED = "ACCESSO CONSENTITO";
 	public static final String ACCESS_DINIED = "ACCESSO NEGATO";
