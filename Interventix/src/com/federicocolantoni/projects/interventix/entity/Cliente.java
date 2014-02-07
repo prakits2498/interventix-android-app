@@ -7,8 +7,11 @@ import android.database.Cursor;
 
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
+import com.roscopeco.ormdroid.Entity;
+import com.roscopeco.ormdroid.Table;
 
-public class Cliente implements Serializable {
+@Table(name = "Cliente")
+public class Cliente extends Entity implements Serializable {
 
 	/**
      * 

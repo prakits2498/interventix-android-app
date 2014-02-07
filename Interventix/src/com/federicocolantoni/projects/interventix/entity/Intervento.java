@@ -9,8 +9,11 @@ import android.database.Cursor;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
+import com.roscopeco.ormdroid.Entity;
+import com.roscopeco.ormdroid.Table;
 
-public class Intervento implements Serializable {
+@Table(name = "Intervento")
+public class Intervento extends Entity implements Serializable {
 
 	/**
      * 

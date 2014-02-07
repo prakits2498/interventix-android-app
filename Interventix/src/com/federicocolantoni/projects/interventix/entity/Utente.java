@@ -6,8 +6,11 @@ import android.content.ContentValues;
 
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
+import com.roscopeco.ormdroid.Entity;
+import com.roscopeco.ormdroid.Table;
 
-public class Utente implements Serializable {
+@Table(name = "Tecnico")
+public class Utente extends Entity implements Serializable {
 
 	/**
      * 

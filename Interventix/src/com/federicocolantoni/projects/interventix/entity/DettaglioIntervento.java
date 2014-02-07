@@ -10,8 +10,11 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
+import com.roscopeco.ormdroid.Entity;
+import com.roscopeco.ormdroid.Table;
 
-public class DettaglioIntervento implements Serializable {
+@Table(name = "DettaglioIntervento")
+public class DettaglioIntervento extends Entity implements Serializable {
 
 	/**
      * 
