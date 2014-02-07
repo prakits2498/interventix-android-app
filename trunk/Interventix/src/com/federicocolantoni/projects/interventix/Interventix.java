@@ -7,6 +7,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.roscopeco.ormdroid.ORMDroidApplication;
 
 @EApplication
 public class Interventix extends Application {
@@ -30,6 +31,8 @@ public class Interventix extends Application {
 		BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
 
 		instance = this;
+
+		ORMDroidApplication.initialize(instance);
 
 		super.onCreate();
 		loadAsyncTask();
