@@ -80,7 +80,7 @@
 
         <meta-data
             android:name="ormdroid.database.name"
-            android:value="interventix_db" />
+            android:value="interventixDB" />
 
         <provider
             android:name="com.federicocolantoni.projects.interventix.data.InterventixContentProvider"

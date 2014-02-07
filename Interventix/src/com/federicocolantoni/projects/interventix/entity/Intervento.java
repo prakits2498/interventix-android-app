@@ -9,6 +9,7 @@ import android.database.Cursor;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
+import com.roscopeco.ormdroid.Column;
 import com.roscopeco.ormdroid.Entity;
 import com.roscopeco.ormdroid.Table;
 
@@ -20,7 +21,9 @@ public class Intervento extends Entity implements Serializable {
      */
 	private static final long serialVersionUID = -6145022542420590261L;
 
-	private Long idintervento, dataora, cliente, tecnico, numero;
+	@Column(primaryKey = true)
+	private Long idintervento;
+	private Long dataora, cliente, tecnico, numero;
 	private String tipologia, prodotto, motivo, nominativo, riffattura, rifscontrino, note, modalita, firma;
 	private boolean saldato, cancellato, chiuso, conflitto, nuovo;
 	private BigDecimal costomanodopera, costocomponenti, costoaccessori, importo, totale, iva;

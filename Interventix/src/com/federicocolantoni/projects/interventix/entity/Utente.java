@@ -6,6 +6,7 @@ import android.content.ContentValues;
 
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
+import com.roscopeco.ormdroid.Column;
 import com.roscopeco.ormdroid.Entity;
 import com.roscopeco.ormdroid.Table;
 
@@ -17,13 +18,15 @@ public class Utente extends Entity implements Serializable {
      */
 	private static final long serialVersionUID = -460809443185110082L;
 
-	private Long idutente, revisione;
-	private String nome, cognome, username, password, email, tipo;
-	private boolean cancellato, cestinato, conflitto;
+	@Column(primaryKey = true)
+	public Integer idutente;
+	public Long revisione;
+	public String nome, cognome, username, password, email, tipo;
+	public boolean cancellato, cestinato, conflitto;
 
 	public Utente() {
 
-		idutente = 0L;
+		idutente = 0;
 		revisione = 0L;
 		nome = new String();
 		cognome = new String();
@@ -36,7 +39,7 @@ public class Utente extends Entity implements Serializable {
 		conflitto = false;
 	}
 
-	public Utente(Long idUtente) {
+	public Utente(Integer idUtente) {
 
 		idutente = idUtente;
 	}
@@ -44,7 +47,7 @@ public class Utente extends Entity implements Serializable {
 	/**
 	 * @return the mIdUtente
 	 */
-	public Long getIdUtente() {
+	public Integer getIdUtente() {
 
 		return idutente;
 	}
@@ -53,7 +56,7 @@ public class Utente extends Entity implements Serializable {
 	 * @param mIdUtente
 	 *            the mIdUtente to set
 	 */
-	public void setIdUtente(Long mIdUtente) {
+	public void setIdUtente(Integer mIdUtente) {
 
 		idutente = mIdUtente;
 	}

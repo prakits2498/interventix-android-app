@@ -96,6 +96,17 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 
 					JSONObject data = response.getJSONObject("data");
 
+					// *** gestione DB tramite ORMDroid - inizio ***\\
+
+					Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+
+					Utente ormUtente = gson.fromJson(data.toString(), Utente.class);
+					ormUtente.save();
+
+					System.out.println(ormUtente.toString());
+
+					// *** gestione DB tramite ORMDroid - fine ***\\
+
 					ContentResolver cr = mContext.getContentResolver();
 					ContentValues values;
 
@@ -109,7 +120,8 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 
 						// Update user's informations
 
-						Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+						// Gson gson = new
+						// GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
 						Utente updateUser = new Utente();
 
@@ -142,7 +154,8 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 
 						Utente newUser = new Utente();
 
-						Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+						// Gson gson = new
+						// GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
 						newUser = gson.fromJson(data.toString(), Utente.class);
 
