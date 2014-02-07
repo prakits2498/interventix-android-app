@@ -10,6 +10,7 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
+import com.roscopeco.ormdroid.Column;
 import com.roscopeco.ormdroid.Entity;
 import com.roscopeco.ormdroid.Table;
 
@@ -21,7 +22,9 @@ public class DettaglioIntervento extends Entity implements Serializable {
      */
 	private static final long serialVersionUID = 3301272979527832708L;
 
-	private Long iddettagliointervento, idintervento, inizio, fine;
+	@Column(primaryKey = true)
+	private Long iddettagliointervento;
+	private Long idintervento, inizio, fine;
 	private String tipo, oggetto, descrizione, tecniciintervento, modificato;
 	private boolean nuovo;
 

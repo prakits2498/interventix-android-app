@@ -7,6 +7,7 @@ import android.database.Cursor;
 
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
+import com.roscopeco.ormdroid.Column;
 import com.roscopeco.ormdroid.Entity;
 import com.roscopeco.ormdroid.Table;
 
@@ -18,7 +19,9 @@ public class Cliente extends Entity implements Serializable {
      */
 	private static final long serialVersionUID = 6163117197009443000L;
 
-	private Long idcliente, revisione;
+	@Column(primaryKey = true)
+	private Long idcliente;
+	private Long revisione;
 	private String nominativo, codicefiscale, partitaiva, telefono, fax, email, referente, citta, indirizzo, interno, ufficio, note;
 	private boolean cancellato, conflitto;
 
