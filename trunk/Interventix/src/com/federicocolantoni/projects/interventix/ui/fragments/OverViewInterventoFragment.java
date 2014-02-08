@@ -117,7 +117,7 @@ public class OverViewInterventoFragment extends Fragment {
     
     private void updateUI() {
     
-	tv_row_client.setText(InterventoController.controller.getCliente().getNominativo());
+	tv_row_client.setText(InterventoController.controller.getCliente().nominativo);
 	
 	tv_row_tecnico.setText(prefs.getString(Constants.USER_NOMINATIVO, ""));
 	tv_row_tecnico.setBackgroundColor(Color.LTGRAY);

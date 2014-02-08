@@ -156,7 +156,7 @@ public class InterventoController {
 	String selectionCliente = Fields.TYPE + "=? AND " + ClienteDB.Fields.ID_CLIENTE + "=?";
 	
 	String[] selectionArgsCliente = new String[] {
-	ClienteDB.CLIENTE_ITEM_TYPE, "" + controller.getCliente().getIdCliente()
+	ClienteDB.CLIENTE_ITEM_TYPE, "" + controller.getCliente().idcliente
 	};
 	
 	updateOnDB.startUpdate(Constants.TOKEN_SAVE_CLIENTE, null, Data.CONTENT_URI, valuesCliente, selectionCliente, selectionArgsCliente);

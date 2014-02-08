@@ -99,7 +99,7 @@ public class ListInterventiAdapter extends CursorAdapter {
 	Cliente cliente = null;
 	try {
 	    cliente = clienteAsyncTask.get();
-	    tv_cliente_intervento.setText(cliente.getNominativo());
+	    tv_cliente_intervento.setText(cliente.nominativo);
 	}
 	catch (InterruptedException e) {
 	    

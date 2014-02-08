@@ -110,7 +110,7 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 	
 	for (int i = 0; i < ListClientiAdapter.checkedItems.size(); i++) {
 	    if (ListClientiAdapter.checkedItems.get(i)) {
-		checkedItems.add(getItem(i).getNominativo());
+		checkedItems.add(getItem(i).nominativo);
 	    }
 	}
 	
@@ -148,9 +148,9 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 	
 	Cliente cliente = getItem(position);
 	
-	holder.tv_row_nominativo.setText(String.format("%s", cliente.getNominativo()));
-	holder.tv_row_cod_fis.setText(String.format("%s", cliente.getCodiceFiscale()));
-	holder.tv_row_p_iva.setText(String.format("%s", cliente.getPartitaIVA()));
+	holder.tv_row_nominativo.setText(String.format("%s", cliente.nominativo));
+	holder.tv_row_cod_fis.setText(String.format("%s", cliente.codicefiscale));
+	holder.tv_row_p_iva.setText(String.format("%s", cliente.partitaiva));
 	
 	if (checkedItems.get(position)) {
 	    
@@ -201,7 +201,7 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 			Cliente clChecked = getItem(position);
 			
 			InterventoController.controller.setCliente(clChecked);
-			InterventoController.controller.getIntervento().cliente = (clChecked.getIdCliente());
+			InterventoController.controller.getIntervento().cliente = (clChecked.idcliente);
 			
 			FragmentManager manager = context.getSupportFragmentManager();
 			manager.popBackStackImmediate();
@@ -271,7 +271,7 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 		
 		for (Cliente cl : listaClientiTemp) {
 		    
-		    if (cl.getNominativo().toUpperCase(Locale.ITALIAN).contains(constraint.toString().toUpperCase(Locale.ITALIAN)))
+		    if (cl.nominativo.toUpperCase(Locale.ITALIAN).contains(constraint.toString().toUpperCase(Locale.ITALIAN)))
 			listClientiFiltered.add(cl);
 		}
 		

@@ -82,7 +82,7 @@ public class InterventixService extends IntentService {
 		
 		Cliente newCliente = Cliente.getFromCursor(cursor);
 		
-		System.out.println(Cliente.class.getSimpleName() + ": " + newCliente.getNominativo());
+		System.out.println(Cliente.class.getSimpleName() + ": " + newCliente.nominativo);
 	    }
 	    
 	    if (!cursor.isClosed()) {
