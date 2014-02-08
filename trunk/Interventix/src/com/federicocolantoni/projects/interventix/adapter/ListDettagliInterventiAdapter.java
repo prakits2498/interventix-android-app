@@ -52,7 +52,7 @@ public class ListDettagliInterventiAdapter extends BaseAdapter {
 	
 	DettaglioIntervento dettaglio = getItem(position);
 	
-	if (dettaglio.getModificato().equals(Constants.DETTAGLIO_NUOVO) || dettaglio.getModificato().equals(Constants.DETTAGLIO_MODIFICATO))
+	if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO) || dettaglio.modificato.equals(Constants.DETTAGLIO_MODIFICATO))
 	    modifiedAndNewDetalis.put(position, true);
 	else
 	    modifiedAndNewDetalis.put(position, false);
@@ -65,10 +65,10 @@ public class ListDettagliInterventiAdapter extends BaseAdapter {
 	TextView tvTypeDetail = (TextView) convertView.findViewById(R.id.tv_type_detail_interv);
 	TextView tvObjectDetail = (TextView) convertView.findViewById(R.id.tv_object_detail_interv);
 	
-	tvTypeDetail.setText(dettaglio.getTipo());
-	tvObjectDetail.setText(dettaglio.getOggetto());
+	tvTypeDetail.setText(dettaglio.tipo);
+	tvObjectDetail.setText(dettaglio.oggetto);
 	
-	if (dettaglio.isNuovo()) {
+	if (dettaglio.nuovo) {
 	    String oldText = tvTypeDetail.getText().toString();
 	    tvTypeDetail.setText(oldText + " (N)");
 	}

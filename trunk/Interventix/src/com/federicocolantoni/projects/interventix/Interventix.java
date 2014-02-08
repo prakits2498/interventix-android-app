@@ -7,46 +7,44 @@ import android.app.Application;
 import android.content.Context;
 
 import com.bugsense.trace.BugSenseHandler;
-import com.roscopeco.ormdroid.ORMDroidApplication;
 
 @EApplication
 public class Interventix extends Application {
-
-	private static Interventix instance;
-
-	public static Interventix getInstance() {
-
-		return instance;
+    
+    private static Interventix instance;
+    
+    public static Interventix getInstance() {
+    
+	return instance;
+    }
+    
+    public static Context getContext() {
+    
+	return instance.getApplicationContext();
+    }
+    
+    @SuppressLint("NewApi")
+    @Override
+    public void onCreate() {
+    
+	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
+	
+	instance = this;
+	
+	super.onCreate();
+	loadAsyncTask();
+    }
+    
+    private void loadAsyncTask() {
+    
+	try {
+	    Class.forName("android.os.AsyncTask");
 	}
-
-	public static Context getContext() {
-
-		return instance.getApplicationContext();
+	catch (ClassNotFoundException e) {
+	    
+	    BugSenseHandler.sendException(e);
+	    
+	    e.printStackTrace();
 	}
-
-	@SuppressLint("NewApi")
-	@Override
-	public void onCreate() {
-
-		BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
-
-		instance = this;
-
-		ORMDroidApplication.initialize(instance);
-
-		super.onCreate();
-		loadAsyncTask();
-	}
-
-	private void loadAsyncTask() {
-
-		try {
-			Class.forName("android.os.AsyncTask");
-		} catch (ClassNotFoundException e) {
-
-			BugSenseHandler.sendException(e);
-
-			e.printStackTrace();
-		}
-	}
+    }
 }

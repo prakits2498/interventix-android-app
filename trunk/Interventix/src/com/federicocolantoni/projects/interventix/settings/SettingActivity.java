@@ -12,16 +12,16 @@ import com.federicocolantoni.projects.interventix.R;
  */
 @SuppressLint("NewApi")
 public class SettingActivity extends PreferenceActivity {
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-
-		super.onCreate(savedInstanceState);
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingFragment()).commit();
-		else
-			addPreferencesFromResource(R.xml.activity_support_preferences_options);
-	}
+    
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+    
+	super.onCreate(savedInstanceState);
+	
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+	    getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingFragment()).commit();
+	else
+	    addPreferencesFromResource(R.xml.activity_support_preferences_options);
+    }
 }
