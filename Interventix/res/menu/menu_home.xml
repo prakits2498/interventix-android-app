@@ -1,15 +1,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:interventix="http://schemas.android.com/apk/res-auto" >
+	xmlns:interventix="http://schemas.android.com/apk/res-auto" >
 
-    <item
-        android:id="@+id/add_menu"
-        android:icon="@drawable/content_new_5"
-        android:title="@string/add_intervento_menu"
-        interventix:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/refresh_menu"
-        android:icon="@drawable/ic_action_refresh"
-        android:title="@string/refresh_interventi_menu"
-        interventix:showAsAction="ifRoom"/>
+	<item
+		android:id="@+id/add_menu"
+		android:icon="@drawable/content_new_5"
+		android:title="@string/add_intervento_menu"
+		interventix:showAsAction="ifRoom"/>
+	<item
+		android:id="@+id/refresh_menu"
+		android:icon="@drawable/ic_action_refresh"
+		android:title="@string/refresh_interventi_menu"
+		interventix:showAsAction="ifRoom"/>
+	<item
+		android:id="@+id/logout"
+		android:title="@string/logout_positive_btn"
+		interventix:showAsAction="never"/>
 
 </menu>

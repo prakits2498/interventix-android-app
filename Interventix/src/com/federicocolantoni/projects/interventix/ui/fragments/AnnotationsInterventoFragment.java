@@ -9,8 +9,8 @@ import android.support.v7.app.ActionBarActivity;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 
-@EFragment(R.layout.customer_fragment)
-public class ClientInterventoFragment extends Fragment {
+@EFragment(R.layout.annotations_fragment)
+public class AnnotationsInterventoFragment extends Fragment {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -20,6 +20,7 @@ public class ClientInterventoFragment extends Fragment {
 	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
 	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	
+	setHasOptionsMenu(true);
     }
     
     @Override
@@ -28,9 +29,20 @@ public class ClientInterventoFragment extends Fragment {
 	super.onStart();
 	
 	if (!InterventoController.controller.getIntervento().nuovo)
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_client));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_annotations));
 	else
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_client));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_annotations));
+    }
+    
+    @Override
+    public void onResume() {
+    
+	super.onResume();
 	
+	updateUI();
+    }
+    
+    private void updateUI() {
+    
     }
 }

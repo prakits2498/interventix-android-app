@@ -11,43 +11,47 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Dat
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 
 public class GetNominativoClienteAsyncTask extends AsyncTask<Long, Void, Cliente> {
-
-	private Context context;
-
-	public GetNominativoClienteAsyncTask(Context context) {
-
-		this.context = context.getApplicationContext();
+    
+    private Context context;
+    
+    public GetNominativoClienteAsyncTask(Context context) {
+    
+	this.context = context.getApplicationContext();
+    }
+    
+    @Override
+    protected Cliente doInBackground(Long... params) {
+    
+	ContentResolver cr = context.getContentResolver();
+	
+	String[] projection = new String[] {
+	Fields._ID, ClienteDB.Fields.NOMINATIVO
+	};
+	
+	String selection = Fields.TYPE + " =? AND " + ClienteDB.Fields.ID_CLIENTE + " = ?";
+	
+	String[] selectionArgs = new String[] {
+	ClienteDB.CLIENTE_ITEM_TYPE, "" + params[0]
+	};
+	
+	Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
+	
+	Cliente cliente = new Cliente();
+	
+	if (cursor != null) {
+	    if (cursor.moveToFirst()) {
+		cliente.setNominativo(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOMINATIVO)));
+	    }
+	    
+	    if (!cursor.isClosed())
+		cursor.close();
 	}
-
-	@Override
-	protected Cliente doInBackground(Long... params) {
-
-		ContentResolver cr = context.getContentResolver();
-
-		String[] projection = new String[] { Fields._ID, ClienteDB.Fields.NOMINATIVO };
-
-		String selection = Fields.TYPE + " =? AND " + ClienteDB.Fields.ID_CLIENTE + " = ?";
-
-		String[] selectionArgs = new String[] { ClienteDB.CLIENTE_ITEM_TYPE, "" + params[0] };
-
-		Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
-
-		Cliente cliente = new Cliente();
-
-		if (cursor != null) {
-			if (cursor.moveToFirst()) {
-				cliente.setNominativo(cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOMINATIVO)));
-			}
-
-			if (!cursor.isClosed())
-				cursor.close();
-		}
-
-		return cliente;
-	}
-
-	@Override
-	protected void onPostExecute(Cliente result) {
-
-	}
+	
+	return cliente;
+    }
+    
+    @Override
+    protected void onPostExecute(Cliente result) {
+    
+    }
 }
