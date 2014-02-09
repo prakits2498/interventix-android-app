@@ -1,57 +1,26 @@
 package com.federicocolantoni.projects.interventix.task;
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.database.Cursor;
 import android.os.AsyncTask;
 
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
+import com.federicocolantoni.projects.interventix.Interventix_;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 public class GetNominativoClienteAsyncTask extends AsyncTask<Long, Void, Cliente> {
     
-    private Context context;
+    public GetNominativoClienteAsyncTask() {
     
-    public GetNominativoClienteAsyncTask(Context context) {
-    
-	this.context = context.getApplicationContext();
     }
     
     @Override
     protected Cliente doInBackground(Long... params) {
     
-	ContentResolver cr = context.getContentResolver();
+	RuntimeExceptionDao<Cliente, Long> clienteDao = Interventix_.getDbHelper().getRuntimeClienteDao();
 	
-	String[] projection = new String[] {
-	Fields._ID, ClienteDB.Fields.NOMINATIVO
-	};
+	Cliente cliente = clienteDao.queryForId(params[0]);
 	
-	String selection = Fields.TYPE + " =? AND " + ClienteDB.Fields.ID_CLIENTE + " = ?";
-	
-	String[] selectionArgs = new String[] {
-	ClienteDB.CLIENTE_ITEM_TYPE, "" + params[0]
-	};
-	
-	Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
-	
-	Cliente cliente = new Cliente();
-	
-	if (cursor != null) {
-	    if (cursor.moveToFirst()) {
-		cliente.nominativo = (cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOMINATIVO)));
-	    }
-	    
-	    if (!cursor.isClosed())
-		cursor.close();
-	}
+	Interventix_.releaseDbHelper();
 	
 	return cliente;
-    }
-    
-    @Override
-    protected void onPostExecute(Cliente result) {
-    
     }
 }

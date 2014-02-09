@@ -1,9 +1,10 @@
 package com.federicocolantoni.projects.interventix.ui.activity;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import multiface.crypto.cr2.JsonCR2;
 
@@ -16,19 +17,12 @@ import org.json.JSONObject;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.view.KeyEvent;
@@ -43,23 +37,17 @@ import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.Constants.BUFFER_TYPE;
-import com.federicocolantoni.projects.interventix.Interventix;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.ListInterventiAdapter;
+import com.federicocolantoni.projects.interventix.controller.ClienteController;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.controller.InterventoSingleton;
+import com.federicocolantoni.projects.interventix.controller.UtenteController;
 import com.federicocolantoni.projects.interventix.core.BufferInterventix;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.entity.Intervento;
 import com.federicocolantoni.projects.interventix.entity.Utente;
-import com.federicocolantoni.projects.interventix.task.GetNominativoUtenteAsyncTask;
 import com.federicocolantoni.projects.interventix.utils.BigDecimalTypeAdapter;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.ManagedAsyncTask;
@@ -67,27 +55,20 @@ import com.federicocolantoni.projects.interventix.utils.Utils;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 @SuppressLint("NewApi")
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<Cursor> {
+public class HomeActivity extends ActionBarActivity {
     
-    private final static int MESSAGE_LOADER = 1;
-    
-    static final String[] PROJECTION = new String[] {
-    InterventoDB.Fields._ID, InterventoDB.Fields.NUMERO_INTERVENTO, InterventoDB.Fields.CLIENTE, InterventoDB.Fields.ID_INTERVENTO, InterventoDB.Fields.DATA_ORA, InterventoDB.Fields.CONFLITTO, InterventoDB.Fields.NUOVO, InterventoDB.Fields.MODIFICATO
-    };
-    
-    static final String SELECTION = InterventoDB.Fields.TYPE + "=? AND " + InterventoDB.Fields.CHIUSO + "=? AND " + InterventoDB.Fields.TECNICO + "=?";
-    
-    private String[] SELECTION_ARGS;
-    
-    private ListInterventiAdapter mAdapter;
+    private ListInterventiAdapter adapter;
     
     private Menu optionsMenu;
     
@@ -105,7 +86,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     @StringRes(R.string.toast_error_syncro_interventions)
     String toast_error_syncro_interventions;
     
-    // buffer per gli interventi e i clienti
     private BufferInterventix buffer;
     
     @Override
@@ -118,14 +98,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	
-	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
-	
-	System.out.println("Tecnico ID: " + prefs.getLong(Constants.USER_ID, 0l));
-	
-	SELECTION_ARGS = new String[] {
-	InterventoDB.INTERVENTO_ITEM_TYPE, "0", prefs.getLong(Constants.USER_ID, 0l) + ""
-	};
-	
 	buffer = BufferInterventix.getBufferInterventix();
     }
     
@@ -134,35 +106,34 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
     
 	super.onStart();
 	
+	getSupportActionBar().setTitle(UtenteController.tecnicoLoggato.nome + " " + UtenteController.tecnicoLoggato.cognome);
+	
 	InterventoController.controller = null;
 	
 	getUsersSyncro();
 	
 	listOpen = (ListView) findViewById(R.id.list_interv_open);
 	
-	mAdapter = new ListInterventiAdapter(this, null);
-	
-	listOpen.setAdapter(mAdapter);
-	
-	getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
-	
 	listOpen.setOnItemClickListener(new OnItemClickListener() {
 	    
 	    @Override
 	    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 	    
-		Bundle bundle = new Bundle();
-		
-		Cursor cur = (Cursor) adapter.getItemAtPosition(position);
-		
-		bundle.putLong(Constants.ID_INTERVENTO, cur.getLong(cur.getColumnIndex(InterventoDB.Fields.ID_INTERVENTO)));
-		bundle.putLong(Constants.NUMERO_INTERVENTO, cur.getLong(cur.getColumnIndex(InterventoDB.Fields.NUMERO_INTERVENTO)));
-		
-		Intent intent = new Intent(HomeActivity.this, ViewInterventoActivity_.class);
-		
-		intent.putExtras(bundle);
-		
-		startActivity(intent);
+		// Bundle bundle = new Bundle();
+		//
+		// Cursor cur = (Cursor) adapter.getItemAtPosition(position);
+		//
+		// bundle.putLong(Constants.ID_INTERVENTO,
+		// cur.getLong(cur.getColumnIndex(InterventoDB.Fields.ID_INTERVENTO)));
+		// bundle.putLong(Constants.NUMERO_INTERVENTO,
+		// cur.getLong(cur.getColumnIndex(InterventoDB.Fields.NUMERO_INTERVENTO)));
+		//
+		// Intent intent = new Intent(HomeActivity.this,
+		// ViewInterventoActivity_.class);
+		//
+		// intent.putExtras(bundle);
+		//
+		// startActivity(intent);
 	    }
 	});
     }
@@ -223,22 +194,6 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		
 		accountManager.clearPassword(account);
 		
-		SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-		
-		final Editor edit = prefs.edit().putBoolean(Constants.AUTHENTICATED, false);
-		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-		    edit.apply();
-		else {
-		    
-		    new Thread(new Runnable() {
-			public void run() {
-			
-			    edit.commit();
-			}
-		    }).start();
-		}
-		
 		finish();
 		
 		break;
@@ -296,23 +251,8 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	}
     }
     
-    private String setNominativo() throws InterruptedException, ExecutionException {
-    
-	prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-	
-	GetNominativoUtenteAsyncTask nominativo = new GetNominativoUtenteAsyncTask(Interventix.getContext());
-	
-	nominativo.execute(prefsLocal.getLong(Constants.USER_ID, 0l));
-	
-	Utente utente = nominativo.get();
-	
-	return utente.nome + " " + utente.cognome;
-    }
-    
     private void getUsersSyncro() {
     
-	prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-	
 	new ManagedAsyncTask<Long, Void, Integer>(HomeActivity.this) {
 	    
 	    @Override
@@ -326,10 +266,8 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	    
 		String json_req = new String();
 		
-		ContentResolver cr = getContentResolver();
-		
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("revision", prefsLocal.getLong(Constants.REVISION_TECNICI, 0));
+		parameters.put("revision", UtenteController.revisioneUtenti);
 		
 		int result = 0;
 		
@@ -337,77 +275,45 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		    
 		    json_req = JsonCR2.createRequest("users", "syncro", parameters, params[0].intValue());
 		    
-		    System.out.println("REQUEST SYNCRO USERS:\n" + json_req);
+		    SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
 		    
-		    final SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+		    String prefs_url = getResources().getString(R.string.prefs_key_url);
 		    
-		    final String prefs_url = getResources().getString(R.string.prefs_key_url);
-		    
-		    final String url_string = prefsDefault.getString(prefs_url, null);
+		    String url_string = prefsDefault.getString(prefs_url, null);
 		    
 		    JSONObject response = new org.json.JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
-		    
-		    System.out.println("RESPONSE SYNCRO USERS:\n" + response.toString());
 		    
 		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
 			JSONObject data = response.getJSONObject("data");
 			
-			System.out.println("REVISIONE UTENTI " + data.getLong("revision"));
-			
-			final Editor editor = prefsLocal.edit();
-			
-			editor.putLong(Constants.REVISION_TECNICI, data.getLong("revision"));
-			
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			    editor.apply();
-			}
-			else {
-			    new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-				
-				    editor.commit();
-				}
-			    }).start();
-			}
+			UtenteController.revisioneUtenti = data.getLong("revision");
 			
 			JSONArray usersMOD = data.getJSONArray("mod");
 			JSONArray usersDEL = data.getJSONArray("del");
 			
-			ContentValues values = new ContentValues();
+			Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+			
+			RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 			
 			for (int i = 0; i < usersMOD.length(); i++) {
+			    
 			    JSONObject obj = usersMOD.getJSONObject(i);
 			    
-			    System.out.println("INSERT MOD USERS");
+			    Utente utente = gson.fromJson(obj.toString(), Utente.class);
 			    
-			    if (obj.getLong("idutente") != params[0]) {
-				
-				Utente newUser = new Utente();
-				
-				newUser = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create().fromJson(obj.toString(), Utente.class);
-				
-				values = Utente.insertSQL(newUser);
-				
-				cr.insert(Data.CONTENT_URI, values);
+			    if (!utenteDao.idExists(utente.idutente))
+				utenteDao.create(utente);
+			    else {
+				utenteDao.update(utente);
 			    }
 			}
 			
 			if (usersDEL.length() > 0) {
+			    
 			    for (int k = 0; k < usersDEL.length(); k++) {
 				
-				String where = UtenteDB.Fields.ID_UTENTE + " = ? AND " + Fields.TYPE + " = ?";
-				
-				String[] selectionArgs = new String[] {
-				"" + usersDEL.getLong(k), UtenteDB.UTENTE_ITEM_TYPE
-				};
-				
-				cr.delete(Data.CONTENT_URI, where, selectionArgs);
+				utenteDao.deleteById(usersDEL.getLong(k));
 			    }
-			}
-			else {
-			    System.out.println("DEL USERS EMPTY");
 			}
 			
 			result = RESULT_OK;
@@ -428,24 +334,23 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	    @Override
 	    protected void onPostExecute(Integer result) {
 	    
-		if (result == RESULT_OK) {
+		if (result == RESULT_OK)
 		    getClientsSyncro();
-		}
 		else {
 		    
 		    InterventixToast.makeToast(toast_error_syncro_users, Toast.LENGTH_LONG);
 		    
 		    setRefreshActionButtonState(false);
+		    
+		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 		}
 	    }
 	    
-	}.execute(prefsLocal.getLong(Constants.USER_ID, 0l));
+	}.execute(UtenteController.tecnicoLoggato.idutente);
     }
     
     private void getClientsSyncro() {
     
-	prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-	
 	new ManagedAsyncTask<Long, Void, Integer>(HomeActivity.this) {
 	    
 	    @Override
@@ -458,10 +363,8 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	    
 		String json_req = new String();
 		
-		ContentResolver cr = getContentResolver();
-		
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("revision", prefsLocal.getLong(Constants.REVISION_CLIENTI, 0));
+		parameters.put("revision", ClienteController.revisioneClienti);
 		
 		int result = 0;
 		
@@ -469,99 +372,41 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		    
 		    json_req = JsonCR2.createRequest("clients", "syncro", parameters, params[0].intValue());
 		    
-		    final SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+		    SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
 		    
-		    final String prefs_url = getResources().getString(R.string.prefs_key_url);
+		    String prefs_url = getResources().getString(R.string.prefs_key_url);
 		    
-		    final String url_string = prefsDefault.getString(prefs_url, null);
+		    String url_string = prefsDefault.getString(prefs_url, null);
 		    
 		    JSONObject response = new JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
 		    
 		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
 			JSONObject data = response.getJSONObject("data");
 			
-			System.out.println("REVISIONE CLIENTI " + data.getLong("revision"));
+			ClienteController.revisioneClienti = data.getLong("revision");
 			
-			final Editor editor = prefsLocal.edit();
-			
-			editor.putLong(Constants.REVISION_CLIENTI, data.getLong("revision"));
-			
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			    editor.apply();
-			}
-			else {
-			    new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-				
-				    editor.commit();
-				}
-			    }).start();
-			}
+			RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 			
 			JSONArray clientsMOD = data.getJSONArray("mod");
 			JSONArray clientsDEL = data.getJSONArray("del");
 			
-			Cursor cursorCliente = null;
+			Gson gson = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 			
 			for (int i = 0; i < clientsMOD.length(); i++) {
 			    
-			    JSONObject cliente = clientsMOD.getJSONObject(i);
+			    JSONObject clienteJSON = clientsMOD.getJSONObject(i);
 			    
-			    String selectionCliente = Fields.TYPE + " = ? AND " + ClienteDB.Fields.ID_CLIENTE + " = ?";
+			    Cliente cliente = gson.fromJson(clienteJSON.toString(), Cliente.class);
 			    
-			    String[] selectionClienteArgs = new String[] {
-			    ClienteDB.CLIENTE_ITEM_TYPE, "" + cliente.getLong("idcliente")
-			    };
-			    
-			    cursorCliente = cr.query(Data.CONTENT_URI, null, selectionCliente, selectionClienteArgs, null);
-			    
-			    ContentValues values = new ContentValues();
-			    
-			    if (cursorCliente.getCount() > 0) {
-				
-				// *** UPDATE CLIENTE ***\\
-				
-				Cliente updateCliente = new Cliente();
-				
-				updateCliente = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create().fromJson(cliente.toString(), Cliente.class);
-				
-				values = Cliente.updateSQL(updateCliente);
-				
-				cr.update(Data.CONTENT_URI, values, Fields.TYPE + "=? AND " + ClienteDB.Fields.ID_CLIENTE + "=?", new String[] {
-				ClienteDB.CLIENTE_ITEM_TYPE, "" + cliente.getLong("idcliente")
-				});
-				
-				cursorCliente.close();
-			    }
-			    else {
-				
-				// *** INSERT CLIENTE ***\\
-				
-				Cliente newCliente = new Cliente();
-				
-				newCliente = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create().fromJson(cliente.toString(), Cliente.class);
-				
-				values = Cliente.insertSQL(newCliente);
-				
-				cr.insert(Data.CONTENT_URI, values);
-				
-				cursorCliente.close();
-				
-			    }
+			    if (!clienteDao.idExists(cliente.idcliente))
+				clienteDao.create(cliente);
+			    else
+				clienteDao.update(cliente);
 			}
 			
 			for (int k = 0; k < clientsDEL.length(); k++) {
 			    
-			    String where = ClienteDB.Fields.ID_CLIENTE + " = ? AND " + Fields.TYPE + " = ?";
-			    
-			    String[] selectionArgs = new String[] {
-			    "" + clientsDEL.getLong(k), ClienteDB.CLIENTE_ITEM_TYPE
-			    };
-			    
-			    cr.delete(Data.CONTENT_URI, where, selectionArgs);
-			    
+			    clienteDao.deleteById(clientsDEL.getLong(k));
 			}
 			
 			result = RESULT_OK;
@@ -581,17 +426,18 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	    @Override
 	    protected void onPostExecute(Integer result) {
 	    
-		if (result == RESULT_OK) {
+		if (result == RESULT_OK)
 		    getInterventionsSyncro();
-		}
 		else {
 		    
 		    InterventixToast.makeToast(toast_error_syncro_clients, Toast.LENGTH_LONG);
 		    
 		    setRefreshActionButtonState(false);
+		    
+		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 		}
 	    }
-	}.execute(prefsLocal.getLong(Constants.USER_ID, 0l));
+	}.execute(UtenteController.tecnicoLoggato.idutente);
     }
     
     private void getInterventionsSyncro() {
@@ -601,16 +447,9 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	new ManagedAsyncTask<Long, Void, Integer>(HomeActivity.this) {
 	    
 	    @Override
-	    protected void onPreExecute() {
-	    
-	    };
-	    
-	    @Override
 	    protected Integer doInBackground(Long... params) {
 	    
 		String json_req = new String();
-		
-		ContentResolver cr = getContentResolver();
 		
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("revision", prefsLocal.getLong(Constants.REVISION_INTERVENTI, 0));
@@ -622,13 +461,11 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		try {
 		    json_req = JsonCR2.createRequest("interventions", "mysyncro", parameters, (int) iduser);
 		    
-		    System.out.println("Request mysyncro interventi\n" + json_req);
+		    SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
 		    
-		    final SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+		    String prefs_url = getResources().getString(R.string.prefs_key_url);
 		    
-		    final String prefs_url = getResources().getString(R.string.prefs_key_url);
-		    
-		    final String url_string = prefsDefault.getString(prefs_url, null);
+		    String url_string = prefsDefault.getString(prefs_url, null);
 		    
 		    JSONObject response = new JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
 		    
@@ -636,62 +473,29 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 			
 			JSONObject data = response.getJSONObject("data");
 			
-			System.out.println("REVISIONE INTERVENTI " + data.getLong("revision"));
+			InterventoController.revisioneInterventi = data.getLong("revision");
 			
-			final Editor editor = prefsLocal.edit();
-			
-			editor.putLong(Constants.REVISION_INTERVENTI, data.getLong("revision"));
-			
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			    editor.apply();
-			}
-			else {
-			    new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-				
-				    editor.commit();
-				}
-			    }).start();
-			}
+			RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
 			
 			JSONArray intervMOD = data.getJSONArray("mod");
 			JSONArray intervDEL = data.getJSONArray("del");
 			JSONArray interventions = data.getJSONArray("intervents");
 			
-			int cont = 0;
-			
-			// *** adding interventions that belong to
-			// the current responsible ***\\
 			if (intervMOD.length() > 0)
 			    for (int i = 0; i < intervMOD.length(); ++i) {
-				addInterventions((JSONObject) intervMOD.get(i), cont);
+				addInterventions((JSONObject) intervMOD.get(i), interventoDao);
 			    }
 			
-			// *** deleting interventions that not belong anymore to
-			// the current responsible ***\\
 			if (intervDEL.length() > 0)
-			    for (int i = 0; i < intervDEL.length(); ++i) {
-				
-				long intervID = intervDEL.getLong(i);
-				
-				String where = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
-				
-				String[] selectionArgs = new String[] {
-				InterventoDB.INTERVENTO_ITEM_TYPE, "" + intervID
-				};
-				
-				cr.delete(Data.CONTENT_URI, where, selectionArgs);
-				
-				System.out.println("Eliminato l'intervento " + intervID);
-				
-			    }
+			    for (int i = 0; i < intervDEL.length(); ++i)
+				interventoDao.deleteById(intervDEL.getLong(i));
 			
 			if (interventions.length() > 0)
 			    for (int k = 0; k < interventions.length(); ++k) {
 				
 			    }
+			
+			com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 			
 			result = RESULT_OK;
 		    }
@@ -708,146 +512,77 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 		return result;
 	    }
 	    
-	    private void addInterventions(JSONObject responseIntervs, int contProg) {
+	    private void addInterventions(JSONObject responseIntervs, RuntimeExceptionDao<Intervento, Long> interventoDao) {
 	    
-		ContentResolver cr = getContentResolver();
-		ContentValues values = new ContentValues();
-		
-		Cursor cursorIntervento = null;
+		Gson gson = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).registerTypeAdapter(new TypeToken<BigDecimal>() {
+		}.getType(), new BigDecimalTypeAdapter()).create();
 		
 		try {
 		    
-		    String selection = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+		    Intervento intervento = gson.fromJson(responseIntervs.toString(), Intervento.class);
 		    
-		    String[] selectionArgs = new String[] {
-		    InterventoDB.INTERVENTO_ITEM_TYPE, "" + responseIntervs.getLong("idintervento")
-		    };
-		    
-		    cursorIntervento = cr.query(Data.CONTENT_URI, null, selection, selectionArgs, null);
-		    
-		    if (cursorIntervento.getCount() == 0) {
-			
-			// *** INSERT INTERVENTO ***\\
-			
-			System.out.println("Inserimento intervento " + responseIntervs.getLong("idintervento"));
-			
-			Intervento newInterv = new Intervento();
-			
-			newInterv = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).registerTypeAdapter(new TypeToken<BigDecimal>() {
-			}.getType(), new BigDecimalTypeAdapter()).create().fromJson(responseIntervs.toString(), Intervento.class);
-			
-			values = Intervento.insertSQL(newInterv, true);
-			
-			cr.insert(Data.CONTENT_URI, values);
-			
-			JSONArray dettagli_intervento = responseIntervs.getJSONArray("dettagliintervento");
-			
-			for (int cont = 0; cont < dettagli_intervento.length(); cont++) {
-			    
-			    JSONObject newDettInterv = dettagli_intervento.getJSONObject(cont);
-			    
-			    JsonParser parser = new JsonParser();
-			    
-			    JsonObject jo = (JsonObject) parser.parse(newDettInterv.toString());
-			    
-			    JsonArray tecnici = jo.getAsJsonArray("tecniciintervento");
-			    
-			    // *** INSERT DETTAGLIO INTERVENTO *** \\
-			    
-			    DettaglioIntervento dtInt = new DettaglioIntervento();
-			    
-			    dtInt = new GsonBuilder().serializeNulls().setExclusionStrategies(new ExclusionStrategy() {
-				
-				@Override
-				public boolean shouldSkipField(FieldAttributes f) {
-				
-				    if (f.getName().equals("tecniciintervento"))
-					return true;
-				    else
-					return false;
-				}
-				
-				@Override
-				public boolean shouldSkipClass(Class<?> clazz) {
-				
-				    return false;
-				}
-			    }).setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create().fromJson(newDettInterv.toString(), DettaglioIntervento.class);
-			    
-			    dtInt.idintervento = (newInterv.idintervento);
-			    dtInt.tecniciintervento = (tecnici.toString());
-			    
-			    values = DettaglioIntervento.insertSQL(dtInt, true, false);
-			    
-			    cr.insert(Data.CONTENT_URI, values);
-			}
+		    if (!interventoDao.idExists(intervento.idintervento)) {
+			intervento.modificato = Constants.INTERVENTO_SINCRONIZZATO;
+			intervento.nuovo = false;
+			interventoDao.create(intervento);
 		    }
 		    else {
-			
-			// *** UPDATE INTERVENTO *** \\
-			
-			Intervento updateInterv = new Intervento();
-			
-			updateInterv = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).registerTypeAdapter(new TypeToken<BigDecimal>() {
-			}.getType(), new BigDecimalTypeAdapter()).create().fromJson(responseIntervs.toString(), Intervento.class);
-			
-			values = Intervento.updateSQL(updateInterv, true);
-			
-			String where = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
-			
-			cr.update(Data.CONTENT_URI, values, where, selectionArgs);
-			
-			JSONArray dettagli_intervento = responseIntervs.getJSONArray("dettagliintervento");
-			
-			for (int cont = 0; cont < dettagli_intervento.length(); cont++) {
-			    
-			    JSONObject dettInterv = dettagli_intervento.getJSONObject(cont);
-			    
-			    JsonParser parser = new JsonParser();
-			    
-			    JsonObject jo = (JsonObject) parser.parse(dettInterv.toString());
-			    
-			    JsonArray tecnici = jo.getAsJsonArray("tecniciintervento");
-			    
-			    // *** UPDATE DETTAGLIO INTERVENTO *** \\
-			    
-			    DettaglioIntervento dtInt = new DettaglioIntervento();
-			    
-			    dtInt = new GsonBuilder().serializeNulls().setExclusionStrategies(new ExclusionStrategy() {
-				
-				@Override
-				public boolean shouldSkipField(FieldAttributes f) {
-				
-				    if (f.getName().equals("tecniciintervento"))
-					return true;
-				    else
-					return false;
-				}
-				
-				@Override
-				public boolean shouldSkipClass(Class<?> clazz) {
-				
-				    return false;
-				}
-			    }).setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create().fromJson(dettInterv.toString(), DettaglioIntervento.class);
-			    
-			    dtInt.idintervento = (updateInterv.idintervento);
-			    dtInt.tecniciintervento = (tecnici.toString());
-			    
-			    values = DettaglioIntervento.updateSQL(dtInt, true, false);
-			    
-			    String selectionDettaglioIntervento = Fields.TYPE + " = ? AND " + DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO + " = ?";
-			    
-			    String[] selectionDettIntervArgs = new String[] {
-			    DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE, "" + dtInt.iddettagliointervento
-			    };
-			    
-			    cr.update(Data.CONTENT_URI, values, selectionDettaglioIntervento, selectionDettIntervArgs);
-			}
+			intervento.modificato = Constants.INTERVENTO_SINCRONIZZATO;
+			intervento.nuovo = false;
+			interventoDao.update(intervento);
 		    }
 		    
-		    cursorIntervento.close();
+		    RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioInterventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
 		    
+		    JSONArray dettagli_intervento = responseIntervs.getJSONArray("dettagliintervento");
+		    
+		    Gson gsonDettagli = new GsonBuilder().serializeNulls().setExclusionStrategies(new ExclusionStrategy() {
+			
+			@Override
+			public boolean shouldSkipField(FieldAttributes f) {
+			
+			    if (f.getName().equals("tecniciintervento"))
+				return true;
+			    else
+				return false;
+			}
+			
+			@Override
+			public boolean shouldSkipClass(Class<?> clazz) {
+			
+			    return false;
+			}
+		    }).setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+		    
+		    for (int cont = 0; cont < dettagli_intervento.length(); cont++) {
+			
+			JSONObject newDettInterv = dettagli_intervento.getJSONObject(cont);
+			
+			JsonParser parser = new JsonParser();
+			
+			JsonObject jo = (JsonObject) parser.parse(newDettInterv.toString());
+			
+			JsonArray tecnici = jo.getAsJsonArray("tecniciintervento");
+			
+			DettaglioIntervento dtInt = gsonDettagli.fromJson(newDettInterv.toString(), DettaglioIntervento.class);
+			
+			if (!dettaglioInterventoDao.idExists(dtInt.iddettagliointervento)) {
+			    dtInt.idintervento = (intervento.idintervento);
+			    dtInt.tecniciintervento = (tecnici.toString());
+			    dtInt.modificato = Constants.DETTAGLIO_SINCRONIZZATO;
+			    dtInt.nuovo = false;
+			    
+			    dettaglioInterventoDao.create(dtInt);
+			}
+			else {
+			    dtInt.idintervento = (intervento.idintervento);
+			    dtInt.tecniciintervento = (tecnici.toString());
+			    dtInt.modificato = Constants.DETTAGLIO_SINCRONIZZATO;
+			    dtInt.nuovo = false;
+			    
+			    dettaglioInterventoDao.update(dtInt);
+			}
+		    }
 		}
 		catch (Exception e) {
 		    e.printStackTrace();
@@ -858,75 +593,45 @@ public class HomeActivity extends ActionBarActivity implements LoaderCallbacks<C
 	    @Override
 	    protected void onPostExecute(Integer result) {
 	    
-		if (result == RESULT_OK) {
-		    
-		    String nominativo = null;
-		    
-		    prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-		    
-		    final Editor editor = prefsLocal.edit();
-		    
-		    try {
-			nominativo = setNominativo();
-			
-			editor.putString(Constants.USER_NOMINATIVO, nominativo);
-			getSupportActionBar().setTitle(nominativo);
-			
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			    editor.apply();
-			}
-			else {
-			    new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-				
-				    editor.commit();
-				}
-			    }).start();
-			}
-			
-			setRefreshActionButtonState(false);
-		    }
-		    catch (InterruptedException e) {
-			e.printStackTrace();
-			BugSenseHandler.sendException(e);
-		    }
-		    catch (ExecutionException e) {
-			e.printStackTrace();
-			BugSenseHandler.sendException(e);
-		    }
-		}
-		else {
+		if (result != RESULT_OK) {
 		    
 		    InterventixToast.makeToast(toast_error_syncro_interventions, Toast.LENGTH_LONG);
 		    
 		    setRefreshActionButtonState(false);
+		    
+		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+		}
+		else {
+		    
+		    setRefreshActionButtonState(false);
+		    
+		    RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+		    
+		    QueryBuilder<Intervento, Long> qb = interventoDao.queryBuilder();
+		    
+		    qb.selectColumns(new String[] {
+		    "numero", "dataora", "cliente", "conflitto", "modificato", "nuovo"
+		    });
+		    
+		    try {
+			qb.where().eq("tecnico", UtenteController.tecnicoLoggato.idutente).and().eq("chiuso", false);
+			List<Intervento> listaInterventiAperti = interventoDao.query(qb.prepare());
+			
+			adapter = new ListInterventiAdapter(listaInterventiAperti);
+			
+			listOpen.setAdapter(adapter);
+			
+			adapter.notifyDataSetChanged();
+		    }
+		    catch (SQLException e) {
+			
+			e.printStackTrace();
+		    }
+		    
+		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 		}
 	    }
 	    
-	}.execute(prefsLocal.getLong(Constants.USER_ID, 0l));
-    }
-    
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-    
-	String sortOrder = InterventoDB.Fields.DATA_ORA + " desc";
-	
-	Loader<Cursor> loader = new CursorLoader(this, Data.CONTENT_URI, HomeActivity.PROJECTION, HomeActivity.SELECTION, SELECTION_ARGS, sortOrder);
-	
-	return loader;
-    }
-    
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-    
-	mAdapter.swapCursor(cursor);
-    }
-    
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-    
-	mAdapter.swapCursor(null);
+	}.execute(UtenteController.tecnicoLoggato.idutente);
     }
 }

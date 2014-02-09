@@ -22,6 +22,7 @@ import com.federicocolantoni.projects.interventix.entity.Utente;
 public class InterventoController {
     
     public static InterventoSingleton controller;
+    public static long revisioneInterventi = 0L;
     public static ArrayList<Cliente> listaClienti = new ArrayList<Cliente>();
     
     public static void insertOnDB() {

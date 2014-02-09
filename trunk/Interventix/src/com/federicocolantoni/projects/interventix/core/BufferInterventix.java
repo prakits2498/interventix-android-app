@@ -8,6 +8,7 @@ import android.content.Intent;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.Constants.BUFFER_TYPE;
 import com.federicocolantoni.projects.interventix.Interventix;
+import com.federicocolantoni.projects.interventix.Interventix_;
 import com.federicocolantoni.projects.interventix.service.InterventixService;
 
 public class BufferInterventix {
@@ -96,7 +97,8 @@ public class BufferInterventix {
 		    
 		    interventixService.setAction(Constants.ACTION_GET_INTERVENTI);
 		    
-		    Interventix.getContext().startService(interventixService);
+		    Interventix_.getContext().startService(interventixService);
+		    
 		    break;
 		
 		case BUFFER_CLIENTE:
@@ -105,7 +107,8 @@ public class BufferInterventix {
 		    
 		    interventixService.setAction(Constants.ACTION_GET_CLIENTI);
 		    
-		    Interventix.getContext().startService(interventixService);
+		    Interventix_.getContext().startService(interventixService);
+		    
 		    break;
 	    }
 	}

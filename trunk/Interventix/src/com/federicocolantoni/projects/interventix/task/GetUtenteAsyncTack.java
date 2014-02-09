@@ -45,7 +45,7 @@ public class GetUtenteAsyncTack extends AsyncTask<Long, Void, Utente> {
 	    utente.cognome = (cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.COGNOME)));
 	    utente.conflitto = (cursor.getInt(cursor.getColumnIndex(UtenteDB.Fields.CONFLITTO)) == 1 ? true : false);
 	    utente.email = (cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.EMAIL)));
-	    utente.idutente = (cursor.getInt(cursor.getColumnIndex(UtenteDB.Fields.ID_UTENTE)));
+	    utente.idutente = (cursor.getLong(cursor.getColumnIndex(UtenteDB.Fields.ID_UTENTE)));
 	    utente.nome = (cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.NOME)));
 	    utente.revisione = (cursor.getLong(cursor.getColumnIndex(UtenteDB.Fields.REVISIONE)));
 	    utente.tipo = (cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.TIPO)));

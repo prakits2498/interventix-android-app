@@ -7,11 +7,15 @@ import android.app.Application;
 import android.content.Context;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 @EApplication
 public class Interventix extends Application {
     
     private static Interventix instance;
+    
+    private static InterventixDBHelper dbHelper;
     
     public static Interventix getInstance() {
     
@@ -21,6 +25,20 @@ public class Interventix extends Application {
     public static Context getContext() {
     
 	return instance.getApplicationContext();
+    }
+    
+    public static InterventixDBHelper getDbHelper() {
+    
+	if (dbHelper == null)
+	    dbHelper = OpenHelperManager.getHelper(instance, InterventixDBHelper.class);
+	
+	return dbHelper;
+    }
+    
+    public static void releaseDbHelper() {
+    
+	OpenHelperManager.releaseHelper();
+	dbHelper = null;
     }
     
     @SuppressLint("NewApi")
