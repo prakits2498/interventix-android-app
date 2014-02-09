@@ -27,7 +27,6 @@ import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
-import com.federicocolantoni.projects.interventix.Interventix_;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.UtenteController;
 import com.federicocolantoni.projects.interventix.entity.Utente;
@@ -97,11 +96,11 @@ public class MainActivity extends ActionBarActivity {
 		// passo 4)
 		else {
 		    
-		    RuntimeExceptionDao<Utente, Long> utenteDao = Interventix_.getDbHelper().getRuntimeUtenteDao();
+		    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 		    
 		    UtenteController.tecnicoLoggato = utenteDao.queryForEq("username", account.name).get(0);
 		    
-		    Interventix_.releaseDbHelper();
+		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 		    
 		    startActivity(new Intent(this, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
 		}
