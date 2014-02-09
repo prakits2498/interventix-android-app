@@ -1,6 +1,8 @@
 package com.federicocolantoni.projects.interventix.task;
 
 import java.net.SocketTimeoutException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import org.json.JSONObject;
 
@@ -9,13 +11,10 @@ import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -23,46 +22,46 @@ import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
+import com.federicocolantoni.projects.interventix.Interventix_;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
+import com.federicocolantoni.projects.interventix.controller.UtenteController;
 import com.federicocolantoni.projects.interventix.entity.Utente;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
+import com.federicocolantoni.projects.interventix.utils.PasswordHash;
 import com.federicocolantoni.projects.interventix.utils.Utils;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 @SuppressLint("NewApi")
 public class GetLogin extends AsyncTask<String, Void, Integer> {
     
-    private Context mContext;
+    private Context context;
     private ProgressDialog progress;
     
     private SharedPreferences defaultPrefs;
     
-    private String mUsername, mPassword, mAuthToken;
+    private String username, password;
     
     private AccountManager accountManager;
     
-    public GetLogin(Activity activity, String username, String password, String authToken) {
+    public GetLogin(Activity activity, String username, String password) {
     
-	mContext = activity;
+	context = activity;
 	
-	defaultPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+	defaultPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 	
-	mUsername = username;
-	mPassword = password;
-	mAuthToken = authToken;
+	this.username = username;
+	this.password = password;
 	
-	accountManager = AccountManager.get(mContext);
+	accountManager = AccountManager.get(context);
 	
-	progress = new ProgressDialog(mContext);
+	progress = new ProgressDialog(context);
 	progress.setIndeterminate(true);
-	progress.setTitle(mContext.getString(R.string.login_started_title));
+	progress.setTitle(context.getString(R.string.login_started_title));
 	progress.setIcon(R.drawable.ic_launcher);
-	progress.setMessage(mContext.getString(R.string.login_started_message));
+	progress.setMessage(context.getString(R.string.login_started_message));
 	progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 	progress.setCancelable(false);
     }
@@ -78,119 +77,54 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
     
 	int result = 0;
 	
-	final String prefs_url = mContext.getResources().getString(R.string.prefs_key_url);
-	final String prefs_auto_login = mContext.getResources().getString(R.string.prefs_key_auto_login);
+	final String prefs_url = context.getResources().getString(R.string.prefs_key_url);
 	
 	final String url = defaultPrefs.getString(prefs_url, null);
 	
-	System.out.println("URL: " + url);
-	
-	// checks if auto login's flag is false
-	// in this case, make a connection to the server to make login
-	if (!defaultPrefs.getBoolean(prefs_auto_login, false)) {
+	try {
 	    
-	    try {
+	    JSONObject response = new JSONObject(Utils.connectionForURL(strings[0], url).toJSONString());
+	    
+	    if (response.get("response").toString().equalsIgnoreCase("success")) {
 		
-		JSONObject response = new JSONObject(Utils.connectionForURL(strings[0], url).toJSONString());
+		JSONObject data = response.getJSONObject("data");
 		
-		System.out.println("Login response\n" + response);
+		Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 		
-		if (response.get("response").toString().equalsIgnoreCase("success")) {
-		    
-		    JSONObject data = response.getJSONObject("data");
-		    
-		    Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-		    
-		    ContentResolver cr = mContext.getContentResolver();
-		    ContentValues values;
-		    
-		    String selection = Fields.TYPE + " = ? AND " + UtenteDB.Fields.USERNAME + " = ?";
-		    
-		    String[] selectionArgs = new String[] {
-		    UtenteDB.UTENTE_ITEM_TYPE, mUsername
-		    };
-		    
-		    Cursor cursor = cr.query(Data.CONTENT_URI, null, selection, selectionArgs, null);
-		    
-		    if (cursor.getCount() > 0) {
-			
-			// Update user's informations
-			
-			Utente updateUser = new Utente();
-			
-			updateUser = gson.fromJson(data.toString(), Utente.class);
-			
-			values = Utente.updateSQL(updateUser);
-			
-			String selectionUpdate = UtenteDB.Fields.ID_UTENTE + " = ?";
-			
-			String[] selectionUpdateArgs = new String[] {
-			    "" + data.get("idutente")
-			};
-			
-			cr.update(Data.CONTENT_URI, values, selectionUpdate, selectionUpdateArgs);
-			
-			SharedPreferences localPrefs = mContext.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-			
-			Editor editor = localPrefs.edit();
-			editor.putLong(Constants.USER_ID, data.getLong("idutente")).commit();
-			
-			System.out.println("UPDATE USER DONE");
-			
-			result = Activity.RESULT_OK;
-			
-			progress.dismiss();
-			
-			if (!cursor.isClosed())
-			    cursor.close();
-		    }
-		    else {
-			
-			// Insert user's informations
-			
-			Utente newUser = new Utente();
-			
-			newUser = gson.fromJson(data.toString(), Utente.class);
-			
-			values = Utente.insertSQL(newUser);
-			
-			cr.insert(Data.CONTENT_URI, values);
-			
-			SharedPreferences localPrefs = mContext.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-			
-			localPrefs.edit().putLong(Constants.USER_ID, data.getLong("idutente")).putString(Constants.USERNAME, mUsername).putString(Constants.PASSWORD, mPassword).commit();
-			
-			System.out.println("INSERT USER DONE");
-			
-			result = Activity.RESULT_OK;
-			
-			progress.dismiss();
-			
-			if (!cursor.isClosed())
-			    cursor.close();
-			
-		    }
-		}
-		else {
-		    result = Activity.RESULT_CANCELED;
-		    
-		    progress.dismiss();
-		}
+		Utente utente = gson.fromJson(data.toString(), Utente.class);
+		
+		RuntimeExceptionDao<Utente, Long> utenteDao = Interventix_.getDbHelper().getRuntimeUtenteDao();
+		
+		utenteDao.createIfNotExists(utente);
+		
+		utenteDao.update(utente);
+		
+		UtenteController.tecnicoLoggato = utente;
+		
+		result = Activity.RESULT_OK;
+		
+		Interventix_.releaseDbHelper();
 	    }
-	    catch (SocketTimeoutException e) {
+	    else {
+		result = Activity.RESULT_CANCELED;
 		
-		e.printStackTrace();
-		BugSenseHandler.sendException(e);
-	    }
-	    catch (Exception e) {
-		
-		e.printStackTrace();
-		BugSenseHandler.sendException(e);
-	    }
-	    finally {
 		progress.dismiss();
 	    }
 	}
+	catch (SocketTimeoutException e) {
+	    
+	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
+	}
+	catch (Exception e) {
+	    
+	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
+	}
+	finally {
+	    progress.dismiss();
+	}
+	
 	return result;
     }
     
@@ -199,30 +133,68 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
     
 	if (result == Activity.RESULT_OK) {
 	    
-	    final Account account = new Account(mUsername, Constants.ACCOUNT_TYPE_INTERVENTIX);
+	    String encryptedPassword = null;
 	    
-	    accountManager.addAccountExplicitly(account, mPassword, null);
-	    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, mAuthToken);
-	    
-	    SharedPreferences prefs = mContext.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-	    
-	    final Editor edit = prefs.edit().putBoolean(Constants.AUTHENTICATED, true);
-	    
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-		edit.apply();
-	    else {
+	    try {
+		encryptedPassword = PasswordHash.createHash(password);
+	    }
+	    catch (NoSuchAlgorithmException e) {
 		
-		new Thread(new Runnable() {
-		    public void run() {
-		    
-			edit.commit();
-		    }
-		}).start();
+		e.printStackTrace();
+	    }
+	    catch (InvalidKeySpecException e) {
+		
+		e.printStackTrace();
 	    }
 	    
-	    mContext.startActivity(new Intent(mContext, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
+	    Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
+	    
+	    if (accounts.length == 0) {
+		
+		final Account account = new Account(username, Constants.ACCOUNT_TYPE_INTERVENTIX);
+		
+		accountManager.addAccountExplicitly(account, encryptedPassword, null);
+		accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
+		
+		SharedPreferences prefs = context.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+		
+		final Editor edit = prefs.edit().putString(Constants.USERNAME, username).putString(Constants.PASSWORD, encryptedPassword);
+		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+		    edit.apply();
+		else {
+		    
+		    new Thread(new Runnable() {
+			public void run() {
+			
+			    edit.commit();
+			}
+		    }).start();
+		}
+	    }
+	    else {
+		
+		for (Account account : accounts) {
+		    
+		    if (account.name.equals(username)) {
+			
+			accountManager.setPassword(account, encryptedPassword);
+			accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
+			
+			RuntimeExceptionDao<Utente, Long> utenteDao = Interventix_.getDbHelper().getRuntimeUtenteDao();
+			
+			UtenteController.tecnicoLoggato = utenteDao.queryForEq("username", username).get(0);
+			
+			Interventix_.releaseDbHelper();
+			
+			break;
+		    }
+		}
+	    }
+	    
+	    context.startActivity(new Intent(context, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
 	}
 	else
-	    InterventixToast.makeToast(mContext.getString(R.string.toast_login_error), Toast.LENGTH_LONG);
+	    InterventixToast.makeToast(context.getString(R.string.toast_login_error), Toast.LENGTH_LONG);
     }
 }

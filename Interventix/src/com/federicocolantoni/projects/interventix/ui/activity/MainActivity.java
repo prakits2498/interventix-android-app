@@ -4,6 +4,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 
+import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -25,10 +26,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
-import com.federicocolantoni.projects.interventix.BuildConfig;
 import com.federicocolantoni.projects.interventix.Constants;
+import com.federicocolantoni.projects.interventix.Interventix_;
 import com.federicocolantoni.projects.interventix.R;
+import com.federicocolantoni.projects.interventix.controller.UtenteController;
+import com.federicocolantoni.projects.interventix.entity.Utente;
 import com.federicocolantoni.projects.interventix.utils.ChangeLogDialog;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 @SuppressLint("NewApi")
 @EActivity(R.layout.activity_main)
@@ -43,24 +47,75 @@ public class MainActivity extends ActionBarActivity {
     @StringRes(R.string.welcome_message)
     static String welcomeMessage;
     
+    private AccountManager accountManager;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     
 	super.onCreate(savedInstanceState);
 	
+	accountManager = AccountManager.get(this);
+	
 	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
 	
 	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
 	
-	if (!prefs.getBoolean(Constants.AUTHENTICATED, false)) {
+	String username = prefs.getString(Constants.USERNAME, "");
+	
+	Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
+	
+	boolean utenteTrovato = false;
+	
+	for (Account account : accounts) {
+	    
+	    // passo 3)
+	    if (account.name.equals(username)) {
+		
+		utenteTrovato = true;
+		
+		String pwd = accountManager.getPassword(account);
+		
+		// passo 5)
+		if (pwd == null) {
+		    
+		    FragmentManager manager = getSupportFragmentManager();
+		    
+		    com.federicocolantoni.projects.interventix.modules.login.Login_ fragLogin = new com.federicocolantoni.projects.interventix.modules.login.Login_();
+		    
+		    FragmentTransaction transaction = manager.beginTransaction();
+		    
+		    transaction.replace(R.id.frag_login, fragLogin);
+		    transaction.setCustomAnimations(R.anim.fade_out, R.anim.fade_in);
+		    transaction.commit();
+		    
+		    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_preferences_options, true);
+		    else
+			PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_support_preferences_options, true);
+		}
+		
+		// passo 4)
+		else {
+		    
+		    RuntimeExceptionDao<Utente, Long> utenteDao = Interventix_.getDbHelper().getRuntimeUtenteDao();
+		    
+		    UtenteController.tecnicoLoggato = utenteDao.queryForEq("username", account.name).get(0);
+		    
+		    Interventix_.releaseDbHelper();
+		    
+		    startActivity(new Intent(this, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
+		}
+		
+		break;
+	    }
+	}
+	
+	// passo 2)
+	if (!utenteTrovato) {
+	    
 	    FragmentManager manager = getSupportFragmentManager();
 	    
 	    com.federicocolantoni.projects.interventix.modules.login.Login_ fragLogin = new com.federicocolantoni.projects.interventix.modules.login.Login_();
-	    
-	    Bundle bundle = new Bundle();
-	    bundle.putString(AccountManager.KEY_AUTHTOKEN, Constants.ACCOUNT_AUTH_TOKEN);
-	    
-	    fragLogin.setArguments(bundle);
 	    
 	    FragmentTransaction transaction = manager.beginTransaction();
 	    
@@ -72,9 +127,6 @@ public class MainActivity extends ActionBarActivity {
 		PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_preferences_options, true);
 	    else
 		PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_support_preferences_options, true);
-	}
-	else {
-	    startActivity(new Intent(this, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
 	}
     }
     
@@ -132,16 +184,6 @@ public class MainActivity extends ActionBarActivity {
 		    dismiss();
 		    break;
 	    }
-	}
-    }
-    
-    @Override
-    protected void onDestroy() {
-    
-	super.onDestroy();
-	
-	if (BuildConfig.DEBUG) {
-	    System.gc();
 	}
     }
 }

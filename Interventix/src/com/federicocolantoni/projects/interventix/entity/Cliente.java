@@ -7,7 +7,10 @@ import android.database.Cursor;
 
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+@DatabaseTable(tableName = "Clienti")
 public class Cliente implements Serializable {
     
     /**
@@ -15,9 +18,16 @@ public class Cliente implements Serializable {
      */
     private static final long serialVersionUID = 6163117197009443000L;
     
+    @DatabaseField(canBeNull = true, useGetSet = false, id = true)
     public Long idcliente;
+    
+    @DatabaseField(canBeNull = true, useGetSet = false)
     public Long revisione;
+    
+    @DatabaseField(canBeNull = true, useGetSet = false)
     public String nominativo, codicefiscale, partitaiva, telefono, fax, email, referente, citta, indirizzo, interno, ufficio, note;
+    
+    @DatabaseField(canBeNull = true, useGetSet = false)
     public boolean cancellato, conflitto;
     
     public Cliente() {

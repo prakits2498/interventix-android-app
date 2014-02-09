@@ -6,7 +6,10 @@ import android.content.ContentValues;
 
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+@DatabaseTable(tableName = "Tecnici")
 public class Utente implements Serializable {
     
     /**
@@ -14,14 +17,21 @@ public class Utente implements Serializable {
      */
     private static final long serialVersionUID = -460809443185110082L;
     
-    public Integer idutente;
+    @DatabaseField(canBeNull = true, useGetSet = false, id = true)
+    public Long idutente;
+    
+    @DatabaseField(canBeNull = true, useGetSet = false)
     public Long revisione;
+    
+    @DatabaseField(canBeNull = true, useGetSet = false)
     public String nome, cognome, username, password, email, tipo;
+    
+    @DatabaseField(canBeNull = true, useGetSet = false)
     public boolean cancellato, cestinato, conflitto;
     
     public Utente() {
     
-	idutente = 0;
+	idutente = 0L;
 	revisione = 0L;
 	nome = new String();
 	cognome = new String();

@@ -10,7 +10,10 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+@DatabaseTable(tableName = "DettagliIntervento")
 public class DettaglioIntervento implements Serializable {
     
     /**
@@ -18,9 +21,16 @@ public class DettaglioIntervento implements Serializable {
      */
     private static final long serialVersionUID = 3301272979527832708L;
     
+    @DatabaseField(canBeNull = true, useGetSet = false, id = true)
     public Long iddettagliointervento;
+    
+    @DatabaseField(canBeNull = true, useGetSet = false)
     public Long idintervento, inizio, fine;
+    
+    @DatabaseField(canBeNull = true, useGetSet = false)
     public String tipo, oggetto, descrizione, tecniciintervento, modificato;
+    
+    @DatabaseField(canBeNull = true, useGetSet = false)
     public boolean nuovo;
     
     public DettaglioIntervento() {
@@ -34,22 +44,15 @@ public class DettaglioIntervento implements Serializable {
 	descrizione = new String();
 	tecniciintervento = new JSONArray().toString();
 	nuovo = false;
+	modificato = new String();
     }
     
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
     
 	return String.format("DettaglioIntervento [iddettagliointervento=%s, idintervento=%s, inizio=%s, fine=%s, tipo=%s, oggetto=%s, descrizione=%s, tecniciintervento=%s, modificato=%s, nuovo=%s]", iddettagliointervento, idintervento, inizio, fine, tipo, oggetto, descrizione, tecniciintervento, modificato, nuovo);
     }
     
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
     
@@ -68,10 +71,6 @@ public class DettaglioIntervento implements Serializable {
 	return result;
     }
     
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
     

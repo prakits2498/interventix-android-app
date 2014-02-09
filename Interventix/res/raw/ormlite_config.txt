@@ -1,0 +1,224 @@
+#
+# generated on 2014/02/09 11:46:11
+#
+# --table-start--
+dataClass=com.federicocolantoni.projects.interventix.entity.Cliente
+tableName=Clienti
+# --table-fields-start--
+# --field-start--
+fieldName=idcliente
+id=true
+# --field-end--
+# --field-start--
+fieldName=revisione
+# --field-end--
+# --field-start--
+fieldName=nominativo
+# --field-end--
+# --field-start--
+fieldName=codicefiscale
+# --field-end--
+# --field-start--
+fieldName=partitaiva
+# --field-end--
+# --field-start--
+fieldName=telefono
+# --field-end--
+# --field-start--
+fieldName=fax
+# --field-end--
+# --field-start--
+fieldName=email
+# --field-end--
+# --field-start--
+fieldName=referente
+# --field-end--
+# --field-start--
+fieldName=citta
+# --field-end--
+# --field-start--
+fieldName=indirizzo
+# --field-end--
+# --field-start--
+fieldName=interno
+# --field-end--
+# --field-start--
+fieldName=ufficio
+# --field-end--
+# --field-start--
+fieldName=note
+# --field-end--
+# --field-start--
+fieldName=cancellato
+# --field-end--
+# --field-start--
+fieldName=conflitto
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.federicocolantoni.projects.interventix.entity.DettaglioIntervento
+tableName=DettagliIntervento
+# --table-fields-start--
+# --field-start--
+fieldName=iddettagliointervento
+id=true
+# --field-end--
+# --field-start--
+fieldName=idintervento
+# --field-end--
+# --field-start--
+fieldName=inizio
+# --field-end--
+# --field-start--
+fieldName=fine
+# --field-end--
+# --field-start--
+fieldName=tipo
+# --field-end--
+# --field-start--
+fieldName=oggetto
+# --field-end--
+# --field-start--
+fieldName=descrizione
+# --field-end--
+# --field-start--
+fieldName=tecniciintervento
+# --field-end--
+# --field-start--
+fieldName=modificato
+# --field-end--
+# --field-start--
+fieldName=nuovo
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.federicocolantoni.projects.interventix.entity.Intervento
+tableName=Interventi
+# --table-fields-start--
+# --field-start--
+fieldName=idintervento
+id=true
+# --field-end--
+# --field-start--
+fieldName=dataora
+# --field-end--
+# --field-start--
+fieldName=cliente
+# --field-end--
+# --field-start--
+fieldName=tecnico
+# --field-end--
+# --field-start--
+fieldName=numero
+# --field-end--
+# --field-start--
+fieldName=tipologia
+# --field-end--
+# --field-start--
+fieldName=prodotto
+# --field-end--
+# --field-start--
+fieldName=motivo
+# --field-end--
+# --field-start--
+fieldName=nominativo
+# --field-end--
+# --field-start--
+fieldName=riffattura
+# --field-end--
+# --field-start--
+fieldName=rifscontrino
+# --field-end--
+# --field-start--
+fieldName=note
+# --field-end--
+# --field-start--
+fieldName=modalita
+# --field-end--
+# --field-start--
+fieldName=firma
+# --field-end--
+# --field-start--
+fieldName=modificato
+# --field-end--
+# --field-start--
+fieldName=saldato
+# --field-end--
+# --field-start--
+fieldName=cancellato
+# --field-end--
+# --field-start--
+fieldName=chiuso
+# --field-end--
+# --field-start--
+fieldName=conflitto
+# --field-end--
+# --field-start--
+fieldName=nuovo
+# --field-end--
+# --field-start--
+fieldName=costomanodopera
+# --field-end--
+# --field-start--
+fieldName=costocomponenti
+# --field-end--
+# --field-start--
+fieldName=costoaccessori
+# --field-end--
+# --field-start--
+fieldName=importo
+# --field-end--
+# --field-start--
+fieldName=totale
+# --field-end--
+# --field-start--
+fieldName=iva
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.federicocolantoni.projects.interventix.entity.Utente
+tableName=Tecnici
+# --table-fields-start--
+# --field-start--
+fieldName=idutente
+id=true
+# --field-end--
+# --field-start--
+fieldName=revisione
+# --field-end--
+# --field-start--
+fieldName=nome
+# --field-end--
+# --field-start--
+fieldName=cognome
+# --field-end--
+# --field-start--
+fieldName=username
+# --field-end--
+# --field-start--
+fieldName=password
+# --field-end--
+# --field-start--
+fieldName=email
+# --field-end--
+# --field-start--
+fieldName=tipo
+# --field-end--
+# --field-start--
+fieldName=cancellato
+# --field-end--
+# --field-start--
+fieldName=cestinato
+# --field-end--
+# --field-start--
+fieldName=conflitto
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

@@ -134,10 +134,6 @@ public class DetailInterventoFragment extends Fragment {
 	
 	if (bundle != null) {
 	    dettaglio = (DettaglioIntervento) bundle.getSerializable(Constants.DETTAGLIO_N_ESIMO);
-	    
-	    // if (dettaglio != null)
-	    // System.out.println(this.getClass().getSimpleName() + "\n" +
-	    // dettaglio.toString());
 	}
     }
     
@@ -156,8 +152,6 @@ public class DetailInterventoFragment extends Fragment {
 	Bundle bundle = getArguments();
 	
 	if (dettaglio != null) {
-	    
-	    System.out.println(this.getClass().getSimpleName() + "\n" + dettaglio.toString());
 	    
 	    // da sistemare
 	    if (bundle.getString(Constants.NUOVO_DETTAGLIO_INTERVENTO) != null)
@@ -812,8 +806,6 @@ public class DetailInterventoFragment extends Fragment {
 		    arrayTecnici.add("" + cursor.getLong(cursor.getColumnIndex(UtenteDB.Fields.ID_UTENTE)));
 		}
 		
-		System.out.println("Tutti i tecnici: " + arrayTecnici.toString());
-		
 		if (!cursor.isClosed())
 		    cursor.close();
 		
@@ -868,8 +860,6 @@ public class DetailInterventoFragment extends Fragment {
 		    if (!cursor.isClosed())
 			cursor.close();
 		}
-		
-		System.out.println("Tutti i nomi dei tecnici: " + arrayNomiTecnici.toString());
 		
 		String[] tecnici = new String[arrayNomiTecnici.size()];
 		

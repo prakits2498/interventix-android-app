@@ -9,7 +9,10 @@ import android.database.Cursor;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+@DatabaseTable(tableName = "Interventi")
 public class Intervento implements Serializable {
     
     /**
@@ -17,10 +20,19 @@ public class Intervento implements Serializable {
      */
     private static final long serialVersionUID = -6145022542420590261L;
     
+    @DatabaseField(canBeNull = true, useGetSet = false, id = true)
     public Long idintervento;
+    
+    @DatabaseField(canBeNull = true, useGetSet = false)
     public Long dataora, cliente, tecnico, numero;
-    public String tipologia, prodotto, motivo, nominativo, riffattura, rifscontrino, note, modalita, firma;
+    
+    @DatabaseField(canBeNull = true, useGetSet = false)
+    public String tipologia, prodotto, motivo, nominativo, riffattura, rifscontrino, note, modalita, firma, modificato;
+    
+    @DatabaseField(canBeNull = true, useGetSet = false)
     public boolean saldato, cancellato, chiuso, conflitto, nuovo;
+    
+    @DatabaseField(canBeNull = true, useGetSet = false)
     public BigDecimal costomanodopera, costocomponenti, costoaccessori, importo, totale, iva;
     
     public Intervento() {
@@ -54,7 +66,7 @@ public class Intervento implements Serializable {
     @Override
     public String toString() {
     
-	return String.format("Intervento [idintervento=%s, dataora=%s, cliente=%s, tecnico=%s, numero=%s, tipologia=%s, prodotto=%s, motivo=%s, nominativo=%s, riffattura=%s, rifscontrino=%s, note=%s, modalita=%s, firma=%s, saldato=%s, cancellato=%s, chiuso=%s, conflitto=%s, nuovo=%s, costomanodopera=%s, costocomponenti=%s, costoaccessori=%s, importo=%s, totale=%s, iva=%s]", idintervento, dataora, cliente, tecnico, numero, tipologia, prodotto, motivo, nominativo, riffattura, rifscontrino, note, modalita, firma, saldato, cancellato, chiuso, conflitto, nuovo, costomanodopera, costocomponenti, costoaccessori, importo, totale, iva);
+	return String.format("Intervento [idintervento=%s, dataora=%s, cliente=%s, tecnico=%s, numero=%s, tipologia=%s, prodotto=%s, motivo=%s, nominativo=%s, riffattura=%s, rifscontrino=%s, note=%s, modalita=%s, firma=%s, modificato=%s, saldato=%s, cancellato=%s, chiuso=%s, conflitto=%s, nuovo=%s, costomanodopera=%s, costocomponenti=%s, costoaccessori=%s, importo=%s, totale=%s, iva=%s]", idintervento, dataora, cliente, tecnico, numero, tipologia, prodotto, motivo, nominativo, riffattura, rifscontrino, note, modalita, firma, modificato, saldato, cancellato, chiuso, conflitto, nuovo, costomanodopera, costocomponenti, costoaccessori, importo, totale, iva);
     }
     
     @Override
@@ -64,29 +76,30 @@ public class Intervento implements Serializable {
 	int result = 1;
 	result = prime * result + (cancellato ? 1231 : 1237);
 	result = prime * result + (chiuso ? 1231 : 1237);
-	result = prime * result + (cliente == null ? 0 : cliente.hashCode());
+	result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
 	result = prime * result + (conflitto ? 1231 : 1237);
-	result = prime * result + (costoaccessori == null ? 0 : costoaccessori.hashCode());
-	result = prime * result + (costocomponenti == null ? 0 : costocomponenti.hashCode());
-	result = prime * result + (costomanodopera == null ? 0 : costomanodopera.hashCode());
-	result = prime * result + (dataora == null ? 0 : dataora.hashCode());
-	result = prime * result + (firma == null ? 0 : firma.hashCode());
-	result = prime * result + (idintervento == null ? 0 : idintervento.hashCode());
-	result = prime * result + (importo == null ? 0 : importo.hashCode());
-	result = prime * result + (iva == null ? 0 : iva.hashCode());
-	result = prime * result + (modalita == null ? 0 : modalita.hashCode());
-	result = prime * result + (motivo == null ? 0 : motivo.hashCode());
-	result = prime * result + (nominativo == null ? 0 : nominativo.hashCode());
-	result = prime * result + (note == null ? 0 : note.hashCode());
-	result = prime * result + (numero == null ? 0 : numero.hashCode());
+	result = prime * result + ((costoaccessori == null) ? 0 : costoaccessori.hashCode());
+	result = prime * result + ((costocomponenti == null) ? 0 : costocomponenti.hashCode());
+	result = prime * result + ((costomanodopera == null) ? 0 : costomanodopera.hashCode());
+	result = prime * result + ((dataora == null) ? 0 : dataora.hashCode());
+	result = prime * result + ((firma == null) ? 0 : firma.hashCode());
+	result = prime * result + ((idintervento == null) ? 0 : idintervento.hashCode());
+	result = prime * result + ((importo == null) ? 0 : importo.hashCode());
+	result = prime * result + ((iva == null) ? 0 : iva.hashCode());
+	result = prime * result + ((modalita == null) ? 0 : modalita.hashCode());
+	result = prime * result + ((modificato == null) ? 0 : modificato.hashCode());
+	result = prime * result + ((motivo == null) ? 0 : motivo.hashCode());
+	result = prime * result + ((nominativo == null) ? 0 : nominativo.hashCode());
+	result = prime * result + ((note == null) ? 0 : note.hashCode());
+	result = prime * result + ((numero == null) ? 0 : numero.hashCode());
 	result = prime * result + (nuovo ? 1231 : 1237);
-	result = prime * result + (prodotto == null ? 0 : prodotto.hashCode());
-	result = prime * result + (riffattura == null ? 0 : riffattura.hashCode());
-	result = prime * result + (rifscontrino == null ? 0 : rifscontrino.hashCode());
+	result = prime * result + ((prodotto == null) ? 0 : prodotto.hashCode());
+	result = prime * result + ((riffattura == null) ? 0 : riffattura.hashCode());
+	result = prime * result + ((rifscontrino == null) ? 0 : rifscontrino.hashCode());
 	result = prime * result + (saldato ? 1231 : 1237);
-	result = prime * result + (tecnico == null ? 0 : tecnico.hashCode());
-	result = prime * result + (tipologia == null ? 0 : tipologia.hashCode());
-	result = prime * result + (totale == null ? 0 : totale.hashCode());
+	result = prime * result + ((tecnico == null) ? 0 : tecnico.hashCode());
+	result = prime * result + ((tipologia == null) ? 0 : tipologia.hashCode());
+	result = prime * result + ((totale == null) ? 0 : totale.hashCode());
 	return result;
     }
     
@@ -175,6 +188,13 @@ public class Intervento implements Serializable {
 	}
 	else
 	    if (!modalita.equals(other.modalita))
+		return false;
+	if (modificato == null) {
+	    if (other.modificato != null)
+		return false;
+	}
+	else
+	    if (!modificato.equals(other.modificato))
 		return false;
 	if (motivo == null) {
 	    if (other.motivo != null)
