@@ -9,8 +9,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,6 +25,7 @@ import android.widget.Toast;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
+import com.federicocolantoni.projects.interventix.controller.UtenteController;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
@@ -57,8 +56,6 @@ public class OverViewInterventoFragment extends Fragment {
     
     private FragmentManager manager;
     
-    private SharedPreferences prefs;
-    
     @Override
     public void onCreate(Bundle savedInstanceState) {
     
@@ -68,8 +65,6 @@ public class OverViewInterventoFragment extends Fragment {
 	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	
 	setHasOptionsMenu(true);
-	
-	prefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
     }
     
     @Override
@@ -119,7 +114,7 @@ public class OverViewInterventoFragment extends Fragment {
     
 	tv_row_client.setText(InterventoController.controller.getCliente().nominativo);
 	
-	tv_row_tecnico.setText(prefs.getString(Constants.USER_NOMINATIVO, ""));
+	tv_row_tecnico.setText(UtenteController.tecnicoLoggato.nome + " " + UtenteController.tecnicoLoggato.cognome);
 	tv_row_tecnico.setBackgroundColor(Color.LTGRAY);
 	tv_row_tecnico.setEnabled(false);
 	

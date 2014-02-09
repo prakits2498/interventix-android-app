@@ -119,21 +119,15 @@ public class HomeActivity extends ActionBarActivity {
 	    @Override
 	    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 	    
-		// Bundle bundle = new Bundle();
-		//
-		// Cursor cur = (Cursor) adapter.getItemAtPosition(position);
-		//
-		// bundle.putLong(Constants.ID_INTERVENTO,
-		// cur.getLong(cur.getColumnIndex(InterventoDB.Fields.ID_INTERVENTO)));
-		// bundle.putLong(Constants.NUMERO_INTERVENTO,
-		// cur.getLong(cur.getColumnIndex(InterventoDB.Fields.NUMERO_INTERVENTO)));
-		//
-		// Intent intent = new Intent(HomeActivity.this,
-		// ViewInterventoActivity_.class);
-		//
-		// intent.putExtras(bundle);
-		//
-		// startActivity(intent);
+		Intervento intervento = (Intervento) adapter.getItemAtPosition(position);
+		
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(Constants.INTERVENTO, intervento);
+		
+		Intent intent = new Intent(HomeActivity.this, ViewInterventoActivity_.class);
+		intent.putExtras(bundle);
+		
+		startActivity(intent);
 	    }
 	});
     }
