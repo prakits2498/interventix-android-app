@@ -30,144 +30,144 @@ import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 @SuppressLint("NewApi")
 @EFragment(R.layout.list_details_fragment)
 public class ListDetailsInterventoFragment extends Fragment {
-    
-    private ListDettagliInterventiAdapter mAdapter;
-    
-    @ViewById(R.id.layout_list_details_intervento)
-    LinearLayout layoutListDetails;
-    
-    @ViewById(R.id.list_details_intervento)
-    ListView detailsList;
-    
-    @ViewById(R.id.tv_no_details)
-    TextView noDetails;
-    
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-    
-	super.onCreate(savedInstanceState);
-	
-	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	
-	setHasOptionsMenu(true);
-    }
-    
-    @Override
-    public void onStart() {
-    
-	super.onStart();
-	
-	if (!InterventoController.controller.getIntervento().nuovo)
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_list_details));
-	else
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_list_details));
-	
-	if (InterventoController.controller.getListaDettagli().size() == 0) {
-	    layoutListDetails.setVisibility(View.INVISIBLE);
-	    noDetails.setText("Nessun dettaglio presente");
-	    noDetails.setVisibility(View.VISIBLE);
+
+	private ListDettagliInterventiAdapter mAdapter;
+
+	@ViewById(R.id.layout_list_details_intervento)
+	LinearLayout layoutListDetails;
+
+	@ViewById(R.id.list_details_intervento)
+	ListView detailsList;
+
+	@ViewById(R.id.tv_no_details)
+	TextView noDetails;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+
+		super.onCreate(savedInstanceState);
+
+		((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+		((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		setHasOptionsMenu(true);
 	}
-	else {
-	    layoutListDetails.setVisibility(View.VISIBLE);
-	    noDetails.setVisibility(View.INVISIBLE);
+
+	@Override
+	public void onStart() {
+
+		super.onStart();
+
+		if (!InterventoController.controller.getIntervento().nuovo)
+			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
+					getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_list_details));
+		else
+			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_list_details));
+
+		if (InterventoController.controller.getListaDettagli().size() == 0) {
+			layoutListDetails.setVisibility(View.INVISIBLE);
+			noDetails.setText("Nessun dettaglio presente");
+			noDetails.setVisibility(View.VISIBLE);
+		} else {
+			layoutListDetails.setVisibility(View.VISIBLE);
+			noDetails.setVisibility(View.INVISIBLE);
+		}
+
+		mAdapter = new ListDettagliInterventiAdapter(getActivity());
+
+		detailsList.setAdapter(mAdapter);
+
+		detailsList.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+
+				Bundle bundle = new Bundle();
+
+				bundle.putSerializable(Constants.DETTAGLIO_N_ESIMO, InterventoController.controller.getListaDettagli().get(position));
+
+				FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
+				FragmentTransaction transaction = manager.beginTransaction();
+
+				DetailInterventoFragment_ dettInterv = new DetailInterventoFragment_();
+
+				dettInterv.setArguments(bundle);
+
+				transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
+				transaction.addToBackStack(Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
+				transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
+				transaction.commit();
+			}
+		});
+
+		detailsList.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
+
+				// aggiungere il menu contestuale per la cancellazione del
+				// dettaglio
+
+				return false;
+			}
+		});
 	}
-	
-	mAdapter = new ListDettagliInterventiAdapter(getActivity());
-	
-	detailsList.setAdapter(mAdapter);
-	
-	detailsList.setOnItemClickListener(new OnItemClickListener() {
-	    
-	    @Override
-	    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-	    
-		Bundle bundle = new Bundle();
-		
-		bundle.putSerializable(Constants.DETTAGLIO_N_ESIMO, InterventoController.controller.getListaDettagli().get(position));
-		
-		FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
-		FragmentTransaction transaction = manager.beginTransaction();
-		
-		DetailInterventoFragment_ dettInterv = new DetailInterventoFragment_();
-		
-		dettInterv.setArguments(bundle);
-		
-		transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
-		transaction.addToBackStack(Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
-		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		
-		transaction.commit();
-	    }
-	});
-	
-	detailsList.setOnItemLongClickListener(new OnItemLongClickListener() {
-	    
-	    @Override
-	    public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
-	    
-		// aggiungere il menu contestuale per la cancellazione del
-		// dettaglio
-		
-		return false;
-	    }
-	});
-    }
-    
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    
-	super.onCreateOptionsMenu(menu, inflater);
-	
-	inflater.inflate(R.menu.menu_view_intervento, menu);
-	
-	MenuItem itemAddDetail = menu.findItem(R.id.add_detail_interv);
-	itemAddDetail.setVisible(true);
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    
-	switch (item.getItemId()) {
-	
-	    case R.id.add_detail_interv:
-		
-		FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
-		FragmentTransaction transaction = manager.beginTransaction();
-		
-		Bundle bundle = new Bundle();
-		bundle.putString(Constants.NUOVO_DETTAGLIO_INTERVENTO, Constants.NUOVO_DETTAGLIO_INTERVENTO);
-		
-		DetailInterventoFragment_ dettInterv = new DetailInterventoFragment_();
-		dettInterv.setArguments(bundle);
-		
-		transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
-		transaction.addToBackStack(Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
-		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		
-		transaction.commit();
-		
-		break;
-	    
-	    case R.id.pay:
-		
-		InterventixToast.makeToast("Saldare l'intervento?", Toast.LENGTH_SHORT);
-		
-		break;
-	    
-	    case R.id.send_mail:
-		
-		InterventixToast.makeToast("Inviare email?", Toast.LENGTH_SHORT);
-		
-		break;
-	    
-	    case R.id.close:
-		
-		InterventixToast.makeToast("Chiudere l'intervento?", Toast.LENGTH_SHORT);
-		
-		break;
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+		super.onCreateOptionsMenu(menu, inflater);
+
+		inflater.inflate(R.menu.menu_view_intervento, menu);
+
+		MenuItem itemAddDetail = menu.findItem(R.id.add_detail_interv);
+		itemAddDetail.setVisible(true);
 	}
-	
-	return true;
-    }
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+
+			case R.id.add_detail_interv:
+
+				FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
+				FragmentTransaction transaction = manager.beginTransaction();
+
+				Bundle bundle = new Bundle();
+				bundle.putString(Constants.NUOVO_DETTAGLIO_INTERVENTO, Constants.NUOVO_DETTAGLIO_INTERVENTO);
+
+				DetailInterventoFragment_ dettInterv = new DetailInterventoFragment_();
+				dettInterv.setArguments(bundle);
+
+				transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
+				transaction.addToBackStack(Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
+				transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
+				transaction.commit();
+
+				break;
+
+			case R.id.pay:
+
+				InterventixToast.makeToast("Saldare l'intervento?", Toast.LENGTH_SHORT);
+
+				break;
+
+			case R.id.send_mail:
+
+				InterventixToast.makeToast("Inviare email?", Toast.LENGTH_SHORT);
+
+				break;
+
+			case R.id.close:
+
+				InterventixToast.makeToast("Chiudere l'intervento?", Toast.LENGTH_SHORT);
+
+				break;
+		}
+
+		return true;
+	}
 }
