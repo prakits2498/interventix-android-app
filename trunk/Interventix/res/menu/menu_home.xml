@@ -3,7 +3,7 @@
 
 	<item
 		android:id="@+id/add_menu"
-		android:icon="@drawable/content_new_5"
+		android:icon="@drawable/ic_action_add"
 		android:title="@string/add_intervento_menu"
 		interventix:showAsAction="ifRoom"/>
 	<item
