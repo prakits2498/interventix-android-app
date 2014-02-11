@@ -1,82 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-     File created by the Android Action Bar Style Generator
 
-     Copyright (C) 2011 The Android Open Source Project
-     Copyright (C) 2012 readyState Software Ltd
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-  
-          http://www.apache.org/licenses/LICENSE-2.0
-  
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
+    <style name="EditTextInterventix" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/interventix_edit_text_holo_light</item>
+        <item name="android:textColor">#000000</item>
+    </style>
 
-<resources>
+    <style name="AutoCompleteTextViewInterventix" parent="android:Widget.AutoCompleteTextView">
+        <item name="android:dropDownSelector">@drawable/interventix_list_selector_holo_light</item>
+        <item name="android:background">@drawable/interventix_edit_text_holo_light</item>
+        <item name="android:textColor">#000000</item>
+    </style>
 
-	<style name="Theme.Interventix" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-		<item name="actionBarItemBackground">@drawable/selectable_background_interventix</item>
-		<item name="popupMenuStyle">@style/PopupMenu.Interventix</item>
-		<item name="dropDownListViewStyle">@style/DropDownListView.Interventix</item>
-		<item name="actionBarTabStyle">@style/ActionBarTabStyle.Interventix</item>
-		<item name="actionDropDownStyle">@style/DropDownNav.Interventix</item>
-		<item name="actionBarStyle">@style/ActionBar.Solid.Interventix</item>
-		<item name="actionModeBackground">@drawable/cab_background_top_interventix</item>
-		<item name="actionModeSplitBackground">@drawable/cab_background_bottom_interventix</item>
-		<item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Interventix</item>
+    <style name="CheckBoxInterventix" parent="android:Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/interventix_btn_check_holo_light</item>
+    </style>
 
-		<!-- Light.DarkActionBar specific -->
-		<item name="actionBarWidgetTheme">@style/Theme.Interventix.Widget</item>
-	</style>
+    <style name="RadioButtonInterventix" parent="android:Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/interventix_btn_radio_holo_light</item>
+    </style>
 
-	<style name="ActionBar.Solid.Interventix" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-		<item name="background">@drawable/ab_solid_interventix</item>
-		<item name="backgroundStacked">@drawable/ab_stacked_solid_interventix</item>
-		<item name="backgroundSplit">@drawable/ab_bottom_solid_interventix</item>
-		<item name="progressBarStyle">@style/ProgressBar.Interventix</item>
-	</style>
+    <style name="ButtonInterventix" parent="android:Widget.Button">
+        <item name="android:background">@drawable/interventix_btn_default_holo_light</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:minWidth">64dip</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
 
-	<style name="ActionBar.Transparent.Interventix" parent="@style/Widget.AppCompat.ActionBar">
-		<item name="background">@drawable/ab_transparent_interventix</item>
-		<item name="progressBarStyle">@style/ProgressBar.Interventix</item>
-	</style>
+    <style name="ImageButtonInterventix" parent="android:Widget.ImageButton">
+        <item name="android:background">@drawable/interventix_btn_default_holo_light</item>
+    </style>
 
-	<style name="PopupMenu.Interventix" parent="@style/Widget.AppCompat.ListView.DropDown">
-		<item name="android:popupBackground">@drawable/menu_dropdown_panel_interventix</item>
-	</style>
+    <style name="SpinnerInterventix" parent="android:Widget.Spinner">
+        <item name="android:background">@drawable/interventix_spinner_background_holo_light</item>
+        <item name="android:dropDownSelector">@drawable/interventix_list_selector_holo_light</item>
+    </style>
 
-	<style name="DropDownListView.Interventix" parent="@style/Widget.AppCompat.ListView.DropDown">
-		<item name="android:listSelector">@drawable/selectable_background_interventix</item>
-	</style>
+    <style name="SpinnerDropDownItemInterventix" parent="android:Widget.DropDownItem.Spinner">
+        <item name="android:checkMark">@drawable/interventix_btn_radio_holo_light</item>
+    </style>
 
-	<style name="ActionBarTabStyle.Interventix" parent="@style/Widget.AppCompat.ActionBar.TabView">
-		<item name="android:background">@drawable/tab_indicator_ab_interventix</item>
-	</style>
+    <style name="TabInterventix">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:paddingLeft">16dip</item>
+        <item name="android:paddingRight">16dip</item>
+        <item name="android:background">@drawable/interventix_tab_indicator_holo</item>
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:minWidth">80dip</item>
+    </style>
 
-	<style name="DropDownNav.Interventix" parent="@style/Widget.AppCompat.Spinner.DropDown.ActionBar">
-		<item name="android:background">@drawable/spinner_background_ab_interventix</item>
-		<item name="android:popupBackground">@drawable/menu_dropdown_panel_interventix</item>
-		<item name="android:dropDownSelector">@drawable/selectable_background_interventix</item>
-	</style>
+    <style name="TabTextInterventix">
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <!-- v14 <item name="android:textAllCaps">true</item> -->
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:maxWidth">180dip</item>
+    </style>
 
-	<style name="ProgressBar.Interventix" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
-		<item name="android:progressDrawable">@drawable/progress_horizontal_interventix</item>
-	</style>
+    <style name="ProgressBarInterventix" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/interventix_progress_horizontal_holo_light</item>
+        <item name="android:indeterminateDrawable">@drawable/interventix_progress_indeterminate_horizontal_holo_light</item>
+        <item name="android:minHeight">16dip</item>
+        <item name="android:maxHeight">16dip</item>
+    </style>
 
-	<style name="ActionButton.CloseMode.Interventix" parent="@style/Widget.AppCompat.ActionButton.CloseMode">
-		<item name="android:background">@drawable/btn_cab_done_interventix</item>
-	</style>
+    <style name="SeekBarInterventix" parent="android:Widget.SeekBar">
+        <item name="android:progressDrawable">@drawable/interventix_scrubber_progress_horizontal_holo_light</item>
+        <item name="android:indeterminateDrawable">@drawable/interventix_scrubber_progress_horizontal_holo_light</item>
+        <item name="android:minHeight">13dip</item>
+        <item name="android:maxHeight">13dip</item>
+        <item name="android:thumb">@drawable/interventix_scrubber_control_selector_holo_light</item>
+        <item name="android:thumbOffset">16dip</item>
+        <item name="android:paddingLeft">16dip</item>
+        <item name="android:paddingRight">16dip</item>
+    </style>
 
-	<!-- this style is only referenced in a Light.DarkActionBar based theme -->
-	<style name="Theme.Interventix.Widget" parent="@style/Theme.AppCompat">
-		<item name="popupMenuStyle">@style/PopupMenu.Interventix</item>
-		<item name="dropDownListViewStyle">@style/DropDownListView.Interventix</item>
-	</style>
+    <style name="RatingBarInterventix" parent="android:Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/interventix_ratingbar_full_holo_light</item>
+        <item name="android:indeterminateDrawable">@drawable/interventix_ratingbar_full_holo_light</item>
+    </style>
+
+    <style name="RatingBarBigInterventix">
+        <item name="android:progressDrawable">@drawable/interventix_ratingbar_holo_light</item>
+        <item name="android:indeterminateDrawable">@drawable/interventix_ratingbar_holo_light</item>
+        <item name="android:minHeight">35dip</item>
+        <item name="android:maxHeight">35dip</item>
+    </style>
+
+    <style name="RatingBarSmallInterventix">
+        <item name="android:progressDrawable">@drawable/interventix_ratingbar_small_holo_light</item>
+        <item name="android:indeterminateDrawable">@drawable/interventix_ratingbar_small_holo_light</item>
+        <item name="android:minHeight">16dip</item>
+        <item name="android:maxHeight">16dip</item>
+    </style>
+
+    <style name="ToggleInterventix" parent="android:Widget.Button.Toggle">
+        <item name="android:background">@drawable/interventix_btn_toggle_holo_light</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="ListViewInterventix" parent="android:Widget.ListView">
+        <item name="android:listSelector">@drawable/interventix_list_selector_holo_light</item>
+    </style>
+
+    <style name="ListViewInterventix.White" parent="android:Widget.ListView.White">
+        <item name="android:listSelector">@drawable/interventix_list_selector_holo_light</item>
+    </style>
+
+    <style name="SpinnerItemInterventix" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:textColor">#000000</item>
+    </style>
 
 </resources>
