@@ -20,7 +20,7 @@
 
 <resources>
 
-    <color name="pressed_interventix">#CC33B5E5</color>
+    <color name="interventix_color">#000546</color>
     <color name="list_pressed_datetime">#FFCCCCCC</color>
     <color name="pressed_modified_interventix">#FFFFFF00</color>
 

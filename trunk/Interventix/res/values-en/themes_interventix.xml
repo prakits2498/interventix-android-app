@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="Interventix" parent="@style/_Interventix"/>
+
+  <style name="_Interventix" parent="Theme.AppCompat.Light">
+
+    <item name="android:editTextStyle">@style/EditTextInterventix</item>
+
+    <item name="android:textColorHighlight">#99000546</item>
+
+    <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewInterventix</item>
+
+    <item name="android:checkboxStyle">@style/CheckBoxInterventix</item>
+
+    <item name="android:radioButtonStyle">@style/RadioButtonInterventix</item>
+
+    <item name="android:buttonStyle">@style/ButtonInterventix</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonInterventix</item>
+
+    <item name="android:spinnerStyle">@style/SpinnerInterventix</item>
+
+    <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemInterventix</item>
+
+    <item name="android:progressBarStyleHorizontal">@style/ProgressBarInterventix</item>
+
+    <item name="android:seekBarStyle">@style/SeekBarInterventix</item>
+
+    <item name="android:ratingBarStyle">@style/RatingBarInterventix</item>
+
+    <item name="android:ratingBarStyleIndicator">@style/RatingBarBigInterventix</item>
+
+    <item name="android:ratingBarStyleSmall">@style/RatingBarSmallInterventix</item>
+
+    <item name="android:buttonStyleToggle">@style/ToggleInterventix</item>
+
+    <item name="android:listViewStyle">@style/ListViewInterventix</item>
+
+    <item name="android:listViewWhiteStyle">@style/ListViewInterventix.White</item>
+
+    <item name="android:spinnerItemStyle">@style/SpinnerItemInterventix</item>
+
+  </style>
+
+</resources>
