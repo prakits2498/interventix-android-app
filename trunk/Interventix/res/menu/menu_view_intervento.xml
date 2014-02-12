@@ -10,14 +10,17 @@
         interventix:showAsAction="never"/>
     <item
         android:id="@+id/send_mail"
+        android:icon="@drawable/ic_action_send"
         android:title="@string/send_mail"
         interventix:showAsAction="never"/>
     <item
         android:id="@+id/pay"
+        android:icon="@drawable/ic_action_pay"
         android:title="@string/pay"
         interventix:showAsAction="never"/>
     <item
         android:id="@+id/close"
+        android:icon="@drawable/ic_action_close"
         android:title="@string/close_interv"
         interventix:showAsAction="never"/>
 
