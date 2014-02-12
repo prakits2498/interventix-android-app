@@ -95,8 +95,8 @@ public class HomeActivity extends ActionBarActivity {
 	
 	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
 	
-	getSupportActionBar().setHomeButtonEnabled(true);
-	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	getSupportActionBar().setHomeButtonEnabled(false);
+	getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 	
 	buffer = BufferInterventix.getBufferInterventix();
     }
@@ -137,7 +137,7 @@ public class HomeActivity extends ActionBarActivity {
     
 	if (keyCode == KeyEvent.KEYCODE_BACK) {
 	    
-	    finish();
+	    // finish();
 	}
 	
 	return true;
@@ -146,7 +146,7 @@ public class HomeActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
     
-	finish();
+	// finish();
     }
     
     @Override
@@ -157,7 +157,7 @@ public class HomeActivity extends ActionBarActivity {
 	
 	setRefreshActionButtonState(true);
 	
-	return super.onCreateOptionsMenu(menu);
+	return true;
     }
     
     @Override

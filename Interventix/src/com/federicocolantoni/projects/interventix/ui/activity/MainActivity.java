@@ -193,7 +193,7 @@ public class MainActivity extends ActionBarActivity {
 	    firstRunDialog.setIcon(R.drawable.ic_launcher);
 	    
 	    LayoutInflater inflater = getActivity().getLayoutInflater();
-	    View view = inflater.inflate(R.layout.first_run, null);
+	    View view = inflater.inflate(R.layout.dialog_first_run, null);
 	    
 	    firstRunDialog.setView(view);
 	    
