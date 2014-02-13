@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:interventix="http://schemas.android.com/apk/res-auto" >
+    xmlns:interventix="http://schemas.android.com/apk/res-auto" >
 
-	<item
-		android:id="@+id/add_detail_interv"
-		android:enabled="false"
-		android:icon="@drawable/ic_action_add"
-		android:title="@string/add_dettaglio_menu"
-		android:visible="false"
-		interventix:showAsAction="ifRoom"/>
-	<item
-		android:id="@+id/send_mail"
-		android:icon="@drawable/ic_action_send"
-		android:title="@string/send_mail"
-		interventix:showAsAction="ifRoom"/>
-	<item
-		android:id="@+id/pay"
-		android:icon="@drawable/ic_action_pay"
-		android:title="@string/pay"
-		interventix:showAsAction="ifRoom"/>
-	<item
-		android:id="@+id/close"
-		android:icon="@drawable/ic_action_close"
-		android:title="@string/close_interv"
-		interventix:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/add_detail_interv"
+        android:enabled="false"
+        android:icon="@drawable/ic_action_add"
+        android:title="@string/add_dettaglio_menu"
+        android:visible="false"
+        interventix:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/send_mail"
+        android:icon="@drawable/ic_action_send"
+        android:title="@string/send_mail"
+        interventix:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/pay"
+        android:icon="@drawable/ic_action_pay"
+        android:title="@string/pay"
+        interventix:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/close"
+        android:icon="@drawable/ic_action_close_intervention"
+        android:title="@string/close_interv"
+        interventix:showAsAction="ifRoom"/>
 
 </menu>
