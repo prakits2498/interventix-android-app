@@ -1,67 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/swipe_item"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:baselineAligned="false"
-	android:descendantFocusability="blocksDescendants"
-	android:orientation="horizontal"
-	android:weightSum="4.0" >
+    android:id="@+id/swipe_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_pressed_item"
+    android:baselineAligned="false"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="horizontal" >
 
-	<LinearLayout
-		android:layout_width="0dip"
-		android:layout_height="match_parent"
-		android:layout_weight="2.5"
-		android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="2.5"
+        android:orientation="vertical" >
 
-		<TextView
-			android:id="@+id/tv_row_nominativo"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:ellipsize="end"
-			android:hint="@string/hint_nomin"
-			android:singleLine="true"
-			android:textIsSelectable="false"
-			android:textSize="18sp"
-			android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_row_nominativo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:hint="@string/hint_nomin"
+            android:singleLine="true"
+            android:textIsSelectable="false"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-		<TextView
-			android:id="@+id/tv_row_cod_fis"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:ellipsize="end"
-			android:hint="@string/hint_cod_fis"
-			android:singleLine="true"
-			android:textIsSelectable="false"
-			android:textSize="14sp" />
+        <TextView
+            android:id="@+id/tv_row_cod_fis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:hint="@string/hint_cod_fis"
+            android:singleLine="true"
+            android:textIsSelectable="false"
+            android:textSize="14sp" />
 
-		<TextView
-			android:id="@+id/tv_row_p_iva"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:ellipsize="end"
-			android:hint="@string/hint_p_iva"
-			android:singleLine="true"
-			android:textIsSelectable="false"
-			android:textSize="14sp" />
-	</LinearLayout>
+        <TextView
+            android:id="@+id/tv_row_p_iva"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:hint="@string/hint_p_iva"
+            android:singleLine="true"
+            android:textIsSelectable="false"
+            android:textSize="14sp" />
+    </LinearLayout>
 
-	<RelativeLayout
-		android:layout_width="0dip"
-		android:layout_height="match_parent"
-		android:layout_weight="1.5"
-		android:orientation="horizontal"
-		android:padding="4dp" >
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:orientation="horizontal"
+        android:padding="4dp" >
 
-		<Button
-			android:id="@+id/mod_cliente"
-			android:layout_width="wrap_content"
-			android:layout_height="match_parent"
-			android:layout_centerInParent="true"
-			android:background="#FF0000"
-			android:text="@string/modify_client"
-			android:textColor="@android:color/white"
-			android:visibility="invisible" />
-	</RelativeLayout>
+        <Button
+            android:id="@+id/mod_cliente"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="#FF0000"
+            android:text="@string/modify_client"
+            android:textColor="@android:color/white"
+            android:visibility="invisible" />
+    </RelativeLayout>
 
 </LinearLayout>

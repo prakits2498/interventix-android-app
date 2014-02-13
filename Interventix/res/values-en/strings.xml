@@ -91,11 +91,13 @@
 
     <!-- strings for toasts -->
     <string name="toast_username_and_password_required">You must fill fields Username and Password</string>
-    <string name="toast_offline_access">Accesso in modalità offline</string>
+    <string name="toast_no_connection_available">No connection available</string>
     <string name="toast_login_error">Si è verificato un errore nel login</string>
-    <string name="toast_error_syncro_users">Si è verificato un errore nella sincronizzazione degli utenti</string>
-    <string name="toast_error_syncro_clients">Si è verificato un errore nella sincronizzazione dei clienti</string>
-    <string name="toast_error_syncro_interventions">Si è verificato un errore nella sincronizzazione degli interventi</string>
+    <string name="toast_error_syncro">Si è verificato un errore durante la sincronizzazione.</string>
+    <!-- <string name="toast_error_syncro_users">Si è verificato un errore nella sincronizzazione degli utenti</string> -->
+    <!-- <string name="toast_error_syncro_clients">Si è verificato un errore nella sincronizzazione dei clienti</string> -->
+    <!-- <string name="toast_error_syncro_interventions">Si è verificato un errore nella sincronizzazione degli interventi</string> -->
+
     <string name="toast_message_intervento_no_modified">Nessuna modifica all\'intervento</string>
     <string name="toast_message_intervento_modified">Intervento modificato</string>
 

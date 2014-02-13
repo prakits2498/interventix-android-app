@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:swipe="http://schemas.android.com/apk/res-auto"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical" >
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-	<EditText
-		android:id="@+id/search_client"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:drawableLeft="@android:drawable/ic_menu_search"
-		android:hint="@string/search_client"
-		android:inputType="text" />
+    <EditText
+        android:id="@+id/search_client"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:hint="@string/search_client"
+        android:inputType="text" />
 
-	<ListView
-		android:id="@+id/list_clients"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:layout_marginTop="8dp"
-		android:choiceMode="singleChoice"
-		android:descendantFocusability="blocksDescendants" >
-	</ListView>
+    <ListView
+        android:id="@+id/list_clients"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:choiceMode="singleChoice"
+        android:descendantFocusability="blocksDescendants"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false" >
+    </ListView>
 
 </LinearLayout>
