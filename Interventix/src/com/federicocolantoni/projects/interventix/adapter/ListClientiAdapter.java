@@ -29,6 +29,7 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 
 	public static boolean blockClick = false;
 
+	public static SparseBooleanArray clickedItems = new SparseBooleanArray();
 	public static SparseBooleanArray checkedItems = new SparseBooleanArray();
 	public static SparseBooleanArray swipedItems = new SparseBooleanArray();
 
@@ -48,6 +49,7 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 		for (int i = 0; i < InterventoController.listaClienti.size(); i++) {
 			checkedItems.put(i, false);
 			swipedItems.put(i, false);
+			clickedItems.put(i, true);
 		}
 
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -113,9 +115,19 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 		return checkedItems;
 	}
 
-	public SparseBooleanArray getBooleanArray() {
+	public SparseBooleanArray getCheckedArray() {
 
 		return checkedItems;
+	}
+
+	@Override
+	public boolean isEnabled(int position) {
+
+		if (clickedItems.get(position))
+			return true;
+		else {
+			return false;
+		}
 	}
 
 	@Override

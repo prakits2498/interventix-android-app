@@ -109,11 +109,24 @@ public class ListClientsInterventoFragment extends Fragment {
 							ListClientiAdapter.checkedItems.put(cont, false);
 					}
 
+					ListClientiAdapter.clickedItems.put(position, true);
+
+					for (int cont = 0; cont < ListClientiAdapter.clickedItems.size(); cont++) {
+
+						if (cont != position)
+							ListClientiAdapter.clickedItems.put(cont, false);
+					}
+
 					mAdapter.notifyDataSetChanged();
 				} else {
 					modClient.setVisibility(View.INVISIBLE);
 					ListClientiAdapter.swipedItems.put(position, false);
 					ListClientiAdapter.blockClick = false;
+
+					for (int cont = 0; cont < ListClientiAdapter.clickedItems.size(); cont++) {
+
+						ListClientiAdapter.clickedItems.put(cont, true);
+					}
 
 					mAdapter.notifyDataSetChanged();
 				}
