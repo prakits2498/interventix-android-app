@@ -20,10 +20,11 @@
 
 <resources>
 
-    <color name="interventix_color_white">#FFFFFF</color>
-    <color name="interventix_color_black">#000000</color>
-    <color name="interventix_color">#000546</color>
-    <color name="list_pressed_datetime">#FFCCCCCC</color>
-    <color name="pressed_modified_interventix">#FFFFFF00</color>
+	<color name="interventix_color_red">#FF4455</color>
+	<color name="interventix_color_white">#FFFFFF</color>
+	<color name="interventix_color_black">#000000</color>
+	<color name="interventix_color">#000546</color>
+	<color name="interventix_color_gray">#FFCCCCCC</color>
+	<color name="pressed_modified_interventix">#FFFFFF00</color>
 
 </resources>
