@@ -13,16 +13,13 @@
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@android:color/black"
+			android:background="@android:color/transparent"
 			android:orientation="vertical" >
 
 			<LinearLayout
 				android:id="@+id/row_manodopera"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item"
 				android:orientation="vertical" >
 
@@ -43,13 +40,15 @@
 					android:textSize="16sp" />
 			</LinearLayout>
 
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
+
 			<LinearLayout
 				android:id="@+id/row_componenti"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item"
 				android:orientation="vertical" >
 
@@ -70,13 +69,15 @@
 					android:textSize="16sp" />
 			</LinearLayout>
 
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
+
 			<LinearLayout
 				android:id="@+id/row_accessori"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item"
 				android:orientation="vertical" >
 
@@ -97,19 +98,21 @@
 					android:textSize="16sp" />
 			</LinearLayout>
 
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
+
 			<LinearLayout
 				android:id="@+id/row_importo"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:orientation="vertical" >
 
 				<TextView
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="#FFCCCCCC"
+					android:background="@color/interventix_color_gray"
 					android:paddingLeft="4dp"
 					android:text="@string/row_importo"
 					android:textColor="@android:color/black"
@@ -120,24 +123,26 @@
 					android:id="@+id/tv_row_importo"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="#FFCCCCCC"
+					android:background="@color/interventix_color_gray"
 					android:paddingLeft="4dp"
 					android:textSize="16sp" />
 			</LinearLayout>
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
 
 			<LinearLayout
 				android:id="@+id/row_iva"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:orientation="vertical" >
 
 				<TextView
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="#FFCCCCCC"
+					android:background="@color/interventix_color_gray"
 					android:paddingLeft="4dp"
 					android:text="@string/row_iva"
 					android:textColor="@android:color/black"
@@ -148,25 +153,26 @@
 					android:id="@+id/tv_row_iva"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="#FFCCCCCC"
+					android:background="@color/interventix_color_gray"
 					android:paddingLeft="4dp"
 					android:textSize="16sp" />
 			</LinearLayout>
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
 
 			<LinearLayout
 				android:id="@+id/row_totale"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="1dp"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:orientation="vertical" >
 
 				<TextView
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="#FF4455"
+					android:background="@color/interventix_color_red"
 					android:paddingLeft="4dp"
 					android:text="@string/row_totale"
 					android:textColor="@android:color/black"
@@ -177,7 +183,7 @@
 					android:id="@+id/tv_row_totale"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="#FF4455"
+					android:background="@color/interventix_color_red"
 					android:paddingLeft="4dp"
 					android:textSize="16sp" />
 			</LinearLayout>

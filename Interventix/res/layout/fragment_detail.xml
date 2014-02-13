@@ -13,16 +13,13 @@
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@android:color/black"
+			android:background="@android:color/transparent"
 			android:orientation="vertical" >
 
 			<LinearLayout
 				android:id="@+id/row_tipo_dettaglio"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item"
 				android:orientation="vertical" >
 
@@ -42,13 +39,15 @@
 					android:paddingLeft="4dp" />
 			</LinearLayout>
 
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
+
 			<LinearLayout
 				android:id="@+id/row_oggetto_dettaglio"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item"
 				android:orientation="vertical" >
 
@@ -68,16 +67,17 @@
 					android:paddingLeft="4dp" />
 			</LinearLayout>
 
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
+
 			<LinearLayout
 				android:id="@+id/row_tecnici_dettaglio"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item"
-				android:orientation="horizontal"
-				android:weightSum="2" >
+				android:orientation="horizontal" >
 
 				<TextView
 					android:layout_width="0dp"
@@ -97,22 +97,17 @@
 					android:layout_weight="1"
 					android:gravity="center_vertical|right"
 					android:paddingLeft="4dp" />
-
-				<ImageView
-					android:id="@+id/img_tecnici_right_navigation"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:contentDescription="@string/content_right_nav"
-					android:src="@drawable/ic_navigation_next_item" />
 			</LinearLayout>
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
 
 			<LinearLayout
 				android:id="@+id/row_descrizione_dettaglio"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item"
 				android:orientation="vertical" >
 
@@ -132,20 +127,22 @@
 					android:paddingLeft="4dp" />
 			</LinearLayout>
 
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
+
 			<LinearLayout
 				android:id="@+id/row_inizio_dettaglio"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/list_pressed_datetime"
 				android:orientation="vertical" >
 
 				<TextView
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="#FFCCCCCC"
+					android:background="@color/interventix_color_gray"
 					android:paddingLeft="4dp"
 					android:text="@string/tv_inizio_dettaglio"
 					android:textColor="@android:color/black"
@@ -156,25 +153,27 @@
 					android:id="@+id/tv_row_inizio_dettaglio"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="#FFCCCCCC"
+					android:background="@color/interventix_color_gray"
 					android:paddingLeft="4dp"
 					android:textColor="#FF3040EE" />
 			</LinearLayout>
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
 
 			<LinearLayout
 				android:id="@+id/row_fine_dettaglio"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/list_pressed_datetime"
 				android:orientation="vertical" >
 
 				<TextView
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="#FFCCCCCC"
+					android:background="@color/interventix_color_gray"
 					android:paddingLeft="4dp"
 					android:text="@string/tv_fine_dettaglio"
 					android:textColor="@android:color/black"
@@ -185,26 +184,27 @@
 					android:id="@+id/tv_row_fine_dettaglio"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="#FFCCCCCC"
+					android:background="@color/interventix_color_gray"
 					android:paddingLeft="4dp"
 					android:textColor="#FF3040EE" />
 			</LinearLayout>
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
 
 			<LinearLayout
 				android:id="@+id/row_tot_ore_dettaglio"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="1dp"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@android:color/transparent"
 				android:orientation="vertical" >
 
 				<TextView
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="#FF4455"
+					android:background="@color/interventix_color_red"
 					android:paddingLeft="4dp"
 					android:text="@string/tv_tot_ore_dettaglio"
 					android:textColor="@android:color/white"
@@ -215,7 +215,7 @@
 					android:id="@+id/tv_row_tot_ore_dettaglio"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="#FF4455"
+					android:background="@color/interventix_color_red"
 					android:paddingLeft="4dp"
 					android:textColor="@android:color/white" />
 			</LinearLayout>

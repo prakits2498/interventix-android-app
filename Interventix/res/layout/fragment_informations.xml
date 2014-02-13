@@ -13,16 +13,13 @@
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@android:color/black"
+			android:background="@android:color/transparent"
 			android:orientation="vertical" >
 
 			<LinearLayout
 				android:id="@+id/row_tipology"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item"
 				android:orientation="vertical" >
 
@@ -42,13 +39,15 @@
 					android:paddingLeft="4dp" />
 			</LinearLayout>
 
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
+
 			<LinearLayout
 				android:id="@+id/row_mode"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item"
 				android:orientation="vertical" >
 
@@ -68,13 +67,15 @@
 					android:paddingLeft="4dp" />
 			</LinearLayout>
 
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
+
 			<LinearLayout
 				android:id="@+id/row_product"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item"
 				android:orientation="vertical" >
 
@@ -94,13 +95,15 @@
 					android:paddingLeft="4dp" />
 			</LinearLayout>
 
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
+
 			<LinearLayout
 				android:id="@+id/row_motivation"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item"
 				android:orientation="vertical" >
 
@@ -120,13 +123,15 @@
 					android:paddingLeft="4dp" />
 			</LinearLayout>
 
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
+
 			<LinearLayout
 				android:id="@+id/row_name"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item"
 				android:orientation="vertical" >
 
@@ -146,13 +151,15 @@
 					android:paddingLeft="4dp" />
 			</LinearLayout>
 
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
+
 			<LinearLayout
 				android:id="@+id/row_date"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item"
 				android:orientation="vertical" >
 
@@ -172,19 +179,20 @@
 					android:paddingLeft="4dp" />
 			</LinearLayout>
 
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
+
 			<LinearLayout
 				android:id="@+id/row_references"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item" >
 
 				<TextView
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:drawableRight="@drawable/ic_navigation_next_item"
 					android:gravity="center_vertical"
 					android:paddingLeft="4dp"
 					android:text="@string/row_references"
@@ -193,20 +201,20 @@
 					android:textStyle="bold" />
 			</LinearLayout>
 
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/interventix_color_black" />
+
 			<LinearLayout
 				android:id="@+id/row_notes"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="1dp"
-				android:layout_marginLeft="1dp"
-				android:layout_marginRight="1dp"
-				android:layout_marginTop="1dp"
 				android:background="@drawable/pressed_item" >
 
 				<TextView
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:drawableRight="@drawable/ic_navigation_next_item"
 					android:gravity="center_vertical"
 					android:paddingLeft="4dp"
 					android:text="@string/row_annotations"
