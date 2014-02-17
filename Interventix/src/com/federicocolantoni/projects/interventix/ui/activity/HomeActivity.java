@@ -17,8 +17,10 @@ import org.json.JSONObject;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -85,6 +87,18 @@ public class HomeActivity extends ActionBarActivity {
 
 	private BufferInterventix buffer;
 
+	BroadcastReceiver receiverBufferFinish = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+
+			if (intent.getAction().equals(Constants.ACTION_FINISH_BUFFER)) {
+
+				getUsersSyncro();
+			}
+		}
+	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -106,6 +120,8 @@ public class HomeActivity extends ActionBarActivity {
 		getSupportActionBar().setTitle(UtenteController.tecnicoLoggato.nome + " " + UtenteController.tecnicoLoggato.cognome);
 
 		InterventoController.controller = null;
+
+		registerReceiver(receiverBufferFinish, new IntentFilter(Constants.ACTION_FINISH_BUFFER));
 
 		getUsersSyncro();
 
@@ -224,6 +240,8 @@ public class HomeActivity extends ActionBarActivity {
 		super.onPause();
 
 		buffer.stopTimer();
+
+		unregisterReceiver(receiverBufferFinish);
 	}
 
 	@Override
