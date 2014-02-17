@@ -11,26 +11,37 @@ import com.federicocolantoni.projects.interventix.controller.InterventoControlle
 
 @EFragment(R.layout.fragment_customer)
 public class ClientInterventoFragment extends Fragment {
-    
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-    
-	super.onCreate(savedInstanceState);
-	
-	((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-	((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	
-    }
-    
-    @Override
-    public void onStart() {
-    
-	super.onStart();
-	
-	if (!InterventoController.controller.getIntervento().nuovo)
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_client));
-	else
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_client));
-	
-    }
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+
+		super.onCreate(savedInstanceState);
+
+		setHasOptionsMenu(true);
+	}
+
+	@Override
+	public void onStart() {
+
+		super.onStart();
+
+		if (!InterventoController.controller.getIntervento().nuovo)
+			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
+					getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_client));
+		else
+			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_client));
+
+	}
+
+	@Override
+	public void onResume() {
+
+		super.onResume();
+
+		updateUI();
+	}
+
+	private void updateUI() {
+
+	}
 }

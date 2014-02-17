@@ -6,34 +6,26 @@
     android:orientation="horizontal" >
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:background="@android:color/transparent"
         android:orientation="vertical"
-        android:paddingLeft="2dp"
-        android:paddingRight="2dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:paddingTop="2dp" >
 
         <TextView
             android:id="@+id/tv_type_detail_interv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_object_detail_interv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp" />
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/img_signature_right_navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:contentDescription="@string/content_right_nav"
-        android:src="@drawable/ic_navigation_next_item" />
 
 </LinearLayout>

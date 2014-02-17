@@ -96,9 +96,15 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 
 					RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
-					utenteDao.createIfNotExists(utente);
+					if (!utenteDao.idExists(utente.idutente))
+						utenteDao.createIfNotExists(utente);
+					else {
 
-					utenteDao.update(utente);
+						Utente utExists = utenteDao.queryForId(utente.idutente);
+
+						if (!utExists.equals(utente))
+							utenteDao.update(utente);
+					}
 
 					UtenteController.tecnicoLoggato = utente;
 

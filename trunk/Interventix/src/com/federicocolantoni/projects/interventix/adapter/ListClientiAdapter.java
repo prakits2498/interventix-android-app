@@ -16,12 +16,10 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
-import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 
 public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClickListener, Filterable {
 
@@ -300,6 +298,6 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 	@Override
 	public void onClick(View view) {
 
-		InterventixToast.makeToast("Modifica cliente", Toast.LENGTH_SHORT);
+		// InterventixToast.makeToast("Modifica cliente", Toast.LENGTH_SHORT);
 	}
 }
