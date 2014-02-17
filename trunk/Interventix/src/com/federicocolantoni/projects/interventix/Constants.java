@@ -127,6 +127,7 @@ public final class Constants {
 	// *** dati per il buffer ***\\
 	public static final String ACTION_GET_INTERVENTI = Interventix.getContext().getPackageName() + "." + BUFFER_TYPE.BUFFER_INTERVENTO.name();
 	public static final String ACTION_GET_CLIENTI = Interventix.getContext().getPackageName() + "." + BUFFER_TYPE.BUFFER_CLIENTE.name();
+	public static final String ACTION_FINISH_BUFFER = com.federicocolantoni.projects.interventix.Interventix_.getContext().getPackageName() + "." + "BUFFER_FINISH";
 
 	public static enum BUFFER_TYPE {
 
