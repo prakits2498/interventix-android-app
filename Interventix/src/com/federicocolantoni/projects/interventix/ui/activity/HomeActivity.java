@@ -62,7 +62,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.haarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter;
+import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.QueryBuilder;
 
@@ -71,7 +71,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 public class HomeActivity extends ActionBarActivity {
 
 	private ListInterventiAdapter adapter;
-	private AlphaInAnimationAdapter animationAdapter;
+	private SwingBottomInAnimationAdapter animationAdapter;
 
 	private Menu optionsMenu;
 
@@ -140,7 +140,7 @@ public class HomeActivity extends ActionBarActivity {
 
 			adapter = new ListInterventiAdapter(listaInterventiAperti);
 
-			animationAdapter = new AlphaInAnimationAdapter(adapter);
+			animationAdapter = new SwingBottomInAnimationAdapter(adapter, 150, 1500);
 			animationAdapter.setAbsListView(listOpen);
 
 			listOpen.setAdapter(animationAdapter);
@@ -351,15 +351,17 @@ public class HomeActivity extends ActionBarActivity {
 
 				if (result == RESULT_OK)
 					getClientsSyncro();
-				else if (result == RESULT_CANCELED) {
+				else {
+					if (result == RESULT_CANCELED) {
 
-					InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
+						InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
+
+						com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+					} else if (result == Constants.ERRORE_NO_CONNECTION)
+						InterventixToast.makeToast(getString(R.string.toast_no_connection_available), Toast.LENGTH_LONG);
 
 					setRefreshActionButtonState(false);
-
-					com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
-				} else if (result == Constants.ERRORE_NO_CONNECTION)
-					InterventixToast.makeToast(getString(R.string.toast_no_connection_available), Toast.LENGTH_LONG);
+				}
 			}
 
 		}.execute(UtenteController.tecnicoLoggato.idutente);
@@ -386,48 +388,52 @@ public class HomeActivity extends ActionBarActivity {
 
 				try {
 
-					json_req = JsonCR2.createRequest("clients", "syncro", parameters, params[0].intValue());
+					if (CheckConnection.connectionIsAlive()) {
+						json_req = JsonCR2.createRequest("clients", "syncro", parameters, params[0].intValue());
 
-					SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+						SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
 
-					String prefs_url = getResources().getString(R.string.prefs_key_url);
+						String prefs_url = getResources().getString(R.string.prefs_key_url);
 
-					String url_string = prefsDefault.getString(prefs_url, null);
+						String url_string = prefsDefault.getString(prefs_url, null);
 
-					JSONObject response = new JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
+						JSONObject response = new JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
 
-					if (response != null && response.getString("response").equalsIgnoreCase("success")) {
-						JSONObject data = response.getJSONObject("data");
+						if (response != null && response.getString("response").equalsIgnoreCase("success")) {
+							JSONObject data = response.getJSONObject("data");
 
-						ClienteController.revisioneClienti = data.getLong("revision");
+							ClienteController.revisioneClienti = data.getLong("revision");
 
-						RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+							RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
-						JSONArray clientsMOD = data.getJSONArray("mod");
-						JSONArray clientsDEL = data.getJSONArray("del");
+							JSONArray clientsMOD = data.getJSONArray("mod");
+							JSONArray clientsDEL = data.getJSONArray("del");
 
-						Gson gson = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+							Gson gson = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-						for (int i = 0; i < clientsMOD.length(); i++) {
+							for (int i = 0; i < clientsMOD.length(); i++) {
 
-							JSONObject clienteJSON = clientsMOD.getJSONObject(i);
+								JSONObject clienteJSON = clientsMOD.getJSONObject(i);
 
-							Cliente cliente = gson.fromJson(clienteJSON.toString(), Cliente.class);
+								Cliente cliente = gson.fromJson(clienteJSON.toString(), Cliente.class);
 
-							if (!clienteDao.idExists(cliente.idcliente))
-								clienteDao.create(cliente);
-							else
-								clienteDao.update(cliente);
+								if (!clienteDao.idExists(cliente.idcliente))
+									clienteDao.create(cliente);
+								else
+									clienteDao.update(cliente);
+							}
+
+							for (int k = 0; k < clientsDEL.length(); k++) {
+
+								clienteDao.deleteById(clientsDEL.getLong(k));
+							}
+
+							result = RESULT_OK;
+						} else {
+							result = RESULT_CANCELED;
 						}
-
-						for (int k = 0; k < clientsDEL.length(); k++) {
-
-							clienteDao.deleteById(clientsDEL.getLong(k));
-						}
-
-						result = RESULT_OK;
 					} else {
-						result = RESULT_CANCELED;
+						result = Constants.ERRORE_NO_CONNECTION;
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -443,12 +449,15 @@ public class HomeActivity extends ActionBarActivity {
 				if (result == RESULT_OK)
 					getInterventionsSyncro();
 				else {
+					if (result == RESULT_CANCELED) {
 
-					InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
+						InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
+
+						com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+					} else if (result == Constants.ERRORE_NO_CONNECTION)
+						InterventixToast.makeToast(getString(R.string.toast_no_connection_available), Toast.LENGTH_LONG);
 
 					setRefreshActionButtonState(false);
-
-					com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 				}
 			}
 		}.execute(UtenteController.tecnicoLoggato.idutente);
@@ -473,47 +482,51 @@ public class HomeActivity extends ActionBarActivity {
 				long iduser = params[0];
 
 				try {
-					json_req = JsonCR2.createRequest("interventions", "mysyncro", parameters, (int) iduser);
 
-					SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+					if (CheckConnection.connectionIsAlive()) {
+						json_req = JsonCR2.createRequest("interventions", "mysyncro", parameters, (int) iduser);
 
-					String prefs_url = getResources().getString(R.string.prefs_key_url);
+						SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
 
-					String url_string = prefsDefault.getString(prefs_url, null);
+						String prefs_url = getResources().getString(R.string.prefs_key_url);
 
-					JSONObject response = new JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
+						String url_string = prefsDefault.getString(prefs_url, null);
 
-					if (response != null && response.getString("response").equalsIgnoreCase("success")) {
+						JSONObject response = new JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
 
-						JSONObject data = response.getJSONObject("data");
+						if (response != null && response.getString("response").equalsIgnoreCase("success")) {
 
-						InterventoController.revisioneInterventi = data.getLong("revision");
+							JSONObject data = response.getJSONObject("data");
 
-						RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+							InterventoController.revisioneInterventi = data.getLong("revision");
 
-						JSONArray intervMOD = data.getJSONArray("mod");
-						JSONArray intervDEL = data.getJSONArray("del");
-						JSONArray interventions = data.getJSONArray("intervents");
+							RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
 
-						if (intervMOD.length() > 0)
-							for (int i = 0; i < intervMOD.length(); ++i) {
-								addInterventions((JSONObject) intervMOD.get(i), interventoDao);
-							}
+							JSONArray intervMOD = data.getJSONArray("mod");
+							JSONArray intervDEL = data.getJSONArray("del");
+							JSONArray interventions = data.getJSONArray("intervents");
 
-						if (intervDEL.length() > 0)
-							for (int i = 0; i < intervDEL.length(); ++i)
-								interventoDao.deleteById(intervDEL.getLong(i));
+							if (intervMOD.length() > 0)
+								for (int i = 0; i < intervMOD.length(); ++i) {
+									addInterventions((JSONObject) intervMOD.get(i), interventoDao);
+								}
 
-						if (interventions.length() > 0)
-							for (int k = 0; k < interventions.length(); ++k) {
+							if (intervDEL.length() > 0)
+								for (int i = 0; i < intervDEL.length(); ++i)
+									interventoDao.deleteById(intervDEL.getLong(i));
 
-							}
+							if (interventions.length() > 0)
+								for (int k = 0; k < interventions.length(); ++k) {
 
-						result = RESULT_OK;
+								}
+
+							result = RESULT_OK;
+						} else {
+							result = RESULT_CANCELED;
+						}
 					} else {
-						result = RESULT_CANCELED;
+						result = Constants.ERRORE_NO_CONNECTION;
 					}
-
 				} catch (Exception e) {
 					e.printStackTrace();
 					BugSenseHandler.sendException(e);
@@ -532,13 +545,23 @@ public class HomeActivity extends ActionBarActivity {
 					Intervento intervento = gson.fromJson(responseIntervs.toString(), Intervento.class);
 
 					if (!interventoDao.idExists(intervento.idintervento)) {
+
 						intervento.modificato = Constants.INTERVENTO_SINCRONIZZATO;
 						intervento.nuovo = false;
 						interventoDao.create(intervento);
 					} else {
-						intervento.modificato = Constants.INTERVENTO_SINCRONIZZATO;
-						intervento.nuovo = false;
-						interventoDao.update(intervento);
+
+						Intervento intervExists = interventoDao.queryForId(intervento.idintervento);
+
+						if (intervExists.modificato.equals(Constants.INTERVENTO_MODIFICATO) || intervExists.modificato.equals(Constants.INTERVENTO_NUOVO)) {
+
+						} else {
+							intervento.modificato = Constants.INTERVENTO_SINCRONIZZATO;
+							intervento.nuovo = false;
+
+							interventoDao.update(intervento);
+
+						}
 					}
 
 					RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioInterventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper()
@@ -577,6 +600,7 @@ public class HomeActivity extends ActionBarActivity {
 						DettaglioIntervento dtInt = gsonDettagli.fromJson(newDettInterv.toString(), DettaglioIntervento.class);
 
 						if (!dettaglioInterventoDao.idExists(dtInt.iddettagliointervento)) {
+
 							dtInt.idintervento = (intervento.idintervento);
 							dtInt.tecniciintervento = (tecnici.toString());
 							dtInt.modificato = Constants.DETTAGLIO_SINCRONIZZATO;
@@ -584,12 +608,19 @@ public class HomeActivity extends ActionBarActivity {
 
 							dettaglioInterventoDao.create(dtInt);
 						} else {
-							dtInt.idintervento = (intervento.idintervento);
-							dtInt.tecniciintervento = (tecnici.toString());
-							dtInt.modificato = Constants.DETTAGLIO_SINCRONIZZATO;
-							dtInt.nuovo = false;
 
-							dettaglioInterventoDao.update(dtInt);
+							DettaglioIntervento dettExists = dettaglioInterventoDao.queryForId(dtInt.iddettagliointervento);
+
+							if (dettExists.modificato.equals(Constants.DETTAGLIO_MODIFICATO) || dettExists.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+								System.out.println("Il dettaglio " + dettExists.iddettagliointervento + " non necessita di nessuna sincronizzazione");
+							} else {
+								dtInt.idintervento = (intervento.idintervento);
+								dtInt.tecniciintervento = (tecnici.toString());
+								dtInt.modificato = Constants.DETTAGLIO_SINCRONIZZATO;
+								dtInt.nuovo = false;
+
+								dettaglioInterventoDao.update(dtInt);
+							}
 						}
 					}
 				} catch (Exception e) {
@@ -603,11 +634,15 @@ public class HomeActivity extends ActionBarActivity {
 
 				if (result != RESULT_OK) {
 
-					InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
+					if (result == RESULT_CANCELED) {
+
+						InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
+
+						com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+					} else if (result == Constants.ERRORE_NO_CONNECTION)
+						InterventixToast.makeToast(getString(R.string.toast_no_connection_available), Toast.LENGTH_LONG);
 
 					setRefreshActionButtonState(false);
-
-					com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 				} else {
 
 					setRefreshActionButtonState(false);
@@ -624,7 +659,7 @@ public class HomeActivity extends ActionBarActivity {
 
 						adapter = new ListInterventiAdapter(listaInterventiAperti);
 
-						animationAdapter = new AlphaInAnimationAdapter(adapter);
+						animationAdapter = new SwingBottomInAnimationAdapter(adapter, 150, 1500);
 						animationAdapter.setAbsListView(listOpen);
 
 						listOpen.setAdapter(animationAdapter);

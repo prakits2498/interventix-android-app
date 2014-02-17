@@ -40,9 +40,6 @@ public class ListClientsInterventoFragment extends Fragment {
 
 		super.onCreate(savedInstanceState);
 
-		((ActionBarActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-		((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 		setHasOptionsMenu(true);
 	};
 
