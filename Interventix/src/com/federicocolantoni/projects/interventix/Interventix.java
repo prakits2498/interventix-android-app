@@ -13,55 +13,56 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 @EApplication
 public class Interventix extends Application {
 
-	private static Interventix instance;
+    private static Interventix instance;
 
-	private static InterventixDBHelper dbHelper;
+    private static InterventixDBHelper dbHelper;
 
-	public static Interventix getInstance() {
+    public static Interventix getInstance() {
 
-		return instance;
+	return instance;
+    }
+
+    public static Context getContext() {
+
+	return instance.getApplicationContext();
+    }
+
+    public static InterventixDBHelper getDbHelper() {
+
+	if (dbHelper == null)
+	    dbHelper = OpenHelperManager.getHelper(instance, InterventixDBHelper.class);
+
+	return dbHelper;
+    }
+
+    public static void releaseDbHelper() {
+
+	OpenHelperManager.releaseHelper();
+	dbHelper = null;
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public void onCreate() {
+
+	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
+
+	instance = this;
+
+	super.onCreate();
+	loadAsyncTask();
+    }
+
+    private void loadAsyncTask() {
+
+	try {
+	    Class.forName("android.os.AsyncTask");
 	}
+	catch (ClassNotFoundException e) {
 
-	public static Context getContext() {
+	    BugSenseHandler.sendException(e);
 
-		return instance.getApplicationContext();
+	    e.printStackTrace();
 	}
-
-	public static InterventixDBHelper getDbHelper() {
-
-		if (dbHelper == null)
-			dbHelper = OpenHelperManager.getHelper(instance, InterventixDBHelper.class);
-
-		return dbHelper;
-	}
-
-	public static void releaseDbHelper() {
-
-		OpenHelperManager.releaseHelper();
-		dbHelper = null;
-	}
-
-	@SuppressLint("NewApi")
-	@Override
-	public void onCreate() {
-
-		BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
-
-		instance = this;
-
-		super.onCreate();
-		loadAsyncTask();
-	}
-
-	private void loadAsyncTask() {
-
-		try {
-			Class.forName("android.os.AsyncTask");
-		} catch (ClassNotFoundException e) {
-
-			BugSenseHandler.sendException(e);
-
-			e.printStackTrace();
-		}
-	}
+    }
 }

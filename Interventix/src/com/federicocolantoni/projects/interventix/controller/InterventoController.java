@@ -14,89 +14,92 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 public class InterventoController {
 
-	public static InterventoSingleton controller;
-	public static long revisioneInterventi = 0L;
-	public static ArrayList<Cliente> listaClienti = new ArrayList<Cliente>();
+    public static InterventoSingleton controller;
+    public static long revisioneInterventi = 0L;
+    public static ArrayList<Cliente> listaClienti = new ArrayList<Cliente>();
 
-	public static void insertOnDB() {
+    public static void insertOnDB() {
 
-		RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+	RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
 
-		InterventoController.controller.getIntervento().modificato = Constants.INTERVENTO_NUOVO;
+	InterventoController.controller.getIntervento().modificato = Constants.INTERVENTO_NUOVO;
 
-		interventoDao.createIfNotExists(InterventoController.controller.getIntervento());
+	interventoDao.createIfNotExists(InterventoController.controller.getIntervento());
 
-		RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+	RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
-		utenteDao.createIfNotExists(InterventoController.controller.getTecnico());
+	utenteDao.createIfNotExists(InterventoController.controller.getTecnico());
 
-		RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+	RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
-		clienteDao.createIfNotExists(InterventoController.controller.getCliente());
+	clienteDao.createIfNotExists(InterventoController.controller.getCliente());
 
-		RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
+	RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
 
-		for (DettaglioIntervento dettaglio : InterventoController.controller.getListaDettagli()) {
+	for (DettaglioIntervento dettaglio : InterventoController.controller.getListaDettagli()) {
 
-			if (dettaglioDao.idExists(dettaglio.iddettagliointervento)) {
+	    if (dettaglioDao.idExists(dettaglio.iddettagliointervento)) {
 
-				System.out.println("insertDB - Dettaglio esistente da aggiornare\n" + dettaglio);
-				dettaglio.modificato = Constants.DETTAGLIO_MODIFICATO;
-				dettaglioDao.update(dettaglio);
-			} else {
-				System.out.println("insertDB - Dettaglio nuovo da inserire\n" + dettaglio);
-				dettaglioDao.create(dettaglio);
-			}
-		}
-
-		com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
-
-		InterventixToast.makeToast("Nuovo intervento aggiunto\n con successo!", Toast.LENGTH_SHORT);
+		System.out.println("insertDB - Dettaglio esistente da aggiornare\n" + dettaglio);
+		dettaglio.modificato = Constants.DETTAGLIO_MODIFICATO;
+		dettaglioDao.update(dettaglio);
+	    }
+	    else {
+		System.out.println("insertDB - Dettaglio nuovo da inserire\n" + dettaglio);
+		dettaglioDao.create(dettaglio);
+	    }
 	}
 
-	public static void updateOnDB() {
+	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
-		RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+	InterventixToast.makeToast("Nuovo intervento aggiunto\n con successo!", Toast.LENGTH_SHORT);
+    }
 
-		InterventoController.controller.getIntervento().modificato = Constants.INTERVENTO_MODIFICATO;
+    public static void updateOnDB() {
 
-		interventoDao.update(InterventoController.controller.getIntervento());
+	RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
 
-		RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+	InterventoController.controller.getIntervento().modificato = Constants.INTERVENTO_MODIFICATO;
 
-		utenteDao.update(InterventoController.controller.getTecnico());
+	interventoDao.update(InterventoController.controller.getIntervento());
 
-		RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+	RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
-		clienteDao.update(InterventoController.controller.getCliente());
+	utenteDao.update(InterventoController.controller.getTecnico());
 
-		RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
+	RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
-		System.out.println("Lista dettagli da salvare sul DB\n" + InterventoController.controller.getListaDettagli().toString());
+	clienteDao.update(InterventoController.controller.getCliente());
 
-		for (DettaglioIntervento dettaglio : InterventoController.controller.getListaDettagli()) {
+	RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
 
-			if (dettaglioDao.idExists(dettaglio.iddettagliointervento)) {
+	System.out.println("Lista dettagli da salvare sul DB\n" + InterventoController.controller.getListaDettagli().toString());
 
-				// System.out.println("updateDB - Dettaglio esistente da aggiornare\n"
-				// + dettaglio);
-				dettaglio.modificato = Constants.DETTAGLIO_MODIFICATO;
-				int updated = dettaglioDao.update(dettaglio);
+	for (DettaglioIntervento dettaglio : InterventoController.controller.getListaDettagli()) {
 
-				if (updated == 1) {
-					System.out.println("Dettaglio " + dettaglio.iddettagliointervento + " aggiornato correttamente");
-				} else {
-					System.out.println("Errore durante l'aggiornamento del dettaglio " + dettaglio.iddettagliointervento);
-				}
-			} else {
-				// System.out.println("updateDB - Dettaglio nuovo da inserire\n"
-				// + dettaglio);
-				dettaglioDao.create(dettaglio);
-			}
+	    if (dettaglioDao.idExists(dettaglio.iddettagliointervento)) {
+
+		// System.out.println("updateDB - Dettaglio esistente da aggiornare\n"
+		// + dettaglio);
+		dettaglio.modificato = Constants.DETTAGLIO_MODIFICATO;
+		int updated = dettaglioDao.update(dettaglio);
+
+		if (updated == 1) {
+		    System.out.println("Dettaglio " + dettaglio.iddettagliointervento + " aggiornato correttamente");
 		}
-
-		com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
-
-		InterventixToast.makeToast("Intervento " + InterventoController.controller.getIntervento().numero + " aggiornato\n con successo!", Toast.LENGTH_SHORT);
+		else {
+		    System.out.println("Errore durante l'aggiornamento del dettaglio " + dettaglio.iddettagliointervento);
+		}
+	    }
+	    else {
+		// System.out.println("updateDB - Dettaglio nuovo da inserire\n"
+		// + dettaglio);
+		dettaglioDao.create(dettaglio);
+	    }
 	}
+
+	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+
+	InterventixToast.makeToast("Intervento " + InterventoController.controller.getIntervento().numero + " aggiornato\n con successo!", Toast.LENGTH_SHORT);
+    }
 }

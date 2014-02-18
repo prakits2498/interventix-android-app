@@ -41,375 +41,376 @@ import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatch
 @EFragment(R.layout.fragment_informations)
 public class InformationsInterventoFragment extends Fragment {
 
-	@ViewById(R.id.tv_row_tipology)
-	TextView tv_tipology;
+    @ViewById(R.id.tv_row_tipology)
+    TextView tv_tipology;
 
-	@ViewById(R.id.tv_row_mode)
-	TextView tv_mode;
+    @ViewById(R.id.tv_row_mode)
+    TextView tv_mode;
 
-	@ViewById(R.id.tv_row_product)
-	TextView tv_product;
+    @ViewById(R.id.tv_row_product)
+    TextView tv_product;
 
-	@ViewById(R.id.tv_row_motivation)
-	TextView tv_motivation;
+    @ViewById(R.id.tv_row_motivation)
+    TextView tv_motivation;
 
-	@ViewById(R.id.tv_row_name)
-	TextView tv_nominativo;
+    @ViewById(R.id.tv_row_name)
+    TextView tv_nominativo;
 
-	@ViewById(R.id.row_date)
-	View date_interv;
+    @ViewById(R.id.row_date)
+    View date_interv;
 
-	@ViewById(R.id.tv_row_date)
-	TextView tv_date_interv;
+    @ViewById(R.id.tv_row_date)
+    TextView tv_date_interv;
 
-	@ViewById(R.id.row_references)
-	LinearLayout row_references;
+    @ViewById(R.id.row_references)
+    LinearLayout row_references;
 
-	@ViewById(R.id.row_notes)
-	LinearLayout row_notes;
+    @ViewById(R.id.row_notes)
+    LinearLayout row_notes;
 
-	private FragmentManager manager;
+    private FragmentManager manager;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
-		super.onCreate(savedInstanceState);
+	super.onCreate(savedInstanceState);
 
-		setHasOptionsMenu(true);
-	}
+	setHasOptionsMenu(true);
+    }
 
-	@Override
-	public void onStart() {
+    @Override
+    public void onStart() {
 
-		super.onStart();
+	super.onStart();
 
-		manager = getActivity().getSupportFragmentManager();
+	manager = getActivity().getSupportFragmentManager();
 
-		if (!InterventoController.controller.getIntervento().nuovo)
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-					getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_informations));
-		else
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_informations));
+	if (!InterventoController.controller.getIntervento().nuovo)
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
+		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_informations));
+	else
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_informations));
 
-		date_interv.setOnClickListener(new View.OnClickListener() {
+	date_interv.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
+	    @Override
+	    public void onClick(View v) {
 
-				final Dialog dateTimeDialog = new Dialog(getActivity());
+		final Dialog dateTimeDialog = new Dialog(getActivity());
 
-				final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.dialog_date_time, null);
+		final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.dialog_date_time, null);
 
-				final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
+		final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
 
-				DateTime dt = null;
+		DateTime dt = null;
 
-				dt = DateTime.parse(tv_date_interv.getText().toString(), DateTimeFormat.forPattern("dd/MM/yyyy HH:mm"));
+		dt = DateTime.parse(tv_date_interv.getText().toString(), DateTimeFormat.forPattern("dd/MM/yyyy HH:mm"));
 
-				dateTimePicker.setDateTime(dt);
+		dateTimePicker.setDateTime(dt);
 
-				dateTimePicker.setDateChangedListener(new DateWatcher() {
+		dateTimePicker.setDateChangedListener(new DateWatcher() {
 
-					@Override
-					public void onDateChanged(Calendar c) {
+		    @Override
+		    public void onDateChanged(Calendar c) {
 
-					}
-				});
-
-				((Button) dateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-
-						dateTimePicker.clearFocus();
-
-						DateTime dt = new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker
-								.getMinute(), DateTimeZone.forID("Europe/Rome"));
-
-						tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
-
-						InterventoController.controller.getIntervento().dataora = (dt.toDate().getTime());
-
-						dateTimeDialog.dismiss();
-					}
-				});
-
-				((Button) dateTimeDialogView.findViewById(R.id.CancelDialog)).setOnClickListener(new View.OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-
-						dateTimeDialog.cancel();
-					}
-				});
-
-				((Button) dateTimeDialogView.findViewById(R.id.ResetDateTime)).setOnClickListener(new View.OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-
-						DateTime dt = null;
-
-						DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
-						fmt.withZone(DateTimeZone.forID("Europe/Rome"));
-
-						dt = fmt.parseDateTime(tv_date_interv.getText().toString());
-
-						dateTimePicker.setDateTime(dt);
-					}
-				});
-
-				dateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-				dateTimeDialog.setContentView(dateTimeDialogView);
-				dateTimeDialog.setCancelable(false);
-				dateTimeDialog.show();
-			}
+		    }
 		});
+
+		((Button) dateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
+
+		    @Override
+		    public void onClick(View v) {
+
+			dateTimePicker.clearFocus();
+
+			DateTime dt =
+				new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone
+					.forID("Europe/Rome"));
+
+			tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
+
+			InterventoController.controller.getIntervento().dataora = (dt.toDate().getTime());
+
+			dateTimeDialog.dismiss();
+		    }
+		});
+
+		((Button) dateTimeDialogView.findViewById(R.id.CancelDialog)).setOnClickListener(new View.OnClickListener() {
+
+		    @Override
+		    public void onClick(View v) {
+
+			dateTimeDialog.cancel();
+		    }
+		});
+
+		((Button) dateTimeDialogView.findViewById(R.id.ResetDateTime)).setOnClickListener(new View.OnClickListener() {
+
+		    @Override
+		    public void onClick(View v) {
+
+			DateTime dt = null;
+
+			DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
+			fmt.withZone(DateTimeZone.forID("Europe/Rome"));
+
+			dt = fmt.parseDateTime(tv_date_interv.getText().toString());
+
+			dateTimePicker.setDateTime(dt);
+		    }
+		});
+
+		dateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dateTimeDialog.setContentView(dateTimeDialogView);
+		dateTimeDialog.setCancelable(false);
+		dateTimeDialog.show();
+	    }
+	});
+    }
+
+    @Override
+    public void onResume() {
+
+	super.onResume();
+
+	updateUI();
+    }
+
+    private void updateUI() {
+
+	tv_tipology.setText(InterventoController.controller.getIntervento().tipologia);
+
+	tv_product.setText(InterventoController.controller.getIntervento().prodotto);
+
+	tv_mode.setText(InterventoController.controller.getIntervento().modalita);
+
+	tv_motivation.setText(InterventoController.controller.getIntervento().motivo);
+
+	tv_nominativo.setText(InterventoController.controller.getIntervento().nominativo);
+
+	DateTime dt = new DateTime(InterventoController.controller.getIntervento().dataora, DateTimeZone.forID("Europe/Rome"));
+
+	tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+	super.onCreateOptionsMenu(menu, inflater);
+
+	inflater.inflate(R.menu.menu_view_intervento, menu);
+
+	MenuItem itemAddDetail = menu.findItem(R.id.add_detail_interv);
+	itemAddDetail.setVisible(true);
+	itemAddDetail.setEnabled(false);
+	itemAddDetail.setIcon(R.drawable.ic_action_add_disabled);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+	switch (item.getItemId()) {
+	    case R.id.pay:
+
+		// InterventixToast.makeToast("Saldare l'intervento?",
+		// Toast.LENGTH_SHORT);
+
+		break;
+
+	    case R.id.send_mail:
+
+		// InterventixToast.makeToast("Inviare email?",
+		// Toast.LENGTH_SHORT);
+
+		break;
+
+	    case R.id.close:
+
+		// InterventixToast.makeToast("Chiudere l'intervento?",
+		// Toast.LENGTH_SHORT);
+
+		break;
 	}
 
-	@Override
-	public void onResume() {
+	return true;
+    }
 
-		super.onResume();
+    @Click(R.id.row_tipology)
+    void showDialogTipologia() {
+
+	AlertDialog.Builder tipologia = new Builder(getActivity());
+
+	tipologia.setTitle(getResources().getString(R.string.tipologia_title));
+	final String[] choices = getResources().getStringArray(R.array.tipologia_choose);
+	tipologia.setSingleChoiceItems(choices, -1, new DialogInterface.OnClickListener() {
+
+	    @Override
+	    public void onClick(DialogInterface dialog, int which) {
+
+		InterventoController.controller.getIntervento().tipologia = (choices[which]);
+	    }
+	});
+
+	tipologia.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+
+	    @Override
+	    public void onClick(DialogInterface dialog, int which) {
+
+		dialog.dismiss();
 
 		updateUI();
-	}
+	    }
+	});
 
-	private void updateUI() {
+	tipologia.create().show();
+    }
 
-		tv_tipology.setText(InterventoController.controller.getIntervento().tipologia);
+    @Click(R.id.row_mode)
+    void showDialogModalita() {
 
-		tv_product.setText(InterventoController.controller.getIntervento().prodotto);
+	AlertDialog.Builder modalita = new Builder(getActivity());
 
-		tv_mode.setText(InterventoController.controller.getIntervento().modalita);
+	modalita.setTitle(getResources().getString(R.string.modalita_title));
+	final String[] choices = getResources().getStringArray(R.array.modalita_choose);
+	modalita.setSingleChoiceItems(choices, -1, new DialogInterface.OnClickListener() {
 
-		tv_motivation.setText(InterventoController.controller.getIntervento().motivo);
+	    @Override
+	    public void onClick(DialogInterface dialog, int which) {
 
-		tv_nominativo.setText(InterventoController.controller.getIntervento().nominativo);
+		InterventoController.controller.getIntervento().modalita = (choices[which]);
+	    }
+	});
 
-		DateTime dt = new DateTime(InterventoController.controller.getIntervento().dataora, DateTimeZone.forID("Europe/Rome"));
+	modalita.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
 
-		tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
-	}
+	    @Override
+	    public void onClick(DialogInterface dialog, int which) {
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		dialog.dismiss();
 
-		super.onCreateOptionsMenu(menu, inflater);
+		updateUI();
+	    }
+	});
 
-		inflater.inflate(R.menu.menu_view_intervento, menu);
+	modalita.create().show();
+    }
 
-		MenuItem itemAddDetail = menu.findItem(R.id.add_detail_interv);
-		itemAddDetail.setVisible(true);
-		itemAddDetail.setEnabled(false);
-		itemAddDetail.setIcon(R.drawable.ic_action_add_disabled);
-	}
+    @Click(R.id.row_product)
+    void showDialogProdotto() {
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	final EditText mEdit_prodotto;
 
-		switch (item.getItemId()) {
-			case R.id.pay:
+	AlertDialog.Builder prodotto = new Builder(getActivity());
 
-				// InterventixToast.makeToast("Saldare l'intervento?",
-				// Toast.LENGTH_SHORT);
+	prodotto.setTitle(R.string.prodotto_title);
 
-				break;
+	mEdit_prodotto = new EditText(getActivity());
+	mEdit_prodotto.setText(tv_product.getText());
 
-			case R.id.send_mail:
+	prodotto.setView(mEdit_prodotto);
+	prodotto.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
 
-				// InterventixToast.makeToast("Inviare email?",
-				// Toast.LENGTH_SHORT);
+	    @Override
+	    public void onClick(DialogInterface dialog, int which) {
 
-				break;
+		dialog.dismiss();
 
-			case R.id.close:
+		InterventoController.controller.getIntervento().prodotto = (mEdit_prodotto.getText().toString());
 
-				// InterventixToast.makeToast("Chiudere l'intervento?",
-				// Toast.LENGTH_SHORT);
+		updateUI();
+	    }
+	});
 
-				break;
-		}
+	prodotto.create().show();
+    }
 
-		return true;
-	}
+    @Click(R.id.row_name)
+    void showDialogNominativo() {
 
-	@Click(R.id.row_tipology)
-	void showDialogTipologia() {
+	final EditText mEdit_nominativo;
 
-		AlertDialog.Builder tipologia = new Builder(getActivity());
+	AlertDialog.Builder nominativo = new Builder(getActivity());
 
-		tipologia.setTitle(getResources().getString(R.string.tipologia_title));
-		final String[] choices = getResources().getStringArray(R.array.tipologia_choose);
-		tipologia.setSingleChoiceItems(choices, -1, new DialogInterface.OnClickListener() {
+	nominativo.setTitle(R.string.nominativo_title);
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
+	mEdit_nominativo = new EditText(getActivity());
+	mEdit_nominativo.setText(tv_nominativo.getText());
 
-				InterventoController.controller.getIntervento().tipologia = (choices[which]);
-			}
-		});
+	nominativo.setView(mEdit_nominativo);
 
-		tipologia.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+	nominativo.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
+	    @Override
+	    public void onClick(DialogInterface dialog, int which) {
 
-				dialog.dismiss();
+		dialog.dismiss();
 
-				updateUI();
-			}
-		});
+		InterventoController.controller.getIntervento().nominativo = (mEdit_nominativo.getText().toString());
 
-		tipologia.create().show();
-	}
+		updateUI();
+	    }
+	});
 
-	@Click(R.id.row_mode)
-	void showDialogModalita() {
+	nominativo.create().show();
+    }
 
-		AlertDialog.Builder modalita = new Builder(getActivity());
+    @Click(R.id.row_motivation)
+    void showDialogMotivazione() {
 
-		modalita.setTitle(getResources().getString(R.string.modalita_title));
-		final String[] choices = getResources().getStringArray(R.array.modalita_choose);
-		modalita.setSingleChoiceItems(choices, -1, new DialogInterface.OnClickListener() {
+	final EditText mEdit_motivo;
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
+	AlertDialog.Builder motivo = new Builder(getActivity());
 
-				InterventoController.controller.getIntervento().modalita = (choices[which]);
-			}
-		});
+	motivo.setTitle(R.string.motivation_title);
 
-		modalita.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+	TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_motivation);
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
+	mEdit_motivo = new EditText(getActivity());
+	mEdit_motivo.setText(tv_motivo.getText());
 
-				dialog.dismiss();
+	motivo.setView(mEdit_motivo);
 
-				updateUI();
-			}
-		});
+	motivo.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
 
-		modalita.create().show();
-	}
+	    @Override
+	    public void onClick(DialogInterface dialog, int which) {
 
-	@Click(R.id.row_product)
-	void showDialogProdotto() {
+		dialog.dismiss();
 
-		final EditText mEdit_prodotto;
+		InterventoController.controller.getIntervento().motivo = (mEdit_motivo.getText().toString());
 
-		AlertDialog.Builder prodotto = new Builder(getActivity());
+		updateUI();
+	    }
+	});
 
-		prodotto.setTitle(R.string.prodotto_title);
+	motivo.create().show();
+    }
 
-		mEdit_prodotto = new EditText(getActivity());
-		mEdit_prodotto.setText(tv_product.getText());
+    @Click(R.id.row_references)
+    void showRiferimenti() {
 
-		prodotto.setView(mEdit_prodotto);
-		prodotto.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+	FragmentTransaction transaction = manager.beginTransaction();
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
+	ReferencesInterventoFragment_ referencesInterv = new ReferencesInterventoFragment_();
 
-				dialog.dismiss();
+	transaction.replace(R.id.fragments_layout, referencesInterv, Constants.REFERENCES_INTERVENTO_FRAGMENT);
+	transaction.addToBackStack(Constants.REFERENCES_INTERVENTO_FRAGMENT);
+	transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
-				InterventoController.controller.getIntervento().prodotto = (mEdit_prodotto.getText().toString());
+	transaction.commit();
+    }
 
-				updateUI();
-			}
-		});
+    @Click(R.id.row_notes)
+    void showAnnotazioni() {
 
-		prodotto.create().show();
-	}
+	FragmentTransaction transaction = manager.beginTransaction();
 
-	@Click(R.id.row_name)
-	void showDialogNominativo() {
+	AnnotationsInterventoFragment_ annotationsInterv = new AnnotationsInterventoFragment_();
 
-		final EditText mEdit_nominativo;
+	transaction.replace(R.id.fragments_layout, annotationsInterv, Constants.ANNOTATIONS_INTERVENTO_FRAGMENT);
+	transaction.addToBackStack(Constants.ANNOTATIONS_INTERVENTO_FRAGMENT);
+	transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
-		AlertDialog.Builder nominativo = new Builder(getActivity());
-
-		nominativo.setTitle(R.string.nominativo_title);
-
-		mEdit_nominativo = new EditText(getActivity());
-		mEdit_nominativo.setText(tv_nominativo.getText());
-
-		nominativo.setView(mEdit_nominativo);
-
-		nominativo.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-
-				dialog.dismiss();
-
-				InterventoController.controller.getIntervento().nominativo = (mEdit_nominativo.getText().toString());
-
-				updateUI();
-			}
-		});
-
-		nominativo.create().show();
-	}
-
-	@Click(R.id.row_motivation)
-	void showDialogMotivazione() {
-
-		final EditText mEdit_motivo;
-
-		AlertDialog.Builder motivo = new Builder(getActivity());
-
-		motivo.setTitle(R.string.motivation_title);
-
-		TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_motivation);
-
-		mEdit_motivo = new EditText(getActivity());
-		mEdit_motivo.setText(tv_motivo.getText());
-
-		motivo.setView(mEdit_motivo);
-
-		motivo.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-
-				dialog.dismiss();
-
-				InterventoController.controller.getIntervento().motivo = (mEdit_motivo.getText().toString());
-
-				updateUI();
-			}
-		});
-
-		motivo.create().show();
-	}
-
-	@Click(R.id.row_references)
-	void showRiferimenti() {
-
-		FragmentTransaction transaction = manager.beginTransaction();
-
-		ReferencesInterventoFragment_ referencesInterv = new ReferencesInterventoFragment_();
-
-		transaction.replace(R.id.fragments_layout, referencesInterv, Constants.REFERENCES_INTERVENTO_FRAGMENT);
-		transaction.addToBackStack(Constants.REFERENCES_INTERVENTO_FRAGMENT);
-		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-
-		transaction.commit();
-	}
-
-	@Click(R.id.row_notes)
-	void showAnnotazioni() {
-
-		FragmentTransaction transaction = manager.beginTransaction();
-
-		AnnotationsInterventoFragment_ annotationsInterv = new AnnotationsInterventoFragment_();
-
-		transaction.replace(R.id.fragments_layout, annotationsInterv, Constants.ANNOTATIONS_INTERVENTO_FRAGMENT);
-		transaction.addToBackStack(Constants.ANNOTATIONS_INTERVENTO_FRAGMENT);
-		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-
-		transaction.commit();
-	}
+	transaction.commit();
+    }
 }

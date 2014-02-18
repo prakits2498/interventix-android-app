@@ -32,189 +32,190 @@ import com.federicocolantoni.projects.interventix.utils.Utils;
 @EFragment(R.layout.fragment_signature)
 public class SignatureInterventoFragment extends Fragment implements OnClickListener {
 
-	@ViewById(R.id.signature)
-	ImageView signature;
+    @ViewById(R.id.signature)
+    ImageView signature;
 
-	@ViewById(R.id.brush)
-	SVGImageView brush;
+    @ViewById(R.id.brush)
+    SVGImageView brush;
 
-	@ViewById(R.id.eraser)
-	SVGImageView eraser;
+    @ViewById(R.id.eraser)
+    SVGImageView eraser;
 
-	@ViewById(R.id.layout_drawer)
-	LinearLayout layout_drawer;
+    @ViewById(R.id.layout_drawer)
+    LinearLayout layout_drawer;
 
-	DrawingView drawer;
+    DrawingView drawer;
 
-	private ActionMode mActionModeSignature;
+    private ActionMode mActionModeSignature;
 
-	private ActionMode.Callback mActionModeCallback = new Callback() {
-
-		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-
-			return false;
-		}
-
-		@Override
-		public void onDestroyActionMode(ActionMode mode) {
-
-			mActionModeSignature = null;
-		}
-
-		@Override
-		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-
-			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.context_menu_signature, menu);
-
-			mode.setTitle("Opzioni");
-
-			return true;
-		}
-
-		@Override
-		public boolean onActionItemClicked(ActionMode mode, MenuItem menuItem) {
-
-			switch (menuItem.getItemId()) {
-
-				case R.id.menu_save_signature:
-
-					mode.finish();
-
-					Bitmap firma = drawer.getDrawingCache();
-
-					ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-					firma.compress(Bitmap.CompressFormat.PNG, 100, stream);
-
-					byte[] image = stream.toByteArray();
-
-					String hexSignature = Utils.bytesToHex(image);
-
-					InterventoController.controller.getIntervento().firma = (hexSignature);
-
-					layout_drawer.setVisibility(View.GONE);
-					signature.setVisibility(View.VISIBLE);
-
-					layout_drawer.removeView(drawer);
-
-					updateUI();
-
-					return true;
-
-				case R.id.menu_cancel:
-
-					mode.finish();
-
-					layout_drawer.setVisibility(View.GONE);
-					signature.setVisibility(View.VISIBLE);
-
-					layout_drawer.removeView(drawer);
-
-					return true;
-
-				default:
-					return false;
-			}
-		}
-	};
+    private ActionMode.Callback mActionModeCallback = new Callback() {
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 
-		super.onCreate(savedInstanceState);
-
-		setHasOptionsMenu(true);
-	};
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-
-		super.onActivityCreated(savedInstanceState);
+	    return false;
 	}
 
 	@Override
-	public void onStart() {
+	public void onDestroyActionMode(ActionMode mode) {
 
-		super.onStart();
-
-		if (!InterventoController.controller.getIntervento().nuovo)
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-					getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_signature));
-		else
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_signature));
-
-		signature.setDrawingCacheEnabled(true);
-
-		brush.setOnClickListener(this);
-		eraser.setOnClickListener(this);
+	    mActionModeSignature = null;
 	}
 
 	@Override
-	public void onResume() {
+	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 
-		super.onResume();
+	    MenuInflater inflater = mode.getMenuInflater();
+	    inflater.inflate(R.menu.context_menu_signature, menu);
 
-		updateUI();
-	}
+	    mode.setTitle("Opzioni");
 
-	private void updateUI() {
-
-		if (InterventoController.controller.getIntervento().firma.length() != 0) {
-			String hexSignature = InterventoController.controller.getIntervento().firma;
-
-			byte[] byteSignature = Utils.hexToBytes(hexSignature.toCharArray());
-
-			Bitmap bitmapSignature = BitmapFactory.decodeByteArray(byteSignature, 0, byteSignature.length);
-
-			if (bitmapSignature != null)
-				signature.setImageBitmap(bitmapSignature);
-		} else {
-
-			signature.setImageResource(R.drawable.signature_placeholder);
-		}
+	    return true;
 	}
 
 	@Override
-	public void onClick(View v) {
+	public boolean onActionItemClicked(ActionMode mode, MenuItem menuItem) {
 
-		switch (v.getId()) {
-			case R.id.brush:
+	    switch (menuItem.getItemId()) {
 
-				drawer.setErase(false);
+		case R.id.menu_save_signature:
 
-				break;
+		    mode.finish();
 
-			case R.id.eraser:
+		    Bitmap firma = drawer.getDrawingCache();
 
-				drawer.setErase(true);
+		    ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-				break;
-			default:
-				break;
-		}
+		    firma.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+		    byte[] image = stream.toByteArray();
+
+		    String hexSignature = Utils.bytesToHex(image);
+
+		    InterventoController.controller.getIntervento().firma = (hexSignature);
+
+		    layout_drawer.setVisibility(View.GONE);
+		    signature.setVisibility(View.VISIBLE);
+
+		    layout_drawer.removeView(drawer);
+
+		    updateUI();
+
+		    return true;
+
+		case R.id.menu_cancel:
+
+		    mode.finish();
+
+		    layout_drawer.setVisibility(View.GONE);
+		    signature.setVisibility(View.VISIBLE);
+
+		    layout_drawer.removeView(drawer);
+
+		    return true;
+
+		default:
+		    return false;
+	    }
 	}
+    };
 
-	@LongClick(R.id.signature)
-	boolean initActionMode(View v) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
-		if (mActionModeSignature != null)
-			return false;
+	super.onCreate(savedInstanceState);
 
-		mActionModeSignature = ((ActionBarActivity) getActivity()).startSupportActionMode(mActionModeCallback);
-		v.setSelected(true);
+	setHasOptionsMenu(true);
+    };
 
-		signature.setVisibility(View.GONE);
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
 
-		layout_drawer.setVisibility(View.VISIBLE);
+	super.onActivityCreated(savedInstanceState);
+    }
 
-		drawer = new DrawingView(getActivity());
-		drawer.setDrawingCacheEnabled(true);
-		drawer.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_AUTO);
+    @Override
+    public void onStart() {
 
-		layout_drawer.addView(drawer);
+	super.onStart();
 
-		return true;
+	if (!InterventoController.controller.getIntervento().nuovo)
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
+		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_signature));
+	else
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_signature));
+
+	signature.setDrawingCacheEnabled(true);
+
+	brush.setOnClickListener(this);
+	eraser.setOnClickListener(this);
+    }
+
+    @Override
+    public void onResume() {
+
+	super.onResume();
+
+	updateUI();
+    }
+
+    private void updateUI() {
+
+	if (InterventoController.controller.getIntervento().firma.length() != 0) {
+	    String hexSignature = InterventoController.controller.getIntervento().firma;
+
+	    byte[] byteSignature = Utils.hexToBytes(hexSignature.toCharArray());
+
+	    Bitmap bitmapSignature = BitmapFactory.decodeByteArray(byteSignature, 0, byteSignature.length);
+
+	    if (bitmapSignature != null)
+		signature.setImageBitmap(bitmapSignature);
 	}
+	else {
+
+	    signature.setImageResource(R.drawable.signature_placeholder);
+	}
+    }
+
+    @Override
+    public void onClick(View v) {
+
+	switch (v.getId()) {
+	    case R.id.brush:
+
+		drawer.setErase(false);
+
+		break;
+
+	    case R.id.eraser:
+
+		drawer.setErase(true);
+
+		break;
+	    default:
+		break;
+	}
+    }
+
+    @LongClick(R.id.signature)
+    boolean initActionMode(View v) {
+
+	if (mActionModeSignature != null)
+	    return false;
+
+	mActionModeSignature = ((ActionBarActivity) getActivity()).startSupportActionMode(mActionModeCallback);
+	v.setSelected(true);
+
+	signature.setVisibility(View.GONE);
+
+	layout_drawer.setVisibility(View.VISIBLE);
+
+	drawer = new DrawingView(getActivity());
+	drawer.setDrawingCacheEnabled(true);
+	drawer.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_AUTO);
+
+	layout_drawer.addView(drawer);
+
+	return true;
+    }
 }

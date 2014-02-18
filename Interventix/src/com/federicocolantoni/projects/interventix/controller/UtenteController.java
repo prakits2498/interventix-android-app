@@ -4,7 +4,7 @@ import com.federicocolantoni.projects.interventix.entity.Utente;
 
 public class UtenteController {
 
-	public static Utente tecnicoLoggato;
+    public static Utente tecnicoLoggato;
 
-	public static long revisioneUtenti = 0L;
+    public static long revisioneUtenti = 0L;
 }

@@ -12,41 +12,45 @@ import com.federicocolantoni.projects.interventix.entity.Utente;
 
 public class GetNominativoUtenteAsyncTask extends AsyncTask<Long, Void, Utente> {
 
-	private Context context;
+    private Context context;
 
-	public GetNominativoUtenteAsyncTask(Context context) {
+    public GetNominativoUtenteAsyncTask(Context context) {
 
-		this.context = context.getApplicationContext();
+	this.context = context.getApplicationContext();
+    }
+
+    @Override
+    protected Utente doInBackground(Long... params) {
+
+	ContentResolver cr = context.getContentResolver();
+
+	String[] projection = new String[] {
+		Fields._ID, UtenteDB.Fields.NOME, UtenteDB.Fields.COGNOME
+	};
+
+	String selection = Fields.TYPE + " =? AND " + UtenteDB.Fields.ID_UTENTE + " = ?";
+
+	String[] selectionArgs = new String[] {
+		UtenteDB.UTENTE_ITEM_TYPE, "" + params[0]
+	};
+
+	Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
+
+	Utente utente = new Utente();
+
+	if (cursor.moveToFirst()) {
+	    utente.nome = (cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.NOME)));
+	    utente.cognome = (cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.COGNOME)));
 	}
 
-	@Override
-	protected Utente doInBackground(Long... params) {
+	if (!cursor.isClosed())
+	    cursor.close();
 
-		ContentResolver cr = context.getContentResolver();
+	return utente;
+    }
 
-		String[] projection = new String[] { Fields._ID, UtenteDB.Fields.NOME, UtenteDB.Fields.COGNOME };
+    @Override
+    protected void onPostExecute(Utente result) {
 
-		String selection = Fields.TYPE + " =? AND " + UtenteDB.Fields.ID_UTENTE + " = ?";
-
-		String[] selectionArgs = new String[] { UtenteDB.UTENTE_ITEM_TYPE, "" + params[0] };
-
-		Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
-
-		Utente utente = new Utente();
-
-		if (cursor.moveToFirst()) {
-			utente.nome = (cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.NOME)));
-			utente.cognome = (cursor.getString(cursor.getColumnIndex(UtenteDB.Fields.COGNOME)));
-		}
-
-		if (!cursor.isClosed())
-			cursor.close();
-
-		return utente;
-	}
-
-	@Override
-	protected void onPostExecute(Utente result) {
-
-	}
+    }
 }

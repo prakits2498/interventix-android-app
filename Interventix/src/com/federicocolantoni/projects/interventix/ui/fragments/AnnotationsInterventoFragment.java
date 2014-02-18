@@ -12,35 +12,35 @@ import com.federicocolantoni.projects.interventix.controller.InterventoControlle
 @EFragment(R.layout.fragment_annotations)
 public class AnnotationsInterventoFragment extends Fragment {
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
-		super.onCreate(savedInstanceState);
+	super.onCreate(savedInstanceState);
 
-		setHasOptionsMenu(true);
-	}
+	setHasOptionsMenu(true);
+    }
 
-	@Override
-	public void onStart() {
+    @Override
+    public void onStart() {
 
-		super.onStart();
+	super.onStart();
 
-		if (!InterventoController.controller.getIntervento().nuovo)
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-					getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_annotations));
-		else
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_annotations));
-	}
+	if (!InterventoController.controller.getIntervento().nuovo)
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
+		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_annotations));
+	else
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_annotations));
+    }
 
-	@Override
-	public void onResume() {
+    @Override
+    public void onResume() {
 
-		super.onResume();
+	super.onResume();
 
-		updateUI();
-	}
+	updateUI();
+    }
 
-	private void updateUI() {
+    private void updateUI() {
 
-	}
+    }
 }

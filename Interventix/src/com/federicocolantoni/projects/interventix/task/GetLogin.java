@@ -1,5 +1,6 @@
 package com.federicocolantoni.projects.interventix.task;
 
+import java.lang.ref.WeakReference;
 import java.net.SocketTimeoutException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -25,6 +26,7 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.UtenteController;
 import com.federicocolantoni.projects.interventix.entity.Utente;
+import com.federicocolantoni.projects.interventix.modules.login.Login;
 import com.federicocolantoni.projects.interventix.utils.CheckConnection;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.PasswordHash;
@@ -37,170 +39,185 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 @SuppressLint("NewApi")
 public class GetLogin extends AsyncTask<String, Void, Integer> {
 
-	private Context context;
-	private ProgressDialog progress;
+    private Context context;
+    private ProgressDialog progress;
 
-	private SharedPreferences defaultPrefs;
+    private SharedPreferences defaultPrefs;
 
-	private String username, password;
+    private WeakReference<Login> fragmentWeakRef;
 
-	private AccountManager accountManager;
+    private String username, password;
 
-	public GetLogin(Activity activity, String username, String password) {
+    private AccountManager accountManager;
 
-		context = activity;
+    public GetLogin(Activity activity, Login fragment, String username, String password) {
 
-		defaultPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+	context = activity;
 
-		this.username = username;
-		this.password = password;
+	fragmentWeakRef = new WeakReference<Login>(fragment);
 
-		accountManager = AccountManager.get(context);
+	defaultPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-		progress = new ProgressDialog(context);
-		progress.setIndeterminate(true);
-		progress.setTitle(context.getString(R.string.login_started_title));
-		progress.setIcon(R.drawable.ic_launcher);
-		progress.setMessage(context.getString(R.string.login_started_message));
-		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		progress.setCancelable(false);
+	this.username = username;
+	this.password = password;
+
+	accountManager = AccountManager.get(context);
+
+	progress = new ProgressDialog(context);
+	progress.setIndeterminate(true);
+	progress.setTitle(context.getString(R.string.login_started_title));
+	progress.setIcon(R.drawable.ic_launcher);
+	progress.setMessage(context.getString(R.string.login_started_message));
+	progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+	progress.setCancelable(false);
+    }
+
+    @Override
+    protected void onPreExecute() {
+
+	progress.show();
+    }
+
+    @Override
+    protected Integer doInBackground(String... strings) {
+
+	int result = 0;
+
+	final String prefs_url = context.getResources().getString(R.string.prefs_key_url);
+
+	final String url = defaultPrefs.getString(prefs_url, null);
+
+	try {
+
+	    if (CheckConnection.connectionIsAlive()) {
+		JSONObject response = new JSONObject(Utils.connectionForURL(strings[0], url).toJSONString());
+
+		if (response.get("response").toString().equalsIgnoreCase("success")) {
+
+		    JSONObject data = response.getJSONObject("data");
+
+		    Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+
+		    Utente utente = gson.fromJson(data.toString(), Utente.class);
+
+		    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+
+		    if (!utenteDao.idExists(utente.idutente))
+			utenteDao.createIfNotExists(utente);
+		    else {
+
+			Utente utExists = utenteDao.queryForId(utente.idutente);
+
+			if (!utExists.equals(utente))
+			    utenteDao.update(utente);
+		    }
+
+		    UtenteController.tecnicoLoggato = utente;
+
+		    result = Activity.RESULT_OK;
+
+		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+		}
+		else {
+		    result = Constants.ERRORE_LOGIN;
+
+		    progress.dismiss();
+		}
+	    }
+	    else {
+		result = Constants.ERRORE_NO_CONNECTION;
+
+		progress.dismiss();
+	    }
+	}
+	catch (SocketTimeoutException e) {
+
+	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
+	}
+	catch (Exception e) {
+
+	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
+	}
+	finally {
+	    progress.dismiss();
 	}
 
-	@Override
-	protected void onPreExecute() {
+	return result;
+    }
 
-		progress.show();
-	}
+    @Override
+    protected void onPostExecute(Integer result) {
 
-	@Override
-	protected Integer doInBackground(String... strings) {
+	if (fragmentWeakRef.get() != null) {
+	    if (result == Activity.RESULT_OK) {
 
-		int result = 0;
-
-		final String prefs_url = context.getResources().getString(R.string.prefs_key_url);
-
-		final String url = defaultPrefs.getString(prefs_url, null);
+		String encryptedPassword = null;
 
 		try {
+		    encryptedPassword = PasswordHash.createHash(password);
+		}
+		catch (NoSuchAlgorithmException e) {
 
-			if (CheckConnection.connectionIsAlive()) {
-				JSONObject response = new JSONObject(Utils.connectionForURL(strings[0], url).toJSONString());
+		    e.printStackTrace();
+		}
+		catch (InvalidKeySpecException e) {
 
-				if (response.get("response").toString().equalsIgnoreCase("success")) {
-
-					JSONObject data = response.getJSONObject("data");
-
-					Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-
-					Utente utente = gson.fromJson(data.toString(), Utente.class);
-
-					RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
-
-					if (!utenteDao.idExists(utente.idutente))
-						utenteDao.createIfNotExists(utente);
-					else {
-
-						Utente utExists = utenteDao.queryForId(utente.idutente);
-
-						if (!utExists.equals(utente))
-							utenteDao.update(utente);
-					}
-
-					UtenteController.tecnicoLoggato = utente;
-
-					result = Activity.RESULT_OK;
-
-					com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
-				} else {
-					result = Constants.ERRORE_LOGIN;
-
-					progress.dismiss();
-				}
-			} else {
-				result = Constants.ERRORE_NO_CONNECTION;
-
-				progress.dismiss();
-			}
-		} catch (SocketTimeoutException e) {
-
-			e.printStackTrace();
-			BugSenseHandler.sendException(e);
-		} catch (Exception e) {
-
-			e.printStackTrace();
-			BugSenseHandler.sendException(e);
-		} finally {
-			progress.dismiss();
+		    e.printStackTrace();
 		}
 
-		return result;
-	}
+		Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
 
-	@Override
-	protected void onPostExecute(Integer result) {
+		if (accounts.length == 0) {
 
-		if (result == Activity.RESULT_OK) {
+		    final Account account = new Account(username, Constants.ACCOUNT_TYPE_INTERVENTIX);
 
-			String encryptedPassword = null;
+		    accountManager.addAccountExplicitly(account, encryptedPassword, null);
+		    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
-			try {
-				encryptedPassword = PasswordHash.createHash(password);
-			} catch (NoSuchAlgorithmException e) {
+		    SharedPreferences prefs = context.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 
-				e.printStackTrace();
-			} catch (InvalidKeySpecException e) {
+		    final Editor edit = prefs.edit().putString(Constants.USERNAME, username).putString(Constants.PASSWORD, encryptedPassword);
 
-				e.printStackTrace();
+		    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+			edit.apply();
+		    else {
+
+			new Thread(new Runnable() {
+			    public void run() {
+
+				edit.commit();
+			    }
+			}).start();
+		    }
+		}
+		else {
+
+		    for (Account account : accounts) {
+
+			if (account.name.equals(username)) {
+
+			    accountManager.setPassword(account, encryptedPassword);
+			    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
+
+			    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+
+			    UtenteController.tecnicoLoggato = utenteDao.queryForEq("username", username).get(0);
+
+			    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+
+			    break;
 			}
+		    }
+		}
 
-			Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
-
-			if (accounts.length == 0) {
-
-				final Account account = new Account(username, Constants.ACCOUNT_TYPE_INTERVENTIX);
-
-				accountManager.addAccountExplicitly(account, encryptedPassword, null);
-				accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
-
-				SharedPreferences prefs = context.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-
-				final Editor edit = prefs.edit().putString(Constants.USERNAME, username).putString(Constants.PASSWORD, encryptedPassword);
-
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-					edit.apply();
-				else {
-
-					new Thread(new Runnable() {
-						public void run() {
-
-							edit.commit();
-						}
-					}).start();
-				}
-			} else {
-
-				for (Account account : accounts) {
-
-					if (account.name.equals(username)) {
-
-						accountManager.setPassword(account, encryptedPassword);
-						accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
-
-						RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
-
-						UtenteController.tecnicoLoggato = utenteDao.queryForEq("username", username).get(0);
-
-						com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
-
-						break;
-					}
-				}
-			}
-
-			context.startActivity(new Intent(context, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
-		} else if (result == Constants.ERRORE_LOGIN)
-			InterventixToast.makeToast(context.getString(R.string.toast_login_error), Toast.LENGTH_LONG);
-		else if (result == Constants.ERRORE_NO_CONNECTION)
-			InterventixToast.makeToast(context.getString(R.string.toast_no_connection_available), Toast.LENGTH_LONG);
+		context.startActivity(new Intent(context, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
+	    }
+	    else if (result == Constants.ERRORE_LOGIN)
+		InterventixToast.makeToast(context.getString(R.string.toast_login_error), Toast.LENGTH_LONG);
+	    else if (result == Constants.ERRORE_NO_CONNECTION)
+		InterventixToast.makeToast(context.getString(R.string.toast_no_connection_available), Toast.LENGTH_LONG);
 	}
+    }
 }
