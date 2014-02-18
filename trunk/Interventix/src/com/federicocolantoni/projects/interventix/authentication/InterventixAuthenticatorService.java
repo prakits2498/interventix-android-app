@@ -6,10 +6,10 @@ import android.os.IBinder;
 
 public class InterventixAuthenticatorService extends Service {
 
-	@Override
-	public IBinder onBind(Intent intent) {
+    @Override
+    public IBinder onBind(Intent intent) {
 
-		InterventixAuthenticator authenticator = new InterventixAuthenticator(this);
-		return authenticator.getIBinder();
-	}
+	InterventixAuthenticator authenticator = new InterventixAuthenticator(this);
+	return authenticator.getIBinder();
+    }
 }

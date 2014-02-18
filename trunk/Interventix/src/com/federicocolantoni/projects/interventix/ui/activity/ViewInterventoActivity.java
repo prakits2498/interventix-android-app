@@ -43,275 +43,282 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 @EActivity(R.layout.activity_view_intervento)
 public class ViewInterventoActivity extends ActionBarActivity {
 
-	private SharedPreferences prefs;
+    private SharedPreferences prefs;
 
-	private Intervento intervento;
+    private Intervento intervento;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
-		super.onCreate(savedInstanceState);
+	super.onCreate(savedInstanceState);
 
-		BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
+	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
 
-		getSupportActionBar().setHomeButtonEnabled(true);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	getSupportActionBar().setHomeButtonEnabled(true);
+	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+	RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
-		InterventoController.listaClienti = (ArrayList<Cliente>) clienteDao.queryForAll();
+	InterventoController.listaClienti = (ArrayList<Cliente>) clienteDao.queryForAll();
 
-		com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+    }
+
+    @Override
+    protected void onStart() {
+
+	super.onStart();
+
+	Bundle extras = getIntent().getExtras();
+
+	prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+
+	getSupportActionBar().setTitle(UtenteController.tecnicoLoggato.nome + " " + UtenteController.tecnicoLoggato.cognome);
+
+	FragmentManager manager = getSupportFragmentManager();
+	FragmentTransaction transaction = manager.beginTransaction();
+
+	if (extras != null)
+	    intervento = (Intervento) extras.getSerializable(Constants.INTERVENTO);
+
+	if (intervento != null) {
+
+	    InterventoController.controller = InterventoSingleton.getInstance();
+
+	    RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+
+	    InterventoController.controller.setIntervento(interventoDao.queryForId(intervento.idintervento));
+
+	    RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+
+	    InterventoController.controller.setCliente(clienteDao.queryForId(intervento.cliente));
+
+	    RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
+
+	    InterventoController.controller.setListaDettagli(dettaglioDao.queryForEq("idintervento", intervento.idintervento));
+
+	    System.out.println("Lista dettagli caricata dal DB\n" + InterventoController.controller.getListaDettagli().toString());
+
+	    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+
+	    InterventoController.controller.setTecnico(utenteDao.queryForId(InterventoController.controller.getIntervento().tecnico));
+
+	    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+
+	    com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_ overView = new com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_();
+
+	    transaction.add(R.id.fragments_layout, overView, Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+	    transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+	    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	    transaction.commit();
+	}
+	else {
+
+	    InterventixToast.makeToast("Nuovo intervento", Toast.LENGTH_SHORT);
+
+	    InterventoController.controller = InterventoSingleton.getInstance();
+
+	    RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+
+	    long maxNumero = interventoDao.queryRawValue("select max(numero) from Interventi");
+
+	    try {
+		Intervento foo = interventoDao.queryBuilder().where().eq("numero", maxNumero).queryForFirst();
+
+		InterventoController.controller.getIntervento().numero = foo.numero + 1;
+	    }
+	    catch (SQLException e) {
+
+		e.printStackTrace();
+	    }
+
+	    long maxId = interventoDao.queryRawValue("select max(idintervento) from Interventi");
+
+	    try {
+		Intervento foo = interventoDao.queryBuilder().where().eq("idintervento", maxId).queryForFirst();
+
+		InterventoController.controller.getIntervento().idintervento = foo.idintervento + 1;
+	    }
+	    catch (SQLException e) {
+
+		e.printStackTrace();
+	    }
+
+	    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+
+	    InterventoController.controller.getIntervento().dataora = new DateTime().getMillis();
+	    InterventoController.controller.getIntervento().nuovo = true;
+	    InterventoController.controller.getIntervento().chiuso = false;
+	    InterventoController.controller.getIntervento().tecnico = UtenteController.tecnicoLoggato.idutente;
+
+	    // System.out.println(InterventoController.controller.getIntervento().toString());
+
+	    manager = getSupportFragmentManager();
+	    transaction = manager.beginTransaction();
+
+	    com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_ overView = new com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_();
+
+	    transaction.add(R.id.fragments_layout, overView, Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+	    transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+	    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	    transaction.commit();
 	}
 
-	@Override
-	protected void onStart() {
+	final Editor edit = prefs.edit().putInt(Constants.HASH_CODE_INTERVENTO_SINGLETON, InterventoController.controller.hashCode());
 
-		super.onStart();
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+	    edit.apply();
+	else {
 
-		Bundle extras = getIntent().getExtras();
-
-		prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-
-		getSupportActionBar().setTitle(UtenteController.tecnicoLoggato.nome + " " + UtenteController.tecnicoLoggato.cognome);
-
-		FragmentManager manager = getSupportFragmentManager();
-		FragmentTransaction transaction = manager.beginTransaction();
-
-		if (extras != null)
-			intervento = (Intervento) extras.getSerializable(Constants.INTERVENTO);
-
-		if (intervento != null) {
-
-			InterventoController.controller = InterventoSingleton.getInstance();
-
-			RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
-
-			InterventoController.controller.setIntervento(interventoDao.queryForId(intervento.idintervento));
-
-			RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
-
-			InterventoController.controller.setCliente(clienteDao.queryForId(intervento.cliente));
-
-			RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
-
-			InterventoController.controller.setListaDettagli(dettaglioDao.queryForEq("idintervento", intervento.idintervento));
-
-			System.out.println("Lista dettagli caricata dal DB\n" + InterventoController.controller.getListaDettagli().toString());
-
-			RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
-
-			InterventoController.controller.setTecnico(utenteDao.queryForId(InterventoController.controller.getIntervento().tecnico));
-
-			com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
-
-			com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_ overView = new com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_();
-
-			transaction.add(R.id.fragments_layout, overView, Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-			transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			transaction.commit();
-		} else {
-
-			InterventixToast.makeToast("Nuovo intervento", Toast.LENGTH_SHORT);
-
-			InterventoController.controller = InterventoSingleton.getInstance();
-
-			RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
-
-			long maxNumero = interventoDao.queryRawValue("select max(numero) from Interventi");
-
-			try {
-				Intervento foo = interventoDao.queryBuilder().where().eq("numero", maxNumero).queryForFirst();
-
-				InterventoController.controller.getIntervento().numero = foo.numero + 1;
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-			}
-
-			long maxId = interventoDao.queryRawValue("select max(idintervento) from Interventi");
-
-			try {
-				Intervento foo = interventoDao.queryBuilder().where().eq("idintervento", maxId).queryForFirst();
-
-				InterventoController.controller.getIntervento().idintervento = foo.idintervento + 1;
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-			}
-
-			com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
-
-			InterventoController.controller.getIntervento().dataora = new DateTime().getMillis();
-			InterventoController.controller.getIntervento().nuovo = true;
-			InterventoController.controller.getIntervento().chiuso = false;
-			InterventoController.controller.getIntervento().tecnico = UtenteController.tecnicoLoggato.idutente;
-
-			// System.out.println(InterventoController.controller.getIntervento().toString());
-
-			manager = getSupportFragmentManager();
-			transaction = manager.beginTransaction();
-
-			com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_ overView = new com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_();
-
-			transaction.add(R.id.fragments_layout, overView, Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-			transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			transaction.commit();
-		}
-
-		final Editor edit = prefs.edit().putInt(Constants.HASH_CODE_INTERVENTO_SINGLETON, InterventoController.controller.hashCode());
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-			edit.apply();
-		else {
-
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-
-					edit.commit();
-				}
-			}).start();
-		}
-	}
-
-	@Override
-	protected void onPause() {
-
-		super.onPause();
-
-		InterventoSingleton.reset();
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-			final FragmentManager manager = getSupportFragmentManager();
-
-			if (manager.getBackStackEntryCount() == 1) {
-
-				checkInterventionsHashcode();
-			} else {
-
-				manager.popBackStackImmediate();
-			}
-			return true;
-		}
-
-		return super.onKeyDown(keyCode, event);
-	}
-
-	@Override
-	public void onBackPressed() {
-
-		final FragmentManager manager = getSupportFragmentManager();
-
-		if (manager.getBackStackEntryCount() == 1) {
-
-			checkInterventionsHashcode();
-		} else {
-			manager.popBackStackImmediate();
-		}
-	}
-
-	public static class ExitIntervento extends DialogFragment implements OnClickListener {
-
-		public ExitIntervento() {
-
-		}
-
+	    new Thread(new Runnable() {
 		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
+		public void run() {
 
-			AlertDialog.Builder exitDialog = new Builder(getActivity());
-
-			exitDialog.setTitle(R.string.interv_mod_title);
-			exitDialog.setMessage(R.string.interv_mod_text);
-
-			exitDialog.setPositiveButton(getString(R.string.yes_btn), this);
-			exitDialog.setNegativeButton(getString(R.string.no_btn), this);
-
-			return exitDialog.create();
+		    edit.commit();
 		}
+	    }).start();
+	}
+    }
 
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
+    @Override
+    protected void onPause() {
 
-			switch (which) {
+	super.onPause();
 
-				case DialogInterface.BUTTON_POSITIVE:
+	InterventoSingleton.reset();
+    }
 
-					dialog.dismiss();
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-					saveInterventoOnDB();
+	if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-					getActivity().finish();
+	    final FragmentManager manager = getSupportFragmentManager();
 
-					break;
+	    if (manager.getBackStackEntryCount() == 1) {
 
-				case DialogInterface.BUTTON_NEGATIVE:
+		checkInterventionsHashcode();
+	    }
+	    else {
 
-					dialog.dismiss();
+		manager.popBackStackImmediate();
+	    }
+	    return true;
+	}
 
-					InterventoSingleton.reset();
+	return super.onKeyDown(keyCode, event);
+    }
 
-					getActivity().finish();
+    @Override
+    public void onBackPressed() {
 
-					break;
-			}
-		}
+	final FragmentManager manager = getSupportFragmentManager();
+
+	if (manager.getBackStackEntryCount() == 1) {
+
+	    checkInterventionsHashcode();
+	}
+	else {
+	    manager.popBackStackImmediate();
+	}
+    }
+
+    public static class ExitIntervento extends DialogFragment implements OnClickListener {
+
+	public ExitIntervento() {
+
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-		super.onCreateOptionsMenu(menu);
+	    AlertDialog.Builder exitDialog = new Builder(getActivity());
 
-		return true;
-	}
+	    exitDialog.setTitle(R.string.interv_mod_title);
+	    exitDialog.setMessage(R.string.interv_mod_text);
 
-	private static void saveInterventoOnDB() {
+	    exitDialog.setPositiveButton(getString(R.string.yes_btn), this);
+	    exitDialog.setNegativeButton(getString(R.string.no_btn), this);
 
-		if (!InterventoController.controller.getIntervento().nuovo) {
-
-			InterventoController.updateOnDB();
-		} else {
-
-			InterventoController.insertOnDB();
-		}
+	    return exitDialog.create();
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public void onClick(DialogInterface dialog, int which) {
 
-		switch (item.getItemId()) {
+	    switch (which) {
 
-			case android.R.id.home:
+		case DialogInterface.BUTTON_POSITIVE:
 
-				checkInterventionsHashcode();
+		    dialog.dismiss();
 
-				break;
-		}
+		    saveInterventoOnDB();
 
-		return super.onOptionsItemSelected(item);
+		    getActivity().finish();
+
+		    break;
+
+		case DialogInterface.BUTTON_NEGATIVE:
+
+		    dialog.dismiss();
+
+		    InterventoSingleton.reset();
+
+		    getActivity().finish();
+
+		    break;
+	    }
+	}
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+	super.onCreateOptionsMenu(menu);
+
+	return true;
+    }
+
+    private static void saveInterventoOnDB() {
+
+	if (!InterventoController.controller.getIntervento().nuovo) {
+
+	    InterventoController.updateOnDB();
+	}
+	else {
+
+	    InterventoController.insertOnDB();
+	}
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+	switch (item.getItemId()) {
+
+	    case android.R.id.home:
+
+		checkInterventionsHashcode();
+
+		break;
 	}
 
-	private void checkInterventionsHashcode() {
+	return super.onOptionsItemSelected(item);
+    }
 
-		int hashCodeIntervento = InterventoController.controller.hashCode();
+    private void checkInterventionsHashcode() {
 
-		if (hashCodeIntervento == prefs.getInt(Constants.HASH_CODE_INTERVENTO_SINGLETON, 0)) {
+	int hashCodeIntervento = InterventoController.controller.hashCode();
 
-			InterventoSingleton.reset();
+	if (hashCodeIntervento == prefs.getInt(Constants.HASH_CODE_INTERVENTO_SINGLETON, 0)) {
 
-			finish();
-		} else {
+	    InterventoSingleton.reset();
 
-			new ExitIntervento().show(getSupportFragmentManager(), Constants.EXIT_INTERVENTO_DIALOG_FRAGMENT);
-		}
+	    finish();
 	}
+	else {
+
+	    new ExitIntervento().show(getSupportFragmentManager(), Constants.EXIT_INTERVENTO_DIALOG_FRAGMENT);
+	}
+    }
 }

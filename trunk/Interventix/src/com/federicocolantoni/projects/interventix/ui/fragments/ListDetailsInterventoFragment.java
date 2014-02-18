@@ -33,159 +33,160 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 @EFragment(R.layout.fragment_list_details)
 public class ListDetailsInterventoFragment extends Fragment implements OnDismissCallback {
 
-	private ListDettagliInterventiAdapter mAdapter;
+    private ListDettagliInterventiAdapter mAdapter;
 
-	@ViewById(R.id.layout_list_details_intervento)
-	LinearLayout layoutListDetails;
+    @ViewById(R.id.layout_list_details_intervento)
+    LinearLayout layoutListDetails;
 
-	@ViewById(R.id.list_details_intervento)
-	ListView detailsList;
+    @ViewById(R.id.list_details_intervento)
+    ListView detailsList;
 
-	@ViewById(R.id.tv_no_details)
-	TextView noDetails;
+    @ViewById(R.id.tv_no_details)
+    TextView noDetails;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
-		super.onCreate(savedInstanceState);
+	super.onCreate(savedInstanceState);
 
-		setHasOptionsMenu(true);
+	setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onStart() {
+
+	super.onStart();
+
+	if (!InterventoController.controller.getIntervento().nuovo)
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
+		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_list_details));
+	else
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_list_details));
+
+	if (InterventoController.controller.getListaDettagli().size() == 0) {
+	    layoutListDetails.setVisibility(View.INVISIBLE);
+	    noDetails.setText("Nessun dettaglio presente");
+	    noDetails.setVisibility(View.VISIBLE);
+	}
+	else {
+	    layoutListDetails.setVisibility(View.VISIBLE);
+	    noDetails.setVisibility(View.INVISIBLE);
 	}
 
-	@Override
-	public void onStart() {
+	mAdapter = new ListDettagliInterventiAdapter(getActivity());
 
-		super.onStart();
+	SwipeDismissAdapter swipeDismissAdapter = new SwipeDismissAdapter(mAdapter, this);
+	swipeDismissAdapter.setAbsListView(detailsList);
 
-		if (!InterventoController.controller.getIntervento().nuovo)
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-					getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_list_details));
-		else
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_list_details));
+	detailsList.setAdapter(swipeDismissAdapter);
 
-		if (InterventoController.controller.getListaDettagli().size() == 0) {
-			layoutListDetails.setVisibility(View.INVISIBLE);
-			noDetails.setText("Nessun dettaglio presente");
-			noDetails.setVisibility(View.VISIBLE);
-		} else {
-			layoutListDetails.setVisibility(View.VISIBLE);
-			noDetails.setVisibility(View.INVISIBLE);
-		}
+	detailsList.setOnItemClickListener(new OnItemClickListener() {
 
-		mAdapter = new ListDettagliInterventiAdapter(getActivity());
+	    @Override
+	    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 
-		SwipeDismissAdapter swipeDismissAdapter = new SwipeDismissAdapter(mAdapter, this);
-		swipeDismissAdapter.setAbsListView(detailsList);
+		Bundle bundle = new Bundle();
 
-		detailsList.setAdapter(swipeDismissAdapter);
+		bundle.putSerializable(Constants.DETTAGLIO_N_ESIMO, InterventoController.controller.getListaDettagli().get(position));
 
-		detailsList.setOnItemClickListener(new OnItemClickListener() {
+		FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
+		FragmentTransaction transaction = manager.beginTransaction();
 
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+		DetailInterventoFragment_ dettInterv = new DetailInterventoFragment_();
 
-				Bundle bundle = new Bundle();
+		dettInterv.setArguments(bundle);
 
-				bundle.putSerializable(Constants.DETTAGLIO_N_ESIMO, InterventoController.controller.getListaDettagli().get(position));
+		transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
+		transaction.addToBackStack(Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
+		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
-				FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
-				FragmentTransaction transaction = manager.beginTransaction();
+		transaction.commit();
+	    }
+	});
+    }
 
-				DetailInterventoFragment_ dettInterv = new DetailInterventoFragment_();
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-				dettInterv.setArguments(bundle);
+	super.onCreateOptionsMenu(menu, inflater);
 
-				transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
-				transaction.addToBackStack(Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
-				transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	inflater.inflate(R.menu.menu_view_intervento, menu);
 
-				transaction.commit();
-			}
-		});
+	MenuItem itemAddDetail = menu.findItem(R.id.add_detail_interv);
+	itemAddDetail.setVisible(true);
+	itemAddDetail.setIcon(R.drawable.ic_action_add);
+	itemAddDetail.setEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+	switch (item.getItemId()) {
+
+	    case R.id.add_detail_interv:
+
+		FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
+		FragmentTransaction transaction = manager.beginTransaction();
+
+		Bundle bundle = new Bundle();
+		bundle.putString(Constants.NUOVO_DETTAGLIO_INTERVENTO, Constants.NUOVO_DETTAGLIO_INTERVENTO);
+
+		DetailInterventoFragment_ dettInterv = new DetailInterventoFragment_();
+		dettInterv.setArguments(bundle);
+
+		transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
+		transaction.addToBackStack(Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
+		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
+		transaction.commit();
+
+		break;
+
+	    case R.id.pay:
+
+		// InterventixToast.makeToast("Saldare l'intervento?",
+		// Toast.LENGTH_SHORT);
+
+		break;
+
+	    case R.id.send_mail:
+
+		// InterventixToast.makeToast("Inviare email?",
+		// Toast.LENGTH_SHORT);
+
+		break;
+
+	    case R.id.close:
+
+		// InterventixToast.makeToast("Chiudere l'intervento?",
+		// Toast.LENGTH_SHORT);
+
+		break;
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	return true;
+    }
 
-		super.onCreateOptionsMenu(menu, inflater);
+    @Override
+    public void onDismiss(AbsListView listView, int[] reverseSortedPositions) {
 
-		inflater.inflate(R.menu.menu_view_intervento, menu);
+	for (int position : reverseSortedPositions) {
 
-		MenuItem itemAddDetail = menu.findItem(R.id.add_detail_interv);
-		itemAddDetail.setVisible(true);
-		itemAddDetail.setIcon(R.drawable.ic_action_add);
-		itemAddDetail.setEnabled(true);
+	    DettaglioIntervento dettaglio = InterventoController.controller.getListaDettagli().get(position);
+
+	    InterventoController.controller.getListaDettagli().remove(position);
+
+	    RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
+
+	    dettaglioDao.delete(dettaglio);
+
+	    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
-
-			case R.id.add_detail_interv:
-
-				FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
-				FragmentTransaction transaction = manager.beginTransaction();
-
-				Bundle bundle = new Bundle();
-				bundle.putString(Constants.NUOVO_DETTAGLIO_INTERVENTO, Constants.NUOVO_DETTAGLIO_INTERVENTO);
-
-				DetailInterventoFragment_ dettInterv = new DetailInterventoFragment_();
-				dettInterv.setArguments(bundle);
-
-				transaction.replace(R.id.fragments_layout, dettInterv, Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
-				transaction.addToBackStack(Constants.INFO_DETAIL_INTERVENTO_FRAGMENT);
-				transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-
-				transaction.commit();
-
-				break;
-
-			case R.id.pay:
-
-				// InterventixToast.makeToast("Saldare l'intervento?",
-				// Toast.LENGTH_SHORT);
-
-				break;
-
-			case R.id.send_mail:
-
-				// InterventixToast.makeToast("Inviare email?",
-				// Toast.LENGTH_SHORT);
-
-				break;
-
-			case R.id.close:
-
-				// InterventixToast.makeToast("Chiudere l'intervento?",
-				// Toast.LENGTH_SHORT);
-
-				break;
-		}
-
-		return true;
+	if (InterventoController.controller.getListaDettagli().size() == 0) {
+	    layoutListDetails.setVisibility(View.INVISIBLE);
+	    noDetails.setText("Nessun dettaglio presente");
+	    noDetails.setVisibility(View.VISIBLE);
 	}
-
-	@Override
-	public void onDismiss(AbsListView listView, int[] reverseSortedPositions) {
-
-		for (int position : reverseSortedPositions) {
-
-			DettaglioIntervento dettaglio = InterventoController.controller.getListaDettagli().get(position);
-
-			InterventoController.controller.getListaDettagli().remove(position);
-
-			RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
-
-			dettaglioDao.delete(dettaglio);
-
-			com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
-		}
-
-		if (InterventoController.controller.getListaDettagli().size() == 0) {
-			layoutListDetails.setVisibility(View.INVISIBLE);
-			noDetails.setText("Nessun dettaglio presente");
-			noDetails.setVisibility(View.VISIBLE);
-		}
-	}
+    }
 }

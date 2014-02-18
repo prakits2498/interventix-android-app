@@ -20,113 +20,113 @@ import com.federicocolantoni.projects.interventix.controller.InterventoControlle
 @EFragment(R.layout.fragment_references)
 public class ReferencesInterventoFragment extends Fragment {
 
-	@ViewById(R.id.row_rif_fattura)
-	LinearLayout rifFattura;
+    @ViewById(R.id.row_rif_fattura)
+    LinearLayout rifFattura;
 
-	@ViewById(R.id.tv_row_rif_fattura)
-	TextView tvRifFattura;
+    @ViewById(R.id.tv_row_rif_fattura)
+    TextView tvRifFattura;
 
-	@ViewById(R.id.row_rif_scontrino)
-	LinearLayout rifScontrino;
+    @ViewById(R.id.row_rif_scontrino)
+    LinearLayout rifScontrino;
 
-	@ViewById(R.id.tv_row_rif_scontrino)
-	TextView tvRifScontrino;
+    @ViewById(R.id.tv_row_rif_scontrino)
+    TextView tvRifScontrino;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
-		super.onCreate(savedInstanceState);
+	super.onCreate(savedInstanceState);
 
-		setHasOptionsMenu(true);
-	}
+	setHasOptionsMenu(true);
+    }
 
-	@Override
-	public void onStart() {
+    @Override
+    public void onStart() {
 
-		super.onStart();
+	super.onStart();
 
-		if (!InterventoController.controller.getIntervento().nuovo)
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-					getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_references));
-		else
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_references));
-	}
+	if (!InterventoController.controller.getIntervento().nuovo)
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
+		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_references));
+	else
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_references));
+    }
 
-	@Override
-	public void onResume() {
+    @Override
+    public void onResume() {
 
-		super.onResume();
+	super.onResume();
+
+	updateUI();
+    }
+
+    private void updateUI() {
+
+	tvRifFattura.setText(InterventoController.controller.getIntervento().riffattura);
+	tvRifScontrino.setText(InterventoController.controller.getIntervento().rifscontrino);
+    }
+
+    @Click(R.id.row_rif_fattura)
+    void showDialogRifFattura() {
+
+	final EditText mEditRiferimentiFattura;
+
+	AlertDialog.Builder rifFatturaDialog = new Builder(getActivity());
+
+	rifFatturaDialog.setTitle(R.string.riferimenti_fattura_title);
+
+	TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_rif_fattura);
+
+	mEditRiferimentiFattura = new EditText(getActivity());
+	mEditRiferimentiFattura.setText(tv_motivo.getText());
+
+	rifFatturaDialog.setView(mEditRiferimentiFattura);
+
+	rifFatturaDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
+
+	    @Override
+	    public void onClick(DialogInterface dialog, int which) {
+
+		dialog.dismiss();
+
+		InterventoController.controller.getIntervento().riffattura = (mEditRiferimentiFattura.getText().toString());
 
 		updateUI();
-	}
+	    }
+	});
 
-	private void updateUI() {
+	rifFatturaDialog.create().show();
+    }
 
-		tvRifFattura.setText(InterventoController.controller.getIntervento().riffattura);
-		tvRifScontrino.setText(InterventoController.controller.getIntervento().rifscontrino);
-	}
+    @Click(R.id.row_rif_scontrino)
+    void showDialogRifScontrino() {
 
-	@Click(R.id.row_rif_fattura)
-	void showDialogRifFattura() {
+	final EditText mEditRiferimentiScontrino;
 
-		final EditText mEditRiferimentiFattura;
+	AlertDialog.Builder rifScontrinoDialog = new Builder(getActivity());
 
-		AlertDialog.Builder rifFatturaDialog = new Builder(getActivity());
+	rifScontrinoDialog.setTitle(R.string.riferimenti_scontrino_title);
 
-		rifFatturaDialog.setTitle(R.string.riferimenti_fattura_title);
+	TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_rif_scontrino);
 
-		TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_rif_fattura);
+	mEditRiferimentiScontrino = new EditText(getActivity());
+	mEditRiferimentiScontrino.setText(tv_motivo.getText());
 
-		mEditRiferimentiFattura = new EditText(getActivity());
-		mEditRiferimentiFattura.setText(tv_motivo.getText());
+	rifScontrinoDialog.setView(mEditRiferimentiScontrino);
 
-		rifFatturaDialog.setView(mEditRiferimentiFattura);
+	rifScontrinoDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
 
-		rifFatturaDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
+	    @Override
+	    public void onClick(DialogInterface dialog, int which) {
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
+		dialog.dismiss();
 
-				dialog.dismiss();
+		InterventoController.controller.getIntervento().rifscontrino = (mEditRiferimentiScontrino.getText().toString());
 
-				InterventoController.controller.getIntervento().riffattura = (mEditRiferimentiFattura.getText().toString());
+		updateUI();
+	    }
+	});
 
-				updateUI();
-			}
-		});
-
-		rifFatturaDialog.create().show();
-	}
-
-	@Click(R.id.row_rif_scontrino)
-	void showDialogRifScontrino() {
-
-		final EditText mEditRiferimentiScontrino;
-
-		AlertDialog.Builder rifScontrinoDialog = new Builder(getActivity());
-
-		rifScontrinoDialog.setTitle(R.string.riferimenti_scontrino_title);
-
-		TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_rif_scontrino);
-
-		mEditRiferimentiScontrino = new EditText(getActivity());
-		mEditRiferimentiScontrino.setText(tv_motivo.getText());
-
-		rifScontrinoDialog.setView(mEditRiferimentiScontrino);
-
-		rifScontrinoDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-
-				dialog.dismiss();
-
-				InterventoController.controller.getIntervento().rifscontrino = (mEditRiferimentiScontrino.getText().toString());
-
-				updateUI();
-			}
-		});
-
-		rifScontrinoDialog.create().show();
-	}
+	rifScontrinoDialog.create().show();
+    }
 }

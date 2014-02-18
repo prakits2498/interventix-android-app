@@ -12,42 +12,46 @@ import com.federicocolantoni.projects.interventix.entity.Intervento;
 
 public class GetInterventoAsyncTask extends AsyncTask<Long, Void, Intervento> {
 
-	private final Context context;
+    private final Context context;
 
-	public GetInterventoAsyncTask(Context context) {
+    public GetInterventoAsyncTask(Context context) {
 
-		this.context = context.getApplicationContext();
-	}
+	this.context = context.getApplicationContext();
+    }
 
-	@Override
-	protected Intervento doInBackground(Long... params) {
+    @Override
+    protected Intervento doInBackground(Long... params) {
 
-		ContentResolver cr = context.getContentResolver();
+	ContentResolver cr = context.getContentResolver();
 
-		String[] projection = new String[] { Fields._ID, InterventoDB.Fields.CANCELLATO, InterventoDB.Fields.CHIUSO, InterventoDB.Fields.CLIENTE, InterventoDB.Fields.CONFLITTO,
-				InterventoDB.Fields.COSTO_ACCESSORI, InterventoDB.Fields.COSTO_COMPONENTI, InterventoDB.Fields.COSTO_MANODOPERA, InterventoDB.Fields.DATA_ORA,
-				InterventoDB.Fields.FIRMA, InterventoDB.Fields.ID_INTERVENTO, InterventoDB.Fields.IMPORTO, InterventoDB.Fields.IVA, InterventoDB.Fields.MODALITA,
-				InterventoDB.Fields.MODIFICATO, InterventoDB.Fields.MOTIVO, InterventoDB.Fields.NOMINATIVO, InterventoDB.Fields.NOTE, InterventoDB.Fields.NUMERO_INTERVENTO,
-				InterventoDB.Fields.NUOVO, InterventoDB.Fields.PRODOTTO, InterventoDB.Fields.RIFERIMENTO_FATTURA, InterventoDB.Fields.RIFERIMENTO_SCONTRINO,
-				InterventoDB.Fields.SALDATO, InterventoDB.Fields.TECNICO, InterventoDB.Fields.TIPOLOGIA, InterventoDB.Fields.TOTALE };
+	String[] projection =
+		new String[] {
+			Fields._ID, InterventoDB.Fields.CANCELLATO, InterventoDB.Fields.CHIUSO, InterventoDB.Fields.CLIENTE, InterventoDB.Fields.CONFLITTO, InterventoDB.Fields.COSTO_ACCESSORI,
+			InterventoDB.Fields.COSTO_COMPONENTI, InterventoDB.Fields.COSTO_MANODOPERA, InterventoDB.Fields.DATA_ORA, InterventoDB.Fields.FIRMA, InterventoDB.Fields.ID_INTERVENTO,
+			InterventoDB.Fields.IMPORTO, InterventoDB.Fields.IVA, InterventoDB.Fields.MODALITA, InterventoDB.Fields.MODIFICATO, InterventoDB.Fields.MOTIVO, InterventoDB.Fields.NOMINATIVO,
+			InterventoDB.Fields.NOTE, InterventoDB.Fields.NUMERO_INTERVENTO, InterventoDB.Fields.NUOVO, InterventoDB.Fields.PRODOTTO, InterventoDB.Fields.RIFERIMENTO_FATTURA,
+			InterventoDB.Fields.RIFERIMENTO_SCONTRINO, InterventoDB.Fields.SALDATO, InterventoDB.Fields.TECNICO, InterventoDB.Fields.TIPOLOGIA, InterventoDB.Fields.TOTALE
+		};
 
-		String selection = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+	String selection = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
 
-		String[] selectionArgs = new String[] { InterventoDB.INTERVENTO_ITEM_TYPE, "" + params[0] };
+	String[] selectionArgs = new String[] {
+		InterventoDB.INTERVENTO_ITEM_TYPE, "" + params[0]
+	};
 
-		Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
-		cursor.moveToFirst();
+	Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
+	cursor.moveToFirst();
 
-		Intervento intervento = Intervento.getFromCursor(cursor);
+	Intervento intervento = Intervento.getFromCursor(cursor);
 
-		if (!cursor.isClosed())
-			cursor.close();
+	if (!cursor.isClosed())
+	    cursor.close();
 
-		return intervento;
-	}
+	return intervento;
+    }
 
-	@Override
-	protected void onPostExecute(Intervento result) {
+    @Override
+    protected void onPostExecute(Intervento result) {
 
-	}
+    }
 }

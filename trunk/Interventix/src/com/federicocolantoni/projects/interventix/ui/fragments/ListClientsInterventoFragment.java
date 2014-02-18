@@ -23,168 +23,171 @@ import com.federicocolantoni.projects.interventix.adapter.ListClientiAdapter;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 
-@SuppressLint({ "InlinedApi", "NewApi" })
+@SuppressLint({
+	"InlinedApi", "NewApi"
+})
 @EFragment(R.layout.fragment_list_customers)
 public class ListClientsInterventoFragment extends Fragment {
 
-	@ViewById(R.id.search_client)
-	EditText searchClient;
+    @ViewById(R.id.search_client)
+    EditText searchClient;
 
-	@ViewById(R.id.list_clients)
-	ListView listClienti;
+    @ViewById(R.id.list_clients)
+    ListView listClienti;
 
-	private ListClientiAdapter mAdapter;
+    private ListClientiAdapter mAdapter;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
-		super.onCreate(savedInstanceState);
+	super.onCreate(savedInstanceState);
 
-		setHasOptionsMenu(true);
-	};
+	setHasOptionsMenu(true);
+    };
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
 
-		super.onActivityCreated(savedInstanceState);
-	}
+	super.onActivityCreated(savedInstanceState);
+    }
 
-	@Override
-	public void onStart() {
+    @Override
+    public void onStart() {
 
-		super.onStart();
+	super.onStart();
 
-		if (!InterventoController.controller.getIntervento().nuovo)
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-					getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_list_clients));
-		else
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_list_clients));
+	if (!InterventoController.controller.getIntervento().nuovo)
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
+		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_list_clients));
+	else
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_list_clients));
 
-		mAdapter = new ListClientiAdapter(getActivity(), R.layout.list_customers_row, R.id.tv_row_nominativo);
+	mAdapter = new ListClientiAdapter(getActivity(), R.layout.list_customers_row, R.id.tv_row_nominativo);
 
-		listClienti.setAdapter(mAdapter);
+	listClienti.setAdapter(mAdapter);
 
-		listClienti.setOnItemClickListener(new OnItemClickListener() {
+	listClienti.setOnItemClickListener(new OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+	    @Override
+	    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 
-				if (!ListClientiAdapter.blockClick) {
-					mAdapter.toggleChecked(position);
+		if (!ListClientiAdapter.blockClick) {
+		    mAdapter.toggleChecked(position);
 
-					Cliente clChecked = mAdapter.getItem(position);
+		    Cliente clChecked = mAdapter.getItem(position);
 
-					InterventoController.controller.setCliente(clChecked);
-					InterventoController.controller.getIntervento().cliente = (clChecked.idcliente);
+		    InterventoController.controller.setCliente(clChecked);
+		    InterventoController.controller.getIntervento().cliente = (clChecked.idcliente);
 
-					FragmentManager manager = getActivity().getSupportFragmentManager();
-					manager.popBackStackImmediate();
-				}
-			}
-		});
-		listClienti.setOnItemLongClickListener(new OnItemLongClickListener() {
+		    FragmentManager manager = getActivity().getSupportFragmentManager();
+		    manager.popBackStackImmediate();
+		}
+	    }
+	});
+	listClienti.setOnItemLongClickListener(new OnItemLongClickListener() {
 
-			@Override
-			public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
+	    @Override
+	    public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
 
-				Button modClient = (Button) view.findViewById(R.id.mod_cliente);
+		Button modClient = (Button) view.findViewById(R.id.mod_cliente);
 
-				if (modClient.getVisibility() == View.INVISIBLE) {
-					modClient.setVisibility(View.VISIBLE);
-					ListClientiAdapter.swipedItems.put(position, true);
-					ListClientiAdapter.blockClick = true;
+		if (modClient.getVisibility() == View.INVISIBLE) {
+		    modClient.setVisibility(View.VISIBLE);
+		    ListClientiAdapter.swipedItems.put(position, true);
+		    ListClientiAdapter.blockClick = true;
 
-					for (int cont = 0; cont < ListClientiAdapter.swipedItems.size(); cont++) {
+		    for (int cont = 0; cont < ListClientiAdapter.swipedItems.size(); cont++) {
 
-						if (cont != position)
-							ListClientiAdapter.swipedItems.put(cont, false);
-					}
+			if (cont != position)
+			    ListClientiAdapter.swipedItems.put(cont, false);
+		    }
 
-					for (int cont = 0; cont < ListClientiAdapter.checkedItems.size(); cont++) {
+		    for (int cont = 0; cont < ListClientiAdapter.checkedItems.size(); cont++) {
 
-						if (cont != position)
-							ListClientiAdapter.checkedItems.put(cont, false);
-					}
+			if (cont != position)
+			    ListClientiAdapter.checkedItems.put(cont, false);
+		    }
 
-					ListClientiAdapter.clickedItems.put(position, true);
+		    ListClientiAdapter.clickedItems.put(position, true);
 
-					for (int cont = 0; cont < ListClientiAdapter.clickedItems.size(); cont++) {
+		    for (int cont = 0; cont < ListClientiAdapter.clickedItems.size(); cont++) {
 
-						if (cont != position)
-							ListClientiAdapter.clickedItems.put(cont, false);
-					}
+			if (cont != position)
+			    ListClientiAdapter.clickedItems.put(cont, false);
+		    }
 
-					mAdapter.notifyDataSetChanged();
-				} else {
-					modClient.setVisibility(View.INVISIBLE);
-					ListClientiAdapter.swipedItems.put(position, false);
-					ListClientiAdapter.blockClick = false;
+		    mAdapter.notifyDataSetChanged();
+		}
+		else {
+		    modClient.setVisibility(View.INVISIBLE);
+		    ListClientiAdapter.swipedItems.put(position, false);
+		    ListClientiAdapter.blockClick = false;
 
-					for (int cont = 0; cont < ListClientiAdapter.clickedItems.size(); cont++) {
+		    for (int cont = 0; cont < ListClientiAdapter.clickedItems.size(); cont++) {
 
-						ListClientiAdapter.clickedItems.put(cont, true);
-					}
+			ListClientiAdapter.clickedItems.put(cont, true);
+		    }
 
-					mAdapter.notifyDataSetChanged();
-				}
+		    mAdapter.notifyDataSetChanged();
+		}
 
-				return true;
-			}
-		});
+		return true;
+	    }
+	});
 
-		searchClient.addTextChangedListener(new TextWatcher() {
+	searchClient.addTextChangedListener(new TextWatcher() {
 
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
+	    @Override
+	    public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-				mAdapter.getFilter().filter(s);
-			}
+		mAdapter.getFilter().filter(s);
+	    }
 
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+	    @Override
+	    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-			}
+	    }
 
-			@Override
-			public void afterTextChanged(Editable s) {
+	    @Override
+	    public void afterTextChanged(Editable s) {
 
-			}
-		});
-	}
+	    }
+	});
+    }
 
-	// @Override
-	// public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	//
-	// inflater.inflate(R.menu.menu_clients, menu);
-	// }
-	//
-	// @Override
-	// public boolean onOptionsItemSelected(MenuItem item) {
-	//
-	// switch (item.getItemId()) {
-	//
-	// case R.id.menu_save_client:
-	//
-	// int cliente_checked = 0;
-	//
-	// SparseBooleanArray sparseArray = mAdapter.getBooleanArray();
-	//
-	// for (int i = 0; i < sparseArray.size(); i++) {
-	//
-	// if (sparseArray.get(i)) {
-	// cliente_checked = i;
-	// break;
-	// }
-	// }
-	//
-	// Cliente clChecked = mAdapter.getItem(cliente_checked);
-	//
-	// InterventoController.controller.setCliente(clChecked);
-	// InterventoController.controller.getIntervento().setIdCliente(clChecked.getIdCliente());
-	//
-	// break;
-	// }
-	//
-	// return getActivity().getSupportFragmentManager().popBackStackImmediate();
-	// }
+    // @Override
+    // public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    //
+    // inflater.inflate(R.menu.menu_clients, menu);
+    // }
+    //
+    // @Override
+    // public boolean onOptionsItemSelected(MenuItem item) {
+    //
+    // switch (item.getItemId()) {
+    //
+    // case R.id.menu_save_client:
+    //
+    // int cliente_checked = 0;
+    //
+    // SparseBooleanArray sparseArray = mAdapter.getBooleanArray();
+    //
+    // for (int i = 0; i < sparseArray.size(); i++) {
+    //
+    // if (sparseArray.get(i)) {
+    // cliente_checked = i;
+    // break;
+    // }
+    // }
+    //
+    // Cliente clChecked = mAdapter.getItem(cliente_checked);
+    //
+    // InterventoController.controller.setCliente(clChecked);
+    // InterventoController.controller.getIntervento().setIdCliente(clChecked.getIdCliente());
+    //
+    // break;
+    // }
+    //
+    // return getActivity().getSupportFragmentManager().popBackStackImmediate();
+    // }
 }

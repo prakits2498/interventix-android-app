@@ -12,43 +12,47 @@ import com.federicocolantoni.projects.interventix.entity.Intervento;
 
 public class GetSignatureInterventoAsyncTask extends AsyncTask<Long, Void, Intervento> {
 
-	private Context mContext;
+    private Context mContext;
 
-	public GetSignatureInterventoAsyncTask(Context context) {
+    public GetSignatureInterventoAsyncTask(Context context) {
 
-		mContext = context.getApplicationContext();
+	mContext = context.getApplicationContext();
+    }
+
+    @Override
+    protected Intervento doInBackground(Long... params) {
+
+	ContentResolver cr = mContext.getContentResolver();
+
+	String[] projection = new String[] {
+		Fields._ID, InterventoDB.Fields.FIRMA, InterventoDB.Fields.DATA_ORA
+	};
+
+	String selection = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
+
+	String[] selectionArgs = new String[] {
+		InterventoDB.INTERVENTO_ITEM_TYPE, "" + params[0]
+	};
+
+	Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
+
+	Intervento signatureIntervento = new Intervento();
+
+	if (cursor.moveToFirst()) {
+
+	    signatureIntervento.firma = (cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.FIRMA)));
+	    signatureIntervento.dataora = (cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.DATA_ORA)));
 	}
 
-	@Override
-	protected Intervento doInBackground(Long... params) {
+	if (!cursor.isClosed())
+	    cursor.close();
 
-		ContentResolver cr = mContext.getContentResolver();
+	return signatureIntervento;
+    }
 
-		String[] projection = new String[] { Fields._ID, InterventoDB.Fields.FIRMA, InterventoDB.Fields.DATA_ORA };
+    @Override
+    protected void onPostExecute(Intervento result) {
 
-		String selection = Fields.TYPE + " = ? AND " + InterventoDB.Fields.ID_INTERVENTO + " = ?";
-
-		String[] selectionArgs = new String[] { InterventoDB.INTERVENTO_ITEM_TYPE, "" + params[0] };
-
-		Cursor cursor = cr.query(Data.CONTENT_URI, projection, selection, selectionArgs, null);
-
-		Intervento signatureIntervento = new Intervento();
-
-		if (cursor.moveToFirst()) {
-
-			signatureIntervento.firma = (cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.FIRMA)));
-			signatureIntervento.dataora = (cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.DATA_ORA)));
-		}
-
-		if (!cursor.isClosed())
-			cursor.close();
-
-		return signatureIntervento;
-	}
-
-	@Override
-	protected void onPostExecute(Intervento result) {
-
-		super.onPostExecute(result);
-	}
+	super.onPostExecute(result);
+    }
 }
