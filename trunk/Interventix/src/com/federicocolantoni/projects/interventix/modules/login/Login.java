@@ -103,9 +103,11 @@ public class Login extends Fragment {
 
 		if (refreshItem != null)
 		    if (refreshing) {
+			refreshItem.setVisible(refreshing);
 			refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
 		    }
 		    else {
+			refreshItem.setVisible(refreshing);
 			refreshItem.setActionView(null);
 		    }
 	    }
@@ -114,9 +116,11 @@ public class Login extends Fragment {
 
 		if (refreshItem != null) {
 		    if (refreshing) {
+			refreshItem.setVisible(refreshing);
 			refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
 		    }
 		    else {
+			refreshItem.setVisible(refreshing);
 			refreshItem.setActionView(null);
 		    }
 		}
@@ -175,6 +179,10 @@ public class Login extends Fragment {
 
 			    e.printStackTrace();
 			}
+			finally {
+
+			    setRefreshActionButtonState(false);
+			}
 		    }
 		}, new ErrorListener() {
 
@@ -210,7 +218,8 @@ public class Login extends Fragment {
 	//
 	// connUnavailable.setTitle(getString(R.string.no_active_connection));
 	// connUnavailable.setMessage(R.string.conn_unavailable_text);
-	// connUnavailable.setNegativeButton(getString(R.string.cancel_btn), new DialogInterface.OnClickListener() {
+	// connUnavailable.setNegativeButton(getString(R.string.cancel_btn), new
+	// DialogInterface.OnClickListener() {
 	//
 	// @Override
 	// public void onClick(DialogInterface dialog, int which) {
@@ -218,23 +227,27 @@ public class Login extends Fragment {
 	// dialog.dismiss();
 	// }
 	// });
-	// connUnavailable.setNeutralButton(R.string.enable_wifi, new DialogInterface.OnClickListener() {
+	// connUnavailable.setNeutralButton(R.string.enable_wifi, new
+	// DialogInterface.OnClickListener() {
 	//
 	// @Override
 	// public void onClick(DialogInterface dialog, int which) {
 	//
-	// Intent intent = new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS);
+	// Intent intent = new
+	// Intent(android.provider.Settings.ACTION_WIFI_SETTINGS);
 	// intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 	// startActivity(intent);
 	// dialog.dismiss();
 	// }
 	// });
-	// connUnavailable.setPositiveButton(R.string.enable_mobile, new DialogInterface.OnClickListener() {
+	// connUnavailable.setPositiveButton(R.string.enable_mobile, new
+	// DialogInterface.OnClickListener() {
 	//
 	// @Override
 	// public void onClick(DialogInterface dialog, int which) {
 	//
-	// Intent intent = new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS);
+	// Intent intent = new
+	// Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS);
 	// intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 	// startActivity(intent);
 	// dialog.dismiss();
