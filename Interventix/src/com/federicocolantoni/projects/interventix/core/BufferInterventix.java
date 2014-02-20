@@ -65,10 +65,8 @@ public class BufferInterventix {
     public void stopTimer() {
 
 	if (interventoTask.cancel() && clienteTask.cancel()) {
-	    // System.out.println(interventoTask.getClass().getSimpleName() +
-	    // " - " + interventoTask.getBufferType() + " cancellato");
-	    // System.out.println(clienteTask.getClass().getSimpleName() + " - "
-	    // + clienteTask.getBufferType() + " cancellato");
+	    System.out.println(interventoTask.getClass().getSimpleName() + " - " + interventoTask.getBufferType() + " cancellato");
+	    System.out.println(clienteTask.getClass().getSimpleName() + " - " + clienteTask.getBufferType() + " cancellato");
 	    timerBuffer.purge();
 	}
 
