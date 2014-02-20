@@ -163,11 +163,7 @@ public class Login extends Fragment {
 
 			try {
 
-			    System.out.println("Raw response\n" + response + "\n");
-
-			    JSONObject jsonResp = new JSONObject(JsonCR2.read(response).toJSONString());
-
-			    System.out.println("Response login\n" + jsonResp.toString());
+			    JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
 
 			    parseResponse(jsonResp);
 			}
@@ -204,7 +200,6 @@ public class Login extends Fragment {
 		//
 		// loginAsyncTask.execute(json_req);
 
-		password.setText("");
 	    }
 	    catch (Exception e) {
 
@@ -312,6 +307,8 @@ public class Login extends Fragment {
 	    e.printStackTrace();
 	}
 
+	accountManager = AccountManager.get(com.federicocolantoni.projects.interventix.Interventix_.getContext());
+
 	Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
 
 	if (accounts.length == 0) {
@@ -359,7 +356,11 @@ public class Login extends Fragment {
 
 	setRefreshActionButtonState(false);
 
-	com.federicocolantoni.projects.interventix.Interventix_.getContext().startActivity(
-		new Intent(com.federicocolantoni.projects.interventix.Interventix_.getContext(), com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
+	password.setText("");
+
+	Intent intent = new Intent(com.federicocolantoni.projects.interventix.Interventix_.getContext(), com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class);
+	intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+	com.federicocolantoni.projects.interventix.Interventix_.getContext().startActivity(intent);
     }
 }
