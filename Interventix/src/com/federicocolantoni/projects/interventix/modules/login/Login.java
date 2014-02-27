@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -43,6 +44,7 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.UtenteController;
 import com.federicocolantoni.projects.interventix.entity.Utente;
+import com.federicocolantoni.projects.interventix.utils.CheckConnection;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.PasswordHash;
 import com.google.gson.FieldNamingPolicy;
@@ -54,8 +56,6 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_login)
 public class Login extends Fragment {
-
-    // private WeakReference<GetLogin> asyncTaskWeakRef;
 
     @ViewById(R.id.field_password)
     EditText password;
@@ -75,8 +75,6 @@ public class Login extends Fragment {
 	super.onCreate(savedInstanceState);
 
 	defaultPrefs = PreferenceManager.getDefaultSharedPreferences(com.federicocolantoni.projects.interventix.Interventix_.getContext());
-
-	setRetainInstance(true);
     }
 
     @Override
@@ -139,123 +137,83 @@ public class Login extends Fragment {
 
 	    String jsonReq = new String();
 
-	    // if (CheckConnection.connectionIsAlive()) {
+	    if (CheckConnection.connectionIsAlive()) {
 
-	    try {
-		HashMap<String, String> parameters = new HashMap<String, String>();
+		try {
+		    HashMap<String, String> parameters = new HashMap<String, String>();
 
-		parameters.put("username", username.getText().toString());
-		parameters.put("password", password.getText().toString());
-		parameters.put("type", "TECNICO");
+		    parameters.put("username", username.getText().toString());
+		    parameters.put("password", password.getText().toString());
+		    parameters.put("type", "TECNICO");
 
-		final String prefsUrl = com.federicocolantoni.projects.interventix.Interventix_.getContext().getResources().getString(R.string.prefs_key_url);
+		    final String prefsUrl = com.federicocolantoni.projects.interventix.Interventix_.getContext().getResources().getString(R.string.prefs_key_url);
 
-		final String url = defaultPrefs.getString(prefsUrl, null);
+		    final String url = defaultPrefs.getString(prefsUrl, null);
 
-		jsonReq = JsonCR2.createRequest("users", "login", parameters, -1);
+		    jsonReq = JsonCR2.createRequest("users", "login", parameters, -1);
 
-		RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+		    RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
 
-		StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), url, jsonReq), new Listener<String>() {
+		    StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), url, jsonReq), new Listener<String>() {
 
-		    @Override
-		    public void onResponse(String response) {
+			@Override
+			public void onResponse(String response) {
 
-			try {
+			    try {
 
-			    JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
+				JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
 
-			    parseResponse(jsonResp);
+				// parseResponse(jsonResp);
+
+				new WriteDbLogin().execute(jsonResp);
+			    }
+			    catch (ParseException e) {
+
+				e.printStackTrace();
+			    }
+			    catch (Exception e) {
+
+				e.printStackTrace();
+			    }
+			    finally {
+
+				setRefreshActionButtonState(false);
+			    }
 			}
-			catch (ParseException e) {
+		    }, new ErrorListener() {
 
-			    e.printStackTrace();
-			}
-			catch (Exception e) {
-
-			    e.printStackTrace();
-			}
-			finally {
+			@Override
+			public void onErrorResponse(VolleyError error) {
 
 			    setRefreshActionButtonState(false);
+
+			    InterventixToast.makeToast("Errore di connessione", Toast.LENGTH_LONG);
 			}
-		    }
-		}, new ErrorListener() {
+		    });
 
-		    @Override
-		    public void onErrorResponse(VolleyError error) {
+		    requestQueue.add(jsonRequest);
 
-			InterventixToast.makeToast(error.getLocalizedMessage(), Toast.LENGTH_LONG);
-		    }
-		});
+		    // GetLogin loginAsyncTask = new GetLogin(getActivity(),
+		    // username.getText().toString(),
+		    // password.getText().toString());
+		    //
+		    // loginAsyncTask.execute(jsonReq);
 
-		requestQueue.add(jsonRequest);
+		}
+		catch (Exception e) {
 
-		// GetLogin loginAsyncTask = new GetLogin(getActivity(),
-		// this, username.getText().toString(),
-		// password.getText().toString());
-		//
-		// asyncTaskWeakRef = new
-		// WeakReference<GetLogin>(loginAsyncTask);
-		//
-		// loginAsyncTask.execute(json_req);
-
+		    e.printStackTrace();
+		    BugSenseHandler.sendException(e);
+		}
 	    }
-	    catch (Exception e) {
+	    else {
 
-		e.printStackTrace();
-		BugSenseHandler.sendException(e);
+		// connessione in modalità offline
 	    }
 	}
-	// else {
-	//
-	// AlertDialog.Builder connUnavailable = new Builder(getActivity());
-	//
-	// connUnavailable.setTitle(getString(R.string.no_active_connection));
-	// connUnavailable.setMessage(R.string.conn_unavailable_text);
-	// connUnavailable.setNegativeButton(getString(R.string.cancel_btn), new
-	// DialogInterface.OnClickListener() {
-	//
-	// @Override
-	// public void onClick(DialogInterface dialog, int which) {
-	//
-	// dialog.dismiss();
-	// }
-	// });
-	// connUnavailable.setNeutralButton(R.string.enable_wifi, new
-	// DialogInterface.OnClickListener() {
-	//
-	// @Override
-	// public void onClick(DialogInterface dialog, int which) {
-	//
-	// Intent intent = new
-	// Intent(android.provider.Settings.ACTION_WIFI_SETTINGS);
-	// intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-	// startActivity(intent);
-	// dialog.dismiss();
-	// }
-	// });
-	// connUnavailable.setPositiveButton(R.string.enable_mobile, new
-	// DialogInterface.OnClickListener() {
-	//
-	// @Override
-	// public void onClick(DialogInterface dialog, int which) {
-	//
-	// Intent intent = new
-	// Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS);
-	// intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-	// startActivity(intent);
-	// dialog.dismiss();
-	// }
-	// });
-	// connUnavailable.setIcon(R.drawable.ic_launcher);
-	//
-	// connUnavailable.create().show();
-	// }
-	// }
     }
 
-    protected void parseResponse(JSONObject response) throws JsonSyntaxException, JSONException {
+    private void parseResponse(JSONObject response) throws JsonSyntaxException, JSONException {
 
 	if (response.get("response").toString().equalsIgnoreCase("success")) {
 
@@ -362,5 +320,26 @@ public class Login extends Fragment {
 	intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 	com.federicocolantoni.projects.interventix.Interventix_.getContext().startActivity(intent);
+    }
+
+    private class WriteDbLogin extends AsyncTask<JSONObject, Void, Void> {
+
+	@Override
+	protected Void doInBackground(JSONObject... params) {
+
+	    try {
+		parseResponse(params[0]);
+	    }
+	    catch (JsonSyntaxException e) {
+
+		e.printStackTrace();
+	    }
+	    catch (JSONException e) {
+
+		e.printStackTrace();
+	    }
+
+	    return null;
+	}
     }
 }
