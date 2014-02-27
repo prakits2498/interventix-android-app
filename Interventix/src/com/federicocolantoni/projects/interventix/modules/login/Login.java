@@ -69,6 +69,8 @@ public class Login extends Fragment {
 
     private Menu optionsMenu;
 
+    private String stringUsername, stringPassword;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -142,8 +144,11 @@ public class Login extends Fragment {
 		try {
 		    HashMap<String, String> parameters = new HashMap<String, String>();
 
-		    parameters.put("username", username.getText().toString());
-		    parameters.put("password", password.getText().toString());
+		    stringUsername = username.getText().toString();
+		    stringPassword = password.getText().toString();
+
+		    parameters.put("username", stringUsername);
+		    parameters.put("password", stringPassword);
 		    parameters.put("type", "TECNICO");
 
 		    final String prefsUrl = com.federicocolantoni.projects.interventix.Interventix_.getContext().getResources().getString(R.string.prefs_key_url);
@@ -243,8 +248,6 @@ public class Login extends Fragment {
 	}
 	else {
 
-	    setRefreshActionButtonState(false);
-
 	    InterventixToast.makeToast(getString(R.string.toast_login_error), Toast.LENGTH_LONG);
 	}
     }
@@ -254,7 +257,7 @@ public class Login extends Fragment {
 	String encryptedPassword = null;
 
 	try {
-	    encryptedPassword = PasswordHash.createHash(password.getText().toString());
+	    encryptedPassword = PasswordHash.createHash(stringPassword);
 	}
 	catch (NoSuchAlgorithmException e) {
 
@@ -298,7 +301,7 @@ public class Login extends Fragment {
 
 		if (account.name.equals(username)) {
 
-		    accountManager.setPassword(account, encryptedPassword);
+		    accountManager.setPassword(account, stringPassword);
 		    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
 		    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
@@ -311,10 +314,6 @@ public class Login extends Fragment {
 		}
 	    }
 	}
-
-	setRefreshActionButtonState(false);
-
-	password.setText("");
 
 	Intent intent = new Intent(com.federicocolantoni.projects.interventix.Interventix_.getContext(), com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class);
 	intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -340,6 +339,13 @@ public class Login extends Fragment {
 	    }
 
 	    return null;
+	}
+
+	@Override
+	protected void onPostExecute(Void result) {
+
+	    setRefreshActionButtonState(false);
+	    password.setText("");
 	}
     }
 }
