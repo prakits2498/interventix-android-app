@@ -1,6 +1,5 @@
 package com.federicocolantoni.projects.interventix.task;
 
-import java.lang.ref.WeakReference;
 import java.net.SocketTimeoutException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -26,7 +25,6 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.UtenteController;
 import com.federicocolantoni.projects.interventix.entity.Utente;
-import com.federicocolantoni.projects.interventix.modules.login.Login;
 import com.federicocolantoni.projects.interventix.utils.CheckConnection;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.PasswordHash;
@@ -44,17 +42,13 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 
     private SharedPreferences defaultPrefs;
 
-    private WeakReference<Login> fragmentWeakRef;
-
     private String username, password;
 
     private AccountManager accountManager;
 
-    public GetLogin(Activity activity, Login fragment, String username, String password) {
+    public GetLogin(Activity activity, String username, String password) {
 
 	context = activity;
-
-	fragmentWeakRef = new WeakReference<Login>(fragment);
 
 	defaultPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -150,74 +144,72 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
     @Override
     protected void onPostExecute(Integer result) {
 
-	if (fragmentWeakRef.get() != null) {
-	    if (result == Activity.RESULT_OK) {
+	if (result == Activity.RESULT_OK) {
 
-		String encryptedPassword = null;
+	    String encryptedPassword = null;
 
-		try {
-		    encryptedPassword = PasswordHash.createHash(password);
-		}
-		catch (NoSuchAlgorithmException e) {
+	    try {
+		encryptedPassword = PasswordHash.createHash(password);
+	    }
+	    catch (NoSuchAlgorithmException e) {
 
-		    e.printStackTrace();
-		}
-		catch (InvalidKeySpecException e) {
+		e.printStackTrace();
+	    }
+	    catch (InvalidKeySpecException e) {
 
-		    e.printStackTrace();
-		}
+		e.printStackTrace();
+	    }
 
-		Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
+	    Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
 
-		if (accounts.length == 0) {
+	    if (accounts.length == 0) {
 
-		    final Account account = new Account(username, Constants.ACCOUNT_TYPE_INTERVENTIX);
+		final Account account = new Account(username, Constants.ACCOUNT_TYPE_INTERVENTIX);
 
-		    accountManager.addAccountExplicitly(account, encryptedPassword, null);
-		    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
+		accountManager.addAccountExplicitly(account, encryptedPassword, null);
+		accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
-		    SharedPreferences prefs = context.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 
-		    final Editor edit = prefs.edit().putString(Constants.USERNAME, username).putString(Constants.PASSWORD, encryptedPassword);
+		final Editor edit = prefs.edit().putString(Constants.USERNAME, username).putString(Constants.PASSWORD, encryptedPassword);
 
-		    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-			edit.apply();
-		    else {
-
-			new Thread(new Runnable() {
-			    public void run() {
-
-				edit.commit();
-			    }
-			}).start();
-		    }
-		}
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+		    edit.apply();
 		else {
 
-		    for (Account account : accounts) {
+		    new Thread(new Runnable() {
+			public void run() {
 
-			if (account.name.equals(username)) {
-
-			    accountManager.setPassword(account, encryptedPassword);
-			    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
-
-			    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
-
-			    UtenteController.tecnicoLoggato = utenteDao.queryForEq("username", username).get(0);
-
-			    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
-
-			    break;
+			    edit.commit();
 			}
+		    }).start();
+		}
+	    }
+	    else {
+
+		for (Account account : accounts) {
+
+		    if (account.name.equals(username)) {
+
+			accountManager.setPassword(account, encryptedPassword);
+			accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
+
+			RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+
+			UtenteController.tecnicoLoggato = utenteDao.queryForEq("username", username).get(0);
+
+			com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+
+			break;
 		    }
 		}
-
-		context.startActivity(new Intent(context, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
 	    }
-	    else if (result == Constants.ERRORE_LOGIN)
-		InterventixToast.makeToast(context.getString(R.string.toast_login_error), Toast.LENGTH_LONG);
-	    else if (result == Constants.ERRORE_NO_CONNECTION)
-		InterventixToast.makeToast(context.getString(R.string.toast_no_connection_available), Toast.LENGTH_LONG);
+
+	    context.startActivity(new Intent(context, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
 	}
+	else if (result == Constants.ERRORE_LOGIN)
+	    InterventixToast.makeToast(context.getString(R.string.toast_login_error), Toast.LENGTH_LONG);
+	else if (result == Constants.ERRORE_NO_CONNECTION)
+	    InterventixToast.makeToast(context.getString(R.string.toast_no_connection_available), Toast.LENGTH_LONG);
     }
 }
