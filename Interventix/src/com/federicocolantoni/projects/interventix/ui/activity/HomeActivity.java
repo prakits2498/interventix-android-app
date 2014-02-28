@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -95,9 +94,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	    if (intent.getAction().equals(Constants.ACTION_FINISH_BUFFER)) {
 
-		// getUsersSyncro();
-
-		new WriteDbSyncro().execute();
+		getUsersSyncro();
 	    }
 	}
     };
@@ -126,9 +123,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	registerReceiver(receiverBufferFinish, new IntentFilter(Constants.ACTION_FINISH_BUFFER));
 
-	// getUsersSyncro();
-
-	new WriteDbSyncro().execute();
+	getUsersSyncro();
 
 	listOpen = (ListView) findViewById(R.id.list_interv_open);
 
@@ -213,9 +208,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	    case R.id.refresh_menu:
 
-		// getUsersSyncro();
-
-		new WriteDbSyncro().execute();
+		getUsersSyncro();
 
 		setRefreshActionButtonState(true);
 
@@ -727,24 +720,5 @@ public class HomeActivity extends ActionBarActivity {
 	    }
 
 	}.execute(UtenteController.tecnicoLoggato.idutente);
-    }
-
-    private class WriteDbSyncro extends AsyncTask<Void, Void, Void> {
-
-	@Override
-	protected Void doInBackground(Void... params) {
-
-	    getUsersSyncro();
-
-	    return null;
-	}
-
-	@Override
-	protected void onPostExecute(Void result) {
-
-	    setRefreshActionButtonState(false);
-
-	    super.onPostExecute(result);
-	}
     }
 }

@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -168,9 +167,9 @@ public class Login extends Fragment {
 
 				JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
 
-				// parseResponse(jsonResp);
+				parseResponse(jsonResp);
 
-				new WriteDbLogin().execute(jsonResp);
+				// new WriteDbLogin().execute(jsonResp);
 			    }
 			    catch (ParseException e) {
 
@@ -197,13 +196,6 @@ public class Login extends Fragment {
 		    });
 
 		    requestQueue.add(jsonRequest);
-
-		    // GetLogin loginAsyncTask = new GetLogin(getActivity(),
-		    // username.getText().toString(),
-		    // password.getText().toString());
-		    //
-		    // loginAsyncTask.execute(jsonReq);
-
 		}
 		catch (Exception e) {
 
@@ -319,33 +311,5 @@ public class Login extends Fragment {
 	intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 	com.federicocolantoni.projects.interventix.Interventix_.getContext().startActivity(intent);
-    }
-
-    private class WriteDbLogin extends AsyncTask<JSONObject, Void, Void> {
-
-	@Override
-	protected Void doInBackground(JSONObject... params) {
-
-	    try {
-		parseResponse(params[0]);
-	    }
-	    catch (JsonSyntaxException e) {
-
-		e.printStackTrace();
-	    }
-	    catch (JSONException e) {
-
-		e.printStackTrace();
-	    }
-
-	    return null;
-	}
-
-	@Override
-	protected void onPostExecute(Void result) {
-
-	    setRefreshActionButtonState(false);
-	    password.setText("");
-	}
     }
 }
