@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -689,36 +690,91 @@ public class HomeActivity extends ActionBarActivity {
 
 		    setRefreshActionButtonState(false);
 
-		    RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+		    new ReadListInterventions().execute();
 
-		    QueryBuilder<Intervento, Long> qb = interventoDao.queryBuilder();
-
-		    qb.selectColumns(new String[] {
-			    "numero", "dataora", "cliente", "conflitto", "modificato", "nuovo"
-		    });
-
-		    try {
-			qb.where().eq("tecnico", UtenteController.tecnicoLoggato.idutente).and().eq("chiuso", false);
-			List<Intervento> listaInterventiAperti = interventoDao.query(qb.prepare());
-
-			adapter = new ListInterventiAdapter(listaInterventiAperti);
-
-			animationAdapter = new SwingBottomInAnimationAdapter(adapter, 150, 1500);
-			animationAdapter.setAbsListView(listOpen);
-
-			listOpen.setAdapter(animationAdapter);
-
-			animationAdapter.notifyDataSetChanged();
-		    }
-		    catch (SQLException e) {
-
-			e.printStackTrace();
-		    }
-
-		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+		    // RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+		    //
+		    // QueryBuilder<Intervento, Long> qb = interventoDao.queryBuilder();
+		    //
+		    // qb.selectColumns(new String[] {
+		    // "numero", "dataora", "cliente", "conflitto", "modificato", "nuovo"
+		    // });
+		    //
+		    // try {
+		    // qb.where().eq("tecnico", UtenteController.tecnicoLoggato.idutente).and().eq("chiuso", false);
+		    // List<Intervento> listaInterventiAperti = interventoDao.query(qb.prepare());
+		    //
+		    // adapter = new ListInterventiAdapter(listaInterventiAperti);
+		    //
+		    // animationAdapter = new SwingBottomInAnimationAdapter(adapter, 150, 1500);
+		    // animationAdapter.setAbsListView(listOpen);
+		    //
+		    // listOpen.setAdapter(animationAdapter);
+		    //
+		    // animationAdapter.notifyDataSetChanged();
+		    // }
+		    // catch (SQLException e) {
+		    //
+		    // e.printStackTrace();
+		    // }
+		    //
+		    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 		}
 	    }
 
 	}.execute(UtenteController.tecnicoLoggato.idutente);
+    }
+
+    private class ReadListInterventions extends AsyncTask<Void, Void, List<Intervento>> {
+
+	private RuntimeExceptionDao<Intervento, Long> interventoDao;
+	private QueryBuilder<Intervento, Long> qb;
+
+	@Override
+	protected void onPreExecute() {
+
+	    interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+	    qb.selectColumns(new String[] {
+		    "numero", "dataora", "cliente", "conflitto", "modificato", "nuovo"
+	    });
+
+	    try {
+		qb.where().eq("tecnico", UtenteController.tecnicoLoggato.idutente).and().eq("chiuso", false);
+	    }
+	    catch (SQLException e) {
+
+		e.printStackTrace();
+	    }
+	}
+
+	@Override
+	protected List<Intervento> doInBackground(Void... params) {
+
+	    List<Intervento> listaInterventiAperti = null;
+	    try {
+		listaInterventiAperti = interventoDao.query(qb.prepare());
+	    }
+	    catch (SQLException e) {
+
+		e.printStackTrace();
+	    }
+
+	    return listaInterventiAperti;
+	}
+
+	@Override
+	protected void onPostExecute(List<Intervento> result) {
+
+	    adapter = new ListInterventiAdapter(result);
+
+	    animationAdapter = new SwingBottomInAnimationAdapter(adapter, 150, 1500);
+	    animationAdapter.setAbsListView(listOpen);
+
+	    listOpen.setAdapter(animationAdapter);
+
+	    animationAdapter.notifyDataSetChanged();
+
+	    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+	}
     }
 }
