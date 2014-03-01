@@ -13,6 +13,7 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -37,6 +38,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.Constants.BUFFER_TYPE;
@@ -95,7 +103,13 @@ public class HomeActivity extends ActionBarActivity {
 
 	    if (intent.getAction().equals(Constants.ACTION_FINISH_BUFFER)) {
 
-		getUsersSyncro();
+		try {
+		    getUsersSyncro();
+		}
+		catch (Exception e) {
+
+		    e.printStackTrace();
+		}
 	    }
 	}
     };
@@ -124,7 +138,13 @@ public class HomeActivity extends ActionBarActivity {
 
 	registerReceiver(receiverBufferFinish, new IntentFilter(Constants.ACTION_FINISH_BUFFER));
 
-	getUsersSyncro();
+	try {
+	    getUsersSyncro();
+	}
+	catch (Exception e) {
+
+	    e.printStackTrace();
+	}
 
 	listOpen = (ListView) findViewById(R.id.list_interv_open);
 
@@ -209,7 +229,13 @@ public class HomeActivity extends ActionBarActivity {
 
 	    case R.id.refresh_menu:
 
-		getUsersSyncro();
+		try {
+		    getUsersSyncro();
+		}
+		catch (Exception e) {
+
+		    e.printStackTrace();
+		}
 
 		setRefreshActionButtonState(true);
 
@@ -290,82 +316,112 @@ public class HomeActivity extends ActionBarActivity {
 	}
     }
 
-    private void getUsersSyncro() {
+    private void getUsersSyncro() throws Exception {
 
-	new ManagedAsyncTask<Long, Void, Integer>(HomeActivity.this) {
+	setRefreshActionButtonState(true);
+
+	Map<String, Object> parameters = new HashMap<String, Object>();
+	parameters.put("revision", UtenteController.revisioneUtenti);
+
+	String jsonReq = JsonCR2.createRequest("users", "syncro", parameters, UtenteController.tecnicoLoggato.idutente.intValue());
+
+	SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+
+	String prefs_url = getResources().getString(R.string.prefs_key_url);
+
+	String url_string = prefsDefault.getString(prefs_url, null);
+
+	RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), url_string, jsonReq), new Listener<String>() {
 
 	    @Override
-	    protected void onPreExecute() {
+	    public void onResponse(String response) {
 
-		setRefreshActionButtonState(true);
-	    };
+		try {
+
+		    JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
+
+		    runAsyncTaskUserSyncro(jsonResp);
+		}
+		catch (ParseException e) {
+
+		    e.printStackTrace();
+		}
+		catch (Exception e) {
+
+		    e.printStackTrace();
+		}
+		finally {
+
+		    setRefreshActionButtonState(false);
+		}
+	    }
+	}, new ErrorListener() {
 
 	    @Override
-	    protected Integer doInBackground(Long... params) {
+	    public void onErrorResponse(VolleyError error) {
 
-		String json_req = new String();
+		setRefreshActionButtonState(false);
 
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("revision", UtenteController.revisioneUtenti);
+		InterventixToast.makeToast("Errore di connessione", Toast.LENGTH_LONG);
+	    }
+	});
+
+	requestQueue.add(jsonRequest);
+    }
+
+    private void runAsyncTaskUserSyncro(final JSONObject jsonResp) {
+
+	new ManagedAsyncTask<Void, Void, Integer>(HomeActivity.this) {
+
+	    private JSONObject response = jsonResp;
+
+	    @Override
+	    protected Integer doInBackground(Void... params) {
 
 		int result = 0;
 
 		try {
 
-		    if (CheckConnection.connectionIsAlive()) {
-			json_req = JsonCR2.createRequest("users", "syncro", parameters, params[0].intValue());
+		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
+			JSONObject data = response.getJSONObject("data");
 
-			SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+			UtenteController.revisioneUtenti = data.getLong("revision");
 
-			String prefs_url = getResources().getString(R.string.prefs_key_url);
+			JSONArray usersMOD = data.getJSONArray("mod");
+			JSONArray usersDEL = data.getJSONArray("del");
 
-			String url_string = prefsDefault.getString(prefs_url, null);
+			Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-			JSONObject response = new org.json.JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
+			RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
-			if (response != null && response.getString("response").equalsIgnoreCase("success")) {
-			    JSONObject data = response.getJSONObject("data");
+			for (int i = 0; i < usersMOD.length(); i++) {
 
-			    UtenteController.revisioneUtenti = data.getLong("revision");
+			    JSONObject obj = usersMOD.getJSONObject(i);
 
-			    JSONArray usersMOD = data.getJSONArray("mod");
-			    JSONArray usersDEL = data.getJSONArray("del");
+			    Utente utente = gson.fromJson(obj.toString(), Utente.class);
 
-			    Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-
-			    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
-
-			    for (int i = 0; i < usersMOD.length(); i++) {
-
-				JSONObject obj = usersMOD.getJSONObject(i);
-
-				Utente utente = gson.fromJson(obj.toString(), Utente.class);
-
-				if (!utenteDao.idExists(utente.idutente))
-				    utenteDao.create(utente);
-				else {
-				    utenteDao.update(utente);
-				}
+			    if (!utenteDao.idExists(utente.idutente))
+				utenteDao.create(utente);
+			    else {
+				utenteDao.update(utente);
 			    }
+			}
 
-			    if (usersDEL.length() > 0) {
+			if (usersDEL.length() > 0) {
 
-				for (int k = 0; k < usersDEL.length(); k++) {
+			    for (int k = 0; k < usersDEL.length(); k++) {
 
-				    utenteDao.deleteById(usersDEL.getLong(k));
-				}
+				utenteDao.deleteById(usersDEL.getLong(k));
 			    }
+			}
 
-			    result = RESULT_OK;
-			}
-			else {
-			    result = RESULT_CANCELED;
-			}
+			result = RESULT_OK;
 		    }
 		    else {
-			result = Constants.ERRORE_NO_CONNECTION;
+			result = RESULT_CANCELED;
 		    }
-
 		}
 		catch (Exception e) {
 		    e.printStackTrace();
@@ -381,20 +437,15 @@ public class HomeActivity extends ActionBarActivity {
 		if (result == RESULT_OK)
 		    getClientsSyncro();
 		else {
-		    if (result == RESULT_CANCELED) {
 
-			InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
+		    InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
 
-			com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
-		    }
-		    else if (result == Constants.ERRORE_NO_CONNECTION)
-			InterventixToast.makeToast(getString(R.string.toast_no_connection_available), Toast.LENGTH_LONG);
+		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		    setRefreshActionButtonState(false);
 		}
 	    }
-
-	}.execute(UtenteController.tecnicoLoggato.idutente);
+	}.execute();
     }
 
     private void getClientsSyncro() {

@@ -160,16 +160,16 @@ public class CostsInterventoFragment extends Fragment {
 
 	final EditText mEditManodopera;
 
-	AlertDialog.Builder costoAccessoriDialog = new Builder(getActivity());
+	AlertDialog.Builder costoManodoperaDialog = new Builder(getActivity());
 
-	costoAccessoriDialog.setTitle(R.string.componenti_title);
+	costoManodoperaDialog.setTitle(R.string.componenti_title);
 
 	mEditManodopera = new EditText(getActivity());
 	mEditManodopera.setText("" + (InterventoController.controller.getIntervento().costomanodopera != null ? InterventoController.controller.getIntervento().costomanodopera : 0.0));
 	mEditManodopera.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-	costoAccessoriDialog.setView(mEditManodopera);
-	costoAccessoriDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
+	costoManodoperaDialog.setView(mEditManodopera);
+	costoManodoperaDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
@@ -188,9 +188,9 @@ public class CostsInterventoFragment extends Fragment {
 		updateUI();
 	    }
 	});
-	costoAccessoriDialog.setIcon(getActivity().getResources().getDrawable(R.drawable.ic_launcher));
+	costoManodoperaDialog.setIcon(getActivity().getResources().getDrawable(R.drawable.ic_launcher));
 
-	costoAccessoriDialog.create().show();
+	costoManodoperaDialog.create().show();
     }
 
     @Click(R.id.row_componenti)
@@ -198,16 +198,16 @@ public class CostsInterventoFragment extends Fragment {
 
 	final EditText mEditComponenti;
 
-	AlertDialog.Builder costoAccessoriDialog = new Builder(getActivity());
+	AlertDialog.Builder costoComponentiDialog = new Builder(getActivity());
 
-	costoAccessoriDialog.setTitle(R.string.componenti_title);
+	costoComponentiDialog.setTitle(R.string.componenti_title);
 
 	mEditComponenti = new EditText(getActivity());
 	mEditComponenti.setText("" + (InterventoController.controller.getIntervento().costocomponenti != null ? InterventoController.controller.getIntervento().costocomponenti : 0.0));
 	mEditComponenti.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-	costoAccessoriDialog.setView(mEditComponenti);
-	costoAccessoriDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
+	costoComponentiDialog.setView(mEditComponenti);
+	costoComponentiDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
@@ -226,9 +226,9 @@ public class CostsInterventoFragment extends Fragment {
 		updateUI();
 	    }
 	});
-	costoAccessoriDialog.setIcon(getActivity().getResources().getDrawable(R.drawable.ic_launcher));
+	costoComponentiDialog.setIcon(getActivity().getResources().getDrawable(R.drawable.ic_launcher));
 
-	costoAccessoriDialog.create().show();
+	costoComponentiDialog.create().show();
     }
 
     @Click(R.id.row_accessori)
