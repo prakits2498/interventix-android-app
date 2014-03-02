@@ -2,7 +2,7 @@
 <resources>
 
 	<!-- Error messages -->
-	<string name="changelog_internal_error_parsing">Errore durante l\'analisi del file</string>
+	<string name="changelog_internal_error_parsing">"Errore durante l'analisi del file."</string>
 
 	<!--
          String for Version Header.
@@ -36,18 +36,20 @@
 	<string name="close_interv">Chiudi</string>
 	<string name="prefs_key_url">PREFS_KEY_URL</string>
 	<string name="first_run">first_run</string>
-	<string name="prefs_url_title">Inserisci l\'indirizzo del sito che ti è stato fornito nel contratto</string>
+	<string name="prefs_url_title">"Inserisci l'indirizzo del sito che ti è stato fornito nel contratto."</string>
 	<string name="prefs_url_hint">http://azienda.interventix.com</string>
 	<string name="default_url">http://37.187.1.50:8080/interventix/connector</string>
 	<string name="welcome_title">Benvenuto su Interventix</string>
-	<string name="welcome_message">Interventix è stata avviata per la prima volta. Inserire l\'indirizzo per la connessione al server che è stato fornito nel contratto.</string>
+	<string name="welcome_message">"Interventix è stata avviata per la prima volta. Inserire l'indirizzo per la connessione al server che è stato fornito nel contratto."</string>
 	<string name="logout_title">Richiesta di logout</string>
 	<string name="logout_message">Sei sicuro di voler effettuare il logout?</string>
 	<string name="logout_positive_btn">Logout</string>
 	<string name="btn_cancel">Cancel</string>
 	<string name="tipologia_title">Scegli una tipologia di intervento</string>
 	<string name="tipo_dett_title">Scegli il tipo di dettaglio</string>
-	<string name="oggetto_dett_title">Inserisci l\'oggetto del dettaglio</string>
+	<string name="oggetto_dett_title">"Inserisci l'oggetto del dettaglio"</string>
+	<string name="not_offline_access_title">Accesso offline</string>
+	<string name="not_offline_access_message">"Spiacente, ma per l'accesso offline l'account deve essere già registrato sul dispositivo."</string>
 
 	<!-- Array di stringhe -->
 	<string-array name="tipologia_choose">
@@ -58,7 +60,7 @@
 		<item n="0">Contrattualizzato</item>
 		<item n="1">Pagamento Diretto</item>
 		<item n="2">Post-Vendita (Garanzia)</item>
-		<item n="3">Comodato d\'uso</item>
+		<item n="3">"Comodato d'uso"</item>
 	</string-array>
 	<string-array name="tipo_dettaglio_intervento">
 		<item n="0">Regolazione</item>
@@ -70,9 +72,9 @@
 	</string-array>
 
 	<string name="modalita_title">Scegli una modalità di intervento</string>
-	<string name="prodotto_title">Inserisci il nome del prodotto dell\'intervento</string>
-	<string name="nominativo_title">Inserisci il nominativo per l\'intervento</string>
-	<string name="motivation_title">Inserisci la motivazione per l\'intervento</string>
+	<string name="prodotto_title">"Inserisci il nome del prodotto dell'intervento"</string>
+	<string name="nominativo_title">"Inserisci il nominativo per l'intervento"</string>
+	<string name="motivation_title">"Inserisci la motivazione per l'intervento"</string>
 	<string name="manodopera_title">Inserisci il costo della manodopera</string>
 	<string name="componenti_title">Inserisci il costo dei componenti</string>
 	<string name="accessori_title">Inserisci il costo degli accessori</string>
@@ -96,11 +98,7 @@
 	<string name="toast_no_connection_available">Nessuna connessione disponibile</string>
 	<string name="toast_login_error">Si è verificato un errore nel login</string>
 	<string name="toast_error_syncro">Si è verificato un errore durante la sincronizzazione.</string>
-	<!-- <string name="toast_error_syncro_users">Si è verificato un errore nella sincronizzazione degli utenti</string> -->
-	<!-- <string name="toast_error_syncro_clients">Si è verificato un errore nella sincronizzazione dei clienti</string> -->
-	<!-- <string name="toast_error_syncro_interventions">Si è verificato un errore nella sincronizzazione degli interventi</string> -->
-
-	<string name="toast_message_intervento_no_modified">Nessuna modifica all\'intervento</string>
+	<string name="toast_message_intervento_no_modified">"Nessuna modifica all'intervento"</string>
 	<string name="toast_message_intervento_modified">Intervento modificato</string>
 
 	<!-- other strings -->

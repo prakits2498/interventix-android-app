@@ -8,8 +8,6 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +23,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
+import com.qustom.dialog.QustomDialogBuilder;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_costs)
@@ -160,7 +159,10 @@ public class CostsInterventoFragment extends Fragment {
 
 	final EditText mEditManodopera;
 
-	AlertDialog.Builder costoManodoperaDialog = new Builder(getActivity());
+	QustomDialogBuilder costoManodoperaDialog = new QustomDialogBuilder(getActivity());
+
+	costoManodoperaDialog.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
+	costoManodoperaDialog.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
 	costoManodoperaDialog.setTitle(R.string.componenti_title);
 
@@ -168,7 +170,7 @@ public class CostsInterventoFragment extends Fragment {
 	mEditManodopera.setText("" + (InterventoController.controller.getIntervento().costomanodopera != null ? InterventoController.controller.getIntervento().costomanodopera : 0.0));
 	mEditManodopera.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-	costoManodoperaDialog.setView(mEditManodopera);
+	costoManodoperaDialog.setCustomView(mEditManodopera, getActivity());
 	costoManodoperaDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
 
 	    @Override
@@ -198,7 +200,10 @@ public class CostsInterventoFragment extends Fragment {
 
 	final EditText mEditComponenti;
 
-	AlertDialog.Builder costoComponentiDialog = new Builder(getActivity());
+	QustomDialogBuilder costoComponentiDialog = new QustomDialogBuilder(getActivity());
+
+	costoComponentiDialog.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
+	costoComponentiDialog.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
 	costoComponentiDialog.setTitle(R.string.componenti_title);
 
@@ -206,7 +211,7 @@ public class CostsInterventoFragment extends Fragment {
 	mEditComponenti.setText("" + (InterventoController.controller.getIntervento().costocomponenti != null ? InterventoController.controller.getIntervento().costocomponenti : 0.0));
 	mEditComponenti.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-	costoComponentiDialog.setView(mEditComponenti);
+	costoComponentiDialog.setCustomView(mEditComponenti, getActivity());
 	costoComponentiDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
 
 	    @Override
@@ -236,7 +241,10 @@ public class CostsInterventoFragment extends Fragment {
 
 	final EditText mEditAccessori;
 
-	AlertDialog.Builder costoAccessoriDialog = new Builder(getActivity());
+	QustomDialogBuilder costoAccessoriDialog = new QustomDialogBuilder(getActivity());
+
+	costoAccessoriDialog.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
+	costoAccessoriDialog.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
 	costoAccessoriDialog.setTitle(R.string.accessori_title);
 
@@ -244,7 +252,7 @@ public class CostsInterventoFragment extends Fragment {
 	mEditAccessori.setText("" + (InterventoController.controller.getIntervento().costoaccessori != null ? InterventoController.controller.getIntervento().costoaccessori : 0.0));
 	mEditAccessori.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-	costoAccessoriDialog.setView(mEditAccessori);
+	costoAccessoriDialog.setCustomView(mEditAccessori, getActivity());
 	costoAccessoriDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
 
 	    @Override

@@ -781,10 +781,15 @@ public class HomeActivity extends ActionBarActivity {
 	private RuntimeExceptionDao<Intervento, Long> interventoDao;
 	private QueryBuilder<Intervento, Long> qb;
 
+	public ReadListInterventions() {
+
+	    interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+	    qb = interventoDao.queryBuilder();
+	}
+
 	@Override
 	protected void onPreExecute() {
 
-	    interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
 	    qb.selectColumns(new String[] {
 		    "numero", "dataora", "cliente", "conflitto", "modificato", "nuovo"
 	    });
