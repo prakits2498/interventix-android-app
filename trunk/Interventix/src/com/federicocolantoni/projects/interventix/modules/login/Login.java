@@ -16,7 +16,9 @@ import org.json.simple.parser.ParseException;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -51,6 +53,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.qustom.dialog.QustomDialogBuilder;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_login)
@@ -167,9 +170,9 @@ public class Login extends Fragment {
 
 				JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
 
-				parseResponse(jsonResp);
+				System.out.println(jsonResp.toString(2));
 
-				// new WriteDbLogin().execute(jsonResp);
+				parseResponse(jsonResp);
 			    }
 			    catch (ParseException e) {
 
@@ -191,7 +194,7 @@ public class Login extends Fragment {
 
 			    setRefreshActionButtonState(false);
 
-			    InterventixToast.makeToast("Errore di connessione", Toast.LENGTH_LONG);
+			    InterventixToast.makeToast("Servizio momentaneamente non disponibile", Toast.LENGTH_LONG);
 			}
 		    });
 
@@ -206,6 +209,58 @@ public class Login extends Fragment {
 	    else {
 
 		// connessione in modalità offline
+
+		accountManager = AccountManager.get(com.federicocolantoni.projects.interventix.Interventix_.getContext());
+
+		Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
+
+		if (accounts.length == 0) {
+
+		    QustomDialogBuilder builder = new QustomDialogBuilder(getActivity());
+
+		    builder.setIcon(R.drawable.ic_launcher);
+		    builder.setTitleColor(com.federicocolantoni.projects.interventix.Interventix_.getContext().getResources().getColor(R.color.interventix_color));
+		    builder.setDividerColor(com.federicocolantoni.projects.interventix.Interventix_.getContext().getResources().getColor(R.color.interventix_color));
+
+		    builder.setTitle(getString(R.string.not_offline_access_title));
+		    builder.setMessage(getString(R.string.not_offline_access_message)).setPositiveButton(getString(R.string.ok_btn), new Dialog.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialogInterface, int i) {
+
+			    dialogInterface.dismiss();
+			}
+		    });
+
+		    builder.create().show();
+
+		    setRefreshActionButtonState(false);
+		}
+		else {
+
+		    for (Account account : accounts) {
+
+			if (account.name.equals(username)) {
+
+			    accountManager.setPassword(account, stringPassword);
+			    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
+
+			    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+
+			    UtenteController.tecnicoLoggato = utenteDao.queryForEq("username", username).get(0);
+
+			    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+
+			    break;
+			}
+		    }
+
+		    setRefreshActionButtonState(false);
+
+		    Intent intent = new Intent(com.federicocolantoni.projects.interventix.Interventix_.getContext(), com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class);
+		    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+		    com.federicocolantoni.projects.interventix.Interventix_.getContext().startActivity(intent);
+		}
 	    }
 	}
     }
