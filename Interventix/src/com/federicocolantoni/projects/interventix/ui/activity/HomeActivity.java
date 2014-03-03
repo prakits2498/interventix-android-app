@@ -2,6 +2,7 @@ package com.federicocolantoni.projects.interventix.ui.activity;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,10 +61,8 @@ import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.entity.Intervento;
 import com.federicocolantoni.projects.interventix.entity.Utente;
 import com.federicocolantoni.projects.interventix.utils.BigDecimalTypeAdapter;
-import com.federicocolantoni.projects.interventix.utils.CheckConnection;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.ManagedAsyncTask;
-import com.federicocolantoni.projects.interventix.utils.Utils;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.FieldNamingPolicy;
@@ -86,8 +85,6 @@ public class HomeActivity extends ActionBarActivity {
 
     private Menu optionsMenu;
 
-    private SharedPreferences prefsLocal;
-
     @ViewById(R.id.list_interv_open)
     ListView listOpen;
 
@@ -109,6 +106,7 @@ public class HomeActivity extends ActionBarActivity {
 		catch (Exception e) {
 
 		    e.printStackTrace();
+		    BugSenseHandler.sendException(e);
 		}
 	    }
 	}
@@ -144,6 +142,7 @@ public class HomeActivity extends ActionBarActivity {
 	catch (Exception e) {
 
 	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
 	}
 
 	listOpen = (ListView) findViewById(R.id.list_interv_open);
@@ -189,6 +188,7 @@ public class HomeActivity extends ActionBarActivity {
 	catch (SQLException e) {
 
 	    e.printStackTrace();
+	    BugSenseHandler.sendException(e);
 	}
 
 	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
@@ -235,6 +235,7 @@ public class HomeActivity extends ActionBarActivity {
 		catch (Exception e) {
 
 		    e.printStackTrace();
+		    BugSenseHandler.sendException(e);
 		}
 
 		setRefreshActionButtonState(true);
@@ -327,13 +328,13 @@ public class HomeActivity extends ActionBarActivity {
 
 	SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
 
-	String prefs_url = getResources().getString(R.string.prefs_key_url);
+	String prefsUrl = getResources().getString(R.string.prefs_key_url);
 
-	String url_string = prefsDefault.getString(prefs_url, null);
+	String urlString = prefsDefault.getString(prefsUrl, null);
 
 	RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), url_string, jsonReq), new Listener<String>() {
+	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), urlString, jsonReq), new Listener<String>() {
 
 	    @Override
 	    public void onResponse(String response) {
@@ -347,10 +348,12 @@ public class HomeActivity extends ActionBarActivity {
 		catch (ParseException e) {
 
 		    e.printStackTrace();
+		    BugSenseHandler.sendException(e);
 		}
 		catch (Exception e) {
 
 		    e.printStackTrace();
+		    BugSenseHandler.sendException(e);
 		}
 		finally {
 
@@ -364,7 +367,7 @@ public class HomeActivity extends ActionBarActivity {
 
 		setRefreshActionButtonState(false);
 
-		InterventixToast.makeToast("Errore di connessione", Toast.LENGTH_LONG);
+		InterventixToast.makeToast(error.networkResponse.data == null ? getString(R.string.service_not_available) : new String(error.getMessage()), Toast.LENGTH_LONG);
 	    }
 	});
 
@@ -435,7 +438,14 @@ public class HomeActivity extends ActionBarActivity {
 	    protected void onPostExecute(Integer result) {
 
 		if (result == RESULT_OK)
-		    getClientsSyncro();
+		    try {
+			getClientsSyncro(null);
+		    }
+		    catch (Exception e) {
+
+			e.printStackTrace();
+			BugSenseHandler.sendException(e);
+		    }
 		else {
 
 		    InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
@@ -448,75 +458,110 @@ public class HomeActivity extends ActionBarActivity {
 	}.execute();
     }
 
-    private void getClientsSyncro() {
+    private void getClientsSyncro(JSONObject response) throws Exception {
 
-	new ManagedAsyncTask<Long, Void, Integer>(HomeActivity.this) {
+	String jsonReq = new String();
+
+	Map<String, Object> parameters = new HashMap<String, Object>();
+	parameters.put("revision", ClienteController.revisioneClienti);
+
+	jsonReq = JsonCR2.createRequest("clients", "syncro", parameters, UtenteController.tecnicoLoggato.idutente.intValue());
+
+	SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+
+	String prefsUrl = getResources().getString(R.string.prefs_key_url);
+
+	String urlString = prefsDefault.getString(prefsUrl, null);
+
+	RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), urlString, jsonReq), new Listener<String>() {
 
 	    @Override
-	    protected void onPreExecute() {
+	    public void onResponse(String response) {
 
+		try {
+
+		    JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
+
+		    runAsyncTaskClientSyncro(jsonResp);
+		}
+		catch (ParseException e) {
+
+		    e.printStackTrace();
+		    BugSenseHandler.sendException(e);
+		}
+		catch (Exception e) {
+
+		    e.printStackTrace();
+		    BugSenseHandler.sendException(e);
+		}
+		finally {
+
+		    setRefreshActionButtonState(false);
+		}
 	    }
+	}, new ErrorListener() {
 
 	    @Override
-	    protected Integer doInBackground(Long... params) {
+	    public void onErrorResponse(VolleyError error) {
 
-		String json_req = new String();
+		setRefreshActionButtonState(false);
 
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("revision", ClienteController.revisioneClienti);
+		InterventixToast.makeToast(error.networkResponse.data == null ? getString(R.string.service_not_available) : new String(error.getMessage()), Toast.LENGTH_LONG);
+	    }
+	});
+
+	requestQueue.add(jsonRequest);
+
+    }
+
+    private void runAsyncTaskClientSyncro(final JSONObject jsonResp) {
+
+	new ManagedAsyncTask<Void, Void, Integer>(HomeActivity.this) {
+
+	    private JSONObject response = jsonResp;
+
+	    @Override
+	    protected Integer doInBackground(Void... params) {
 
 		int result = 0;
 
 		try {
 
-		    if (CheckConnection.connectionIsAlive()) {
-			json_req = JsonCR2.createRequest("clients", "syncro", parameters, params[0].intValue());
+		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
+			JSONObject data = response.getJSONObject("data");
 
-			SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+			ClienteController.revisioneClienti = data.getLong("revision");
 
-			String prefs_url = getResources().getString(R.string.prefs_key_url);
+			RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
-			String url_string = prefsDefault.getString(prefs_url, null);
+			JSONArray clientsMOD = data.getJSONArray("mod");
+			JSONArray clientsDEL = data.getJSONArray("del");
 
-			JSONObject response = new JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
+			Gson gson = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-			if (response != null && response.getString("response").equalsIgnoreCase("success")) {
-			    JSONObject data = response.getJSONObject("data");
+			for (int i = 0; i < clientsMOD.length(); i++) {
 
-			    ClienteController.revisioneClienti = data.getLong("revision");
+			    JSONObject clienteJSON = clientsMOD.getJSONObject(i);
 
-			    RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+			    Cliente cliente = gson.fromJson(clienteJSON.toString(), Cliente.class);
 
-			    JSONArray clientsMOD = data.getJSONArray("mod");
-			    JSONArray clientsDEL = data.getJSONArray("del");
-
-			    Gson gson = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-
-			    for (int i = 0; i < clientsMOD.length(); i++) {
-
-				JSONObject clienteJSON = clientsMOD.getJSONObject(i);
-
-				Cliente cliente = gson.fromJson(clienteJSON.toString(), Cliente.class);
-
-				if (!clienteDao.idExists(cliente.idcliente))
-				    clienteDao.create(cliente);
-				else
-				    clienteDao.update(cliente);
-			    }
-
-			    for (int k = 0; k < clientsDEL.length(); k++) {
-
-				clienteDao.deleteById(clientsDEL.getLong(k));
-			    }
-
-			    result = RESULT_OK;
+			    if (!clienteDao.idExists(cliente.idcliente))
+				clienteDao.create(cliente);
+			    else
+				clienteDao.update(cliente);
 			}
-			else {
-			    result = RESULT_CANCELED;
+
+			for (int k = 0; k < clientsDEL.length(); k++) {
+
+			    clienteDao.deleteById(clientsDEL.getLong(k));
 			}
+
+			result = RESULT_OK;
 		    }
 		    else {
-			result = Constants.ERRORE_NO_CONNECTION;
+			result = RESULT_CANCELED;
 		    }
 		}
 		catch (Exception e) {
@@ -531,88 +576,137 @@ public class HomeActivity extends ActionBarActivity {
 	    protected void onPostExecute(Integer result) {
 
 		if (result == RESULT_OK)
-		    getInterventionsSyncro();
-		else {
-		    if (result == RESULT_CANCELED) {
-
-			InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
-
-			com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+		    try {
+			getInterventionsSyncro(null);
 		    }
-		    else if (result == Constants.ERRORE_NO_CONNECTION)
-			InterventixToast.makeToast(getString(R.string.toast_no_connection_available), Toast.LENGTH_LONG);
+		    catch (Exception e) {
+
+			e.printStackTrace();
+			BugSenseHandler.sendException(e);
+		    }
+		else {
+
+		    InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
+
+		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		    setRefreshActionButtonState(false);
 		}
 	    }
-	}.execute(UtenteController.tecnicoLoggato.idutente);
+	}.execute();
     }
 
-    private void getInterventionsSyncro() {
+    private void getInterventionsSyncro(JSONObject jsonResp) throws Exception {
 
-	prefsLocal = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	String jsonReq = new String();
 
-	new ManagedAsyncTask<Long, Void, Integer>(HomeActivity.this) {
+	Map<String, Object> parameters = new HashMap<String, Object>();
+	parameters.put("revision", InterventoController.revisioneInterventi);
+
+	jsonReq = JsonCR2.createRequest("interventions", "mysyncro", parameters, UtenteController.tecnicoLoggato.idutente.intValue());
+
+	SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+
+	String prefsUrl = getResources().getString(R.string.prefs_key_url);
+
+	String urlString = prefsDefault.getString(prefsUrl, null);
+
+	RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), urlString, jsonReq), new Listener<String>() {
 
 	    @Override
-	    protected Integer doInBackground(Long... params) {
-
-		String json_req = new String();
-
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("revision", prefsLocal.getLong(Constants.REVISION_INTERVENTI, 0));
-
-		int result = 0;
-
-		long iduser = params[0];
+	    public void onResponse(String response) {
 
 		try {
 
-		    if (CheckConnection.connectionIsAlive()) {
-			json_req = JsonCR2.createRequest("interventions", "mysyncro", parameters, (int) iduser);
+		    JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
 
-			SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+		    runAsyncTaskInterventionsSyncro(jsonResp);
+		}
+		catch (ParseException e) {
 
-			String prefs_url = getResources().getString(R.string.prefs_key_url);
+		    e.printStackTrace();
+		    BugSenseHandler.sendException(e);
+		}
+		catch (Exception e) {
 
-			String url_string = prefsDefault.getString(prefs_url, null);
+		    e.printStackTrace();
+		    BugSenseHandler.sendException(e);
+		}
+		finally {
 
-			JSONObject response = new JSONObject(Utils.connectionForURL(json_req, url_string).toJSONString());
+		    setRefreshActionButtonState(false);
+		}
+	    }
+	}, new ErrorListener() {
 
-			if (response != null && response.getString("response").equalsIgnoreCase("success")) {
+	    @Override
+	    public void onErrorResponse(VolleyError error) {
 
-			    JSONObject data = response.getJSONObject("data");
+		setRefreshActionButtonState(false);
 
-			    InterventoController.revisioneInterventi = data.getLong("revision");
+		InterventixToast.makeToast(error.networkResponse.data == null ? getString(R.string.service_not_available) : new String(error.getMessage()), Toast.LENGTH_LONG);
+	    }
+	});
 
-			    RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+	requestQueue.add(jsonRequest);
+    }
 
-			    JSONArray intervMOD = data.getJSONArray("mod");
-			    JSONArray intervDEL = data.getJSONArray("del");
-			    JSONArray interventions = data.getJSONArray("intervents");
+    private void runAsyncTaskInterventionsSyncro(final JSONObject jsonResp) {
 
-			    if (intervMOD.length() > 0)
-				for (int i = 0; i < intervMOD.length(); ++i) {
-				    addInterventions((JSONObject) intervMOD.get(i), interventoDao);
-				}
+	new ManagedAsyncTask<Void, Void, Integer>(HomeActivity.this) {
 
-			    if (intervDEL.length() > 0)
-				for (int i = 0; i < intervDEL.length(); ++i)
-				    interventoDao.deleteById(intervDEL.getLong(i));
+	    private JSONObject response = jsonResp;
 
-			    if (interventions.length() > 0)
-				for (int k = 0; k < interventions.length(); ++k) {
+	    @Override
+	    protected Integer doInBackground(Void... params) {
 
-				}
+		int result = 0;
 
-			    result = RESULT_OK;
+		try {
+
+		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
+
+			JSONObject data = response.getJSONObject("data");
+
+			InterventoController.revisioneInterventi = data.getLong("revision");
+
+			RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+
+			JSONArray intervMOD = data.getJSONArray("mod");
+			JSONArray intervDEL = data.getJSONArray("del");
+			JSONArray interventions = data.getJSONArray("intervents");
+
+			if (intervMOD.length() > 0)
+			    for (int i = 0; i < intervMOD.length(); ++i) {
+				addInterventions((JSONObject) intervMOD.get(i), interventoDao);
+			    }
+
+			if (intervDEL.length() > 0)
+			    for (int i = 0; i < intervDEL.length(); ++i)
+				interventoDao.deleteById(intervDEL.getLong(i));
+
+			if (interventions.length() > 0) {
+
+			    ArrayList<Long> interventionsToDelete = new ArrayList<Long>();
+
+			    for (int k = 0; k < interventions.length(); ++k) {
+
+				long idIntervention = interventions.getLong(k);
+
+				if (!interventoDao.idExists(idIntervention))
+				    interventionsToDelete.add(idIntervention);
+			    }
+
+			    for (Long id : interventionsToDelete)
+				interventoDao.deleteById(id);
 			}
-			else {
-			    result = RESULT_CANCELED;
-			}
+
+			result = RESULT_OK;
 		    }
 		    else {
-			result = Constants.ERRORE_NO_CONNECTION;
+			result = RESULT_CANCELED;
 		    }
 		}
 		catch (Exception e) {
@@ -773,7 +867,7 @@ public class HomeActivity extends ActionBarActivity {
 		}
 	    }
 
-	}.execute(UtenteController.tecnicoLoggato.idutente);
+	}.execute();
     }
 
     private class ReadListInterventions extends AsyncTask<Void, Void, List<Intervento>> {
@@ -800,6 +894,7 @@ public class HomeActivity extends ActionBarActivity {
 	    catch (SQLException e) {
 
 		e.printStackTrace();
+		BugSenseHandler.sendException(e);
 	    }
 	}
 
@@ -813,6 +908,7 @@ public class HomeActivity extends ActionBarActivity {
 	    catch (SQLException e) {
 
 		e.printStackTrace();
+		BugSenseHandler.sendException(e);
 	    }
 
 	    return listaInterventiAperti;
