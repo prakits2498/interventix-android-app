@@ -836,34 +836,6 @@ public class HomeActivity extends ActionBarActivity {
 		    setRefreshActionButtonState(false);
 
 		    new ReadListInterventions().execute();
-
-		    // RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
-		    //
-		    // QueryBuilder<Intervento, Long> qb = interventoDao.queryBuilder();
-		    //
-		    // qb.selectColumns(new String[] {
-		    // "numero", "dataora", "cliente", "conflitto", "modificato", "nuovo"
-		    // });
-		    //
-		    // try {
-		    // qb.where().eq("tecnico", UtenteController.tecnicoLoggato.idutente).and().eq("chiuso", false);
-		    // List<Intervento> listaInterventiAperti = interventoDao.query(qb.prepare());
-		    //
-		    // adapter = new ListInterventiAdapter(listaInterventiAperti);
-		    //
-		    // animationAdapter = new SwingBottomInAnimationAdapter(adapter, 150, 1500);
-		    // animationAdapter.setAbsListView(listOpen);
-		    //
-		    // listOpen.setAdapter(animationAdapter);
-		    //
-		    // animationAdapter.notifyDataSetChanged();
-		    // }
-		    // catch (SQLException e) {
-		    //
-		    // e.printStackTrace();
-		    // }
-		    //
-		    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 		}
 	    }
 
