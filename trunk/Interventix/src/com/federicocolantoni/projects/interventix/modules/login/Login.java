@@ -194,7 +194,7 @@ public class Login extends Fragment {
 
 			    setRefreshActionButtonState(false);
 
-			    InterventixToast.makeToast("Servizio momentaneamente non disponibile", Toast.LENGTH_LONG);
+			    InterventixToast.makeToast(error.networkResponse.data == null ? getString(R.string.service_not_available) : new String(error.getMessage()), Toast.LENGTH_LONG);
 			}
 		    });
 

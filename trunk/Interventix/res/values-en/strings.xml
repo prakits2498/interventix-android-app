@@ -27,6 +27,7 @@
     <string name="menu_settings">Options</string>
     <string name="menu_back">Back</string>
     <string name="refresh_interventi_menu">Update Interventions</string>
+    <string name="progress_login">Progress bar login</string>
     <string name="add_intervento_menu">Add Intervention</string>
     <string name="add_dettaglio_menu">Add Detail</string>
     <string name="search_title">Cerca clienti o tecnici&#8230;</string>
@@ -39,7 +40,7 @@
     <string name="prefs_url_hint">http://azienda.interventix.com</string>
     <string name="default_url">http://37.187.1.50:8080/interventix/connector</string>
     <string name="welcome_title">Welcome on Interventix</string>
-    <string name="welcome_message">Interventix e\' stata avviata per la prima volta. Inserire l\'indirizzo per la connessione al server che e\' stato fornito nel contratto.</string>
+    <string name="welcome_message">Interventix was started for the first time. Insert the address for the connection to the server provided in the contract.</string>
     <string name="logout_title">Richiesta di logout</string>
     <string name="logout_message">Sei sicuro di voler effettuare il logout?</string>
     <string name="logout_positive_btn">Logout</string>
@@ -47,6 +48,8 @@
     <string name="tipologia_title">Choose intervention\'s type</string>
     <string name="tipo_dett_title">Choose detail\'s type</string>
     <string name="oggetto_dett_title">Insert detail\'s object</string>
+    <string name="not_offline_access_title">Accesso offline</string>
+    <string name="not_offline_access_message">"Spiacente, ma per l'accesso offline l'account deve essere già registrato sul dispositivo."</string>
 
     <!-- Array di stringhe -->
     <string-array name="tipologia_choose">
@@ -68,7 +71,7 @@
         <item n="5">Other</item>
     </string-array>
 
-    <string name="modalita_title">Choose intervention\'s mode</string>
+    <string name="modalita_title">"Choose intervention's mode"</string>
     <string name="prodotto_title">Inserisci il nome del prodotto dell\'intervento</string>
     <string name="nominativo_title">Inserisci il nominativo per l\'intervento</string>
     <string name="motivation_title">Inserisci la motivazione per l\'intervento</string>
@@ -80,10 +83,11 @@
     <string name="ok_btn">OK</string>
     <string name="yes_btn">YES</string>
     <string name="no_btn">NO</string>
-    <string name="cancel_btn">Cancel</string>
     <string name="prefs_key_auto_login">PREFS_KEY_AUTO_LOGIN</string>
     <string name="username">Username</string>
     <string name="password_">Password</string>
+    <string name="formatted_url_string" formatted="false">%1$s?DATA=%2$s</string>
+    <string name="service_not_available">"Servizio momentaneamente non disponibile"</string>
 
     <!-- strings for progress' login -->
     <string name="login_started_title">Login in corso</string>
@@ -94,11 +98,7 @@
     <string name="toast_no_connection_available">No connection available</string>
     <string name="toast_login_error">Si è verificato un errore nel login</string>
     <string name="toast_error_syncro">Si è verificato un errore durante la sincronizzazione.</string>
-    <!-- <string name="toast_error_syncro_users">Si è verificato un errore nella sincronizzazione degli utenti</string> -->
-    <!-- <string name="toast_error_syncro_clients">Si è verificato un errore nella sincronizzazione dei clienti</string> -->
-    <!-- <string name="toast_error_syncro_interventions">Si è verificato un errore nella sincronizzazione degli interventi</string> -->
-
-    <string name="toast_message_intervento_no_modified">Nessuna modifica all\'intervento</string>
+    <string name="toast_message_intervento_no_modified">"Nessuna modifica all'intervento"</string>
     <string name="toast_message_intervento_modified">Intervento modificato</string>
 
     <!-- other strings -->
@@ -154,8 +154,8 @@
     <string name="row_client">Customer</string>
     <string name="row_user">Technician</string>
     <string name="row_informations">Informazioni</string>
-    <string name="row_list_details">List Details</string>
-    <string name="row_list_clients">List Customers</string>
+    <string name="row_list_details">Details List</string>
+    <string name="row_list_clients">Customers List</string>
     <string name="row_costs">Costi</string>
     <string name="row_signature">Signature</string>
     <string name="row_tipology">Tipologia</string>
