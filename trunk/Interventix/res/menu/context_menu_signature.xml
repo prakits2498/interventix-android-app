@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-	<item
-		android:id="@+id/menu_save_signature"
-		android:enabled="true"
-		android:icon="@drawable/ic_action_done"
-		android:showAsAction="always"
-		android:title="@string/save_signature"
-		android:visible="true">
-	</item>
-	<item
-		android:id="@+id/menu_cancel"
-		android:enabled="true"
-		android:icon="@drawable/ic_action_cancel"
-		android:showAsAction="always"
-		android:title="@string/cancel_btn"
-		android:visible="true">
-	</item>
+    <item
+        android:id="@+id/menu_save_signature"
+        android:enabled="true"
+        android:icon="@drawable/ic_action_done"
+        android:showAsAction="always"
+        android:title="@string/save_signature"
+        android:visible="true">
+    </item>
+    <item
+        android:id="@+id/menu_cancel"
+        android:enabled="true"
+        android:icon="@drawable/ic_action_cancel"
+        android:showAsAction="always"
+        android:title="@string/btn_cancel"
+        android:visible="true">
+    </item>
 
 </menu>
