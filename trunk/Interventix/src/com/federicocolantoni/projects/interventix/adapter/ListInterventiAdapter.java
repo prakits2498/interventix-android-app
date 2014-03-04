@@ -92,7 +92,9 @@ public class ListInterventiAdapter extends BaseAdapter {
 	clienteAsyncTask.execute(intervento.cliente);
 
 	Cliente cliente = null;
+
 	try {
+
 	    cliente = clienteAsyncTask.get();
 	    tvClienteIntervento.setText(cliente.nominativo);
 	}

@@ -11,8 +11,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -36,6 +34,7 @@ import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatcher;
+import com.qustom.dialog.QustomDialogBuilder;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_informations)
@@ -238,9 +237,13 @@ public class InformationsInterventoFragment extends Fragment {
     @Click(R.id.row_tipology)
     void showDialogTipologia() {
 
-	AlertDialog.Builder tipologia = new Builder(getActivity());
+	QustomDialogBuilder tipologia = new QustomDialogBuilder(getActivity());
 
-	tipologia.setTitle(getResources().getString(R.string.tipologia_title));
+	tipologia.setIcon(R.drawable.ic_launcher);
+	tipologia.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
+	tipologia.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
+
+	tipologia.setTitle(getString(R.string.tipologia_title));
 	final String[] choices = getResources().getStringArray(R.array.tipologia_choose);
 	tipologia.setSingleChoiceItems(choices, -1, new DialogInterface.OnClickListener() {
 
@@ -268,8 +271,11 @@ public class InformationsInterventoFragment extends Fragment {
     @Click(R.id.row_mode)
     void showDialogModalita() {
 
-	AlertDialog.Builder modalita = new Builder(getActivity());
+	QustomDialogBuilder modalita = new QustomDialogBuilder(getActivity());
 
+	modalita.setIcon(R.drawable.ic_launcher);
+	modalita.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
+	modalita.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 	modalita.setTitle(getResources().getString(R.string.modalita_title));
 	final String[] choices = getResources().getStringArray(R.array.modalita_choose);
 	modalita.setSingleChoiceItems(choices, -1, new DialogInterface.OnClickListener() {
@@ -300,14 +306,18 @@ public class InformationsInterventoFragment extends Fragment {
 
 	final EditText mEdit_prodotto;
 
-	AlertDialog.Builder prodotto = new Builder(getActivity());
+	QustomDialogBuilder prodotto = new QustomDialogBuilder(getActivity());
 
-	prodotto.setTitle(R.string.prodotto_title);
+	prodotto.setIcon(R.drawable.ic_launcher);
+	prodotto.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
+	prodotto.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
+
+	prodotto.setTitle(getString(R.string.prodotto_title));
 
 	mEdit_prodotto = new EditText(getActivity());
 	mEdit_prodotto.setText(tv_product.getText());
 
-	prodotto.setView(mEdit_prodotto);
+	prodotto.setCustomView(mEdit_prodotto, getActivity());
 	prodotto.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
 
 	    @Override
@@ -329,14 +339,18 @@ public class InformationsInterventoFragment extends Fragment {
 
 	final EditText mEdit_nominativo;
 
-	AlertDialog.Builder nominativo = new Builder(getActivity());
+	QustomDialogBuilder nominativo = new QustomDialogBuilder(getActivity());
+
+	nominativo.setIcon(R.drawable.ic_launcher);
+	nominativo.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
+	nominativo.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
 	nominativo.setTitle(R.string.nominativo_title);
 
 	mEdit_nominativo = new EditText(getActivity());
 	mEdit_nominativo.setText(tv_nominativo.getText());
 
-	nominativo.setView(mEdit_nominativo);
+	nominativo.setCustomView(mEdit_nominativo, getActivity());
 
 	nominativo.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
 
@@ -359,7 +373,11 @@ public class InformationsInterventoFragment extends Fragment {
 
 	final EditText mEdit_motivo;
 
-	AlertDialog.Builder motivo = new Builder(getActivity());
+	QustomDialogBuilder motivo = new QustomDialogBuilder(getActivity());
+
+	motivo.setIcon(R.drawable.ic_launcher);
+	motivo.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
+	motivo.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
 	motivo.setTitle(R.string.motivation_title);
 
@@ -368,7 +386,7 @@ public class InformationsInterventoFragment extends Fragment {
 	mEdit_motivo = new EditText(getActivity());
 	mEdit_motivo.setText(tv_motivo.getText());
 
-	motivo.setView(mEdit_motivo);
+	motivo.setCustomView(mEdit_motivo, getActivity());
 
 	motivo.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
 
