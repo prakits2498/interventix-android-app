@@ -104,7 +104,7 @@ public class DetailInterventoFragment extends Fragment {
     @StringRes(R.string.ok_btn)
     static String ok_btn;
 
-    @StringRes(R.string.cancel_btn)
+    @StringRes(R.string.btn_cancel)
     static String cancel_btn;
 
     @StringRes(R.string.tipo_dett_title)
