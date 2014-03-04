@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -157,18 +158,19 @@ public class CostsInterventoFragment extends Fragment {
     @Click(R.id.row_manodopera)
     void showDialogManodopera() {
 
-	final EditText mEditManodopera;
-
 	QustomDialogBuilder costoManodoperaDialog = new QustomDialogBuilder(getActivity());
 
+	costoManodoperaDialog.setIcon(R.drawable.ic_launcher);
 	costoManodoperaDialog.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
 	costoManodoperaDialog.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
-	costoManodoperaDialog.setTitle(R.string.componenti_title);
+	costoManodoperaDialog.setTitle(getString(R.string.manodopera_title));
 
+	final EditText mEditManodopera;
 	mEditManodopera = new EditText(getActivity());
 	mEditManodopera.setText("" + (InterventoController.controller.getIntervento().costomanodopera != null ? InterventoController.controller.getIntervento().costomanodopera : 0.0));
 	mEditManodopera.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+	mEditManodopera.setGravity(Gravity.RIGHT);
 
 	costoManodoperaDialog.setCustomView(mEditManodopera, getActivity());
 	costoManodoperaDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
@@ -190,7 +192,6 @@ public class CostsInterventoFragment extends Fragment {
 		updateUI();
 	    }
 	});
-	costoManodoperaDialog.setIcon(getActivity().getResources().getDrawable(R.drawable.ic_launcher));
 
 	costoManodoperaDialog.create().show();
     }
@@ -205,11 +206,12 @@ public class CostsInterventoFragment extends Fragment {
 	costoComponentiDialog.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
 	costoComponentiDialog.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
-	costoComponentiDialog.setTitle(R.string.componenti_title);
+	costoComponentiDialog.setTitle(getString(R.string.componenti_title));
 
 	mEditComponenti = new EditText(getActivity());
 	mEditComponenti.setText("" + (InterventoController.controller.getIntervento().costocomponenti != null ? InterventoController.controller.getIntervento().costocomponenti : 0.0));
 	mEditComponenti.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+	mEditComponenti.setGravity(Gravity.RIGHT);
 
 	costoComponentiDialog.setCustomView(mEditComponenti, getActivity());
 	costoComponentiDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
@@ -231,7 +233,7 @@ public class CostsInterventoFragment extends Fragment {
 		updateUI();
 	    }
 	});
-	costoComponentiDialog.setIcon(getActivity().getResources().getDrawable(R.drawable.ic_launcher));
+	costoComponentiDialog.setIcon(R.drawable.ic_launcher);
 
 	costoComponentiDialog.create().show();
     }
@@ -246,11 +248,12 @@ public class CostsInterventoFragment extends Fragment {
 	costoAccessoriDialog.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
 	costoAccessoriDialog.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
-	costoAccessoriDialog.setTitle(R.string.accessori_title);
+	costoAccessoriDialog.setTitle(getString(R.string.accessori_title));
 
 	mEditAccessori = new EditText(getActivity());
 	mEditAccessori.setText("" + (InterventoController.controller.getIntervento().costoaccessori != null ? InterventoController.controller.getIntervento().costoaccessori : 0.0));
 	mEditAccessori.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+	mEditAccessori.setGravity(Gravity.RIGHT);
 
 	costoAccessoriDialog.setCustomView(mEditAccessori, getActivity());
 	costoAccessoriDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
@@ -272,7 +275,7 @@ public class CostsInterventoFragment extends Fragment {
 		updateUI();
 	    }
 	});
-	costoAccessoriDialog.setIcon(getActivity().getResources().getDrawable(R.drawable.ic_launcher));
+	costoAccessoriDialog.setIcon(R.drawable.ic_launcher);
 
 	costoAccessoriDialog.create().show();
     }
