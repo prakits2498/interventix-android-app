@@ -27,6 +27,11 @@ public class Interventix extends Application {
 	return instance.getApplicationContext();
     }
 
+    /**
+     * Crea un'istanza della classe InterventixDBHelper alla quale è associato un contatore.
+     * 
+     * @return un oggetto di tipo InterventixDBHelper.
+     */
     public static InterventixDBHelper getDbHelper() {
 
 	if (dbHelper == null)
@@ -35,6 +40,9 @@ public class Interventix extends Application {
 	return dbHelper;
     }
 
+    /**
+     * Rilascia l'helper del database decrementanto di 1 il contatore di uso. L'helper verrà chiuso se il contatore è 0.
+     */
     public static void releaseDbHelper() {
 
 	OpenHelperManager.releaseHelper();

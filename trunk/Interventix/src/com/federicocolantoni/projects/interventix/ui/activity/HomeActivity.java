@@ -50,7 +50,6 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.Constants.BUFFER_TYPE;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.ListInterventiAdapter;
-import com.federicocolantoni.projects.interventix.controller.ClienteController;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.controller.InterventoSingleton;
 import com.federicocolantoni.projects.interventix.controller.UtenteController;
@@ -79,6 +78,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends ActionBarActivity {
 
+    private static final String REVISION = "revision";
     private ListInterventiAdapter adapter;
     private SwingBottomInAnimationAdapter animationAdapter;
 
@@ -91,6 +91,12 @@ public class HomeActivity extends ActionBarActivity {
     String toastErrorSyncro;
 
     private BufferInterventix buffer;
+
+    SharedPreferences prefsDefault, globalPrefs;
+
+    String prefsUrl;
+
+    String urlString;
 
     BroadcastReceiver receiverBufferFinish = new BroadcastReceiver() {
 
@@ -122,6 +128,18 @@ public class HomeActivity extends ActionBarActivity {
 	getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
 	buffer = BufferInterventix.getBufferInterventix();
+
+	prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+	prefsUrl = getResources().getString(R.string.prefs_key_url);
+	urlString = prefsDefault.getString(prefsUrl, null);
+
+	globalPrefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+
+	RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+
+	UtenteController.tecnicoLoggato = utenteDao.queryForEq(MainActivity_.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
+
+	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 
     @Override
@@ -284,6 +302,12 @@ public class HomeActivity extends ActionBarActivity {
 
 	buffer.startTimer(BUFFER_TYPE.BUFFER_INTERVENTO);
 	buffer.startTimer(BUFFER_TYPE.BUFFER_CLIENTE);
+
+	RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+
+	UtenteController.tecnicoLoggato = utenteDao.queryForEq(MainActivity_.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
+
+	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 
     private void setRefreshActionButtonState(final boolean refreshing) {
@@ -321,15 +345,10 @@ public class HomeActivity extends ActionBarActivity {
 	setRefreshActionButtonState(true);
 
 	Map<String, Object> parameters = new HashMap<String, Object>();
-	parameters.put("revision", UtenteController.revisioneUtenti);
+	// parameters.put("revision", UtenteController.revisioneUtenti);
+	parameters.put(REVISION, globalPrefs.getLong(Constants.REVISION_TECNICI, 0L));
 
 	String jsonReq = JsonCR2.createRequest("users", "syncro", parameters, UtenteController.tecnicoLoggato.idutente.intValue());
-
-	SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
-
-	String prefsUrl = getResources().getString(R.string.prefs_key_url);
-
-	String urlString = prefsDefault.getString(prefsUrl, null);
 
 	RequestQueue requestQueue = Volley.newRequestQueue(this);
 
@@ -389,7 +408,9 @@ public class HomeActivity extends ActionBarActivity {
 		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
 			JSONObject data = response.getJSONObject("data");
 
-			UtenteController.revisioneUtenti = data.getLong("revision");
+			// UtenteController.revisioneUtenti = data.getLong(REVISION);
+
+			globalPrefs.edit().putLong(Constants.REVISION_TECNICI, data.getLong(REVISION)).commit();
 
 			JSONArray usersMOD = data.getJSONArray("mod");
 			JSONArray usersDEL = data.getJSONArray("del");
@@ -462,15 +483,10 @@ public class HomeActivity extends ActionBarActivity {
 	String jsonReq = new String();
 
 	Map<String, Object> parameters = new HashMap<String, Object>();
-	parameters.put("revision", ClienteController.revisioneClienti);
+	// parameters.put(REVISION, ClienteController.revisioneClienti);
+	parameters.put(REVISION, globalPrefs.getLong(Constants.REVISION_CLIENTI, 0L));
 
 	jsonReq = JsonCR2.createRequest("clients", "syncro", parameters, UtenteController.tecnicoLoggato.idutente.intValue());
-
-	SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
-
-	String prefsUrl = getResources().getString(R.string.prefs_key_url);
-
-	String urlString = prefsDefault.getString(prefsUrl, null);
 
 	RequestQueue requestQueue = Volley.newRequestQueue(this);
 
@@ -531,7 +547,9 @@ public class HomeActivity extends ActionBarActivity {
 		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
 			JSONObject data = response.getJSONObject("data");
 
-			ClienteController.revisioneClienti = data.getLong("revision");
+			// ClienteController.revisioneClienti = data.getLong(REVISION);
+
+			globalPrefs.edit().putLong(Constants.REVISION_CLIENTI, data.getLong(REVISION)).commit();
 
 			RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
@@ -600,15 +618,10 @@ public class HomeActivity extends ActionBarActivity {
 	String jsonReq = new String();
 
 	Map<String, Object> parameters = new HashMap<String, Object>();
-	parameters.put("revision", InterventoController.revisioneInterventi);
+	// parameters.put(REVISION, InterventoController.revisioneInterventi);
+	parameters.put(REVISION, globalPrefs.getLong(Constants.REVISION_INTERVENTI, 0L));
 
 	jsonReq = JsonCR2.createRequest("interventions", "mysyncro", parameters, UtenteController.tecnicoLoggato.idutente.intValue());
-
-	SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
-
-	String prefsUrl = getResources().getString(R.string.prefs_key_url);
-
-	String urlString = prefsDefault.getString(prefsUrl, null);
 
 	RequestQueue requestQueue = Volley.newRequestQueue(this);
 
@@ -669,7 +682,9 @@ public class HomeActivity extends ActionBarActivity {
 
 			JSONObject data = response.getJSONObject("data");
 
-			InterventoController.revisioneInterventi = data.getLong("revision");
+			// InterventoController.revisioneInterventi = data.getLong(REVISION);
+
+			globalPrefs.edit().putLong(Constants.REVISION_INTERVENTI, data.getLong(REVISION)).commit();
 
 			RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
 
