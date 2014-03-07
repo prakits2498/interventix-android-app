@@ -45,6 +45,7 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.UtenteController;
 import com.federicocolantoni.projects.interventix.entity.Utente;
+import com.federicocolantoni.projects.interventix.ui.activity.MainActivity_;
 import com.federicocolantoni.projects.interventix.utils.CheckConnection;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.PasswordHash;
@@ -65,7 +66,7 @@ public class Login extends Fragment {
     @ViewById(R.id.field_username)
     EditText username;
 
-    private SharedPreferences defaultPrefs;
+    private SharedPreferences defaultPrefs, globalPrefs;
 
     private AccountManager accountManager;
 
@@ -326,9 +327,9 @@ public class Login extends Fragment {
 	    accountManager.addAccountExplicitly(account, encryptedPassword, null);
 	    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
-	    SharedPreferences prefs = com.federicocolantoni.projects.interventix.Interventix_.getContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    globalPrefs = com.federicocolantoni.projects.interventix.Interventix_.getContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 
-	    final Editor edit = prefs.edit().putString(Constants.USERNAME, username.getText().toString()).putString(Constants.PASSWORD, encryptedPassword);
+	    final Editor edit = globalPrefs.edit().putString(Constants.USERNAME, username.getText().toString()).putString(Constants.PASSWORD, encryptedPassword);
 
 	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
 		edit.apply();
@@ -353,7 +354,7 @@ public class Login extends Fragment {
 
 		    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
-		    UtenteController.tecnicoLoggato = utenteDao.queryForEq("username", username).get(0);
+		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(MainActivity_.ORMLITE_USERNAME, username).get(0);
 
 		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 

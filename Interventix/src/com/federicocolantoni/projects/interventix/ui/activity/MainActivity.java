@@ -37,6 +37,8 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 @EActivity(R.layout.activity_main)
 public class MainActivity extends ActionBarActivity {
 
+    public static final String ORMLITE_USERNAME = "username";
+
     @ViewById(R.id.tv_changelog)
     TextView tvChangelog;
 
@@ -48,6 +50,8 @@ public class MainActivity extends ActionBarActivity {
 
     private AccountManager accountManager;
 
+    SharedPreferences globalPrefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -57,9 +61,9 @@ public class MainActivity extends ActionBarActivity {
 
 	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
 
-	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
+	globalPrefs = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
 
-	String username = prefs.getString(Constants.USERNAME, "");
+	String username = globalPrefs.getString(Constants.USERNAME, "");
 
 	Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
 
@@ -77,7 +81,7 @@ public class MainActivity extends ActionBarActivity {
 		// passo 5)
 		if (pwd == null) {
 
-		    System.out.println("Utente " + username + " trovato - password nulla");
+		    System.out.println("Utente " + account.name + " trovato - password nulla");
 
 		    FragmentManager manager = getSupportFragmentManager();
 
@@ -100,7 +104,7 @@ public class MainActivity extends ActionBarActivity {
 
 		    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
-		    UtenteController.tecnicoLoggato = utenteDao.queryForEq("username", account.name).get(0);
+		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(ORMLITE_USERNAME, account.name).get(0);
 
 		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
