@@ -45,7 +45,6 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.UtenteController;
 import com.federicocolantoni.projects.interventix.entity.Utente;
-import com.federicocolantoni.projects.interventix.ui.activity.MainActivity_;
 import com.federicocolantoni.projects.interventix.utils.CheckConnection;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.PasswordHash;
@@ -354,7 +353,7 @@ public class Login extends Fragment {
 
 		    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
-		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(MainActivity_.ORMLITE_USERNAME, username).get(0);
+		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(com.federicocolantoni.projects.interventix.ui.activity.MainActivity_.ORMLITE_USERNAME, username).get(0);
 
 		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
