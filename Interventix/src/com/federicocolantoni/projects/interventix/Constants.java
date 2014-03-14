@@ -35,9 +35,9 @@ public final class Constants {
     public static final String INTERVENTO_MODIFICATO = "M";
     public static final String INTERVENTO_SINCRONIZZATO = "U";
 
-    public static final String DETTAGLIO_NUOVO = "N";
-    public static final String DETTAGLIO_MODIFICATO = "M";
-    public static final String DETTAGLIO_SINCRONIZZATO = "U";
+    public static final String DETTAGLIO_NUOVO = INTERVENTO_NUOVO;
+    public static final String DETTAGLIO_MODIFICATO = INTERVENTO_MODIFICATO;
+    public static final String DETTAGLIO_SINCRONIZZATO = INTERVENTO_SINCRONIZZATO;
 
     public static final int WHAT_MESSAGE_GET_CLIENTI = -1;
 
@@ -57,6 +57,7 @@ public final class Constants {
     public static final String CLIENTS_INTERVENTO_FRAGMENT = "CLIENTS_INTERVENTO_FRAGMENT";
     public static final String REFERENCES_INTERVENTO_FRAGMENT = "REFERENCES_INTERVENTO_FRAGMENT";
     public static final String ANNOTATIONS_INTERVENTO_FRAGMENT = "ANNOTATIONS_INTERVENTO_FRAGMENT";
+    public static final String CLIENT_INTERVENTO_FRAGMENT = "CLIENT_INTERVENTO_FRAGMENT";
 
     // *** costanti per le dialog ***\\
     public static final String FIRST_RUN_DIALOG_FRAGMENT = "FIRST_RUN_DIALOG_FRAGMENT";
@@ -124,6 +125,16 @@ public final class Constants {
     public static final String USERNAME = "USERNAME";
     public static final String PASSWORD = "PASSWORD";
 
+    // *** costanti per recuperare le informazioni sulle risposte JSON ***\\
+    public static final String JSON_USERNAME = "username";
+    public static final String JSON_PASSWORD = "password";
+    public static final String JSON_TYPE = "type";
+    public static final String JSON_USER_SECTION = "users";
+    public static final String JSON_LOGIN_ACTION = "login";
+    public static final String JSON_RESPONSE = "response";
+    public static final String JSON_DATA = "data";
+    public static final String JSON_RESPONSE_SUCCESS = "success";
+
     // *** dati per il buffer ***\\
     public static final String ACTION_GET_INTERVENTI = Interventix.getContext().getPackageName() + "." + BUFFER_TYPE.BUFFER_INTERVENTO.name();
     public static final String ACTION_GET_CLIENTI = Interventix.getContext().getPackageName() + "." + BUFFER_TYPE.BUFFER_CLIENTE.name();
@@ -132,5 +143,10 @@ public final class Constants {
     public static enum BUFFER_TYPE {
 
 	BUFFER_INTERVENTO, BUFFER_CLIENTE;
+    }
+
+    public static enum USER_TYPE {
+
+	TECNICO, AMMINISTRATORE
     }
 }

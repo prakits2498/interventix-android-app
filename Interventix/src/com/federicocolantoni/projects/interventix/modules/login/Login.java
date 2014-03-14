@@ -71,8 +71,6 @@ public class Login extends Fragment {
 
     private Menu optionsMenu;
 
-    private String stringUsername, stringPassword;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -146,18 +144,15 @@ public class Login extends Fragment {
 		try {
 		    HashMap<String, String> parameters = new HashMap<String, String>();
 
-		    stringUsername = username.getText().toString();
-		    stringPassword = password.getText().toString();
-
-		    parameters.put("username", stringUsername);
-		    parameters.put("password", stringPassword);
-		    parameters.put("type", "TECNICO");
+		    parameters.put(Constants.JSON_USERNAME, username.getText().toString());
+		    parameters.put(Constants.JSON_PASSWORD, password.getText().toString());
+		    parameters.put(Constants.JSON_TYPE, Constants.USER_TYPE.TECNICO.name());
 
 		    final String prefsUrl = com.federicocolantoni.projects.interventix.Interventix_.getContext().getResources().getString(R.string.prefs_key_url);
 
 		    final String url = defaultPrefs.getString(prefsUrl, null);
 
-		    jsonReq = JsonCR2.createRequest("users", "login", parameters, -1);
+		    jsonReq = JsonCR2.createRequest(Constants.JSON_USER_SECTION, Constants.JSON_LOGIN_ACTION, parameters, -1);
 
 		    RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
 
@@ -239,14 +234,28 @@ public class Login extends Fragment {
 
 		    for (Account account : accounts) {
 
-			if (account.name.equals(username)) {
+			if (account.name.equals(username.getText().toString())) {
 
-			    accountManager.setPassword(account, stringPassword);
+			    String encryptedPassword = null;
+
+			    try {
+				encryptedPassword = PasswordHash.createHash(password.getText().toString());
+			    }
+			    catch (NoSuchAlgorithmException e) {
+
+				e.printStackTrace();
+			    }
+			    catch (InvalidKeySpecException e) {
+
+				e.printStackTrace();
+			    }
+
+			    accountManager.setPassword(account, encryptedPassword);
 			    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
 			    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
-			    UtenteController.tecnicoLoggato = utenteDao.queryForEq("username", username).get(0);
+			    UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.JSON_USERNAME, username.getText().toString()).get(0);
 
 			    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
@@ -267,9 +276,9 @@ public class Login extends Fragment {
 
     private void parseResponse(JSONObject response) throws JsonSyntaxException, JSONException {
 
-	if (response.get("response").toString().equalsIgnoreCase("success")) {
+	if (response.get(Constants.JSON_RESPONSE).toString().equalsIgnoreCase(Constants.JSON_RESPONSE_SUCCESS)) {
 
-	    JSONObject data = response.getJSONObject("data");
+	    JSONObject data = response.getJSONObject(Constants.JSON_DATA);
 
 	    Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
@@ -278,7 +287,7 @@ public class Login extends Fragment {
 	    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
 	    if (!utenteDao.idExists(utente.idutente))
-		utenteDao.createIfNotExists(utente);
+		utenteDao.create(utente);
 	    else {
 
 		Utente utExists = utenteDao.queryForId(utente.idutente);
@@ -304,7 +313,7 @@ public class Login extends Fragment {
 	String encryptedPassword = null;
 
 	try {
-	    encryptedPassword = PasswordHash.createHash(stringPassword);
+	    encryptedPassword = PasswordHash.createHash(password.getText().toString());
 	}
 	catch (NoSuchAlgorithmException e) {
 
@@ -346,14 +355,14 @@ public class Login extends Fragment {
 
 	    for (Account account : accounts) {
 
-		if (account.name.equals(username)) {
+		if (account.name.equals(username.getText().toString())) {
 
-		    accountManager.setPassword(account, stringPassword);
+		    accountManager.setPassword(account, password.getText().toString());
 		    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
 		    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
-		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(com.federicocolantoni.projects.interventix.ui.activity.MainActivity_.ORMLITE_USERNAME, username).get(0);
+		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(com.federicocolantoni.projects.interventix.ui.activity.MainActivity_.ORMLITE_USERNAME, username.getText().toString()).get(0);
 
 		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 

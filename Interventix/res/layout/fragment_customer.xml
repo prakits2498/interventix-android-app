@@ -4,111 +4,13 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent" >
 
-    <ScrollView
-        android:id="@+id/scroll_client"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:background="@android:color/transparent" >
+    <include
+        android:id="@+id/layout_view_cliente"
+        layout="@layout/layout_view_cliente" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/edit_nomin_client"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_nomin" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/edit_codfis_client"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/hint_cod_fis" />
-
-            <TextView
-                android:id="@+id/edit_partitaiva_client"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/hint_p_iva" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/edit_telefono_client"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/hint_telefono" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/edit_fax_client"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/hint_telefono" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/edit_email_client"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/hint_email" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/edit_ufficio_client"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/hint_ufficio" />
-
-            <TextView
-                android:id="@+id/edit_referente_client"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/hint_referente" />
-
-            <TextView
-                android:id="@+id/edit_citta_client"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/hint_citta" />
-
-            <TextView
-                android:id="@+id/edit_indirizzo_client"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/hint_indirizzo" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/edit_interno_client"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/hint_interno" />
-
-            <TextView
-                android:id="@+id/edit_note_client"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/hint_note" >
-            </TextView>
-        </LinearLayout>
-    </ScrollView>
+    <include
+        android:id="@+id/layout_edit_cliente"
+        layout="@layout/layout_edit_cliente"
+        android:visibility="gone" />
 
 </RelativeLayout>

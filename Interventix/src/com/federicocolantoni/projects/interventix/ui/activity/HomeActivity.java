@@ -842,11 +842,18 @@ public class HomeActivity extends ActionBarActivity {
 		}
 		else {
 
-		    setRefreshActionButtonState(false);
+		    // setRefreshActionButtonState(false);
 
 		    // new ReadListInterventions().execute();
 
-		    readListInterventions();
+		    HomeActivity.this.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+
+			    readListInterventions();
+			}
+		    });
 		}
 	    }
 	}.execute();
@@ -893,6 +900,8 @@ public class HomeActivity extends ActionBarActivity {
 	listOpen.setAdapter(animationAdapter);
 
 	animationAdapter.notifyDataSetChanged();
+
+	setRefreshActionButtonState(false);
     }
 
     // private class ReadListInterventions extends AsyncTask<Void, Void, List<Intervento>> {

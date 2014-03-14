@@ -6,6 +6,10 @@ import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +21,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
@@ -27,11 +32,13 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 
     public static boolean blockClick = false;
 
+    private long clienteSelected;
+
     public static SparseBooleanArray clickedItems = new SparseBooleanArray();
     public static SparseBooleanArray checkedItems = new SparseBooleanArray();
     public static SparseBooleanArray swipedItems = new SparseBooleanArray();
 
-    // private ActionBarActivity context;
+    private ActionBarActivity context;
 
     ViewHolder holder;
 
@@ -42,7 +49,7 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 
 	super(context, resource, textViewResourceId);
 
-	// this.context = (ActionBarActivity) context;
+	this.context = (ActionBarActivity) context;
 
 	for (int i = 0; i < InterventoController.listaClienti.size(); i++) {
 	    checkedItems.put(i, false);
@@ -181,6 +188,8 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 
 	holder.modClient.setOnClickListener(this);
 
+	clienteSelected = cliente.idcliente;
+
 	return convertView;
     }
 
@@ -303,6 +312,19 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
     @Override
     public void onClick(View view) {
 
-	// InterventixToast.makeToast("Modifica cliente", Toast.LENGTH_SHORT);
+	Bundle args = new Bundle();
+	args.putLong(Constants.CLIENTE, clienteSelected);
+
+	FragmentManager manager = context.getSupportFragmentManager();
+
+	FragmentTransaction transaction = manager.beginTransaction();
+
+	com.federicocolantoni.projects.interventix.ui.fragments.ClientInterventoFragment_ modCliente = new com.federicocolantoni.projects.interventix.ui.fragments.ClientInterventoFragment_();
+	modCliente.setArguments(args);
+
+	transaction.replace(R.id.fragments_layout, modCliente, Constants.CLIENT_INTERVENTO_FRAGMENT);
+	transaction.addToBackStack(Constants.CLIENT_INTERVENTO_FRAGMENT);
+	transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	transaction.commit();
     }
 }
