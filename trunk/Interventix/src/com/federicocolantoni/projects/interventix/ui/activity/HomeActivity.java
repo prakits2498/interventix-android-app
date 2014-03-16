@@ -137,7 +137,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
-	UtenteController.tecnicoLoggato = utenteDao.queryForEq(MainActivity_.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
+	UtenteController.tecnicoLoggato = utenteDao.queryForEq(MainActivity.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
 
 	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
@@ -702,6 +702,8 @@ public class HomeActivity extends ActionBarActivity {
 				interventoDao.deleteById(intervDEL.getLong(i));
 
 			if (interventions.length() > 0) {
+
+			    interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
 
 			    ArrayList<Long> interventionsToDelete = new ArrayList<Long>();
 
