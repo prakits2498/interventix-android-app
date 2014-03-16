@@ -1,5 +1,7 @@
 package com.federicocolantoni.projects.interventix.ui.fragments;
 
+import java.util.ArrayList;
+
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -22,6 +24,7 @@ import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.ListClientiAdapter;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 @SuppressLint({
 	"InlinedApi", "NewApi"
@@ -46,12 +49,6 @@ public class ListClientsInterventoFragment extends Fragment {
     };
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-
-	super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
     public void onStart() {
 
 	super.onStart();
@@ -72,9 +69,15 @@ public class ListClientsInterventoFragment extends Fragment {
 	    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 
 		if (!ListClientiAdapter.blockClick) {
-		    mAdapter.toggleChecked(position);
+		    // mAdapter.toggleChecked(position);
 
-		    Cliente clChecked = mAdapter.getItem(position);
+		    mAdapter.selectItem(position);
+
+		    RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+
+		    Cliente clChecked = clienteDao.queryForSameId(mAdapter.getItem(position));
+
+		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		    InterventoController.controller.setCliente(clChecked);
 		    InterventoController.controller.getIntervento().cliente = (clChecked.idcliente);
@@ -116,6 +119,8 @@ public class ListClientsInterventoFragment extends Fragment {
 			    ListClientiAdapter.clickedItems.put(cont, false);
 		    }
 
+		    mAdapter.selectItem(position);
+
 		    mAdapter.notifyDataSetChanged();
 		}
 		else {
@@ -155,39 +160,15 @@ public class ListClientsInterventoFragment extends Fragment {
 	});
     }
 
-    // @Override
-    // public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    //
-    // inflater.inflate(R.menu.menu_clients, menu);
-    // }
-    //
-    // @Override
-    // public boolean onOptionsItemSelected(MenuItem item) {
-    //
-    // switch (item.getItemId()) {
-    //
-    // case R.id.menu_save_client:
-    //
-    // int cliente_checked = 0;
-    //
-    // SparseBooleanArray sparseArray = mAdapter.getBooleanArray();
-    //
-    // for (int i = 0; i < sparseArray.size(); i++) {
-    //
-    // if (sparseArray.get(i)) {
-    // cliente_checked = i;
-    // break;
-    // }
-    // }
-    //
-    // Cliente clChecked = mAdapter.getItem(cliente_checked);
-    //
-    // InterventoController.controller.setCliente(clChecked);
-    // InterventoController.controller.getIntervento().setIdCliente(clChecked.getIdCliente());
-    //
-    // break;
-    // }
-    //
-    // return getActivity().getSupportFragmentManager().popBackStackImmediate();
-    // }
+    @Override
+    public void onResume() {
+
+	super.onResume();
+
+	RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+
+	InterventoController.listaClienti = (ArrayList<Cliente>) clienteDao.queryForAll();
+
+	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+    }
 }

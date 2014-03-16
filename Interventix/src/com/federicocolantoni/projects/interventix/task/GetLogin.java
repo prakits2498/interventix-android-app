@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
@@ -173,17 +172,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 
 		final Editor edit = prefs.edit().putString(Constants.USERNAME, username).putString(Constants.PASSWORD, encryptedPassword);
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-		    edit.apply();
-		else {
-
-		    new Thread(new Runnable() {
-			public void run() {
-
-			    edit.commit();
-			}
-		    }).start();
-		}
+		edit.apply();
 	    }
 	    else {
 

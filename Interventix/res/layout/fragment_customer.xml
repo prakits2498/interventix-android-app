@@ -5,12 +5,7 @@
     android:background="@android:color/transparent" >
 
     <include
-        android:id="@+id/layout_view_cliente"
-        layout="@layout/layout_view_cliente" />
-
-    <include
         android:id="@+id/layout_edit_cliente"
-        layout="@layout/layout_edit_cliente"
-        android:visibility="gone" />
+        layout="@layout/layout_edit_cliente" />
 
 </RelativeLayout>

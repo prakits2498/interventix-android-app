@@ -32,11 +32,12 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 
     public static boolean blockClick = false;
 
-    private long clienteSelected;
+    public long clienteSelected;
 
     public static SparseBooleanArray clickedItems = new SparseBooleanArray();
     public static SparseBooleanArray checkedItems = new SparseBooleanArray();
     public static SparseBooleanArray swipedItems = new SparseBooleanArray();
+    public static SparseBooleanArray selectedItems = new SparseBooleanArray();
 
     private ActionBarActivity context;
 
@@ -55,6 +56,7 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 	    checkedItems.put(i, false);
 	    swipedItems.put(i, false);
 	    clickedItems.put(i, true);
+	    selectedItems.put(i, false);
 	}
 
 	inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -76,6 +78,16 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
     public long getItemId(int position) {
 
 	return position;
+    }
+
+    public void selectItem(int position) {
+
+	selectedItems.put(position, true);
+
+	for (int i = 0; i < selectedItems.size(); i++) {
+	    if (i != position)
+		selectedItems.put(i, false);
+	}
     }
 
     public void toggleChecked(int position) {
@@ -144,8 +156,6 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 
 	    holder = new ViewHolder();
 
-	    // holder.rootView = convertView.findViewById(R.id.swipe_item);
-
 	    holder.tvRowNominativo = (TextView) convertView.findViewById(R.id.tv_row_nominativo);
 	    holder.tvRowCodFis = (TextView) convertView.findViewById(R.id.tv_row_cod_fis);
 	    holder.tvRowPIva = (TextView) convertView.findViewById(R.id.tv_row_p_iva);
@@ -188,72 +198,21 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 
 	holder.modClient.setOnClickListener(this);
 
-	clienteSelected = cliente.idcliente;
+	if (selectedItems.get(position)) {
+	    clienteSelected = cliente.idcliente;
+
+	    System.out.println("Cliente selezionato: " + clienteSelected);
+	}
 
 	return convertView;
     }
 
     private class ViewHolder {
 
-	// public View rootView = null;
-
 	TextView tvRowNominativo;
 	TextView tvRowCodFis;
 	TextView tvRowPIva;
 	Button modClient;
-
-	// public void swipeButtons(final int position) {
-	//
-	// rootView.setOnTouchListener(new OnSwipeTouchListener() {
-	//
-	// @Override
-	// public void onTouchUp() {
-	//
-	// if (!blockClick) {
-	// toggleChecked(position);
-	//
-	// Cliente clChecked = getItem(position);
-	//
-	// InterventoController.controller.setCliente(clChecked);
-	// InterventoController.controller.getIntervento().cliente =
-	// (clChecked.idcliente);
-	//
-	// FragmentManager manager = context.getSupportFragmentManager();
-	// manager.popBackStackImmediate();
-	// }
-	// }
-	//
-	// @Override
-	// public void onLongPressTouch() {
-	//
-	// if (modClient.getVisibility() == View.INVISIBLE) {
-	// modClient.setVisibility(View.VISIBLE);
-	// swipedItems.put(position, true);
-	// blockClick = true;
-	//
-	// for (int cont = 0; cont < swipedItems.size(); cont++) {
-	//
-	// if (cont != position)
-	// swipedItems.put(cont, false);
-	// }
-	//
-	// for (int cont = 0; cont < checkedItems.size(); cont++) {
-	//
-	// if (cont != position)
-	// checkedItems.put(cont, false);
-	// }
-	//
-	// notifyDataSetChanged();
-	// } else {
-	// modClient.setVisibility(View.INVISIBLE);
-	// swipedItems.put(position, false);
-	// blockClick = false;
-	//
-	// notifyDataSetChanged();
-	// }
-	// }
-	// });
-	// }
     }
 
     @Override
@@ -326,5 +285,7 @@ public class ListClientiAdapter extends ArrayAdapter<Cliente> implements OnClick
 	transaction.addToBackStack(Constants.CLIENT_INTERVENTO_FRAGMENT);
 	transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 	transaction.commit();
+
+	blockClick = false;
     }
 }

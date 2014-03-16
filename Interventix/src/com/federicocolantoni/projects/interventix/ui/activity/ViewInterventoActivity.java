@@ -15,7 +15,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -69,6 +68,8 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 	super.onStart();
 
+	System.out.println(this.getClass().getSimpleName() + " - onStart()");
+
 	Bundle extras = getIntent().getExtras();
 
 	prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
@@ -105,12 +106,15 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 	    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
-	    com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_ overView = new com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_();
+	    if (manager.getBackStackEntryCount() == 0) {
+		com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_ overView =
+			new com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_();
 
-	    transaction.add(R.id.fragments_layout, overView, Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-	    transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-	    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	    transaction.commit();
+		transaction.add(R.id.fragments_layout, overView, Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+		transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		transaction.commit();
+	    }
 	}
 	else {
 
@@ -151,33 +155,23 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	    InterventoController.controller.getIntervento().chiuso = false;
 	    InterventoController.controller.getIntervento().tecnico = UtenteController.tecnicoLoggato.idutente;
 
-	    // System.out.println(InterventoController.controller.getIntervento().toString());
-
 	    manager = getSupportFragmentManager();
 	    transaction = manager.beginTransaction();
 
-	    com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_ overView = new com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_();
+	    if (manager.getBackStackEntryCount() == 0) {
+		com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_ overView =
+			new com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_();
 
-	    transaction.add(R.id.fragments_layout, overView, Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-	    transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
-	    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	    transaction.commit();
+		transaction.add(R.id.fragments_layout, overView, Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+		transaction.addToBackStack(Constants.OVERVIEW_INTERVENTO_FRAGMENT);
+		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		transaction.commit();
+	    }
 	}
 
 	final Editor edit = prefs.edit().putInt(Constants.HASH_CODE_INTERVENTO_SINGLETON, InterventoController.controller.hashCode());
 
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-	    edit.apply();
-	else {
-
-	    new Thread(new Runnable() {
-		@Override
-		public void run() {
-
-		    edit.commit();
-		}
-	    }).start();
-	}
+	edit.apply();
     }
 
     @Override

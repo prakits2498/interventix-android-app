@@ -163,18 +163,21 @@ public class Login extends Fragment {
 
 			    try {
 
-				JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
+				final JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
 
 				System.out.println(jsonResp.toString(2));
 
 				parseResponse(jsonResp);
+
 			    }
 			    catch (ParseException e) {
 
+				BugSenseHandler.sendException(e);
 				e.printStackTrace();
 			    }
 			    catch (Exception e) {
 
+				BugSenseHandler.sendException(e);
 				e.printStackTrace();
 			    }
 			    finally {
@@ -339,17 +342,7 @@ public class Login extends Fragment {
 
 	    final Editor edit = globalPrefs.edit().putString(Constants.USERNAME, username.getText().toString()).putString(Constants.PASSWORD, encryptedPassword);
 
-	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-		edit.apply();
-	    else {
-
-		new Thread(new Runnable() {
-		    public void run() {
-
-			edit.commit();
-		    }
-		}).start();
-	    }
+	    edit.apply();
 	}
 	else {
 
@@ -373,6 +366,10 @@ public class Login extends Fragment {
 
 	Intent intent = new Intent(com.federicocolantoni.projects.interventix.Interventix_.getContext(), com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class);
 	intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+	setRefreshActionButtonState(false);
+
+	password.setText("");
 
 	com.federicocolantoni.projects.interventix.Interventix_.getContext().startActivity(intent);
     }
