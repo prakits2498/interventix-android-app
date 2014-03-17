@@ -8,6 +8,7 @@ import multiface.crypto.cr2.JsonCR2;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +45,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.UtenteController;
+import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.entity.Utente;
 import com.federicocolantoni.projects.interventix.utils.CheckConnection;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
@@ -64,6 +66,9 @@ public class Login extends Fragment {
 
     @ViewById(R.id.field_username)
     EditText username;
+
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = Utente.class)
+    RuntimeExceptionDao<Utente, Long> utenteDao;
 
     private SharedPreferences defaultPrefs, globalPrefs;
 
@@ -256,7 +261,7 @@ public class Login extends Fragment {
 			    accountManager.setPassword(account, encryptedPassword);
 			    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
-			    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+			    // RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
 			    UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.JSON_USERNAME, username.getText().toString()).get(0);
 
@@ -287,7 +292,7 @@ public class Login extends Fragment {
 
 	    Utente utente = gson.fromJson(data.toString(), Utente.class);
 
-	    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+	    // RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
 	    if (!utenteDao.idExists(utente.idutente))
 		utenteDao.create(utente);
@@ -353,7 +358,7 @@ public class Login extends Fragment {
 		    accountManager.setPassword(account, password.getText().toString());
 		    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
-		    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+		    // RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
 		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(com.federicocolantoni.projects.interventix.ui.activity.MainActivity_.ORMLITE_USERNAME, username.getText().toString()).get(0);
 
