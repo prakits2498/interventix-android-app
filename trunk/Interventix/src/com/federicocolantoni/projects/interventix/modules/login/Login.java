@@ -93,6 +93,14 @@ public class Login extends Fragment {
     }
 
     @Override
+    public void onStop() {
+
+	super.onStop();
+
+	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
 	inflater.inflate(R.menu.menu_main, menu);
@@ -265,7 +273,7 @@ public class Login extends Fragment {
 
 			    UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.JSON_USERNAME, username.getText().toString()).get(0);
 
-			    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+			    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 			    break;
 			}
@@ -306,7 +314,7 @@ public class Login extends Fragment {
 
 	    UtenteController.tecnicoLoggato = utente;
 
-	    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+	    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 	    addAccountAndStartActivity();
 	}
@@ -362,7 +370,7 @@ public class Login extends Fragment {
 
 		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(com.federicocolantoni.projects.interventix.ui.activity.MainActivity_.ORMLITE_USERNAME, username.getText().toString()).get(0);
 
-		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+		    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		    break;
 		}

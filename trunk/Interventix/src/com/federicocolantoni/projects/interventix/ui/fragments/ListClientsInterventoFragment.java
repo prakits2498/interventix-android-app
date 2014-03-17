@@ -3,6 +3,7 @@ package com.federicocolantoni.projects.interventix.ui.fragments;
 import java.util.ArrayList;
 
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
 
 import android.annotation.SuppressLint;
@@ -23,6 +24,7 @@ import android.widget.ListView;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.ListClientiAdapter;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
+import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
@@ -37,6 +39,9 @@ public class ListClientsInterventoFragment extends Fragment {
 
     @ViewById(R.id.list_clients)
     ListView listClienti;
+
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = Cliente.class)
+    RuntimeExceptionDao<Cliente, Long> clienteDao;
 
     private ListClientiAdapter mAdapter;
 
@@ -73,11 +78,11 @@ public class ListClientsInterventoFragment extends Fragment {
 
 		    mAdapter.selectItem(position);
 
-		    RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+		    // RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
 		    Cliente clChecked = clienteDao.queryForSameId(mAdapter.getItem(position));
 
-		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+		    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		    InterventoController.controller.setCliente(clChecked);
 		    InterventoController.controller.getIntervento().cliente = (clChecked.idcliente);
@@ -165,9 +170,16 @@ public class ListClientsInterventoFragment extends Fragment {
 
 	super.onResume();
 
-	RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+	// RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
 	InterventoController.listaClienti = (ArrayList<Cliente>) clienteDao.queryForAll();
+
+    }
+
+    @Override
+    public void onStop() {
+
+	super.onStop();
 
 	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }

@@ -10,6 +10,7 @@ import java.util.Map;
 import multiface.crypto.cr2.JsonCR2;
 
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 import org.json.JSONArray;
@@ -54,6 +55,7 @@ import com.federicocolantoni.projects.interventix.controller.InterventoControlle
 import com.federicocolantoni.projects.interventix.controller.InterventoSingleton;
 import com.federicocolantoni.projects.interventix.controller.UtenteController;
 import com.federicocolantoni.projects.interventix.core.BufferInterventix;
+import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.entity.Intervento;
@@ -89,6 +91,18 @@ public class HomeActivity extends ActionBarActivity {
 
     @StringRes(R.string.toast_error_syncro)
     String toastErrorSyncro;
+
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = Utente.class)
+    RuntimeExceptionDao<Utente, Long> utenteDao;
+
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = Cliente.class)
+    RuntimeExceptionDao<Cliente, Long> clienteDao;
+
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = Intervento.class)
+    RuntimeExceptionDao<Intervento, Long> interventoDao;
+
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = DettaglioIntervento.class)
+    RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioInterventoDao;
 
     private BufferInterventix buffer;
 
@@ -135,11 +149,11 @@ public class HomeActivity extends ActionBarActivity {
 
 	globalPrefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 
-	RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+	// utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
 	UtenteController.tecnicoLoggato = utenteDao.queryForEq(MainActivity.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
 
-	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+	// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 
     @Override
@@ -209,6 +223,14 @@ public class HomeActivity extends ActionBarActivity {
 	// }
 	//
 	// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+	super.onDestroy();
+
+	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 
     @Override
@@ -303,11 +325,11 @@ public class HomeActivity extends ActionBarActivity {
 	buffer.startTimer(BUFFER_TYPE.BUFFER_INTERVENTO);
 	buffer.startTimer(BUFFER_TYPE.BUFFER_CLIENTE);
 
-	RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+	utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
 	UtenteController.tecnicoLoggato = utenteDao.queryForEq(MainActivity_.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
 
-	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+	// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 
     private void setRefreshActionButtonState(final boolean refreshing) {
@@ -417,7 +439,7 @@ public class HomeActivity extends ActionBarActivity {
 
 			Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
-			RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+			// utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
 			for (int i = 0; i < usersMOD.length(); i++) {
 
@@ -470,7 +492,7 @@ public class HomeActivity extends ActionBarActivity {
 
 		    InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
 
-		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+		    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		    setRefreshActionButtonState(false);
 		}
@@ -551,7 +573,7 @@ public class HomeActivity extends ActionBarActivity {
 
 			globalPrefs.edit().putLong(Constants.REVISION_CLIENTI, data.getLong(REVISION)).commit();
 
-			RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+			// clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
 			JSONArray clientsMOD = data.getJSONArray("mod");
 			JSONArray clientsDEL = data.getJSONArray("del");
@@ -605,7 +627,7 @@ public class HomeActivity extends ActionBarActivity {
 
 		    InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
 
-		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+		    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		    setRefreshActionButtonState(false);
 		}
@@ -686,7 +708,7 @@ public class HomeActivity extends ActionBarActivity {
 
 			globalPrefs.edit().putLong(Constants.REVISION_INTERVENTI, data.getLong(REVISION)).commit();
 
-			RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+			// interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
 
 			JSONArray intervMOD = data.getJSONArray("mod");
 			JSONArray intervDEL = data.getJSONArray("del");
@@ -764,7 +786,7 @@ public class HomeActivity extends ActionBarActivity {
 			}
 		    }
 
-		    RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioInterventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
+		    // dettaglioInterventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
 
 		    JSONArray dettagli_intervento = responseIntervs.getJSONArray("dettagliintervento");
 
@@ -838,7 +860,7 @@ public class HomeActivity extends ActionBarActivity {
 
 		    InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
 
-		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+		    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		    setRefreshActionButtonState(false);
 		}
@@ -863,10 +885,8 @@ public class HomeActivity extends ActionBarActivity {
 
     private void readListInterventions() {
 
-	RuntimeExceptionDao<Intervento, Long> interventoDao;
 	QueryBuilder<Intervento, Long> qb;
 
-	interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
 	qb = interventoDao.queryBuilder();
 
 	qb.selectColumns(new String[] {
@@ -886,7 +906,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	try {
 	    listaInterventiAperti = interventoDao.query(qb.prepare());
-	    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+	    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 	}
 	catch (SQLException e) {
 

@@ -1,6 +1,7 @@
 package com.federicocolantoni.projects.interventix.ui.fragments;
 
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
 
 import android.annotation.SuppressLint;
@@ -24,6 +25,7 @@ import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapter.ListDettagliInterventiAdapter;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
+import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.haarman.listviewanimations.itemmanipulation.OnDismissCallback;
 import com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter;
@@ -43,6 +45,9 @@ public class ListDetailsInterventoFragment extends Fragment implements OnDismiss
 
     @ViewById(R.id.tv_no_details)
     TextView noDetails;
+
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = DettaglioIntervento.class)
+    RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -176,11 +181,9 @@ public class ListDetailsInterventoFragment extends Fragment implements OnDismiss
 
 	    InterventoController.controller.getListaDettagli().remove(position);
 
-	    RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
+	    // RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
 
 	    dettaglioDao.delete(dettaglio);
-
-	    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 	}
 
 	if (InterventoController.controller.getListaDettagli().size() == 0) {
@@ -188,5 +191,13 @@ public class ListDetailsInterventoFragment extends Fragment implements OnDismiss
 	    noDetails.setText("Nessun dettaglio presente");
 	    noDetails.setVisibility(View.VISIBLE);
 	}
+    }
+
+    @Override
+    public void onStop() {
+
+	super.onStop();
+
+	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 }
