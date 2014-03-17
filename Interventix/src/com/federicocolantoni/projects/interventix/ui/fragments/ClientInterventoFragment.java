@@ -3,6 +3,7 @@ package com.federicocolantoni.projects.interventix.ui.fragments;
 import java.util.ArrayList;
 
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
 
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.ScrollView;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
+import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
@@ -65,6 +67,9 @@ public class ClientInterventoFragment extends Fragment {
     @ViewById(R.id.edit_note_client)
     EditText editNoteCliente;
 
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = Cliente.class)
+    RuntimeExceptionDao<Cliente, Long> clienteDao;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -86,11 +91,11 @@ public class ClientInterventoFragment extends Fragment {
 
 	Bundle args = getArguments();
 
-	RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+	// RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
 	cliente = clienteDao.queryForId(args.getLong(Constants.CLIENTE));
 
-	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+	// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 	editCittaCliente.setText(cliente.citta);
 	editCodFisCliente.setText(cliente.codicefiscale);
@@ -104,6 +109,14 @@ public class ClientInterventoFragment extends Fragment {
 	editReferenteCliente.setText(cliente.referente);
 	editTelefonoCliente.setText(cliente.telefono);
 	editUfficioCliente.setText(cliente.ufficio);
+    }
+
+    @Override
+    public void onStop() {
+
+	super.onStop();
+
+	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 
     @Override
@@ -133,12 +146,12 @@ public class ClientInterventoFragment extends Fragment {
 		cliente.telefono = editTelefonoCliente.getText().toString();
 		cliente.ufficio = editUfficioCliente.getText().toString();
 
-		RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+		// RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
 		clienteDao.update(cliente);
 		InterventoController.listaClienti = (ArrayList<Cliente>) clienteDao.queryForAll();
 
-		com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+		// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		FragmentManager manager = getActivity().getSupportFragmentManager();
 

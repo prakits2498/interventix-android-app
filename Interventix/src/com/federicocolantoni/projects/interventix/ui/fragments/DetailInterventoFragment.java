@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 import org.joda.time.DateTime;
@@ -46,6 +47,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
+import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.entity.Utente;
 import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
@@ -113,6 +115,12 @@ public class DetailInterventoFragment extends Fragment {
     @StringRes(R.string.choose_tecnici_title)
     static String choose_tecnici_title;
 
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = DettaglioIntervento.class)
+    RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao;
+
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = Utente.class)
+    static RuntimeExceptionDao<Utente, Long> utenteDao;
+
     private DettaglioIntervento dettaglio;
 
     @Override
@@ -135,6 +143,14 @@ public class DetailInterventoFragment extends Fragment {
 	super.onResume();
 
 	updateUI();
+    }
+
+    @Override
+    public void onStop() {
+
+	super.onStop();
+
+	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 
     private void updateUI() {
@@ -198,12 +214,12 @@ public class DetailInterventoFragment extends Fragment {
 
     private void addNewDettaglio() {
 
-	RuntimeExceptionDao<DettaglioIntervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
+	// RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
 
-	long maxId = interventoDao.queryRawValue("select max(iddettagliointervento) from DettagliIntervento");
+	long maxId = dettaglioDao.queryRawValue("select max(iddettagliointervento) from DettagliIntervento");
 
 	try {
-	    DettaglioIntervento foo = interventoDao.queryBuilder().where().eq("iddettagliointervento", maxId).queryForFirst();
+	    DettaglioIntervento foo = dettaglioDao.queryBuilder().where().eq("iddettagliointervento", maxId).queryForFirst();
 
 	    dettaglio = new DettaglioIntervento();
 
@@ -234,8 +250,6 @@ public class DetailInterventoFragment extends Fragment {
 
 	    e.printStackTrace();
 	}
-
-	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 
     @Override
@@ -752,7 +766,7 @@ public class DetailInterventoFragment extends Fragment {
 
 		ArrayList<String> arrayTecnici = new ArrayList<String>();
 
-		RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+		// RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
 		QueryBuilder<Utente, Long> qb = utenteDao.queryBuilder();
 
@@ -774,7 +788,7 @@ public class DetailInterventoFragment extends Fragment {
 		    e.printStackTrace();
 		}
 
-		com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+		// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		String[] tecnici = new String[arrayTecnici.size()];
 
@@ -803,7 +817,7 @@ public class DetailInterventoFragment extends Fragment {
 
 		for (String param : params) {
 
-		    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+		    // RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
 		    QueryBuilder<Utente, Long> qb = utenteDao.queryBuilder();
 
@@ -827,7 +841,7 @@ public class DetailInterventoFragment extends Fragment {
 		    }
 		}
 
-		com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+		// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		String[] tecnici = new String[arrayNomiTecnici.size()];
 

@@ -7,6 +7,8 @@ import java.util.Map;
 
 import multiface.crypto.cr2.JsonCR2;
 
+import org.androidannotations.annotations.EService;
+import org.androidannotations.annotations.OrmLiteDao;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -18,13 +20,21 @@ import android.preference.PreferenceManager;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.UtenteController;
+import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.entity.Intervento;
 import com.federicocolantoni.projects.interventix.utils.Utils;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.QueryBuilder;
 
+@EService
 public class InterventixService extends IntentService {
+
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = Intervento.class)
+    RuntimeExceptionDao<Intervento, Long> interventoDao;
+
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = DettaglioIntervento.class)
+    RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao;
 
     public InterventixService() {
 
@@ -54,7 +64,7 @@ public class InterventixService extends IntentService {
 
     private void inviaInterventi() {
 
-	RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+	// RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
 
 	QueryBuilder<Intervento, Long> qb = interventoDao.queryBuilder();
 
@@ -100,7 +110,7 @@ public class InterventixService extends IntentService {
 		    parameters.put("chiuso", Boolean.toString(intervento.chiuso));
 		    parameters.put("firma", intervento.firma);
 
-		    RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
+		    // RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
 
 		    List<DettaglioIntervento> listaDettagli = dettaglioDao.queryForEq("idintervento", intervento.idintervento);
 

@@ -62,7 +62,7 @@
         </activity>
 
         <service
-            android:name="com.federicocolantoni.projects.interventix.service.InterventixService"
+            android:name="com.federicocolantoni.projects.interventix.service.InterventixService_"
             android:exported="false" >
         </service>
         <service android:name="com.federicocolantoni.projects.interventix.authentication.InterventixAuthenticatorService" >

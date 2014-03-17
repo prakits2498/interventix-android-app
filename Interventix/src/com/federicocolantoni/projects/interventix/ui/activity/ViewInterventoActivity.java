@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OrmLiteDao;
 import org.joda.time.DateTime;
 
 import android.annotation.SuppressLint;
@@ -31,6 +32,7 @@ import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.controller.InterventoSingleton;
 import com.federicocolantoni.projects.interventix.controller.UtenteController;
+import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.entity.Intervento;
@@ -46,6 +48,18 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
     private Intervento intervento;
 
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = Cliente.class)
+    RuntimeExceptionDao<Cliente, Long> clienteDao;
+
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = Intervento.class)
+    RuntimeExceptionDao<Intervento, Long> interventoDao;
+
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = DettaglioIntervento.class)
+    RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao;
+
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = Utente.class)
+    RuntimeExceptionDao<Utente, Long> utenteDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -56,11 +70,11 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-	RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+	// RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
 	InterventoController.listaClienti = (ArrayList<Cliente>) clienteDao.queryForAll();
 
-	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+	// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 
     @Override
@@ -86,25 +100,25 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 	    InterventoController.controller = InterventoSingleton.getInstance();
 
-	    RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+	    // interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
 
 	    InterventoController.controller.setIntervento(interventoDao.queryForId(intervento.idintervento));
 
-	    RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
+	    // clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
 	    InterventoController.controller.setCliente(clienteDao.queryForId(intervento.cliente));
 
-	    RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
+	    // dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
 
 	    InterventoController.controller.setListaDettagli(dettaglioDao.queryForEq("idintervento", intervento.idintervento));
 
 	    System.out.println("Lista dettagli caricata dal DB\n" + InterventoController.controller.getListaDettagli().toString());
 
-	    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+	    // utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
 	    InterventoController.controller.setTecnico(utenteDao.queryForId(InterventoController.controller.getIntervento().tecnico));
 
-	    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+	    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 	    if (manager.getBackStackEntryCount() == 0) {
 		com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_ overView =
@@ -122,7 +136,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 	    InterventoController.controller = InterventoSingleton.getInstance();
 
-	    RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+	    // RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
 
 	    long maxNumero = interventoDao.queryRawValue("select max(numero) from Interventi");
 
@@ -148,7 +162,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		e.printStackTrace();
 	    }
 
-	    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+	    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 	    InterventoController.controller.getIntervento().dataora = new DateTime().getMillis();
 	    InterventoController.controller.getIntervento().nuovo = true;
@@ -180,6 +194,14 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	super.onPause();
 
 	InterventoSingleton.reset();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+	super.onDestroy();
+
+	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 
     @Override

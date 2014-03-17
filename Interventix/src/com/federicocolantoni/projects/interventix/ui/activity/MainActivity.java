@@ -1,6 +1,7 @@
 package com.federicocolantoni.projects.interventix.ui.activity;
 
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 
@@ -29,6 +30,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.UtenteController;
+import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.entity.Utente;
 import com.federicocolantoni.projects.interventix.utils.ChangeLogDialog;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
@@ -41,6 +43,9 @@ public class MainActivity extends ActionBarActivity {
 
     @ViewById(R.id.tv_changelog)
     TextView tvChangelog;
+
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = Utente.class)
+    RuntimeExceptionDao<Utente, Long> utenteDao;
 
     @StringRes(R.string.welcome_title)
     static String welcomeTitle;
@@ -102,11 +107,11 @@ public class MainActivity extends ActionBarActivity {
 		// passo 4)
 		else {
 
-		    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
+		    // RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
 		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(ORMLITE_USERNAME, account.name).get(0);
 
-		    com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+		    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		    startActivity(new Intent(this, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
 		}
@@ -152,6 +157,14 @@ public class MainActivity extends ActionBarActivity {
 		changelogDialog.show();
 	    }
 	});
+    }
+
+    @Override
+    protected void onDestroy() {
+
+	super.onDestroy();
+
+	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 
     public static class FirstRunDialog extends DialogFragment implements OnClickListener {
