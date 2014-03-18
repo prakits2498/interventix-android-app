@@ -107,11 +107,7 @@ public class MainActivity extends ActionBarActivity {
 		// passo 4)
 		else {
 
-		    // RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
-
 		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(ORMLITE_USERNAME, account.name).get(0);
-
-		    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		    startActivity(new Intent(this, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
 		}
@@ -152,7 +148,6 @@ public class MainActivity extends ActionBarActivity {
 	    @Override
 	    public void onClick(View v) {
 
-		// Launch change log dialog
 		ChangeLogDialog changelogDialog = new ChangeLogDialog(MainActivity.this);
 		changelogDialog.show();
 	    }

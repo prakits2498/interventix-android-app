@@ -214,8 +214,6 @@ public class DetailInterventoFragment extends Fragment {
 
     private void addNewDettaglio() {
 
-	// RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
-
 	long maxId = dettaglioDao.queryRawValue("select max(iddettagliointervento) from DettagliIntervento");
 
 	try {
@@ -766,8 +764,6 @@ public class DetailInterventoFragment extends Fragment {
 
 		ArrayList<String> arrayTecnici = new ArrayList<String>();
 
-		// RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
-
 		QueryBuilder<Utente, Long> qb = utenteDao.queryBuilder();
 
 		qb.selectColumns(new String[] {
@@ -787,8 +783,6 @@ public class DetailInterventoFragment extends Fragment {
 
 		    e.printStackTrace();
 		}
-
-		// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		String[] tecnici = new String[arrayTecnici.size()];
 
@@ -817,8 +811,6 @@ public class DetailInterventoFragment extends Fragment {
 
 		for (String param : params) {
 
-		    // RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
-
 		    QueryBuilder<Utente, Long> qb = utenteDao.queryBuilder();
 
 		    qb.selectColumns(new String[] {
@@ -840,8 +832,6 @@ public class DetailInterventoFragment extends Fragment {
 			e.printStackTrace();
 		    }
 		}
-
-		// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		String[] tecnici = new String[arrayNomiTecnici.size()];
 
