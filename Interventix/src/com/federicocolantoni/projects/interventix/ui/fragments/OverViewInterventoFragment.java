@@ -32,25 +32,25 @@ import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 public class OverViewInterventoFragment extends Fragment {
 
     @ViewById(R.id.tv_row_client)
-    TextView tv_row_client;
+    TextView tvRowClient;
 
     @ViewById(R.id.row_user)
     View rowTecnico;
 
     @ViewById(R.id.tv_row_user)
-    TextView tv_row_tecnico;
+    TextView tvRowTecnico;
 
     @ViewById(R.id.tv_row_informations)
-    TextView tv_row_informazioni;
+    TextView tvRowInformazioni;
 
     @ViewById(R.id.tv_row_details)
-    TextView tv_row_details;
+    TextView tvRowDetails;
 
     @ViewById(R.id.tv_row_costs)
-    TextView tv_row_costs;
+    TextView tvRowCosts;
 
     @ViewById(R.id.tv_row_signature)
-    TextView tv_row_signature;
+    TextView tvRowSignature;
 
     private FragmentManager manager;
 
@@ -107,16 +107,16 @@ public class OverViewInterventoFragment extends Fragment {
 
     private void updateUI() {
 
-	tv_row_client.setText(InterventoController.controller.getCliente().nominativo);
+	tvRowClient.setText(InterventoController.controller.getCliente().nominativo);
 
-	tv_row_tecnico.setText(UtenteController.tecnicoLoggato.nome + " " + UtenteController.tecnicoLoggato.cognome);
-	tv_row_tecnico.setBackgroundColor(Color.LTGRAY);
-	tv_row_tecnico.setEnabled(false);
+	tvRowTecnico.setText(UtenteController.tecnicoLoggato.nome + " " + UtenteController.tecnicoLoggato.cognome);
+	tvRowTecnico.setBackgroundColor(Color.LTGRAY);
+	tvRowTecnico.setEnabled(false);
 
 	rowTecnico.setEnabled(false);
 
-	DateTime dt = new DateTime(InterventoController.controller.getIntervento().dataora, DateTimeZone.forID("Europe/Rome"));
-	tv_row_informazioni.setText(dt.toString("dd/MM/yyyy HH:mm"));
+	DateTime dt = new DateTime(InterventoController.controller.getIntervento().dataora, DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	tvRowInformazioni.setText(dt.toString(Constants.DATE_PATTERN + " " + Constants.TIME_PATTERN));
 
 	long numOre = 0l;
 
@@ -125,31 +125,30 @@ public class OverViewInterventoFragment extends Fragment {
 	    numOre += obj.fine - obj.inizio;
 	}
 
-	DateTime dtDetails = new DateTime(numOre, DateTimeZone.forID("Europe/Rome"));
+	DateTime dtDetails = new DateTime(numOre, DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
 	if (InterventoController.controller.getListaDettagli().size() > 0) {
 
-	    tv_row_details.setText(InterventoController.controller.getListaDettagli().size() + " - " + dtDetails.toString("HH:mm"));
+	    tvRowDetails.setText(InterventoController.controller.getListaDettagli().size() + " - " + dtDetails.toString(Constants.TIME_PATTERN));
 	}
 	else {
 
-	    tv_row_details.setText(getString(R.string.no_details_interv));
+	    tvRowDetails.setText(getString(R.string.no_details));
 	}
 
 	DecimalFormat formatter = new DecimalFormat("###,###,###.##");
 
 	if (InterventoController.controller.getIntervento().totale != null)
-	    tv_row_costs.setText(formatter.format(InterventoController.controller.getIntervento().totale.doubleValue()) + " €");
+	    tvRowCosts.setText(formatter.format(InterventoController.controller.getIntervento().totale.doubleValue()) + " €");
 
 	if (InterventoController.controller.getIntervento().firma != null)
 	    if (InterventoController.controller.getIntervento().firma.length() > 0) {
 
-		tv_row_signature.setText("Presente");
-
+		tvRowSignature.setText("Presente");
 	    }
 	    else {
 
-		tv_row_signature.setText("Non presente");
+		tvRowSignature.setText("Non presente");
 	    }
     }
 
@@ -172,22 +171,13 @@ public class OverViewInterventoFragment extends Fragment {
 	switch (item.getItemId()) {
 	    case R.id.pay:
 
-		// InterventixToast.makeToast("Saldare l'intervento?",
-		// Toast.LENGTH_SHORT);
-
 		break;
 
 	    case R.id.send_mail:
 
-		// InterventixToast.makeToast("Inviare email?",
-		// Toast.LENGTH_SHORT);
-
 		break;
 
 	    case R.id.close:
-
-		// InterventixToast.makeToast("Chiudere l'intervento?",
-		// Toast.LENGTH_SHORT);
 
 		break;
 	}

@@ -77,7 +77,7 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
 	setHasOptionsMenu(true);
 
-	mutableDateTime = new MutableDateTime(DateTimeZone.forID("Europe/Rome"));
+	mutableDateTime = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
     }
 
     @Override
@@ -174,7 +174,7 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 	// //
 	// // DateTime dt =
 	// // new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone
-	// // .forID("Europe/Rome"));
+	// // .forID(Constants.TIMEZONE_EUROPE_ROME));
 	// //
 	// // tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
 	// //
@@ -201,7 +201,7 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 	// // DateTime dt = null;
 	// //
 	// // DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
-	// // fmt.withZone(DateTimeZone.forID("Europe/Rome"));
+	// // fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 	// //
 	// // dt = fmt.parseDateTime(tv_date_interv.getText().toString());
 	// //
@@ -239,11 +239,11 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
 	mutableDateTime =
 		new MutableDateTime(InterventoController.controller.getIntervento().dataora != 0 ? InterventoController.controller.getIntervento().dataora : new MutableDateTime(),
-			DateTimeZone.forID("Europe/Rome"));
+			DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
-	tvDateInterv.setText(mutableDateTime.toString("dd/MM/yyyy"));
+	tvDateInterv.setText(mutableDateTime.toString(Constants.DATE_PATTERN));
 
-	tvTimeInterv.setText(mutableDateTime.toString("HH:mm"));
+	tvTimeInterv.setText(mutableDateTime.toString(Constants.TIME_PATTERN));
     }
 
     @Override
@@ -492,9 +492,6 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 	    @Override
 	    public void cancel() {
 
-		mutableDateTime.setDate(InterventoController.controller.getIntervento().dataora);
-
-		tvDateInterv.setText(mutableDateTime.toString("dd/MM/yyyy"));
 	    }
 	});
 	calendarDatePickerDialog.show(manager, Constants.CALENDAR_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
@@ -514,12 +511,9 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 	    @Override
 	    public void cancel() {
 
-		mutableDateTime.setTime(InterventoController.controller.getIntervento().dataora);
-
-		tvTimeInterv.setText(mutableDateTime.toString("HH:mm"));
 	    }
 	});
-	timePickerDialog.show(manager, "fragment_time_picker_name");
+	timePickerDialog.show(manager, Constants.TIMER_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
     }
 
     @Override
@@ -529,11 +523,13 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 	mutableDateTime.setMonthOfYear(monthOfYear);
 	mutableDateTime.setDayOfMonth(dayOfMonth);
 
-	tvDateInterv.setText(mutableDateTime.toString("dd/MM/yyyy"));
+	tvDateInterv.setText(mutableDateTime.toString(Constants.DATE_PATTERN));
 
 	InterventoController.controller.getIntervento().dataora = (mutableDateTime.getMillis());
 
 	dialog.dismiss();
+
+	updateUI();
     }
 
     @Override
@@ -542,8 +538,10 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 	mutableDateTime.setHourOfDay(hourOfDay);
 	mutableDateTime.setMinuteOfHour(minute);
 
-	tvTimeInterv.setText(mutableDateTime.toString("HH:mm"));
+	tvTimeInterv.setText(mutableDateTime.toString(Constants.TIME_PATTERN));
 
 	InterventoController.controller.getIntervento().dataora = (mutableDateTime.getMillis());
+
+	updateUI();
     }
 }

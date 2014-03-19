@@ -1,225 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:background="@android:color/transparent"
-	android:orientation="vertical" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical" >
 
-	<ScrollView
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:background="@android:color/transparent" >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent" >
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@android:color/transparent"
-			android:orientation="vertical" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:orientation="vertical" >
 
-			<LinearLayout
-				android:id="@+id/row_tipo_dettaglio"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@drawable/pressed_item"
-				android:orientation="vertical" >
+            <LinearLayout
+                android:id="@+id/row_tipo_dettaglio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pressed_item"
+                android:orientation="vertical" >
 
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingLeft="4dp"
-					android:text="@string/tv_tipo_dettaglio"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:text="@string/tv_tipo_dettaglio"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-				<TextView
-					android:id="@+id/tv_row_tipo_dettaglio"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingLeft="4dp" />
-			</LinearLayout>
+                <TextView
+                    android:id="@+id/tv_row_tipo_dettaglio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp" />
+            </LinearLayout>
 
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:background="@color/interventix_color_black" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/interventix_color_black" />
 
-			<LinearLayout
-				android:id="@+id/row_oggetto_dettaglio"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@drawable/pressed_item"
-				android:orientation="vertical" >
+            <LinearLayout
+                android:id="@+id/row_oggetto_dettaglio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pressed_item"
+                android:orientation="vertical" >
 
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingLeft="4dp"
-					android:text="@string/tv_oggetto_dettaglio"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:text="@string/tv_oggetto_dettaglio"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-				<TextView
-					android:id="@+id/tv_row_oggetto_dettaglio"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingLeft="4dp" />
-			</LinearLayout>
+                <TextView
+                    android:id="@+id/tv_row_oggetto_dettaglio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp" />
+            </LinearLayout>
 
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:background="@color/interventix_color_black" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/interventix_color_black" />
 
-			<LinearLayout
-				android:id="@+id/row_tecnici_dettaglio"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@drawable/pressed_item"
-				android:orientation="horizontal" >
+            <LinearLayout
+                android:id="@+id/row_tecnici_dettaglio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pressed_item"
+                android:orientation="horizontal" >
 
-				<TextView
-					android:layout_width="0dp"
-					android:layout_height="match_parent"
-					android:layout_weight="1"
-					android:gravity="center_vertical|left"
-					android:paddingLeft="4dp"
-					android:text="@string/tv_tecnici_dettaglio"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:paddingLeft="4dp"
+                    android:text="@string/tv_tecnici_dettaglio"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-				<TextView
-					android:id="@+id/tv_row_tecnici_dettaglio"
-					android:layout_width="0dp"
-					android:layout_height="match_parent"
-					android:layout_weight="1"
-					android:gravity="center_vertical|right"
-					android:paddingLeft="4dp" />
-			</LinearLayout>
+                <TextView
+                    android:id="@+id/tv_row_tecnici_dettaglio"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:paddingLeft="4dp" />
+            </LinearLayout>
 
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:background="@color/interventix_color_black" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/interventix_color_black" />
 
-			<LinearLayout
-				android:id="@+id/row_descrizione_dettaglio"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@drawable/pressed_item"
-				android:orientation="vertical" >
+            <LinearLayout
+                android:id="@+id/row_descrizione_dettaglio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pressed_item"
+                android:orientation="vertical" >
 
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingLeft="4dp"
-					android:text="@string/tv_descrizione_dettaglio"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:text="@string/tv_descrizione_dettaglio"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-				<TextView
-					android:id="@+id/tv_row_descrizione_dettaglio"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingLeft="4dp" />
-			</LinearLayout>
+                <TextView
+                    android:id="@+id/tv_row_descrizione_dettaglio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp" />
+            </LinearLayout>
 
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:background="@color/interventix_color_black" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/interventix_color_black" />
 
-			<LinearLayout
-				android:id="@+id/row_inizio_dettaglio"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@drawable/list_pressed_datetime"
-				android:orientation="vertical" >
+            <LinearLayout
+                android:id="@+id/row_inizio_dettaglio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/list_pressed_datetime"
+                android:orientation="vertical" >
 
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@color/interventix_color_gray"
-					android:paddingLeft="4dp"
-					android:text="@string/tv_inizio_dettaglio"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/interventix_color_gray"
+                    android:paddingLeft="4dp"
+                    android:text="@string/tv_inizio_dettaglio"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-				<TextView
-					android:id="@+id/tv_row_inizio_dettaglio"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@color/interventix_color_gray"
-					android:paddingLeft="4dp"
-					android:textColor="#FF3040EE" />
-			</LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
 
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:background="@color/interventix_color_black" />
+                    <TextView
+                        android:id="@+id/tv_row_date_inizio_dettaglio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/interventix_color_gray"
+                        android:paddingLeft="4dp"
+                        android:textColor="#FF3040EE" />
 
-			<LinearLayout
-				android:id="@+id/row_fine_dettaglio"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@drawable/list_pressed_datetime"
-				android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/tv_row_time_inizio_dettaglio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/interventix_color_gray"
+                        android:paddingLeft="4dp"
+                        android:textColor="#FF3040EE" />
+                </LinearLayout>
+            </LinearLayout>
 
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@color/interventix_color_gray"
-					android:paddingLeft="4dp"
-					android:text="@string/tv_fine_dettaglio"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/interventix_color_black" />
 
-				<TextView
-					android:id="@+id/tv_row_fine_dettaglio"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@color/interventix_color_gray"
-					android:paddingLeft="4dp"
-					android:textColor="#FF3040EE" />
-			</LinearLayout>
+            <LinearLayout
+                android:id="@+id/row_fine_dettaglio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/list_pressed_datetime"
+                android:orientation="vertical" >
 
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:background="@color/interventix_color_black" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/interventix_color_gray"
+                    android:paddingLeft="4dp"
+                    android:text="@string/tv_fine_dettaglio"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-			<LinearLayout
-				android:id="@+id/row_tot_ore_dettaglio"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@android:color/transparent"
-				android:orientation="vertical" >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
 
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@color/interventix_color_red"
-					android:paddingLeft="4dp"
-					android:text="@string/tv_tot_ore_dettaglio"
-					android:textColor="@android:color/white"
-					android:textSize="18sp"
-					android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tv_row_date_fine_dettaglio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/interventix_color_gray"
+                        android:paddingLeft="4dp"
+                        android:textColor="#FF3040EE" />
 
-				<TextView
-					android:id="@+id/tv_row_tot_ore_dettaglio"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@color/interventix_color_red"
-					android:paddingLeft="4dp"
-					android:textColor="@android:color/white" />
-			</LinearLayout>
-		</LinearLayout>
-	</ScrollView>
+                    <TextView
+                        android:id="@+id/tv_row_time_fine_dettaglio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/interventix_color_gray"
+                        android:paddingLeft="4dp"
+                        android:textColor="#FF3040EE" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/interventix_color_black" />
+
+            <LinearLayout
+                android:id="@+id/row_tot_ore_dettaglio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/interventix_color_red"
+                    android:paddingLeft="4dp"
+                    android:text="@string/tv_tot_ore_dettaglio"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_row_tot_ore_dettaglio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/interventix_color_red"
+                    android:paddingLeft="4dp"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

@@ -2,8 +2,6 @@ package com.federicocolantoni.projects.interventix.ui.fragments;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -15,6 +13,7 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
@@ -23,7 +22,6 @@ import org.json.JSONException;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
@@ -32,26 +30,27 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
+import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog.OnDateSetListener;
+import com.doomonafireball.betterpickers.radialtimepicker.RadialPickerLayout;
+import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog;
+import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog.OnTimeSetListener;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.entity.Utente;
-import com.federicocolantoni.projects.interventix.utils.DateTimePicker;
-import com.federicocolantoni.projects.interventix.utils.DateTimePicker.DateWatcher;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.ManagedAsyncTask;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
@@ -59,7 +58,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_detail)
-public class DetailInterventoFragment extends Fragment {
+public class DetailInterventoFragment extends Fragment implements OnDateSetListener, OnTimeSetListener {
 
     @ViewById(R.id.row_tipo_dettaglio)
     View rowTipo;
@@ -85,17 +84,17 @@ public class DetailInterventoFragment extends Fragment {
     @ViewById(R.id.tv_row_tecnici_dettaglio)
     TextView tvRowTecnici;
 
-    @ViewById(R.id.row_inizio_dettaglio)
-    View rowInizio;
+    @ViewById(R.id.tv_row_date_inizio_dettaglio)
+    TextView tvRowDateInizio;
 
-    @ViewById(R.id.tv_row_inizio_dettaglio)
-    TextView tvRowInizio;
+    @ViewById(R.id.tv_row_time_inizio_dettaglio)
+    TextView tvRowTimeInizio;
 
-    @ViewById(R.id.row_fine_dettaglio)
-    View rowFine;
+    @ViewById(R.id.tv_row_date_fine_dettaglio)
+    TextView tvRowDateFine;
 
-    @ViewById(R.id.tv_row_fine_dettaglio)
-    TextView tvRowFine;
+    @ViewById(R.id.tv_row_time_fine_dettaglio)
+    TextView tvRowTimeFine;
 
     @ViewById(R.id.row_tot_ore_dettaglio)
     View rowTotOre;
@@ -123,6 +122,11 @@ public class DetailInterventoFragment extends Fragment {
 
     private DettaglioIntervento dettaglio;
 
+    private MutableDateTime mutableDateTimeInizio, mutableDateTimeFine;
+
+    private CalendarDatePickerDialog calendarDateInizioPickerDialog, calendarDateFinePickerDialog;
+    private RadialTimePickerDialog timeInizioPickerDialog, timeFinePickerDialog;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -135,6 +139,9 @@ public class DetailInterventoFragment extends Fragment {
 	if (bundle != null) {
 	    dettaglio = (DettaglioIntervento) bundle.getSerializable(Constants.DETTAGLIO_N_ESIMO);
 	}
+
+	mutableDateTimeInizio = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	mutableDateTimeFine = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
     }
 
     @Override
@@ -193,17 +200,21 @@ public class DetailInterventoFragment extends Fragment {
 
 	    tvRowDescr.setText(dettaglio.descrizione);
 
-	    DateTime dtInizio = new DateTime(dettaglio.inizio, DateTimeZone.forID("Europe/Rome"));
+	    mutableDateTimeInizio.setDate(dettaglio.inizio);
+	    tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN, Locale.ITALY));
 
-	    tvRowInizio.setText(dtInizio.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
+	    mutableDateTimeInizio.setTime(dettaglio.inizio);
+	    tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN, Locale.ITALY));
 
-	    DateTime dtFine = new DateTime(dettaglio.fine, DateTimeZone.forID("Europe/Rome"));
+	    mutableDateTimeFine.setDate(dettaglio.fine);
+	    tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN, Locale.ITALY));
 
-	    tvRowFine.setText(dtFine.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
+	    mutableDateTimeFine.setTime(dettaglio.fine);
+	    tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN, Locale.ITALY));
 
-	    DateTime dtTotOre = new DateTime(dtFine.toDate().getTime() - dtInizio.toDate().getTime(), DateTimeZone.forID("Europe/Rome"));
+	    DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
-	    tvRowTotOre.setText(dtTotOre.toString(DateTimeFormat.forPattern("HH:mm")));
+	    tvRowTotOre.setText(dtTotOre.toString(DateTimeFormat.forPattern(Constants.TIME_PATTERN)));
 	}
 	else {
 
@@ -227,22 +238,23 @@ public class DetailInterventoFragment extends Fragment {
 	    dettaglio.modificato = (Constants.DETTAGLIO_NUOVO);
 	    dettaglio.idintervento = (InterventoController.controller.getIntervento().idintervento);
 
-	    DateTime dt_inizio = new DateTime(new Date().getTime(), DateTimeZone.forID("Europe/Rome"));
+	    mutableDateTimeInizio = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
-	    tvRowInizio.setText(dt_inizio.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
+	    tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN, Locale.ITALY));
+	    tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN, Locale.ITALY));
 
-	    dettaglio.inizio = (dt_inizio.getMillis());
+	    dettaglio.inizio = (mutableDateTimeInizio.getMillis());
 
-	    DateTime dt_fine = new DateTime(new Date().getTime(), DateTimeZone.forID("Europe/Rome"));
+	    mutableDateTimeFine = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
-	    tvRowFine.setText(dt_fine.toString("dd/MM/yyyy HH:mm", Locale.ITALY));
+	    tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN, Locale.ITALY));
+	    tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN, Locale.ITALY));
 
-	    dettaglio.fine = (dt_fine.getMillis());
+	    dettaglio.fine = (mutableDateTimeFine.getMillis());
 
-	    DateTime dt_tot_ore = new DateTime(dt_fine.toDate().getTime() - dt_inizio.toDate().getTime(), DateTimeZone.forID("Europe/Rome"));
+	    DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
-	    tvRowTotOre.setText(dt_tot_ore.toString(DateTimeFormat.forPattern("HH:mm")));
-
+	    tvRowTotOre.setText(dtTotOre.toString(DateTimeFormat.forPattern(Constants.TIME_PATTERN)));
 	}
 	catch (SQLException e) {
 
@@ -297,208 +309,315 @@ public class DetailInterventoFragment extends Fragment {
 	return true;
     }
 
-    @Click(R.id.row_inizio_dettaglio)
-    void showDialogInizioDettaglio() {
+    @Click(R.id.tv_row_time_inizio_dettaglio)
+    void showDialogTimeInizioDettaglio() {
 
-	final Dialog dateTimeDialog = new Dialog(getActivity());
+	// aggiungere il nuovo picker per il tempo - start
 
-	final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.dialog_date_time, null);
+	mutableDateTimeInizio =
+		MutableDateTime.parse(
+			!tvRowTimeInizio.getText().toString().isEmpty() ? tvRowTimeInizio.getText().toString() : new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME)).toString(),
+			DateTimeFormat.forPattern(Constants.TIME_PATTERN));
 
-	final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
-
-	DateTime dt = null;
-
-	dt = DateTime.parse(tvRowInizio.getText().toString(), DateTimeFormat.forPattern("dd/MM/yyyy HH:mm"));
-
-	dateTimePicker.setDateTime(dt);
-
-	dateTimePicker.setDateChangedListener(new DateWatcher() {
+	timeInizioPickerDialog =
+		RadialTimePickerDialog.newInstance(DetailInterventoFragment.this, mutableDateTimeInizio.getHourOfDay(), mutableDateTimeInizio.getMinuteOfHour(),
+			DateFormat.is24HourFormat(getActivity()));
+	timeInizioPickerDialog.onCancel(new DialogInterface() {
 
 	    @Override
-	    public void onDateChanged(Calendar c) {
+	    public void dismiss() {
+
+	    }
+
+	    @Override
+	    public void cancel() {
 
 	    }
 	});
+	timeInizioPickerDialog.show(getActivity().getSupportFragmentManager(), Constants.TIMER_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
+    }
 
-	((Button) dateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
+    @Click(R.id.tv_row_time_fine_dettaglio)
+    void showDialogTimeFineDettaglio() {
 
-	    @Override
-	    public void onClick(View v) {
+	// aggiungere il nuovo picker per il tempo - start
 
-		dateTimePicker.clearFocus();
+	mutableDateTimeFine =
+		MutableDateTime.parse(
+			!tvRowTimeFine.getText().toString().isEmpty() ? tvRowTimeFine.getText().toString() : new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME)).toString(),
+			DateTimeFormat.forPattern(Constants.TIME_PATTERN));
 
-		DateTime dtInizio =
-			new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone
-				.forID("Europe/Rome"));
-
-		DateTime dtFine = null;
-
-		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
-		fmt.withZone(DateTimeZone.forID("Europe/Rome"));
-
-		dtFine = fmt.parseDateTime(tvRowFine.getText().toString());
-
-		if (dtFine.toDate().getTime() < dtInizio.toDate().getTime()) {
-		    InterventixToast.makeToast("Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
-		}
-		else {
-
-		    tvRowInizio.setText(dtInizio.toString("dd/MM/yyyy HH:mm"));
-
-		    DateTime dt_tot_ore = dtFine.minus(dtInizio.toDate().getTime());
-
-		    tvRowTotOre.setText(dt_tot_ore.toString("HH:mm"));
-
-		    if (!dettaglio.nuovo) {
-			dettaglio.inizio = (dtInizio.toDate().getTime());
-			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		    }
-		    else {
-			dettaglio.inizio = (dtInizio.toDate().getTime());
-
-			if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
-			    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-			}
-		    }
-		}
-
-		dateTimeDialog.dismiss();
-
-		updateUI();
-	    }
-	});
-
-	((Button) dateTimeDialogView.findViewById(R.id.CancelDialog)).setOnClickListener(new View.OnClickListener() {
+	timeFinePickerDialog =
+		RadialTimePickerDialog.newInstance(DetailInterventoFragment.this, mutableDateTimeFine.getHourOfDay(), mutableDateTimeFine.getMinuteOfHour(), DateFormat.is24HourFormat(getActivity()));
+	timeFinePickerDialog.onCancel(new DialogInterface() {
 
 	    @Override
-	    public void onClick(View v) {
+	    public void dismiss() {
 
-		dateTimeDialog.cancel();
 	    }
-	});
-
-	((Button) dateTimeDialogView.findViewById(R.id.ResetDateTime)).setOnClickListener(new View.OnClickListener() {
 
 	    @Override
-	    public void onClick(View v) {
+	    public void cancel() {
 
-		DateTime dt = null;
-
-		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
-		fmt.withZone(DateTimeZone.forID("Europe/Rome"));
-
-		dt = fmt.parseDateTime(tvRowInizio.getText().toString());
-
-		dateTimePicker.setDateTime(dt);
 	    }
 	});
+	timeFinePickerDialog.show(getActivity().getSupportFragmentManager(), Constants.TIMER_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
+    }
 
-	dateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-	dateTimeDialog.setContentView(dateTimeDialogView);
-	dateTimeDialog.setCancelable(false);
-	dateTimeDialog.show();
+    @Click(R.id.tv_row_date_inizio_dettaglio)
+    void showDialogDateInizioDettaglio() {
+
+	// aggiungere il nuovo picker per la data - start
+
+	mutableDateTimeInizio =
+		MutableDateTime.parse(
+			!tvRowDateInizio.getText().toString().isEmpty() ? tvRowDateInizio.getText().toString() : new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME)).toString(),
+			DateTimeFormat.forPattern(Constants.DATE_PATTERN));
+
+	calendarDateInizioPickerDialog =
+		CalendarDatePickerDialog.newInstance(DetailInterventoFragment.this, mutableDateTimeInizio.getYear(), mutableDateTimeInizio.getMonthOfYear() - 1, mutableDateTimeInizio.getDayOfMonth());
+	calendarDateInizioPickerDialog.setYearRange(1970, 3000);
+	calendarDateInizioPickerDialog.onCancel(new DialogInterface() {
+
+	    @Override
+	    public void dismiss() {
+
+	    }
+
+	    @Override
+	    public void cancel() {
+
+	    }
+	});
+	calendarDateInizioPickerDialog.show(getActivity().getSupportFragmentManager(), Constants.CALENDAR_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
+
+	// aggiungere il nuovo picker per la data - end
+
+	// final Dialog dateTimeDialog = new Dialog(getActivity());
+	//
+	// final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.dialog_date_time, null);
+	//
+	// final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
+	//
+	// DateTime dt = null;
+	//
+	// dt = DateTime.parse(tvRowDateInizio.getText().toString(), DateTimeFormat.forPattern("dd/MM/yyyy HH:mm"));
+	//
+	// dateTimePicker.setDateTime(dt);
+	//
+	// dateTimePicker.setDateChangedListener(new DateWatcher() {
+	//
+	// @Override
+	// public void onDateChanged(Calendar c) {
+	//
+	// }
+	// });
+	//
+	// ((Button) dateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
+	//
+	// @Override
+	// public void onClick(View v) {
+	//
+	// dateTimePicker.clearFocus();
+	//
+	// DateTime dtInizio =
+	// new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone
+	// .forID(Constants.TIMEZONE_EUROPE_ROME));
+	//
+	// DateTime dtFine = null;
+	//
+	// DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
+	// fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	//
+	// dtFine = fmt.parseDateTime(tvRowDateFine.getText().toString());
+	//
+	// if (dtFine.toDate().getTime() < dtInizio.toDate().getTime()) {
+	// InterventixToast.makeToast("Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
+	// }
+	// else {
+	//
+	// tvRowDateInizio.setText(dtInizio.toString("dd/MM/yyyy HH:mm"));
+	//
+	// DateTime dt_tot_ore = dtFine.minus(dtInizio.toDate().getTime());
+	//
+	// tvRowTotOre.setText(dt_tot_ore.toString(Constants.TIME_PATTERN));
+	//
+	// if (!dettaglio.nuovo) {
+	// dettaglio.inizio = (dtInizio.toDate().getTime());
+	// dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+	// }
+	// else {
+	// dettaglio.inizio = (dtInizio.toDate().getTime());
+	//
+	// if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+	// dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+	// }
+	// }
+	// }
+	//
+	// dateTimeDialog.dismiss();
+	//
+	// updateUI();
+	// }
+	// });
+	//
+	// ((Button) dateTimeDialogView.findViewById(R.id.CancelDialog)).setOnClickListener(new View.OnClickListener() {
+	//
+	// @Override
+	// public void onClick(View v) {
+	//
+	// dateTimeDialog.cancel();
+	// }
+	// });
+	//
+	// ((Button) dateTimeDialogView.findViewById(R.id.ResetDateTime)).setOnClickListener(new View.OnClickListener() {
+	//
+	// @Override
+	// public void onClick(View v) {
+	//
+	// DateTime dt = null;
+	//
+	// DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
+	// fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	//
+	// dt = fmt.parseDateTime(tvRowDateInizio.getText().toString());
+	//
+	// dateTimePicker.setDateTime(dt);
+	// }
+	// });
+	//
+	// dateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	// dateTimeDialog.setContentView(dateTimeDialogView);
+	// dateTimeDialog.setCancelable(false);
+	// dateTimeDialog.show();
     }
 
     @Click(R.id.row_fine_dettaglio)
-    void showDialogFineDettaglio() {
+    void showDialogDateFineDettaglio() {
 
-	final Dialog dateTimeDialog = new Dialog(getActivity());
+	// aggiungere il nuovo picker per la data - start
 
-	final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.dialog_date_time, null);
+	mutableDateTimeFine =
+		MutableDateTime.parse(
+			!tvRowDateFine.getText().toString().isEmpty() ? tvRowDateFine.getText().toString() : new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME)).toString(),
+			DateTimeFormat.forPattern(Constants.DATE_PATTERN));
 
-	final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
-
-	DateTime dt = null;
-
-	dt = DateTime.parse(tvRowFine.getText().toString(), DateTimeFormat.forPattern("dd/MM/yyyy HH:mm"));
-
-	dateTimePicker.setDateTime(dt);
-
-	dateTimePicker.setDateChangedListener(new DateWatcher() {
+	calendarDateFinePickerDialog =
+		CalendarDatePickerDialog.newInstance(DetailInterventoFragment.this, mutableDateTimeFine.getYear(), mutableDateTimeFine.getMonthOfYear() - 1, mutableDateTimeFine.getDayOfMonth());
+	calendarDateFinePickerDialog.setYearRange(1970, 3000);
+	calendarDateFinePickerDialog.onCancel(new DialogInterface() {
 
 	    @Override
-	    public void onDateChanged(Calendar c) {
+	    public void dismiss() {
+
+	    }
+
+	    @Override
+	    public void cancel() {
 
 	    }
 	});
+	calendarDateFinePickerDialog.show(getActivity().getSupportFragmentManager(), Constants.CALENDAR_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
 
-	((Button) dateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
+	// aggiungere il nuovo picker per la data - end
 
-	    @Override
-	    public void onClick(View v) {
-
-		dateTimePicker.clearFocus();
-
-		DateTime dtFine =
-			new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone
-				.forID("Europe/Rome"));
-
-		DateTime dtInizio = null;
-
-		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
-		fmt.withZone(DateTimeZone.forID("Europe/Rome"));
-
-		dtInizio = fmt.parseDateTime(tvRowInizio.getText().toString());
-
-		if (dtFine.toDate().getTime() < dtInizio.toDate().getTime()) {
-		    InterventixToast.makeToast("Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
-		}
-		else {
-
-		    tvRowFine.setText(dtFine.toString("dd/MM/yyyy HH:mm"));
-
-		    DateTime dt_tot_ore = dtFine.minus(dtInizio.toDate().getTime());
-
-		    tvRowTotOre.setText(dt_tot_ore.toString("HH:mm"));
-
-		    if (!dettaglio.nuovo) {
-			dettaglio.fine = (dtFine.toDate().getTime());
-			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		    }
-		    else {
-			dettaglio.fine = (dtFine.toDate().getTime());
-
-			if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
-			    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-			}
-		    }
-		}
-
-		dateTimeDialog.dismiss();
-
-		updateUI();
-	    }
-	});
-
-	((Button) dateTimeDialogView.findViewById(R.id.CancelDialog)).setOnClickListener(new View.OnClickListener() {
-
-	    @Override
-	    public void onClick(View v) {
-
-		dateTimeDialog.cancel();
-	    }
-	});
-
-	((Button) dateTimeDialogView.findViewById(R.id.ResetDateTime)).setOnClickListener(new View.OnClickListener() {
-
-	    @Override
-	    public void onClick(View v) {
-
-		DateTime dt = null;
-
-		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
-		fmt.withZone(DateTimeZone.forID("Europe/Rome"));
-
-		dt = fmt.parseDateTime(tvRowFine.getText().toString());
-
-		dateTimePicker.setDateTime(dt);
-	    }
-	});
-
-	dateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-	dateTimeDialog.setContentView(dateTimeDialogView);
-	dateTimeDialog.setCancelable(false);
-	dateTimeDialog.show();
+	// final Dialog dateTimeDialog = new Dialog(getActivity());
+	//
+	// final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.dialog_date_time, null);
+	//
+	// final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
+	//
+	// DateTime dt = null;
+	//
+	// dt = DateTime.parse(tvRowDateFine.getText().toString(), DateTimeFormat.forPattern("dd/MM/yyyy HH:mm"));
+	//
+	// dateTimePicker.setDateTime(dt);
+	//
+	// dateTimePicker.setDateChangedListener(new DateWatcher() {
+	//
+	// @Override
+	// public void onDateChanged(Calendar c) {
+	//
+	// }
+	// });
+	//
+	// ((Button) dateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
+	//
+	// @Override
+	// public void onClick(View v) {
+	//
+	// dateTimePicker.clearFocus();
+	//
+	// DateTime dtFine =
+	// new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone
+	// .forID(Constants.TIMEZONE_EUROPE_ROME));
+	//
+	// DateTime dtInizio = null;
+	//
+	// DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
+	// fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	//
+	// dtInizio = fmt.parseDateTime(tvRowDateInizio.getText().toString());
+	//
+	// if (dtFine.toDate().getTime() < dtInizio.toDate().getTime()) {
+	// InterventixToast.makeToast("Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
+	// }
+	// else {
+	//
+	// tvRowDateFine.setText(dtFine.toString("dd/MM/yyyy HH:mm"));
+	//
+	// DateTime dt_tot_ore = dtFine.minus(dtInizio.toDate().getTime());
+	//
+	// tvRowTotOre.setText(dt_tot_ore.toString(Constants.TIME_PATTERN));
+	//
+	// if (!dettaglio.nuovo) {
+	// dettaglio.fine = (dtFine.toDate().getTime());
+	// dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+	// }
+	// else {
+	// dettaglio.fine = (dtFine.toDate().getTime());
+	//
+	// if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+	// dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+	// }
+	// }
+	// }
+	//
+	// dateTimeDialog.dismiss();
+	//
+	// updateUI();
+	// }
+	// });
+	//
+	// ((Button) dateTimeDialogView.findViewById(R.id.CancelDialog)).setOnClickListener(new View.OnClickListener() {
+	//
+	// @Override
+	// public void onClick(View v) {
+	//
+	// dateTimeDialog.cancel();
+	// }
+	// });
+	//
+	// ((Button) dateTimeDialogView.findViewById(R.id.ResetDateTime)).setOnClickListener(new View.OnClickListener() {
+	//
+	// @Override
+	// public void onClick(View v) {
+	//
+	// DateTime dt = null;
+	//
+	// DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
+	// fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	//
+	// dt = fmt.parseDateTime(tvRowDateFine.getText().toString());
+	//
+	// dateTimePicker.setDateTime(dt);
+	// }
+	// });
+	//
+	// dateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	// dateTimeDialog.setContentView(dateTimeDialogView);
+	// dateTimeDialog.setCancelable(false);
+	// dateTimeDialog.show();
     }
 
     @Click(R.id.row_tipo_dettaglio)
@@ -767,7 +886,7 @@ public class DetailInterventoFragment extends Fragment {
 		QueryBuilder<Utente, Long> qb = utenteDao.queryBuilder();
 
 		qb.selectColumns(new String[] {
-		    "idutente"
+		    Constants.ORMLITE_IDUTENTE
 		});
 
 		try {
@@ -814,11 +933,11 @@ public class DetailInterventoFragment extends Fragment {
 		    QueryBuilder<Utente, Long> qb = utenteDao.queryBuilder();
 
 		    qb.selectColumns(new String[] {
-			    "nome", "cognome"
+			    Constants.ORMLITE_NOME, Constants.ORMLITE_COGNOME
 		    });
 
 		    try {
-			qb.where().eq("idutente", param);
+			qb.where().eq(Constants.ORMLITE_IDUTENTE, param);
 
 			List<Utente> listaUtenti = utenteDao.query(qb.prepare());
 
@@ -846,5 +965,187 @@ public class DetailInterventoFragment extends Fragment {
 	};
 
 	return tuttiNomiTecniciAsyncTask;
+    }
+
+    @Override
+    public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+
+	if (calendarDateInizioPickerDialog.isVisible()) {
+
+	    mutableDateTimeInizio.setYear(year);
+	    mutableDateTimeInizio.setMonthOfYear(monthOfYear);
+	    mutableDateTimeInizio.setDayOfMonth(dayOfMonth);
+
+	    DateTime dtFine = null;
+
+	    DateTimeFormatter fmt = DateTimeFormat.forPattern(Constants.DATE_PATTERN);
+	    fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+
+	    dtFine = fmt.parseDateTime(tvRowDateFine.getText().toString());
+
+	    if (dtFine.getMillis() < mutableDateTimeInizio.getMillis()) {
+		InterventixToast.makeToast("Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
+	    }
+	    else {
+
+		tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN));
+
+		DateTime dtTotOre = dtFine.minus(mutableDateTimeInizio.getMillis());
+
+		tvRowTotOre.setText(dtTotOre.toString(Constants.TIME_PATTERN));
+
+		if (!dettaglio.nuovo) {
+		    dettaglio.inizio = (mutableDateTimeInizio.getMillis());
+		    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		}
+		else {
+		    dettaglio.inizio = (mutableDateTimeInizio.getMillis());
+
+		    if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		    }
+		}
+	    }
+
+	    calendarDateInizioPickerDialog.dismiss();
+
+	    updateUI();
+	}
+
+	if (calendarDateFinePickerDialog.isVisible()) {
+
+	    mutableDateTimeFine.setYear(year);
+	    mutableDateTimeFine.setMonthOfYear(monthOfYear);
+	    mutableDateTimeFine.setDayOfMonth(dayOfMonth);
+
+	    DateTime dtInizio = null;
+
+	    DateTimeFormatter fmt = DateTimeFormat.forPattern(Constants.DATE_PATTERN);
+	    fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+
+	    dtInizio = fmt.parseDateTime(tvRowDateInizio.getText().toString());
+
+	    if (mutableDateTimeFine.getMillis() < dtInizio.getMillis()) {
+		InterventixToast.makeToast("Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
+	    }
+	    else {
+
+		tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN));
+
+		mutableDateTimeFine.add(-dtInizio.getMillis());
+
+		DateTime dt_tot_ore = mutableDateTimeFine.toDateTime();
+
+		tvRowTotOre.setText(dt_tot_ore.toString(Constants.TIME_PATTERN));
+
+		if (!dettaglio.nuovo) {
+		    dettaglio.fine = (mutableDateTimeFine.getMillis());
+		    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		}
+		else {
+		    dettaglio.fine = (mutableDateTimeFine.getMillis());
+
+		    if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		    }
+		}
+	    }
+
+	    calendarDateFinePickerDialog.dismiss();
+
+	    updateUI();
+	}
+
+	return;
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+
+	if (timeInizioPickerDialog.isVisible()) {
+
+	    mutableDateTimeInizio.setHourOfDay(hourOfDay);
+	    mutableDateTimeInizio.setMinuteOfHour(minute);
+
+	    DateTime dtFine = null;
+
+	    DateTimeFormatter fmt = DateTimeFormat.forPattern(Constants.TIME_PATTERN);
+	    fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+
+	    dtFine = fmt.parseDateTime(tvRowTimeFine.getText().toString());
+
+	    if (dtFine.getMillis() < mutableDateTimeInizio.getMillis()) {
+		InterventixToast.makeToast("Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
+	    }
+	    else {
+
+		tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN));
+
+		DateTime dtTotOre = dtFine.minus(mutableDateTimeInizio.getMillis());
+
+		tvRowTotOre.setText(dtTotOre.toString(Constants.TIME_PATTERN));
+
+		if (!dettaglio.nuovo) {
+		    dettaglio.inizio = (mutableDateTimeInizio.getMillis());
+		    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		}
+		else {
+		    dettaglio.inizio = (mutableDateTimeInizio.getMillis());
+
+		    if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		    }
+		}
+	    }
+
+	    calendarDateInizioPickerDialog.dismiss();
+
+	    updateUI();
+	}
+
+	if (timeFinePickerDialog.isVisible()) {
+
+	    mutableDateTimeFine.setHourOfDay(hourOfDay);
+	    mutableDateTimeFine.setMinuteOfHour(minute);
+
+	    DateTime dtInizio = null;
+
+	    DateTimeFormatter fmt = DateTimeFormat.forPattern(Constants.TIME_PATTERN);
+	    fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+
+	    dtInizio = fmt.parseDateTime(tvRowTimeInizio.getText().toString());
+
+	    if (mutableDateTimeFine.getMillis() < dtInizio.getMillis()) {
+		InterventixToast.makeToast("Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
+	    }
+	    else {
+
+		tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN));
+
+		mutableDateTimeFine.add(-dtInizio.getMillis());
+
+		DateTime dt_tot_ore = mutableDateTimeFine.toDateTime();
+
+		tvRowTotOre.setText(dt_tot_ore.toString(Constants.TIME_PATTERN));
+
+		if (!dettaglio.nuovo) {
+		    dettaglio.fine = (mutableDateTimeFine.getMillis());
+		    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		}
+		else {
+		    dettaglio.fine = (mutableDateTimeFine.getMillis());
+
+		    if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		    }
+		}
+	    }
+
+	    calendarDateFinePickerDialog.dismiss();
+
+	    updateUI();
+	}
+
+	return;
     }
 }

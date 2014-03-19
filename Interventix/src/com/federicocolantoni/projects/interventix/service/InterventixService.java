@@ -71,7 +71,7 @@ public class InterventixService extends IntentService {
 	qb.selectColumns();
 
 	try {
-	    qb.where().in("modificato", new Object[] {
+	    qb.where().in(Constants.ORMLITE_MODIFICATO, new Object[] {
 		    Constants.INTERVENTO_MODIFICATO, Constants.INTERVENTO_NUOVO
 	    });
 	    List<Intervento> tuttiInterventi = interventoDao.query(qb.prepare());
@@ -109,8 +109,6 @@ public class InterventixService extends IntentService {
 		    parameters.put("note", intervento.note);
 		    parameters.put("chiuso", Boolean.toString(intervento.chiuso));
 		    parameters.put("firma", intervento.firma);
-
-		    // RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
 
 		    List<DettaglioIntervento> listaDettagli = dettaglioDao.queryForEq("idintervento", intervento.idintervento);
 

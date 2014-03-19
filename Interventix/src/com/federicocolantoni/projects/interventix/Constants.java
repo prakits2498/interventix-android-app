@@ -5,7 +5,7 @@ public final class Constants {
     // *** API key BugSense ***\\
     public static final String API_KEY = "0ec355e8";
 
-    // *** Account Type for AccountManager ***\\
+    // *** Account Type for AccountManager *** \\
     public static final String ACCOUNT_TYPE_INTERVENTIX = "com.multiface.interventix";
     public static final String ACCOUNT_AUTH_TOKEN = "com.multiface.interventix://auth_token";
     public static final String AUTHENTICATOR_TOKEN = "AUTHEHTICATOR_TOKEN";
@@ -15,7 +15,7 @@ public final class Constants {
     public static final String ADDING_NEW_ACCOUNT = "ADDING_NEW_ACCOUNT";
     public static final String AUTHENTICATED = "AUTHENTICATED";
 
-    // *** costanti generali ***\\
+    // *** costanti generali *** \\
     public static final String ACCESS_ALLOWED = "ACCESSO CONSENTITO";
     public static final String ACCESS_DINIED = "ACCESSO NEGATO";
     public static final String PREFERENCES = "com.federicocolantoni.projects.interventix.preferences";
@@ -41,9 +41,17 @@ public final class Constants {
 
     public static final int WHAT_MESSAGE_GET_CLIENTI = -1;
 
+    public static final String ARRAY_DETTAGLI = "ARRAY_DETTAGLI";
+    public static final String HASH_CODE_INTERVENTO_SINGLETON = "HASH_CODE_INTERVENTO_SINGLETON";
+
     public static int contatoreIdNuovoDettaglio = 1;
 
-    // *** costanti per i fragment ***\\
+    // *** costanti per il tempo e le date *** \\
+    public static final String TIME_PATTERN = "HH:mm";
+    public static final String DATE_PATTERN = "dd/MM/yyyy";
+    public static final String TIMEZONE_EUROPE_ROME = "Europe/Rome";
+
+    // *** costanti per i fragment *** \\
     public static final String DETAILS_INTERVENTO_FRAGMENT = "DETAILS_INTERVENTO_FRAGMENT";
     public static final String NEW_DETAIL_INTERVENTO_FRAGMENT = "NEW_DETAIL_INTERVENTO_FRAGMENT";
     public static final String INFO_DETAIL_INTERVENTO_FRAGMENT = "INFO_DETAIL_INTERVENTO_FRAGMENT";
@@ -59,8 +67,9 @@ public final class Constants {
     public static final String ANNOTATIONS_INTERVENTO_FRAGMENT = "ANNOTATIONS_INTERVENTO_FRAGMENT";
     public static final String CLIENT_INTERVENTO_FRAGMENT = "CLIENT_INTERVENTO_FRAGMENT";
     public static final String CALENDAR_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT = "CALENDAR_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT";
+    public static final String TIMER_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT = "TIMER_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT";
 
-    // *** costanti per le dialog ***\\
+    // *** costanti per le dialogs *** \\
     public static final String FIRST_RUN_DIALOG_FRAGMENT = "FIRST_RUN_DIALOG_FRAGMENT";
     public static final String LOGOUT_DIALOG_FRAGMENT = "LOGOUT_DIALOG_FRAGMENT";
     public static final String TIPOLOGIA_DIALOG_FRAGMENT = "TIPOLOGIA_DIALOG_FRAGMENT";
@@ -77,7 +86,7 @@ public final class Constants {
     public static final String OGGETTO_DETTAGLIO_DIALOG_FRAGMENT = "OGGETTO_DETTAGLIO_DIALOG_FRAGMENT";
     public static final String DESCRIZIONE_DETTAGLIO_DIALOG_FRAGMENT = "DESCRIZIONE_DETTAGLIO_DIALOG_FRAGMENT";
 
-    // *** costanti dell'intervento ***\\
+    // *** costanti dell'intervento *** \\
     public static final String INTERVENTO = "INTERVENTO";
     public static final String ID_INTERVENTO = "ID_INTERVENTO";
     public static final String ID_DETTAGLIO_INTERVENTO = "ID_DETTAGLIO_INTERVENTO";
@@ -88,7 +97,7 @@ public final class Constants {
     public static final String LIST_DETAILS_INTERVENTO = "LIST_DETAILS_INTERVENTO";
     public static final double IVA = 0.21;
 
-    // *** costanti per il token delle AsyncQueryHandler ***\\
+    // *** costanti per il token delle AsyncQueryHandler *** \\
     public static final int WRITE_INTERV_TOKEN = 0;
     public static final int WRITE_DETT_INTERV_TOKEN = 1;
     public static final int TOKEN_TIPO_DETTAGLIO = 2;
@@ -111,32 +120,55 @@ public final class Constants {
     public static final int TOKEN_RECUPERO_CLIENTI = 19;
     public static final int TOKEN_INTERVENTO = 20;
 
-    // token per il salvataggio dei dati del singleton
+    // *** token per il salvataggio dei dati del singleton *** \\
     public static final int TOKEN_SAVE_TECNICO = 21;
     public static final int TOKEN_SAVE_CLIENTE = 22;
     public static final int TOKEN_SAVE_DETTAGLIO = 23;
     public static final int TOKEN_SAVE_INTERVENTO = 24;
 
-    public static final String ARRAY_DETTAGLI = "ARRAY_DETTAGLI";
-
-    public static final String HASH_CODE_INTERVENTO_SINGLETON = "HASH_CODE_INTERVENTO_SINGLETON";
-
-    // *** costanti per i dati di login ***\\
+    // *** costanti per i dati di login *** \\
     public static final String LOGIN_DATA = "LOGIN_DATA";
     public static final String USERNAME = "USERNAME";
     public static final String PASSWORD = "PASSWORD";
 
-    // *** costanti per recuperare le informazioni sulle risposte JSON ***\\
+    // *** costanti per recuperare le informazioni sulle risposte JSON *** \\
     public static final String JSON_USERNAME = "username";
     public static final String JSON_PASSWORD = "password";
     public static final String JSON_TYPE = "type";
     public static final String JSON_USER_SECTION = "users";
     public static final String JSON_LOGIN_ACTION = "login";
+    public static final String JSON_INTERVENTIONS_SECTION = "interventions";
+    public static final String JSON_MYSYNCRO_INTERVENTIONS_ACTION = "mysyncro";
     public static final String JSON_RESPONSE = "response";
     public static final String JSON_DATA = "data";
     public static final String JSON_RESPONSE_SUCCESS = "success";
+    public static final String JSON_TECNICIINTERVENTO = "tecniciintervento";
+    public static final String JSON_DETTAGLIINTERVENTO = "dettagliintervento";
+    public static final String JSON_MOD = "mod";
+    public static final String JSON_DEL = "del";
+    public static final String JSON_INTERVENTS = "intervents";
+    public static final String JSON_CLIENTS_SECTION = "clients";
+    public static final String JSON_SYNCRO_CLIENTS_ACTION = "syncro";
+    public static final String JSON_USERS_SECTION = "users";
+    public static final String JSON_SYNCRO_USERS_ACTION = "syncro";
 
-    // *** dati per il buffer ***\\
+    // *** costanti per i nomi delle colonne di ORMLite *** \\
+
+    public static final String ORMLITE_USERNAME = JSON_USERNAME;
+    public static final String ORMLITE_NOME = "nome";
+    public static final String ORMLITE_COGNOME = "cognome";
+    public static final String ORMLITE_IDUTENTE = "idutente";
+    public static final String ORMLITE_NUMERO = "numero";
+    public static final String ORMLITE_DATAORA = "dataora";
+    public static final String ORMLITE_CLIENTE = "cliente";
+    public static final String ORMLITE_CONFLITTO = "conflitto";
+    public static final String ORMLITE_MODIFICATO = "modificato";
+    public static final String ORMLITE_NUOVO = "nuovo";
+    public static final String ORMLITE_TECNICO = "tecnico";
+    public static final String ORMLITE_CHIUSO = "chiuso";
+    public static final String ORMLITE_IDINTERVENTO = "idintervento";
+
+    // *** dati per il buffer *** \\
     public static final String ACTION_GET_INTERVENTI = Interventix.getContext().getPackageName() + "." + BUFFER_TYPE.BUFFER_INTERVENTO.name();
     public static final String ACTION_GET_CLIENTI = Interventix.getContext().getPackageName() + "." + BUFFER_TYPE.BUFFER_CLIENTE.name();
     public static final String ACTION_FINISH_BUFFER = com.federicocolantoni.projects.interventix.Interventix_.getContext().getPackageName() + "." + "BUFFER_FINISH";

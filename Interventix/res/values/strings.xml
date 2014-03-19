@@ -50,6 +50,9 @@
     <string name="oggetto_dett_title">"Inserisci l'oggetto del dettaglio"</string>
     <string name="not_offline_access_title">Accesso offline</string>
     <string name="not_offline_access_message">"Spiacente, ma per l'accesso offline l'account deve essere già registrato sul dispositivo."</string>
+    <string name="new_intervention_added">"Nuovo intervento aggiunto\n con successo!"</string>
+    <string name="intervention_updated">"Intervento %1$d aggiornato\n con successo!"</string>
+    <string name="no_details">"Nessun dettaglio presente"</string>
 
     <!-- Array di stringhe -->
     <string-array name="tipologia_choose">
@@ -176,7 +179,6 @@
     <string name="row_iva">IVA</string>
     <string name="row_totale">Totale</string>
     <string name="content_right_nav">Right Navigation</string>
-    <string name="no_details_interv">Nessun dettaglio</string>
     <string name="add_details_interv">Aggiungi dettaglio</string>
     <string name="interv_mod_title">Intervento modificato!</string>
     <string name="interv_mod_text">Salvare le modifiche?</string>
@@ -189,7 +191,6 @@
     <string name="signature_content_description">immagine firma</string>
     <string name="modify_client">Modifica</string>
     <string name="selected_client_content_description">cliente selezionato</string>
-    <string name="no_details">Nessun dettaglio</string>
 
     <!-- strings for date format -->
     <string name="date_format">dd/MM/yyyy HH:mm</string>

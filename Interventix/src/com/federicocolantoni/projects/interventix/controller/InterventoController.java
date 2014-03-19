@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.widget.Toast;
 
 import com.federicocolantoni.projects.interventix.Constants;
+import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.entity.Cliente;
 import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.entity.Intervento;
@@ -40,19 +41,19 @@ public class InterventoController {
 
 	    if (dettaglioDao.idExists(dettaglio.iddettagliointervento)) {
 
-		System.out.println("insertDB - Dettaglio esistente da aggiornare\n" + dettaglio);
 		dettaglio.modificato = Constants.DETTAGLIO_MODIFICATO;
+
 		dettaglioDao.update(dettaglio);
 	    }
 	    else {
-		System.out.println("insertDB - Dettaglio nuovo da inserire\n" + dettaglio);
+
 		dettaglioDao.create(dettaglio);
 	    }
 	}
 
 	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
-	InterventixToast.makeToast("Nuovo intervento aggiunto\n con successo!", Toast.LENGTH_SHORT);
+	InterventixToast.makeToast(com.federicocolantoni.projects.interventix.Interventix_.getContext().getString(R.string.new_intervention_added), Toast.LENGTH_SHORT);
     }
 
     public static void updateOnDB() {
@@ -73,33 +74,31 @@ public class InterventoController {
 
 	RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
 
-	System.out.println("Lista dettagli da salvare sul DB\n" + InterventoController.controller.getListaDettagli().toString());
-
 	for (DettaglioIntervento dettaglio : InterventoController.controller.getListaDettagli()) {
 
 	    if (dettaglioDao.idExists(dettaglio.iddettagliointervento)) {
 
-		// System.out.println("updateDB - Dettaglio esistente da aggiornare\n"
-		// + dettaglio);
 		dettaglio.modificato = Constants.DETTAGLIO_MODIFICATO;
+
 		int updated = dettaglioDao.update(dettaglio);
 
 		if (updated == 1) {
-		    System.out.println("Dettaglio " + dettaglio.iddettagliointervento + " aggiornato correttamente");
+
 		}
 		else {
-		    System.out.println("Errore durante l'aggiornamento del dettaglio " + dettaglio.iddettagliointervento);
+
 		}
 	    }
 	    else {
-		// System.out.println("updateDB - Dettaglio nuovo da inserire\n"
-		// + dettaglio);
+
 		dettaglioDao.create(dettaglio);
 	    }
 	}
 
 	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
-	InterventixToast.makeToast("Intervento " + InterventoController.controller.getIntervento().numero + " aggiornato\n con successo!", Toast.LENGTH_SHORT);
+	InterventixToast.makeToast(
+		String.format(com.federicocolantoni.projects.interventix.Interventix_.getContext().getString(R.string.intervention_updated), InterventoController.controller.getIntervento().numero),
+		Toast.LENGTH_SHORT);
     }
 }

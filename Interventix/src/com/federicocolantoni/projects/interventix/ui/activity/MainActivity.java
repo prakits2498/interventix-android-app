@@ -44,8 +44,6 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 @EActivity(R.layout.activity_main)
 public class MainActivity extends ActionBarActivity implements OnDateSetListener {
 
-    public static final String ORMLITE_USERNAME = "username";
-
     @ViewById(R.id.tv_changelog)
     TextView tvChangelog;
 
@@ -112,7 +110,7 @@ public class MainActivity extends ActionBarActivity implements OnDateSetListener
 		// passo 4)
 		else {
 
-		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(ORMLITE_USERNAME, account.name).get(0);
+		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.ORMLITE_USERNAME, account.name).get(0);
 
 		    startActivity(new Intent(this, com.federicocolantoni.projects.interventix.ui.activity.HomeActivity_.class));
 		}

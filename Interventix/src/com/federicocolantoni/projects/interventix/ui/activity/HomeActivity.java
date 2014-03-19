@@ -61,6 +61,7 @@ import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.entity.Intervento;
 import com.federicocolantoni.projects.interventix.entity.Utente;
 import com.federicocolantoni.projects.interventix.utils.BigDecimalTypeAdapter;
+import com.federicocolantoni.projects.interventix.utils.CheckConnection;
 import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.federicocolantoni.projects.interventix.utils.ManagedAsyncTask;
 import com.google.gson.ExclusionStrategy;
@@ -149,11 +150,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	globalPrefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 
-	// utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
-
-	UtenteController.tecnicoLoggato = utenteDao.queryForEq(MainActivity.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
-
-	// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+	UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
     }
 
     @Override
@@ -166,15 +163,6 @@ public class HomeActivity extends ActionBarActivity {
 	InterventoController.controller = null;
 
 	registerReceiver(receiverBufferFinish, new IntentFilter(Constants.ACTION_FINISH_BUFFER));
-
-	try {
-	    getUsersSyncro();
-	}
-	catch (Exception e) {
-
-	    e.printStackTrace();
-	    BugSenseHandler.sendException(e);
-	}
 
 	listOpen = (ListView) findViewById(R.id.list_interv_open);
 
@@ -195,34 +183,43 @@ public class HomeActivity extends ActionBarActivity {
 	    }
 	});
 
-	// RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
-	//
-	// QueryBuilder<Intervento, Long> qb = interventoDao.queryBuilder();
-	//
-	// qb.selectColumns(new String[] {
-	// "numero", "dataora", "cliente", "conflitto", "modificato", "nuovo"
-	// });
-	//
-	// try {
-	// qb.where().eq("tecnico", UtenteController.tecnicoLoggato.idutente).and().eq("chiuso", false);
-	// List<Intervento> listaInterventiAperti = interventoDao.query(qb.prepare());
-	//
-	// adapter = new ListInterventiAdapter(listaInterventiAperti);
-	//
-	// animationAdapter = new SwingBottomInAnimationAdapter(adapter, 500, 1500);
-	// animationAdapter.setAbsListView(listOpen);
-	//
-	// listOpen.setAdapter(animationAdapter);
-	//
-	// animationAdapter.notifyDataSetChanged();
-	// }
-	// catch (SQLException e) {
-	//
-	// e.printStackTrace();
-	// BugSenseHandler.sendException(e);
-	// }
-	//
-	// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+	if (CheckConnection.connectionIsAlive()) {
+	    try {
+		getUsersSyncro();
+	    }
+	    catch (Exception e) {
+
+		e.printStackTrace();
+		BugSenseHandler.sendException(e);
+	    }
+	}
+	else {
+
+	    QueryBuilder<Intervento, Long> qb = interventoDao.queryBuilder();
+
+	    qb.selectColumns(new String[] {
+		    Constants.ORMLITE_NUMERO, Constants.ORMLITE_DATAORA, Constants.ORMLITE_CLIENTE, Constants.ORMLITE_CONFLITTO, Constants.ORMLITE_MODIFICATO, Constants.ORMLITE_NUOVO
+	    });
+
+	    try {
+		qb.where().eq(Constants.ORMLITE_TECNICO, UtenteController.tecnicoLoggato.idutente).and().eq(Constants.ORMLITE_CHIUSO, false);
+		List<Intervento> listaInterventiAperti = interventoDao.query(qb.prepare());
+
+		adapter = new ListInterventiAdapter(listaInterventiAperti);
+
+		animationAdapter = new SwingBottomInAnimationAdapter(adapter, 500, 1500);
+		animationAdapter.setAbsListView(listOpen);
+
+		listOpen.setAdapter(animationAdapter);
+
+		animationAdapter.notifyDataSetChanged();
+	    }
+	    catch (SQLException e) {
+
+		e.printStackTrace();
+		BugSenseHandler.sendException(e);
+	    }
+	}
     }
 
     @Override
@@ -327,9 +324,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
-	UtenteController.tecnicoLoggato = utenteDao.queryForEq(MainActivity_.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
-
-	// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+	UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
     }
 
     private void setRefreshActionButtonState(final boolean refreshing) {
@@ -367,10 +362,9 @@ public class HomeActivity extends ActionBarActivity {
 	setRefreshActionButtonState(true);
 
 	Map<String, Object> parameters = new HashMap<String, Object>();
-	// parameters.put("revision", UtenteController.revisioneUtenti);
 	parameters.put(REVISION, globalPrefs.getLong(Constants.REVISION_TECNICI, 0L));
 
-	String jsonReq = JsonCR2.createRequest("users", "syncro", parameters, UtenteController.tecnicoLoggato.idutente.intValue());
+	String jsonReq = JsonCR2.createRequest(Constants.JSON_USERS_SECTION, Constants.JSON_SYNCRO_USERS_ACTION, parameters, UtenteController.tecnicoLoggato.idutente.intValue());
 
 	RequestQueue requestQueue = Volley.newRequestQueue(this);
 
@@ -427,19 +421,15 @@ public class HomeActivity extends ActionBarActivity {
 
 		try {
 
-		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
-			JSONObject data = response.getJSONObject("data");
-
-			// UtenteController.revisioneUtenti = data.getLong(REVISION);
+		    if (response != null && response.getString(Constants.JSON_RESPONSE).equalsIgnoreCase(Constants.JSON_RESPONSE_SUCCESS)) {
+			JSONObject data = response.getJSONObject(Constants.JSON_DATA);
 
 			globalPrefs.edit().putLong(Constants.REVISION_TECNICI, data.getLong(REVISION)).commit();
 
-			JSONArray usersMOD = data.getJSONArray("mod");
-			JSONArray usersDEL = data.getJSONArray("del");
+			JSONArray usersMOD = data.getJSONArray(Constants.JSON_MOD);
+			JSONArray usersDEL = data.getJSONArray(Constants.JSON_DEL);
 
 			Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-
-			// utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
 
 			for (int i = 0; i < usersMOD.length(); i++) {
 
@@ -492,8 +482,6 @@ public class HomeActivity extends ActionBarActivity {
 
 		    InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
 
-		    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
-
 		    setRefreshActionButtonState(false);
 		}
 	    }
@@ -505,10 +493,9 @@ public class HomeActivity extends ActionBarActivity {
 	String jsonReq = new String();
 
 	Map<String, Object> parameters = new HashMap<String, Object>();
-	// parameters.put(REVISION, ClienteController.revisioneClienti);
 	parameters.put(REVISION, globalPrefs.getLong(Constants.REVISION_CLIENTI, 0L));
 
-	jsonReq = JsonCR2.createRequest("clients", "syncro", parameters, UtenteController.tecnicoLoggato.idutente.intValue());
+	jsonReq = JsonCR2.createRequest(Constants.JSON_CLIENTS_SECTION, Constants.JSON_SYNCRO_CLIENTS_ACTION, parameters, UtenteController.tecnicoLoggato.idutente.intValue());
 
 	RequestQueue requestQueue = Volley.newRequestQueue(this);
 
@@ -566,17 +553,13 @@ public class HomeActivity extends ActionBarActivity {
 
 		try {
 
-		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
-			JSONObject data = response.getJSONObject("data");
-
-			// ClienteController.revisioneClienti = data.getLong(REVISION);
+		    if (response != null && response.getString(Constants.JSON_RESPONSE).equalsIgnoreCase(Constants.JSON_RESPONSE_SUCCESS)) {
+			JSONObject data = response.getJSONObject(Constants.JSON_DATA);
 
 			globalPrefs.edit().putLong(Constants.REVISION_CLIENTI, data.getLong(REVISION)).commit();
 
-			// clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
-
-			JSONArray clientsMOD = data.getJSONArray("mod");
-			JSONArray clientsDEL = data.getJSONArray("del");
+			JSONArray clientsMOD = data.getJSONArray(Constants.JSON_MOD);
+			JSONArray clientsDEL = data.getJSONArray(Constants.JSON_DEL);
 
 			Gson gson = new GsonBuilder().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
@@ -627,8 +610,6 @@ public class HomeActivity extends ActionBarActivity {
 
 		    InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
 
-		    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
-
 		    setRefreshActionButtonState(false);
 		}
 	    }
@@ -640,10 +621,9 @@ public class HomeActivity extends ActionBarActivity {
 	String jsonReq = new String();
 
 	Map<String, Object> parameters = new HashMap<String, Object>();
-	// parameters.put(REVISION, InterventoController.revisioneInterventi);
 	parameters.put(REVISION, globalPrefs.getLong(Constants.REVISION_INTERVENTI, 0L));
 
-	jsonReq = JsonCR2.createRequest("interventions", "mysyncro", parameters, UtenteController.tecnicoLoggato.idutente.intValue());
+	jsonReq = JsonCR2.createRequest(Constants.JSON_INTERVENTIONS_SECTION, Constants.JSON_MYSYNCRO_INTERVENTIONS_ACTION, parameters, UtenteController.tecnicoLoggato.idutente.intValue());
 
 	RequestQueue requestQueue = Volley.newRequestQueue(this);
 
@@ -700,19 +680,15 @@ public class HomeActivity extends ActionBarActivity {
 
 		try {
 
-		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
+		    if (response != null && response.getString(Constants.JSON_RESPONSE).equalsIgnoreCase(Constants.JSON_RESPONSE_SUCCESS)) {
 
-			JSONObject data = response.getJSONObject("data");
-
-			// InterventoController.revisioneInterventi = data.getLong(REVISION);
+			JSONObject data = response.getJSONObject(Constants.JSON_DATA);
 
 			globalPrefs.edit().putLong(Constants.REVISION_INTERVENTI, data.getLong(REVISION)).commit();
 
-			// interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
-
-			JSONArray intervMOD = data.getJSONArray("mod");
-			JSONArray intervDEL = data.getJSONArray("del");
-			JSONArray interventions = data.getJSONArray("intervents");
+			JSONArray intervMOD = data.getJSONArray(Constants.JSON_MOD);
+			JSONArray intervDEL = data.getJSONArray(Constants.JSON_DEL);
+			JSONArray interventions = data.getJSONArray(Constants.JSON_INTERVENTS);
 
 			if (intervMOD.length() > 0)
 			    for (int i = 0; i < intervMOD.length(); ++i) {
@@ -786,16 +762,14 @@ public class HomeActivity extends ActionBarActivity {
 			}
 		    }
 
-		    // dettaglioInterventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
-
-		    JSONArray dettagli_intervento = responseIntervs.getJSONArray("dettagliintervento");
+		    JSONArray dettagli_intervento = responseIntervs.getJSONArray(Constants.JSON_DETTAGLIINTERVENTO);
 
 		    Gson gsonDettagli = new GsonBuilder().serializeNulls().setExclusionStrategies(new ExclusionStrategy() {
 
 			@Override
 			public boolean shouldSkipField(FieldAttributes f) {
 
-			    if (f.getName().equals("tecniciintervento"))
+			    if (f.getName().equals(Constants.JSON_TECNICIINTERVENTO))
 				return true;
 			    else
 				return false;
@@ -816,7 +790,7 @@ public class HomeActivity extends ActionBarActivity {
 
 			JsonObject jo = (JsonObject) parser.parse(newDettInterv.toString());
 
-			JsonArray tecnici = jo.getAsJsonArray("tecniciintervento");
+			JsonArray tecnici = jo.getAsJsonArray(Constants.JSON_TECNICIINTERVENTO);
 
 			DettaglioIntervento dtInt = gsonDettagli.fromJson(newDettInterv.toString(), DettaglioIntervento.class);
 
@@ -834,7 +808,7 @@ public class HomeActivity extends ActionBarActivity {
 			    DettaglioIntervento dettExists = dettaglioInterventoDao.queryForId(dtInt.iddettagliointervento);
 
 			    if (dettExists.modificato.equals(Constants.DETTAGLIO_MODIFICATO) || dettExists.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
-				System.out.println("Il dettaglio " + dettExists.iddettagliointervento + " non necessita di nessuna sincronizzazione");
+				// System.out.println("Il dettaglio " + dettExists.iddettagliointervento + " non necessita di nessuna sincronizzazione");
 			    }
 			    else {
 				dtInt.idintervento = (intervento.idintervento);
@@ -860,15 +834,9 @@ public class HomeActivity extends ActionBarActivity {
 
 		    InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
 
-		    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
-
 		    setRefreshActionButtonState(false);
 		}
 		else {
-
-		    // setRefreshActionButtonState(false);
-
-		    // new ReadListInterventions().execute();
 
 		    HomeActivity.this.runOnUiThread(new Runnable() {
 
@@ -890,11 +858,11 @@ public class HomeActivity extends ActionBarActivity {
 	qb = interventoDao.queryBuilder();
 
 	qb.selectColumns(new String[] {
-		"numero", "dataora", "cliente", "conflitto", "modificato", "nuovo"
+		Constants.ORMLITE_NUMERO, Constants.ORMLITE_DATAORA, Constants.ORMLITE_CLIENTE, Constants.ORMLITE_CONFLITTO, Constants.ORMLITE_MODIFICATO, Constants.ORMLITE_NUOVO
 	});
 
 	try {
-	    qb.where().eq("tecnico", UtenteController.tecnicoLoggato.idutente).and().eq("chiuso", false);
+	    qb.where().eq(Constants.ORMLITE_TECNICO, UtenteController.tecnicoLoggato.idutente).and().eq(Constants.ORMLITE_CHIUSO, false);
 	}
 	catch (SQLException e) {
 
@@ -906,7 +874,6 @@ public class HomeActivity extends ActionBarActivity {
 
 	try {
 	    listaInterventiAperti = interventoDao.query(qb.prepare());
-	    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 	}
 	catch (SQLException e) {
 
