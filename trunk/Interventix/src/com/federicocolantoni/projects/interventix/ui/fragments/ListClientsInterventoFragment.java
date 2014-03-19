@@ -74,15 +74,10 @@ public class ListClientsInterventoFragment extends Fragment {
 	    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 
 		if (!ListClientiAdapter.blockClick) {
-		    // mAdapter.toggleChecked(position);
 
 		    mAdapter.selectItem(position);
 
-		    // RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
-
 		    Cliente clChecked = clienteDao.queryForSameId(mAdapter.getItem(position));
-
-		    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		    InterventoController.controller.setCliente(clChecked);
 		    InterventoController.controller.getIntervento().cliente = (clChecked.idcliente);
@@ -169,8 +164,6 @@ public class ListClientsInterventoFragment extends Fragment {
     public void onResume() {
 
 	super.onResume();
-
-	// RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
 	InterventoController.listaClienti = (ArrayList<Cliente>) clienteDao.queryForAll();
 

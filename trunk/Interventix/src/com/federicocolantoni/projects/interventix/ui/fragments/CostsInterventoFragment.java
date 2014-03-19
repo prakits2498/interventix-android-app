@@ -132,22 +132,13 @@ public class CostsInterventoFragment extends Fragment {
 	switch (item.getItemId()) {
 	    case R.id.pay:
 
-		// InterventixToast.makeToast("Saldare l'intervento?",
-		// Toast.LENGTH_SHORT);
-
 		break;
 
 	    case R.id.send_mail:
 
-		// InterventixToast.makeToast("Inviare email?",
-		// Toast.LENGTH_SHORT);
-
 		break;
 
 	    case R.id.close:
-
-		// InterventixToast.makeToast("Chiudere l'intervento?",
-		// Toast.LENGTH_SHORT);
 
 		break;
 	}

@@ -70,19 +70,13 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	getSupportActionBar().setHomeButtonEnabled(true);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-	// RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
-
 	InterventoController.listaClienti = (ArrayList<Cliente>) clienteDao.queryForAll();
-
-	// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 
     @Override
     protected void onStart() {
 
 	super.onStart();
-
-	System.out.println(this.getClass().getSimpleName() + " - onStart()");
 
 	Bundle extras = getIntent().getExtras();
 
@@ -100,25 +94,15 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 	    InterventoController.controller = InterventoSingleton.getInstance();
 
-	    // interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
-
 	    InterventoController.controller.setIntervento(interventoDao.queryForId(intervento.idintervento));
-
-	    // clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
 
 	    InterventoController.controller.setCliente(clienteDao.queryForId(intervento.cliente));
 
-	    // dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
-
-	    InterventoController.controller.setListaDettagli(dettaglioDao.queryForEq("idintervento", intervento.idintervento));
+	    InterventoController.controller.setListaDettagli(dettaglioDao.queryForEq(Constants.ORMLITE_IDINTERVENTO, intervento.idintervento));
 
 	    System.out.println("Lista dettagli caricata dal DB\n" + InterventoController.controller.getListaDettagli().toString());
 
-	    // utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
-
 	    InterventoController.controller.setTecnico(utenteDao.queryForId(InterventoController.controller.getIntervento().tecnico));
-
-	    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 	    if (manager.getBackStackEntryCount() == 0) {
 		com.federicocolantoni.projects.interventix.ui.fragments.OverViewInterventoFragment_ overView =
@@ -136,12 +120,10 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 	    InterventoController.controller = InterventoSingleton.getInstance();
 
-	    // RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
-
-	    long maxNumero = interventoDao.queryRawValue("select max(numero) from Interventi");
+	    long maxNumero = interventoDao.queryRawValue("select max(" + Constants.ORMLITE_NUMERO + ") from Interventi");
 
 	    try {
-		Intervento foo = interventoDao.queryBuilder().where().eq("numero", maxNumero).queryForFirst();
+		Intervento foo = interventoDao.queryBuilder().where().eq(Constants.ORMLITE_NUMERO, maxNumero).queryForFirst();
 
 		InterventoController.controller.getIntervento().numero = foo.numero + 1;
 	    }
@@ -150,10 +132,10 @@ public class ViewInterventoActivity extends ActionBarActivity {
 		e.printStackTrace();
 	    }
 
-	    long maxId = interventoDao.queryRawValue("select max(idintervento) from Interventi");
+	    long maxId = interventoDao.queryRawValue("select max(" + Constants.ORMLITE_IDINTERVENTO + ") from Interventi");
 
 	    try {
-		Intervento foo = interventoDao.queryBuilder().where().eq("idintervento", maxId).queryForFirst();
+		Intervento foo = interventoDao.queryBuilder().where().eq(Constants.ORMLITE_IDINTERVENTO, maxId).queryForFirst();
 
 		InterventoController.controller.getIntervento().idintervento = foo.idintervento + 1;
 	    }
@@ -161,8 +143,6 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 		e.printStackTrace();
 	    }
-
-	    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 	    InterventoController.controller.getIntervento().dataora = new DateTime().getMillis();
 	    InterventoController.controller.getIntervento().nuovo = true;

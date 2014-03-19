@@ -269,11 +269,7 @@ public class Login extends Fragment {
 			    accountManager.setPassword(account, encryptedPassword);
 			    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
-			    // RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
-
 			    UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.JSON_USERNAME, username.getText().toString()).get(0);
-
-			    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 			    break;
 			}
@@ -300,8 +296,6 @@ public class Login extends Fragment {
 
 	    Utente utente = gson.fromJson(data.toString(), Utente.class);
 
-	    // RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
-
 	    if (!utenteDao.idExists(utente.idutente))
 		utenteDao.create(utente);
 	    else {
@@ -313,8 +307,6 @@ public class Login extends Fragment {
 	    }
 
 	    UtenteController.tecnicoLoggato = utente;
-
-	    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 	    addAccountAndStartActivity();
 	}
@@ -366,11 +358,7 @@ public class Login extends Fragment {
 		    accountManager.setPassword(account, password.getText().toString());
 		    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
-		    // RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeUtenteDao();
-
-		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(com.federicocolantoni.projects.interventix.ui.activity.MainActivity_.ORMLITE_USERNAME, username.getText().toString()).get(0);
-
-		    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.ORMLITE_USERNAME, username.getText().toString()).get(0);
 
 		    break;
 		}

@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.ScrollView;
 
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
@@ -27,9 +26,6 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 public class ClientInterventoFragment extends Fragment {
 
     private Cliente cliente;
-
-    @ViewById(R.id.scroll_client)
-    ScrollView scrollClient;
 
     @ViewById(R.id.tv_nomin_client)
     EditText editNominativoCliente;
@@ -91,11 +87,7 @@ public class ClientInterventoFragment extends Fragment {
 
 	Bundle args = getArguments();
 
-	// RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
-
 	cliente = clienteDao.queryForId(args.getLong(Constants.CLIENTE));
-
-	// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 	editCittaCliente.setText(cliente.citta);
 	editCodFisCliente.setText(cliente.codicefiscale);
@@ -146,12 +138,8 @@ public class ClientInterventoFragment extends Fragment {
 		cliente.telefono = editTelefonoCliente.getText().toString();
 		cliente.ufficio = editUfficioCliente.getText().toString();
 
-		// RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeClienteDao();
-
 		clienteDao.update(cliente);
 		InterventoController.listaClienti = (ArrayList<Cliente>) clienteDao.queryForAll();
-
-		// com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
 
 		FragmentManager manager = getActivity().getSupportFragmentManager();
 

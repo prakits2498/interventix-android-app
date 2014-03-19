@@ -149,22 +149,13 @@ public class ListDetailsInterventoFragment extends Fragment implements OnDismiss
 
 	    case R.id.pay:
 
-		// InterventixToast.makeToast("Saldare l'intervento?",
-		// Toast.LENGTH_SHORT);
-
 		break;
 
 	    case R.id.send_mail:
 
-		// InterventixToast.makeToast("Inviare email?",
-		// Toast.LENGTH_SHORT);
-
 		break;
 
 	    case R.id.close:
-
-		// InterventixToast.makeToast("Chiudere l'intervento?",
-		// Toast.LENGTH_SHORT);
 
 		break;
 	}
@@ -181,14 +172,12 @@ public class ListDetailsInterventoFragment extends Fragment implements OnDismiss
 
 	    InterventoController.controller.getListaDettagli().remove(position);
 
-	    // RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
-
 	    dettaglioDao.delete(dettaglio);
 	}
 
 	if (InterventoController.controller.getListaDettagli().size() == 0) {
 	    layoutListDetails.setVisibility(View.INVISIBLE);
-	    noDetails.setText("Nessun dettaglio presente");
+	    noDetails.setText(R.string.no_details);
 	    noDetails.setVisibility(View.VISIBLE);
 	}
     }

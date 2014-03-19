@@ -68,7 +68,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 	    MenuInflater inflater = mode.getMenuInflater();
 	    inflater.inflate(R.menu.context_menu_signature, menu);
 
-	    mode.setTitle("Opzioni");
+	    mode.setTitle(R.string.menu_settings);
 
 	    return true;
 	}
