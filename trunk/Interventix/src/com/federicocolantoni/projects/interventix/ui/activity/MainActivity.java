@@ -4,6 +4,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
+import org.joda.time.DateTime;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -25,19 +26,23 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
+import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog.OnDateSetListener;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.UtenteController;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.entity.Utente;
 import com.federicocolantoni.projects.interventix.utils.ChangeLogDialog;
+import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 @SuppressLint("NewApi")
 @EActivity(R.layout.activity_main)
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements OnDateSetListener {
 
     public static final String ORMLITE_USERNAME = "username";
 
@@ -162,6 +167,15 @@ public class MainActivity extends ActionBarActivity {
 	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 
+    public void showPicker(View view) {
+
+	FragmentManager fm = getSupportFragmentManager();
+	DateTime now = DateTime.now();
+	CalendarDatePickerDialog calendarDatePickerDialog = CalendarDatePickerDialog.newInstance(this, now.getYear(), now.getMonthOfYear() - 1, now.getDayOfMonth());
+	calendarDatePickerDialog.setYearRange(1970, 3000);
+	calendarDatePickerDialog.show(fm, "fragment_date_picker_name");
+    }
+
     public static class FirstRunDialog extends DialogFragment implements OnClickListener {
 
 	private Button btn_ok;
@@ -200,5 +214,11 @@ public class MainActivity extends ActionBarActivity {
 		    break;
 	    }
 	}
+    }
+
+    @Override
+    public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+
+	InterventixToast.makeToast("Year: " + year + "\nMonth: " + monthOfYear + "\nDay: " + dayOfMonth, Toast.LENGTH_LONG);
     }
 }
