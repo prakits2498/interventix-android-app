@@ -3,8 +3,8 @@ package com.federicocolantoni.projects.interventix.ui.fragments;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.MutableDateTime;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,19 +21,20 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog.OnDateSetListener;
+import com.doomonafireball.betterpickers.radialtimepicker.RadialPickerLayout;
+import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog;
+import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog.OnTimeSetListener;
 import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.controller.InterventoController;
-import com.federicocolantoni.projects.interventix.utils.InterventixToast;
 import com.qustom.dialog.QustomDialogBuilder;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_informations)
-public class InformationsInterventoFragment extends Fragment implements OnDateSetListener {
+public class InformationsInterventoFragment extends Fragment implements OnDateSetListener, OnTimeSetListener {
 
     @ViewById(R.id.tv_row_tipology)
     TextView tvTipology;
@@ -49,11 +51,14 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
     @ViewById(R.id.tv_row_name)
     TextView tvNominativo;
 
-    @ViewById(R.id.row_date)
-    View dateInterv;
+    // @ViewById(R.id.row_date)
+    // View dateInterv;
 
     @ViewById(R.id.tv_row_date)
     TextView tvDateInterv;
+
+    @ViewById(R.id.tv_row_time)
+    TextView tvTimeInterv;
 
     @ViewById(R.id.row_references)
     LinearLayout rowReferences;
@@ -63,12 +68,16 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
     private FragmentManager manager;
 
+    private MutableDateTime mutableDateTime;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
 	super.onCreate(savedInstanceState);
 
 	setHasOptionsMenu(true);
+
+	mutableDateTime = new MutableDateTime(DateTimeZone.forID("Europe/Rome"));
     }
 
     @Override
@@ -84,103 +93,128 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 	else
 	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_informations));
 
-	dateInterv.setOnClickListener(new View.OnClickListener() {
+	// tvTimeInterv.setOnClickListener(new View.OnClickListener() {
+	//
+	// @Override
+	// public void onClick(View v) {
+	//
+	// RadialTimePickerDialog timePickerDialog =
+	// RadialTimePickerDialog.newInstance(InformationsInterventoFragment.this, mutableDateTime.getHourOfDay(), mutableDateTime.getMinuteOfHour(),
+	// DateFormat.is24HourFormat(getActivity()));
+	// timePickerDialog.onCancel(new DialogInterface() {
+	//
+	// @Override
+	// public void dismiss() {
+	//
+	// }
+	//
+	// @Override
+	// public void cancel() {
+	//
+	// mutableDateTime.setTime(InterventoController.controller.getIntervento().dataora);
+	//
+	// tvTimeInterv.setText(mutableDateTime.toString("HH:mm"));
+	// }
+	// });
+	// timePickerDialog.show(manager, "fragment_time_picker_name");
+	// }
+	// });
 
-	    @Override
-	    public void onClick(View v) {
-
-		DateTime now = DateTime.now();
-
-		CalendarDatePickerDialog calendarDatePickerDialog =
-			CalendarDatePickerDialog.newInstance(InformationsInterventoFragment.this, now.getYear(), now.getMonthOfYear() - 1, now.getDayOfMonth());
-		calendarDatePickerDialog.setYearRange(1970, 3000);
-		calendarDatePickerDialog.onCancel(new DialogInterface() {
-
-		    @Override
-		    public void dismiss() {
-
-		    }
-
-		    @Override
-		    public void cancel() {
-
-			DateTime dt = new DateTime(InterventoController.controller.getIntervento().dataora, DateTimeZone.forID("Europe/Rome"));
-
-			tvDateInterv.setText(dt.toString("dd/MM/yyyy HH:mm"));
-		    }
-		});
-		calendarDatePickerDialog.show(manager, Constants.CALENDAR_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
-
-		// final Dialog dateTimeDialog = new Dialog(getActivity());
-		//
-		// final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.dialog_date_time, null);
-		//
-		// final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
-		//
-		// DateTime dt = null;
-		//
-		// dt = DateTime.parse(tv_date_interv.getText().toString(), DateTimeFormat.forPattern("dd/MM/yyyy HH:mm"));
-		//
-		// dateTimePicker.setDateTime(dt);
-		//
-		// dateTimePicker.setDateChangedListener(new DateWatcher() {
-		//
-		// @Override
-		// public void onDateChanged(Calendar c) {
-		//
-		// }
-		// });
-		//
-		// ((Button) dateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		//
-		// dateTimePicker.clearFocus();
-		//
-		// DateTime dt =
-		// new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone
-		// .forID("Europe/Rome"));
-		//
-		// tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
-		//
-		// InterventoController.controller.getIntervento().dataora = (dt.toDate().getTime());
-		//
-		// dateTimeDialog.dismiss();
-		// }
-		// });
-		//
-		// ((Button) dateTimeDialogView.findViewById(R.id.CancelDialog)).setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		//
-		// dateTimeDialog.cancel();
-		// }
-		// });
-		//
-		// ((Button) dateTimeDialogView.findViewById(R.id.ResetDateTime)).setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		//
-		// DateTime dt = null;
-		//
-		// DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
-		// fmt.withZone(DateTimeZone.forID("Europe/Rome"));
-		//
-		// dt = fmt.parseDateTime(tv_date_interv.getText().toString());
-		//
-		// dateTimePicker.setDateTime(dt);
-		// }
-		// });
-		//
-		// dateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// dateTimeDialog.setContentView(dateTimeDialogView);
-		// dateTimeDialog.setCancelable(false);
-		// dateTimeDialog.show();
-	    }
-	});
+	// tvDateInterv.setOnClickListener(new View.OnClickListener() {
+	//
+	// @Override
+	// public void onClick(View v) {
+	//
+	// CalendarDatePickerDialog calendarDatePickerDialog =
+	// CalendarDatePickerDialog.newInstance(InformationsInterventoFragment.this, mutableDateTime.getYear(), mutableDateTime.getMonthOfYear() - 1, mutableDateTime.getDayOfMonth());
+	// calendarDatePickerDialog.setYearRange(1970, 3000);
+	// calendarDatePickerDialog.onCancel(new DialogInterface() {
+	//
+	// @Override
+	// public void dismiss() {
+	//
+	// }
+	//
+	// @Override
+	// public void cancel() {
+	//
+	// mutableDateTime.setDate(InterventoController.controller.getIntervento().dataora);
+	//
+	// tvDateInterv.setText(mutableDateTime.toString("dd/MM/yyyy"));
+	// }
+	// });
+	// calendarDatePickerDialog.show(manager, Constants.CALENDAR_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
+	//
+	// // final Dialog dateTimeDialog = new Dialog(getActivity());
+	// //
+	// // final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.dialog_date_time, null);
+	// //
+	// // final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
+	// //
+	// // DateTime dt = null;
+	// //
+	// // dt = DateTime.parse(tv_date_interv.getText().toString(), DateTimeFormat.forPattern("dd/MM/yyyy HH:mm"));
+	// //
+	// // dateTimePicker.setDateTime(dt);
+	// //
+	// // dateTimePicker.setDateChangedListener(new DateWatcher() {
+	// //
+	// // @Override
+	// // public void onDateChanged(Calendar c) {
+	// //
+	// // }
+	// // });
+	// //
+	// // ((Button) dateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
+	// //
+	// // @Override
+	// // public void onClick(View v) {
+	// //
+	// // dateTimePicker.clearFocus();
+	// //
+	// // DateTime dt =
+	// // new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone
+	// // .forID("Europe/Rome"));
+	// //
+	// // tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
+	// //
+	// // InterventoController.controller.getIntervento().dataora = (dt.toDate().getTime());
+	// //
+	// // dateTimeDialog.dismiss();
+	// // }
+	// // });
+	// //
+	// // ((Button) dateTimeDialogView.findViewById(R.id.CancelDialog)).setOnClickListener(new View.OnClickListener() {
+	// //
+	// // @Override
+	// // public void onClick(View v) {
+	// //
+	// // dateTimeDialog.cancel();
+	// // }
+	// // });
+	// //
+	// // ((Button) dateTimeDialogView.findViewById(R.id.ResetDateTime)).setOnClickListener(new View.OnClickListener() {
+	// //
+	// // @Override
+	// // public void onClick(View v) {
+	// //
+	// // DateTime dt = null;
+	// //
+	// // DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
+	// // fmt.withZone(DateTimeZone.forID("Europe/Rome"));
+	// //
+	// // dt = fmt.parseDateTime(tv_date_interv.getText().toString());
+	// //
+	// // dateTimePicker.setDateTime(dt);
+	// // }
+	// // });
+	// //
+	// // dateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	// // dateTimeDialog.setContentView(dateTimeDialogView);
+	// // dateTimeDialog.setCancelable(false);
+	// // dateTimeDialog.show();
+	// }
+	// });
     }
 
     @Override
@@ -203,9 +237,13 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
 	tvNominativo.setText(InterventoController.controller.getIntervento().nominativo);
 
-	DateTime dt = new DateTime(InterventoController.controller.getIntervento().dataora, DateTimeZone.forID("Europe/Rome"));
+	mutableDateTime =
+		new MutableDateTime(InterventoController.controller.getIntervento().dataora != 0 ? InterventoController.controller.getIntervento().dataora : new MutableDateTime(),
+			DateTimeZone.forID("Europe/Rome"));
 
-	tvDateInterv.setText(dt.toString("dd/MM/yyyy HH:mm"));
+	tvDateInterv.setText(mutableDateTime.toString("dd/MM/yyyy"));
+
+	tvTimeInterv.setText(mutableDateTime.toString("HH:mm"));
     }
 
     @Override
@@ -227,22 +265,13 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 	switch (item.getItemId()) {
 	    case R.id.pay:
 
-		// InterventixToast.makeToast("Saldare l'intervento?",
-		// Toast.LENGTH_SHORT);
-
 		break;
 
 	    case R.id.send_mail:
 
-		// InterventixToast.makeToast("Inviare email?",
-		// Toast.LENGTH_SHORT);
-
 		break;
 
 	    case R.id.close:
-
-		// InterventixToast.makeToast("Chiudere l'intervento?",
-		// Toast.LENGTH_SHORT);
 
 		break;
 	}
@@ -448,17 +477,73 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 	transaction.commit();
     }
 
+    public void showDatePicker(View view) {
+
+	CalendarDatePickerDialog calendarDatePickerDialog =
+		CalendarDatePickerDialog.newInstance(InformationsInterventoFragment.this, mutableDateTime.getYear(), mutableDateTime.getMonthOfYear() - 1, mutableDateTime.getDayOfMonth());
+	calendarDatePickerDialog.setYearRange(1970, 3000);
+	calendarDatePickerDialog.onCancel(new DialogInterface() {
+
+	    @Override
+	    public void dismiss() {
+
+	    }
+
+	    @Override
+	    public void cancel() {
+
+		mutableDateTime.setDate(InterventoController.controller.getIntervento().dataora);
+
+		tvDateInterv.setText(mutableDateTime.toString("dd/MM/yyyy"));
+	    }
+	});
+	calendarDatePickerDialog.show(manager, Constants.CALENDAR_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
+    }
+
+    public void showTimePicker(View view) {
+
+	RadialTimePickerDialog timePickerDialog =
+		RadialTimePickerDialog.newInstance(InformationsInterventoFragment.this, mutableDateTime.getHourOfDay(), mutableDateTime.getMinuteOfHour(), DateFormat.is24HourFormat(getActivity()));
+	timePickerDialog.onCancel(new DialogInterface() {
+
+	    @Override
+	    public void dismiss() {
+
+	    }
+
+	    @Override
+	    public void cancel() {
+
+		mutableDateTime.setTime(InterventoController.controller.getIntervento().dataora);
+
+		tvTimeInterv.setText(mutableDateTime.toString("HH:mm"));
+	    }
+	});
+	timePickerDialog.show(manager, "fragment_time_picker_name");
+    }
+
     @Override
     public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
 
-	InterventixToast.makeToast(dayOfMonth + "/" + monthOfYear + "/" + year, Toast.LENGTH_LONG);
+	mutableDateTime.setYear(year);
+	mutableDateTime.setMonthOfYear(monthOfYear);
+	mutableDateTime.setDayOfMonth(dayOfMonth);
 
-	DateTime dt = new DateTime(year, monthOfYear, dayOfMonth, DateTime.now().getHourOfDay(), DateTime.now().getMinuteOfHour(), DateTimeZone.forID("Europe/Rome"));
+	tvDateInterv.setText(mutableDateTime.toString("dd/MM/yyyy"));
 
-	tvDateInterv.setText(dt.toString("dd/MM/yyyy HH:mm"));
-
-	InterventoController.controller.getIntervento().dataora = (dt.toDate().getTime());
+	InterventoController.controller.getIntervento().dataora = (mutableDateTime.getMillis());
 
 	dialog.dismiss();
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+
+	mutableDateTime.setHourOfDay(hourOfDay);
+	mutableDateTime.setMinuteOfHour(minute);
+
+	tvTimeInterv.setText(mutableDateTime.toString("HH:mm"));
+
+	InterventoController.controller.getIntervento().dataora = (mutableDateTime.getMillis());
     }
 }
