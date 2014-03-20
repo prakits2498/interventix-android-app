@@ -53,6 +53,8 @@
     <string name="new_intervention_added">"Nuovo intervento aggiunto\n con successo!"</string>
     <string name="intervention_updated">"Intervento %1$d aggiornato\n con successo!"</string>
     <string name="no_details">"Nessun dettaglio presente"</string>
+    <string name="incoming_interventions">Interventi in arrivo</string>
+    <string name="end_date_less_than_start_date">"Errore! Inizio intervento maggiore di fine intervento"</string>
 
     <!-- Array di stringhe -->
     <string-array name="tipologia_choose">

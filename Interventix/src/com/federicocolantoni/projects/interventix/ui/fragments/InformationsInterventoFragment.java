@@ -17,7 +17,6 @@ import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -50,9 +49,6 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
     @ViewById(R.id.tv_row_name)
     TextView tvNominativo;
-
-    // @ViewById(R.id.row_date)
-    // View dateInterv;
 
     @ViewById(R.id.tv_row_date)
     TextView tvDateInterv;
@@ -92,129 +88,6 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_informations));
 	else
 	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_informations));
-
-	// tvTimeInterv.setOnClickListener(new View.OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	//
-	// RadialTimePickerDialog timePickerDialog =
-	// RadialTimePickerDialog.newInstance(InformationsInterventoFragment.this, mutableDateTime.getHourOfDay(), mutableDateTime.getMinuteOfHour(),
-	// DateFormat.is24HourFormat(getActivity()));
-	// timePickerDialog.onCancel(new DialogInterface() {
-	//
-	// @Override
-	// public void dismiss() {
-	//
-	// }
-	//
-	// @Override
-	// public void cancel() {
-	//
-	// mutableDateTime.setTime(InterventoController.controller.getIntervento().dataora);
-	//
-	// tvTimeInterv.setText(mutableDateTime.toString("HH:mm"));
-	// }
-	// });
-	// timePickerDialog.show(manager, "fragment_time_picker_name");
-	// }
-	// });
-
-	// tvDateInterv.setOnClickListener(new View.OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	//
-	// CalendarDatePickerDialog calendarDatePickerDialog =
-	// CalendarDatePickerDialog.newInstance(InformationsInterventoFragment.this, mutableDateTime.getYear(), mutableDateTime.getMonthOfYear() - 1, mutableDateTime.getDayOfMonth());
-	// calendarDatePickerDialog.setYearRange(1970, 3000);
-	// calendarDatePickerDialog.onCancel(new DialogInterface() {
-	//
-	// @Override
-	// public void dismiss() {
-	//
-	// }
-	//
-	// @Override
-	// public void cancel() {
-	//
-	// mutableDateTime.setDate(InterventoController.controller.getIntervento().dataora);
-	//
-	// tvDateInterv.setText(mutableDateTime.toString("dd/MM/yyyy"));
-	// }
-	// });
-	// calendarDatePickerDialog.show(manager, Constants.CALENDAR_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
-	//
-	// // final Dialog dateTimeDialog = new Dialog(getActivity());
-	// //
-	// // final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.dialog_date_time, null);
-	// //
-	// // final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
-	// //
-	// // DateTime dt = null;
-	// //
-	// // dt = DateTime.parse(tv_date_interv.getText().toString(), DateTimeFormat.forPattern("dd/MM/yyyy HH:mm"));
-	// //
-	// // dateTimePicker.setDateTime(dt);
-	// //
-	// // dateTimePicker.setDateChangedListener(new DateWatcher() {
-	// //
-	// // @Override
-	// // public void onDateChanged(Calendar c) {
-	// //
-	// // }
-	// // });
-	// //
-	// // ((Button) dateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
-	// //
-	// // @Override
-	// // public void onClick(View v) {
-	// //
-	// // dateTimePicker.clearFocus();
-	// //
-	// // DateTime dt =
-	// // new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone
-	// // .forID(Constants.TIMEZONE_EUROPE_ROME));
-	// //
-	// // tv_date_interv.setText(dt.toString("dd/MM/yyyy HH:mm"));
-	// //
-	// // InterventoController.controller.getIntervento().dataora = (dt.toDate().getTime());
-	// //
-	// // dateTimeDialog.dismiss();
-	// // }
-	// // });
-	// //
-	// // ((Button) dateTimeDialogView.findViewById(R.id.CancelDialog)).setOnClickListener(new View.OnClickListener() {
-	// //
-	// // @Override
-	// // public void onClick(View v) {
-	// //
-	// // dateTimeDialog.cancel();
-	// // }
-	// // });
-	// //
-	// // ((Button) dateTimeDialogView.findViewById(R.id.ResetDateTime)).setOnClickListener(new View.OnClickListener() {
-	// //
-	// // @Override
-	// // public void onClick(View v) {
-	// //
-	// // DateTime dt = null;
-	// //
-	// // DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
-	// // fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-	// //
-	// // dt = fmt.parseDateTime(tv_date_interv.getText().toString());
-	// //
-	// // dateTimePicker.setDateTime(dt);
-	// // }
-	// // });
-	// //
-	// // dateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-	// // dateTimeDialog.setContentView(dateTimeDialogView);
-	// // dateTimeDialog.setCancelable(false);
-	// // dateTimeDialog.show();
-	// }
-	// });
     }
 
     @Override
@@ -477,7 +350,8 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 	transaction.commit();
     }
 
-    public void showDatePicker(View view) {
+    @Click(R.id.tv_row_date)
+    public void showDatePicker() {
 
 	CalendarDatePickerDialog calendarDatePickerDialog =
 		CalendarDatePickerDialog.newInstance(InformationsInterventoFragment.this, mutableDateTime.getYear(), mutableDateTime.getMonthOfYear() - 1, mutableDateTime.getDayOfMonth());
@@ -497,7 +371,8 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 	calendarDatePickerDialog.show(manager, Constants.CALENDAR_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
     }
 
-    public void showTimePicker(View view) {
+    @Click(R.id.tv_row_time)
+    public void showTimePicker() {
 
 	RadialTimePickerDialog timePickerDialog =
 		RadialTimePickerDialog.newInstance(InformationsInterventoFragment.this, mutableDateTime.getHourOfDay(), mutableDateTime.getMinuteOfHour(), DateFormat.is24HourFormat(getActivity()));
@@ -520,7 +395,7 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
     public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
 
 	mutableDateTime.setYear(year);
-	mutableDateTime.setMonthOfYear(monthOfYear);
+	mutableDateTime.setMonthOfYear(monthOfYear + 1);
 	mutableDateTime.setDayOfMonth(dayOfMonth);
 
 	tvDateInterv.setText(mutableDateTime.toString(Constants.DATE_PATTERN));

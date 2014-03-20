@@ -5,17 +5,18 @@
 	android:orientation="vertical"
 	android:padding="@dimen/default_horizontal_margin" >
 
-	<ImageView
-		android:id="@+id/view_logo"
-		android:layout_width="160dp"
-		android:layout_height="60dp"
-		android:layout_gravity="center_horizontal"
-		android:clickable="false"
-		android:contentDescription="@string/logo_"
-		android:longClickable="false"
-		android:maxHeight="60dp"
-		android:maxWidth="160dp"
-		android:src="@drawable/logo_ix" />
+    <!-- <ImageView -->
+    <!-- android:id="@+id/view_logo" -->
+    <!-- android:layout_width="160dp" -->
+    <!-- android:layout_height="60dp" -->
+    <!-- android:layout_gravity="center_horizontal" -->
+    <!-- android:clickable="false" -->
+    <!-- android:contentDescription="@string/logo_" -->
+    <!-- android:longClickable="false" -->
+    <!-- android:maxHeight="60dp" -->
+    <!-- android:maxWidth="160dp" -->
+    <!-- android:src="@drawable/logo_ix" /> -->
+
 
 	<FrameLayout
 		android:id="@+id/fragments_layout"

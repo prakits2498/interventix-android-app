@@ -25,11 +25,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.internal.view.menu.MenuItemImpl;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -158,7 +164,12 @@ public class HomeActivity extends ActionBarActivity {
 
 	super.onStart();
 
-	getSupportActionBar().setTitle(UtenteController.tecnicoLoggato.nome + " " + UtenteController.tecnicoLoggato.cognome);
+	SpannableStringBuilder spanStringBuilder = new SpannableStringBuilder(UtenteController.tecnicoLoggato.nome + " " + UtenteController.tecnicoLoggato.cognome);
+	spanStringBuilder.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spanStringBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	spanStringBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, spanStringBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+	getSupportActionBar().setTitle(spanStringBuilder);
+	getSupportActionBar().setSubtitle(R.string.incoming_interventions);
 
 	InterventoController.controller = null;
 
@@ -203,6 +214,8 @@ public class HomeActivity extends ActionBarActivity {
 
 	    try {
 		qb.where().eq(Constants.ORMLITE_TECNICO, UtenteController.tecnicoLoggato.idutente).and().eq(Constants.ORMLITE_CHIUSO, false);
+		qb.orderBy(Constants.ORMLITE_DATAORA, false).orderBy(Constants.ORMLITE_NUMERO, false);
+
 		List<Intervento> listaInterventiAperti = interventoDao.query(qb.prepare());
 
 		adapter = new ListInterventiAdapter(listaInterventiAperti);
@@ -863,6 +876,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	try {
 	    qb.where().eq(Constants.ORMLITE_TECNICO, UtenteController.tecnicoLoggato.idutente).and().eq(Constants.ORMLITE_CHIUSO, false);
+	    qb.orderBy(Constants.ORMLITE_DATAORA, false).orderBy(Constants.ORMLITE_NUMERO, false);
 	}
 	catch (SQLException e) {
 
@@ -892,65 +906,4 @@ public class HomeActivity extends ActionBarActivity {
 
 	setRefreshActionButtonState(false);
     }
-
-    // private class ReadListInterventions extends AsyncTask<Void, Void, List<Intervento>> {
-    //
-    // private RuntimeExceptionDao<Intervento, Long> interventoDao;
-    // private QueryBuilder<Intervento, Long> qb;
-    //
-    // public ReadListInterventions() {
-    //
-    // interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
-    // qb = interventoDao.queryBuilder();
-    // }
-    //
-    // @Override
-    // protected void onPreExecute() {
-    //
-    // qb.selectColumns(new String[] {
-    // "numero", "dataora", "cliente", "conflitto", "modificato", "nuovo"
-    // });
-    //
-    // try {
-    // qb.where().eq("tecnico", UtenteController.tecnicoLoggato.idutente).and().eq("chiuso", false);
-    // }
-    // catch (SQLException e) {
-    //
-    // e.printStackTrace();
-    // BugSenseHandler.sendException(e);
-    // }
-    // }
-    //
-    // @Override
-    // protected List<Intervento> doInBackground(Void... params) {
-    //
-    // List<Intervento> listaInterventiAperti = null;
-    //
-    // try {
-    // listaInterventiAperti = interventoDao.query(qb.prepare());
-    // }
-    // catch (SQLException e) {
-    //
-    // e.printStackTrace();
-    // BugSenseHandler.sendException(e);
-    // }
-    //
-    // return listaInterventiAperti;
-    // }
-    //
-    // @Override
-    // protected void onPostExecute(List<Intervento> result) {
-    //
-    // adapter = new ListInterventiAdapter(result);
-    //
-    // animationAdapter = new SwingBottomInAnimationAdapter(adapter, 150, 1500);
-    // animationAdapter.setAbsListView(listOpen);
-    //
-    // listOpen.setAdapter(animationAdapter);
-    //
-    // animationAdapter.notifyDataSetChanged();
-    //
-    // com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
-    // }
-    // }
 }
