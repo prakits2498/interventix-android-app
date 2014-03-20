@@ -15,7 +15,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -122,6 +121,9 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
     private DettaglioIntervento dettaglio;
 
+    private JSONArray tecnici;
+
+    private DateTime dateTimeInizio, dateTimeFine;
     private MutableDateTime mutableDateTimeInizio, mutableDateTimeFine;
 
     private CalendarDatePickerDialog calendarDateInizioPickerDialog, calendarDateFinePickerDialog;
@@ -139,17 +141,76 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 	if (bundle != null) {
 	    dettaglio = (DettaglioIntervento) bundle.getSerializable(Constants.DETTAGLIO_N_ESIMO);
 	}
-
-	mutableDateTimeInizio = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-	mutableDateTimeFine = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
     }
 
     @Override
-    public void onResume() {
+    public void onStart() {
 
-	super.onResume();
+	super.onStart();
 
-	updateUI();
+	// Bundle bundle = getArguments();
+
+	// da sistemare
+	// if (bundle.getString(Constants.NUOVO_DETTAGLIO_INTERVENTO) != null)
+	//
+	// if (!InterventoController.controller.getIntervento().nuovo && !dettaglio.nuovo)
+	// if (!bundle.getString(Constants.NUOVO_DETTAGLIO_INTERVENTO).equals(Constants.NUOVO_DETTAGLIO_INTERVENTO))
+	// ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
+	// getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.detail) + dettaglio.iddettagliointervento);
+	// else
+	// ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
+	// getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.new_detail));
+	// else {
+	// if (bundle.getString(Constants.NUOVO_DETTAGLIO_INTERVENTO).equals(Constants.NUOVO_DETTAGLIO_INTERVENTO))
+	// ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.new_detail));
+	// else
+	// ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.detail) + dettaglio.iddettagliointervento);
+	// }
+
+	if (dettaglio != null) {
+
+	    tvRowTipo.setText(dettaglio.tipo);
+
+	    tvRowOggetto.setText(dettaglio.oggetto);
+
+	    try {
+		tvRowTecnici.setText("" + new JSONArray(dettaglio.tecniciintervento).length());
+		tecnici = new JSONArray(dettaglio.tecniciintervento);
+	    }
+	    catch (JSONException e) {
+
+		BugSenseHandler.sendException(e);
+		e.printStackTrace();
+	    }
+
+	    tvRowDescr.setText(dettaglio.descrizione);
+
+	    if (dateTimeInizio == null) {
+		dateTimeInizio = new DateTime(dettaglio.inizio, DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+
+		mutableDateTimeInizio = dateTimeInizio.toMutableDateTime();
+	    }
+
+	    if (dateTimeFine == null) {
+		dateTimeFine = new DateTime(dettaglio.fine, DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+
+		mutableDateTimeFine = dateTimeFine.toMutableDateTime();
+	    }
+
+	    tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN, Locale.ITALY));
+	    tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN, Locale.ITALY));
+
+	    tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN, Locale.ITALY));
+	    tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN, Locale.ITALY));
+
+	    DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeFine.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+
+	    tvRowTotOre.setText(dtTotOre.toString(DateTimeFormat.forPattern(Constants.TIME_PATTERN)));
+	}
+	else {
+
+	    addNewDettaglio();
+	}
     }
 
     @Override
@@ -160,79 +221,65 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
     }
 
-    private void updateUI() {
-
-	// *** nuova gestione - inizio ***\\
-
-	Bundle bundle = getArguments();
-
-	if (dettaglio != null) {
-
-	    // da sistemare
-	    if (bundle.getString(Constants.NUOVO_DETTAGLIO_INTERVENTO) != null)
-
-		if (!InterventoController.controller.getIntervento().nuovo && !dettaglio.nuovo)
-		    if (!bundle.getString(Constants.NUOVO_DETTAGLIO_INTERVENTO).equals(Constants.NUOVO_DETTAGLIO_INTERVENTO))
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-				getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.detail) + dettaglio.iddettagliointervento);
-		    else
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-				getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.new_detail));
-		else {
-		    if (bundle.getString(Constants.NUOVO_DETTAGLIO_INTERVENTO).equals(Constants.NUOVO_DETTAGLIO_INTERVENTO))
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.new_detail));
-		    else
-			((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.detail) + dettaglio.iddettagliointervento);
-		}
-
-	    tvRowTipo.setText(dettaglio.tipo);
-
-	    tvRowOggetto.setText(dettaglio.oggetto);
-
-	    try {
-		tvRowTecnici.setText("" + new JSONArray(dettaglio.tecniciintervento).length());
-	    }
-	    catch (JSONException e) {
-
-		BugSenseHandler.sendException(e);
-		e.printStackTrace();
-	    }
-
-	    tvRowDescr.setText(dettaglio.descrizione);
-
-	    mutableDateTimeInizio.setDate(dettaglio.inizio);
-	    tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN, Locale.ITALY));
-
-	    mutableDateTimeInizio.setTime(dettaglio.inizio);
-	    tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN, Locale.ITALY));
-
-	    mutableDateTimeFine.setDate(dettaglio.fine);
-	    tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN, Locale.ITALY));
-
-	    mutableDateTimeFine.setTime(dettaglio.fine);
-	    tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN, Locale.ITALY));
-
-	    DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-
-	    tvRowTotOre.setText(dtTotOre.toString(DateTimeFormat.forPattern(Constants.TIME_PATTERN)));
-	}
-	else {
-
-	    addNewDettaglio();
-	}
-	// *** nuova gestione - fine ***\\
-    }
+    // private void updateUI() {
+    //
+    // if (dettaglio != null) {
+    //
+    // tvRowTipo.setText(dettaglio.tipo);
+    //
+    // tvRowOggetto.setText(dettaglio.oggetto);
+    //
+    // try {
+    // tvRowTecnici.setText("" + new JSONArray(dettaglio.tecniciintervento).length());
+    // }
+    // catch (JSONException e) {
+    //
+    // BugSenseHandler.sendException(e);
+    // e.printStackTrace();
+    // }
+    //
+    // tvRowDescr.setText(dettaglio.descrizione);
+    //
+    // if (mutableDateTimeInizio == null) {
+    // mutableDateTimeInizio = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+    //
+    // mutableDateTimeInizio.setDate(dettaglio.inizio);
+    // mutableDateTimeInizio.setTime(dettaglio.inizio);
+    // }
+    //
+    // if (mutableDateTimeFine == null) {
+    // mutableDateTimeFine = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+    //
+    // mutableDateTimeFine.setDate(dettaglio.fine);
+    // mutableDateTimeFine.setTime(dettaglio.fine);
+    // }
+    //
+    // tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN, Locale.ITALY));
+    // tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN, Locale.ITALY));
+    //
+    // tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN, Locale.ITALY));
+    // tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN, Locale.ITALY));
+    //
+    // DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+    //
+    // tvRowTotOre.setText(dtTotOre.toString(DateTimeFormat.forPattern(Constants.TIME_PATTERN)));
+    // }
+    // else {
+    //
+    // addNewDettaglio();
+    // }
+    // }
 
     private void addNewDettaglio() {
 
-	long maxId = dettaglioDao.queryRawValue("select max(iddettagliointervento) from DettagliIntervento");
+	long maxId = dettaglioDao.queryRawValue("select max(" + Constants.ORMLITE_IDDETTAGLIOINTERVENTO + ") from DettagliIntervento");
 
 	try {
-	    DettaglioIntervento foo = dettaglioDao.queryBuilder().where().eq("iddettagliointervento", maxId).queryForFirst();
+	    DettaglioIntervento foo = dettaglioDao.queryBuilder().where().eq(Constants.ORMLITE_IDDETTAGLIOINTERVENTO, maxId).queryForFirst();
 
 	    dettaglio = new DettaglioIntervento();
 
-	    dettaglio.iddettagliointervento = (foo.iddettagliointervento + Constants.contatoreIdNuovoDettaglio);
+	    dettaglio.iddettagliointervento = (foo.iddettagliointervento + Constants.contatoreNuovoId);
 
 	    dettaglio.nuovo = (true);
 	    dettaglio.modificato = (Constants.DETTAGLIO_NUOVO);
@@ -243,14 +290,11 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 	    tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN, Locale.ITALY));
 	    tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN, Locale.ITALY));
 
-	    dettaglio.inizio = (mutableDateTimeInizio.getMillis());
-
 	    mutableDateTimeFine = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	    mutableDateTimeFine.addHours(1);
 
 	    tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN, Locale.ITALY));
 	    tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN, Locale.ITALY));
-
-	    dettaglio.fine = (mutableDateTimeFine.getMillis());
 
 	    DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
@@ -276,11 +320,7 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	super.onCreateOptionsMenu(menu, inflater);
 
-	Bundle bundle = getArguments();
-
-	if (bundle.getString(Constants.NUOVO_DETTAGLIO_INTERVENTO) != null)
-	    if (bundle.getString(Constants.NUOVO_DETTAGLIO_INTERVENTO).equals(Constants.NUOVO_DETTAGLIO_INTERVENTO))
-		inflater.inflate(R.menu.menu_new_detail, menu);
+	inflater.inflate(R.menu.menu_new_detail, menu);
     }
 
     @Override
@@ -289,11 +329,44 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 	switch (item.getItemId()) {
 	    case R.id.menu_save_detail:
 
-		InterventoController.controller.getListaDettagli().add(dettaglio);
+		DateTime dateTimeFineMod = mutableDateTimeFine.toDateTime();
+		DateTime dateTimeInizioMod = mutableDateTimeInizio.toDateTime();
 
-		Constants.contatoreIdNuovoDettaglio += 1;
+		if (dateTimeFineMod.isBefore(dateTimeInizioMod)) {
+		    InterventixToast.makeToast(getString(R.string.end_date_less_than_start_date), Toast.LENGTH_LONG);
 
-		getActivity().getSupportFragmentManager().popBackStackImmediate();
+		    break;
+		}
+		else {
+		    if (dettaglio.nuovo) {
+
+			dettaglio.oggetto = tvRowOggetto.getText().toString();
+			dettaglio.tipo = tvRowTipo.getText().toString();
+			dettaglio.descrizione = tvRowDescr.getText().toString();
+			dettaglio.inizio = dateTimeInizioMod.getMillis();
+			dettaglio.fine = dateTimeFineMod.getMillis();
+			dettaglio.tecniciintervento = (tecnici.toString());
+
+			if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+			    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+			}
+
+			InterventoController.controller.getListaDettagli().add(dettaglio);
+		    }
+		    else {
+
+			dettaglio.oggetto = tvRowOggetto.getText().toString();
+			dettaglio.tipo = tvRowTipo.getText().toString();
+			dettaglio.descrizione = tvRowDescr.getText().toString();
+			dettaglio.inizio = dateTimeInizioMod.getMillis();
+			dettaglio.fine = dateTimeFineMod.getMillis();
+			dettaglio.tecniciintervento = (tecnici.toString());
+
+			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		    }
+
+		    getActivity().getSupportFragmentManager().popBackStackImmediate();
+		}
 
 		break;
 
@@ -311,8 +384,6 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
     @Click(R.id.tv_row_time_inizio_dettaglio)
     void showDialogTimeInizioDettaglio() {
-
-	// aggiungere il nuovo picker per il tempo - start
 
 	mutableDateTimeInizio =
 		MutableDateTime.parse(
@@ -334,13 +405,12 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	    }
 	});
+
 	timeInizioPickerDialog.show(getActivity().getSupportFragmentManager(), Constants.TIMER_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
     }
 
     @Click(R.id.tv_row_time_fine_dettaglio)
     void showDialogTimeFineDettaglio() {
-
-	// aggiungere il nuovo picker per il tempo - start
 
 	mutableDateTimeFine =
 		MutableDateTime.parse(
@@ -361,13 +431,12 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	    }
 	});
+
 	timeFinePickerDialog.show(getActivity().getSupportFragmentManager(), Constants.TIMER_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
     }
 
     @Click(R.id.tv_row_date_inizio_dettaglio)
     void showDialogDateInizioDettaglio() {
-
-	// aggiungere il nuovo picker per la data - start
 
 	mutableDateTimeInizio =
 		MutableDateTime.parse(
@@ -390,112 +459,10 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 	    }
 	});
 	calendarDateInizioPickerDialog.show(getActivity().getSupportFragmentManager(), Constants.CALENDAR_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
-
-	// aggiungere il nuovo picker per la data - end
-
-	// final Dialog dateTimeDialog = new Dialog(getActivity());
-	//
-	// final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.dialog_date_time, null);
-	//
-	// final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
-	//
-	// DateTime dt = null;
-	//
-	// dt = DateTime.parse(tvRowDateInizio.getText().toString(), DateTimeFormat.forPattern("dd/MM/yyyy HH:mm"));
-	//
-	// dateTimePicker.setDateTime(dt);
-	//
-	// dateTimePicker.setDateChangedListener(new DateWatcher() {
-	//
-	// @Override
-	// public void onDateChanged(Calendar c) {
-	//
-	// }
-	// });
-	//
-	// ((Button) dateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	//
-	// dateTimePicker.clearFocus();
-	//
-	// DateTime dtInizio =
-	// new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone
-	// .forID(Constants.TIMEZONE_EUROPE_ROME));
-	//
-	// DateTime dtFine = null;
-	//
-	// DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
-	// fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-	//
-	// dtFine = fmt.parseDateTime(tvRowDateFine.getText().toString());
-	//
-	// if (dtFine.toDate().getTime() < dtInizio.toDate().getTime()) {
-	// InterventixToast.makeToast("Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
-	// }
-	// else {
-	//
-	// tvRowDateInizio.setText(dtInizio.toString("dd/MM/yyyy HH:mm"));
-	//
-	// DateTime dt_tot_ore = dtFine.minus(dtInizio.toDate().getTime());
-	//
-	// tvRowTotOre.setText(dt_tot_ore.toString(Constants.TIME_PATTERN));
-	//
-	// if (!dettaglio.nuovo) {
-	// dettaglio.inizio = (dtInizio.toDate().getTime());
-	// dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-	// }
-	// else {
-	// dettaglio.inizio = (dtInizio.toDate().getTime());
-	//
-	// if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
-	// dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-	// }
-	// }
-	// }
-	//
-	// dateTimeDialog.dismiss();
-	//
-	// updateUI();
-	// }
-	// });
-	//
-	// ((Button) dateTimeDialogView.findViewById(R.id.CancelDialog)).setOnClickListener(new View.OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	//
-	// dateTimeDialog.cancel();
-	// }
-	// });
-	//
-	// ((Button) dateTimeDialogView.findViewById(R.id.ResetDateTime)).setOnClickListener(new View.OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	//
-	// DateTime dt = null;
-	//
-	// DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
-	// fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-	//
-	// dt = fmt.parseDateTime(tvRowDateInizio.getText().toString());
-	//
-	// dateTimePicker.setDateTime(dt);
-	// }
-	// });
-	//
-	// dateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-	// dateTimeDialog.setContentView(dateTimeDialogView);
-	// dateTimeDialog.setCancelable(false);
-	// dateTimeDialog.show();
     }
 
-    @Click(R.id.row_fine_dettaglio)
+    @Click(R.id.tv_row_date_fine_dettaglio)
     void showDialogDateFineDettaglio() {
-
-	// aggiungere il nuovo picker per la data - start
 
 	mutableDateTimeFine =
 		MutableDateTime.parse(
@@ -518,106 +485,6 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 	    }
 	});
 	calendarDateFinePickerDialog.show(getActivity().getSupportFragmentManager(), Constants.CALENDAR_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
-
-	// aggiungere il nuovo picker per la data - end
-
-	// final Dialog dateTimeDialog = new Dialog(getActivity());
-	//
-	// final RelativeLayout dateTimeDialogView = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.dialog_date_time, null);
-	//
-	// final DateTimePicker dateTimePicker = (DateTimePicker) dateTimeDialogView.findViewById(R.id.DateTimePicker);
-	//
-	// DateTime dt = null;
-	//
-	// dt = DateTime.parse(tvRowDateFine.getText().toString(), DateTimeFormat.forPattern("dd/MM/yyyy HH:mm"));
-	//
-	// dateTimePicker.setDateTime(dt);
-	//
-	// dateTimePicker.setDateChangedListener(new DateWatcher() {
-	//
-	// @Override
-	// public void onDateChanged(Calendar c) {
-	//
-	// }
-	// });
-	//
-	// ((Button) dateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	//
-	// dateTimePicker.clearFocus();
-	//
-	// DateTime dtFine =
-	// new DateTime(dateTimePicker.getYear(), dateTimePicker.getMonth(), dateTimePicker.getDay(), dateTimePicker.getHour(), dateTimePicker.getMinute(), DateTimeZone
-	// .forID(Constants.TIMEZONE_EUROPE_ROME));
-	//
-	// DateTime dtInizio = null;
-	//
-	// DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
-	// fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-	//
-	// dtInizio = fmt.parseDateTime(tvRowDateInizio.getText().toString());
-	//
-	// if (dtFine.toDate().getTime() < dtInizio.toDate().getTime()) {
-	// InterventixToast.makeToast("Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
-	// }
-	// else {
-	//
-	// tvRowDateFine.setText(dtFine.toString("dd/MM/yyyy HH:mm"));
-	//
-	// DateTime dt_tot_ore = dtFine.minus(dtInizio.toDate().getTime());
-	//
-	// tvRowTotOre.setText(dt_tot_ore.toString(Constants.TIME_PATTERN));
-	//
-	// if (!dettaglio.nuovo) {
-	// dettaglio.fine = (dtFine.toDate().getTime());
-	// dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-	// }
-	// else {
-	// dettaglio.fine = (dtFine.toDate().getTime());
-	//
-	// if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
-	// dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-	// }
-	// }
-	// }
-	//
-	// dateTimeDialog.dismiss();
-	//
-	// updateUI();
-	// }
-	// });
-	//
-	// ((Button) dateTimeDialogView.findViewById(R.id.CancelDialog)).setOnClickListener(new View.OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	//
-	// dateTimeDialog.cancel();
-	// }
-	// });
-	//
-	// ((Button) dateTimeDialogView.findViewById(R.id.ResetDateTime)).setOnClickListener(new View.OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	//
-	// DateTime dt = null;
-	//
-	// DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
-	// fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-	//
-	// dt = fmt.parseDateTime(tvRowDateFine.getText().toString());
-	//
-	// dateTimePicker.setDateTime(dt);
-	// }
-	// });
-	//
-	// dateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-	// dateTimeDialog.setContentView(dateTimeDialogView);
-	// dateTimeDialog.setCancelable(false);
-	// dateTimeDialog.show();
     }
 
     @Click(R.id.row_tipo_dettaglio)
@@ -634,29 +501,33 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
 
-		if (!dettaglio.nuovo) {
-		    dettaglio.tipo = (tipos[which]);
-		    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		}
-		else {
-		    dettaglio.tipo = (tipos[which]);
+		tvRowTipo.setText(tipos[which]);
 
-		    if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
-			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		    }
-		}
+		// if (!dettaglio.nuovo) {
+		// dettaglio.tipo = (tipos[which]);
+		// dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		// }
+		// else {
+		// dettaglio.tipo = (tipos[which]);
+		//
+		// if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+		// dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		// }
+		// }
+
+		dialog.dismiss();
 	    }
 	});
 	tipo_dett.setCancelable(false);
-	tipo_dett.setPositiveButton(ok_btn, new DialogInterface.OnClickListener() {
-
-	    @Override
-	    public void onClick(DialogInterface dialog, int which) {
-
-		dialog.dismiss();
-		updateUI();
-	    }
-	});
+	// tipo_dett.setPositiveButton(ok_btn, new DialogInterface.OnClickListener() {
+	//
+	// @Override
+	// public void onClick(DialogInterface dialog, int which) {
+	//
+	// dialog.dismiss();
+	// updateUI();
+	// }
+	// });
 
 	tipo_dett.create().show();
     }
@@ -682,19 +553,21 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 		dialog.dismiss();
 
-		if (!dettaglio.nuovo) {
-		    dettaglio.oggetto = (mEdit_oggetto_dett.getText().toString());
-		    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		}
-		else {
-		    dettaglio.oggetto = (mEdit_oggetto_dett.getText().toString());
+		tvRowOggetto.setText(mEdit_oggetto_dett.getText());
 
-		    if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
-			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		    }
-		}
-
-		updateUI();
+		// if (!dettaglio.nuovo) {
+		// dettaglio.oggetto = (mEdit_oggetto_dett.getText().toString());
+		// dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		// }
+		// else {
+		// dettaglio.oggetto = (mEdit_oggetto_dett.getText().toString());
+		//
+		// if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+		// dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		// }
+		// }
+		//
+		// updateUI();
 	    }
 	});
 
@@ -710,10 +583,10 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	descrizione_dett.setTitle(R.string.oggetto_dett_title);
 
-	TextView tv_descrizione_dett = (TextView) getActivity().findViewById(R.id.tv_row_descrizione_dettaglio);
+	// TextView tv_descrizione_dett = (TextView) getActivity().findViewById(R.id.tv_row_descrizione_dettaglio);
 
 	mEdit_descrizione_dett = new EditText(getActivity());
-	mEdit_descrizione_dett.setText(tv_descrizione_dett.getText());
+	mEdit_descrizione_dett.setText(tvRowDescr.getText());
 
 	descrizione_dett.setView(mEdit_descrizione_dett);
 	descrizione_dett.setCancelable(false);
@@ -724,19 +597,21 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 		dialog.dismiss();
 
-		if (!dettaglio.nuovo) {
-		    dettaglio.descrizione = (mEdit_descrizione_dett.getText().toString());
-		    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		}
-		else {
-		    dettaglio.descrizione = (mEdit_descrizione_dett.getText().toString());
+		tvRowDescr.setText(mEdit_descrizione_dett.getText());
 
-		    if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
-			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		    }
-		}
-
-		updateUI();
+		// if (!dettaglio.nuovo) {
+		// dettaglio.descrizione = (mEdit_descrizione_dett.getText().toString());
+		// dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		// }
+		// else {
+		// dettaglio.descrizione = (mEdit_descrizione_dett.getText().toString());
+		//
+		// if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+		// dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		// }
+		// }
+		//
+		// updateUI();
 	    }
 	});
 
@@ -822,7 +697,7 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 		    dialog.dismiss();
 
-		    JSONArray tecnici = new JSONArray();
+		    tecnici = new JSONArray();
 
 		    for (int cont = 0; cont < tuttiTecnici.length; cont++) {
 
@@ -835,19 +710,21 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 			    break;
 		    }
 
-		    if (!dettaglio.nuovo) {
-			dettaglio.tecniciintervento = (tecnici.toString());
-			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		    }
-		    else {
-			dettaglio.tecniciintervento = (tecnici.toString());
+		    tvRowTecnici.setText("" + tecnici.length());
 
-			if (dettaglio.modificato.length() == 0) {
-			    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-			}
-		    }
-
-		    updateUI();
+		    // if (!dettaglio.nuovo) {
+		    // dettaglio.tecniciintervento = (tecnici.toString());
+		    // dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		    // }
+		    // else {
+		    // dettaglio.tecniciintervento = (tecnici.toString());
+		    //
+		    // if (dettaglio.modificato.length() == 0) {
+		    // dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+		    // }
+		    // }
+		    //
+		    // updateUI();
 		}
 	    });
 	}
@@ -970,91 +847,65 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
     @Override
     public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
 
-	if (calendarDateInizioPickerDialog.isVisible()) {
+	if (calendarDateInizioPickerDialog != null && calendarDateInizioPickerDialog.isVisible()) {
 
 	    mutableDateTimeInizio.setYear(year);
-	    mutableDateTimeInizio.setMonthOfYear(monthOfYear);
+	    mutableDateTimeInizio.setMonthOfYear(monthOfYear + 1);
 	    mutableDateTimeInizio.setDayOfMonth(dayOfMonth);
 
-	    DateTime dtFine = null;
+	    // mutableDateTimeInizio.setDate(year, monthOfYear + 1, dayOfMonth);
 
-	    DateTimeFormatter fmt = DateTimeFormat.forPattern(Constants.DATE_PATTERN);
-	    fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	    tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN));
 
-	    dtFine = fmt.parseDateTime(tvRowDateFine.getText().toString());
+	    DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
-	    if (dtFine.getMillis() < mutableDateTimeInizio.getMillis()) {
-		InterventixToast.makeToast("Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
-	    }
-	    else {
+	    tvRowTotOre.setText(dtTotOre.toString(Constants.TIME_PATTERN));
 
-		tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN));
-
-		DateTime dtTotOre = dtFine.minus(mutableDateTimeInizio.getMillis());
-
-		tvRowTotOre.setText(dtTotOre.toString(Constants.TIME_PATTERN));
-
-		if (!dettaglio.nuovo) {
-		    dettaglio.inizio = (mutableDateTimeInizio.getMillis());
-		    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		}
-		else {
-		    dettaglio.inizio = (mutableDateTimeInizio.getMillis());
-
-		    if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
-			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		    }
-		}
-	    }
+	    // if (!dettaglio.nuovo) {
+	    // dettaglio.inizio = (mutableDateTimeInizio.getMillis());
+	    // dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+	    // }
+	    // else {
+	    // dettaglio.inizio = (mutableDateTimeInizio.getMillis());
+	    //
+	    // if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+	    // dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+	    // }
+	    // }
 
 	    calendarDateInizioPickerDialog.dismiss();
-
-	    updateUI();
 	}
 
-	if (calendarDateFinePickerDialog.isVisible()) {
+	if (calendarDateFinePickerDialog != null && calendarDateFinePickerDialog.isVisible()) {
 
 	    mutableDateTimeFine.setYear(year);
-	    mutableDateTimeFine.setMonthOfYear(monthOfYear);
+	    mutableDateTimeFine.setMonthOfYear(monthOfYear + 1);
 	    mutableDateTimeFine.setDayOfMonth(dayOfMonth);
 
-	    DateTime dtInizio = null;
+	    // mutableDateTimeFine.setDate(year, monthOfYear + 1, dayOfMonth);
 
-	    DateTimeFormatter fmt = DateTimeFormat.forPattern(Constants.DATE_PATTERN);
-	    fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	    tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN));
 
-	    dtInizio = fmt.parseDateTime(tvRowDateInizio.getText().toString());
+	    DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
-	    if (mutableDateTimeFine.getMillis() < dtInizio.getMillis()) {
-		InterventixToast.makeToast("Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
-	    }
-	    else {
+	    tvRowTotOre.setText(dtTotOre.toString(Constants.TIME_PATTERN));
 
-		tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN));
-
-		mutableDateTimeFine.add(-dtInizio.getMillis());
-
-		DateTime dt_tot_ore = mutableDateTimeFine.toDateTime();
-
-		tvRowTotOre.setText(dt_tot_ore.toString(Constants.TIME_PATTERN));
-
-		if (!dettaglio.nuovo) {
-		    dettaglio.fine = (mutableDateTimeFine.getMillis());
-		    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		}
-		else {
-		    dettaglio.fine = (mutableDateTimeFine.getMillis());
-
-		    if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
-			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		    }
-		}
-	    }
+	    // if (!dettaglio.nuovo) {
+	    // dettaglio.fine = (mutableDateTimeFine.getMillis());
+	    // dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+	    // }
+	    // else {
+	    // dettaglio.fine = (mutableDateTimeFine.getMillis());
+	    //
+	    // if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+	    // dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+	    // }
+	    // }
 
 	    calendarDateFinePickerDialog.dismiss();
-
-	    updateUI();
 	}
+
+	// updateUI();
 
 	return;
     }
@@ -1062,89 +913,63 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
 
-	if (timeInizioPickerDialog.isVisible()) {
+	if (timeInizioPickerDialog != null && timeInizioPickerDialog.isVisible()) {
 
-	    mutableDateTimeInizio.setHourOfDay(hourOfDay);
-	    mutableDateTimeInizio.setMinuteOfHour(minute);
+	    // mutableDateTimeInizio.setHourOfDay(hourOfDay);
+	    // mutableDateTimeInizio.setMinuteOfHour(minute);
 
-	    DateTime dtFine = null;
+	    mutableDateTimeInizio.setTime(hourOfDay, minute, 0, 0);
 
-	    DateTimeFormatter fmt = DateTimeFormat.forPattern(Constants.TIME_PATTERN);
-	    fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	    tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN));
 
-	    dtFine = fmt.parseDateTime(tvRowTimeFine.getText().toString());
+	    DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
-	    if (dtFine.getMillis() < mutableDateTimeInizio.getMillis()) {
-		InterventixToast.makeToast("Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
-	    }
-	    else {
+	    tvRowTotOre.setText(dtTotOre.toString(Constants.TIME_PATTERN));
 
-		tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN));
+	    // if (!dettaglio.nuovo) {
+	    // dettaglio.inizio = (mutableDateTimeInizio.getMillis());
+	    // dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+	    // }
+	    // else {
+	    // dettaglio.inizio = (mutableDateTimeInizio.getMillis());
+	    //
+	    // if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+	    // dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+	    // }
+	    // }
 
-		DateTime dtTotOre = dtFine.minus(mutableDateTimeInizio.getMillis());
-
-		tvRowTotOre.setText(dtTotOre.toString(Constants.TIME_PATTERN));
-
-		if (!dettaglio.nuovo) {
-		    dettaglio.inizio = (mutableDateTimeInizio.getMillis());
-		    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		}
-		else {
-		    dettaglio.inizio = (mutableDateTimeInizio.getMillis());
-
-		    if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
-			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		    }
-		}
-	    }
-
-	    calendarDateInizioPickerDialog.dismiss();
-
-	    updateUI();
+	    timeInizioPickerDialog.dismiss();
 	}
 
-	if (timeFinePickerDialog.isVisible()) {
+	if (timeFinePickerDialog != null && timeFinePickerDialog.isVisible()) {
 
-	    mutableDateTimeFine.setHourOfDay(hourOfDay);
-	    mutableDateTimeFine.setMinuteOfHour(minute);
+	    // mutableDateTimeFine.setHourOfDay(hourOfDay);
+	    // mutableDateTimeFine.setMinuteOfHour(minute);
 
-	    DateTime dtInizio = null;
+	    mutableDateTimeFine.setTime(hourOfDay, minute, 0, 0);
 
-	    DateTimeFormatter fmt = DateTimeFormat.forPattern(Constants.TIME_PATTERN);
-	    fmt.withZone(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	    tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN));
 
-	    dtInizio = fmt.parseDateTime(tvRowTimeInizio.getText().toString());
+	    DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
-	    if (mutableDateTimeFine.getMillis() < dtInizio.getMillis()) {
-		InterventixToast.makeToast("Errore! Inizio intervento maggiore di fine intervento", Toast.LENGTH_LONG);
-	    }
-	    else {
+	    tvRowTotOre.setText(dtTotOre.toString(Constants.TIME_PATTERN));
 
-		tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN));
+	    // if (!dettaglio.nuovo) {
+	    // dettaglio.fine = (mutableDateTimeFine.getMillis());
+	    // dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+	    // }
+	    // else {
+	    // dettaglio.fine = (mutableDateTimeFine.getMillis());
+	    //
+	    // if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
+	    // dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
+	    // }
+	    // }
 
-		mutableDateTimeFine.add(-dtInizio.getMillis());
-
-		DateTime dt_tot_ore = mutableDateTimeFine.toDateTime();
-
-		tvRowTotOre.setText(dt_tot_ore.toString(Constants.TIME_PATTERN));
-
-		if (!dettaglio.nuovo) {
-		    dettaglio.fine = (mutableDateTimeFine.getMillis());
-		    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		}
-		else {
-		    dettaglio.fine = (mutableDateTimeFine.getMillis());
-
-		    if (dettaglio.modificato.equals(Constants.DETTAGLIO_NUOVO)) {
-			dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
-		    }
-		}
-	    }
-
-	    calendarDateFinePickerDialog.dismiss();
-
-	    updateUI();
+	    timeFinePickerDialog.dismiss();
 	}
+
+	// updateUI();
 
 	return;
     }

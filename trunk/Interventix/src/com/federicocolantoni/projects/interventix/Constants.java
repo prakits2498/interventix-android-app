@@ -44,7 +44,7 @@ public final class Constants {
     public static final String ARRAY_DETTAGLI = "ARRAY_DETTAGLI";
     public static final String HASH_CODE_INTERVENTO_SINGLETON = "HASH_CODE_INTERVENTO_SINGLETON";
 
-    public static int contatoreIdNuovoDettaglio = 1;
+    public static int contatoreNuovoId = 1;
 
     // *** costanti per il tempo e le date *** \\
     public static final String TIME_PATTERN = "HH:mm";
@@ -167,6 +167,7 @@ public final class Constants {
     public static final String ORMLITE_TECNICO = "tecnico";
     public static final String ORMLITE_CHIUSO = "chiuso";
     public static final String ORMLITE_IDINTERVENTO = "idintervento";
+    public static final String ORMLITE_IDDETTAGLIOINTERVENTO = "iddettagliointervento";
 
     // *** dati per il buffer *** \\
     public static final String ACTION_GET_INTERVENTI = Interventix.getContext().getPackageName() + "." + BUFFER_TYPE.BUFFER_INTERVENTO.name();

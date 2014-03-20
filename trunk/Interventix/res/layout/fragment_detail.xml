@@ -156,19 +156,19 @@
 
                     <TextView
                         android:id="@+id/tv_row_date_inizio_dettaglio"
+                        style="@style/SpinnerInterventix"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/interventix_color_gray"
                         android:paddingLeft="4dp"
                         android:textColor="#FF3040EE" />
 
                     <TextView
                         android:id="@+id/tv_row_time_inizio_dettaglio"
+                        style="@style/SpinnerInterventix"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/interventix_color_gray"
                         android:paddingLeft="4dp"
                         android:textColor="#FF3040EE" />
                 </LinearLayout>
@@ -203,17 +203,19 @@
 
                     <TextView
                         android:id="@+id/tv_row_date_fine_dettaglio"
+                        style="@style/SpinnerInterventix"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/interventix_color_gray"
+                        android:layout_weight="1"
                         android:paddingLeft="4dp"
                         android:textColor="#FF3040EE" />
 
                     <TextView
                         android:id="@+id/tv_row_time_fine_dettaglio"
+                        style="@style/SpinnerInterventix"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/interventix_color_gray"
+                        android:layout_weight="1"
                         android:paddingLeft="4dp"
                         android:textColor="#FF3040EE" />
                 </LinearLayout>
