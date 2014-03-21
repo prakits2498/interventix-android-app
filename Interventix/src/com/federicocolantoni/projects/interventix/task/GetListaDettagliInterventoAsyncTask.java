@@ -8,12 +8,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 
-import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
-import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
-import com.federicocolantoni.projects.interventix.utils.ListDetailsIntervento;
+import com.federicocolantoni.projects.interventix.helpers.Constants;
+import com.federicocolantoni.projects.interventix.helpers.ListDetailsIntervento;
+import com.federicocolantoni.projects.interventix.models.DettaglioIntervento;
 
 public class GetListaDettagliInterventoAsyncTask extends AsyncTask<Long, Void, ListDetailsIntervento> {
 

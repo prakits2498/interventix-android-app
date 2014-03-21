@@ -17,13 +17,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.federicocolantoni.projects.interventix.Constants;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.controller.UtenteController;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
-import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
-import com.federicocolantoni.projects.interventix.entity.Intervento;
-import com.federicocolantoni.projects.interventix.utils.Utils;
+import com.federicocolantoni.projects.interventix.helpers.Constants;
+import com.federicocolantoni.projects.interventix.helpers.Utils;
+import com.federicocolantoni.projects.interventix.models.DettaglioIntervento;
+import com.federicocolantoni.projects.interventix.models.Intervento;
+import com.federicocolantoni.projects.interventix.models.UtenteController;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.QueryBuilder;
 
@@ -64,7 +64,7 @@ public class InterventixService extends IntentService {
 
     private void inviaInterventi() {
 
-	// RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.Interventix_.getDbHelper().getRuntimeInterventoDao();
+	// RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeInterventoDao();
 
 	QueryBuilder<Intervento, Long> qb = interventoDao.queryBuilder();
 
@@ -76,7 +76,7 @@ public class InterventixService extends IntentService {
 	    });
 	    List<Intervento> tuttiInterventi = interventoDao.query(qb.prepare());
 
-	    SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(com.federicocolantoni.projects.interventix.Interventix_.getContext());
+	    SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(com.federicocolantoni.projects.interventix.application.Interventix_.getContext());
 
 	    String prefs_url = getResources().getString(R.string.prefs_key_url);
 
@@ -160,7 +160,7 @@ public class InterventixService extends IntentService {
 	    e.printStackTrace();
 	}
 
-	com.federicocolantoni.projects.interventix.Interventix_.releaseDbHelper();
+	com.federicocolantoni.projects.interventix.application.Interventix_.releaseDbHelper();
 
 	Intent finishBuffer = new Intent(Constants.ACTION_FINISH_BUFFER);
 

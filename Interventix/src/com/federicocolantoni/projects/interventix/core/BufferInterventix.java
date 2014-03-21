@@ -5,10 +5,10 @@ import java.util.TimerTask;
 
 import android.content.Intent;
 
-import com.federicocolantoni.projects.interventix.Constants;
-import com.federicocolantoni.projects.interventix.Constants.BUFFER_TYPE;
-import com.federicocolantoni.projects.interventix.Interventix;
-import com.federicocolantoni.projects.interventix.Interventix_;
+import com.federicocolantoni.projects.interventix.application.Interventix;
+import com.federicocolantoni.projects.interventix.application.Interventix_;
+import com.federicocolantoni.projects.interventix.helpers.Constants;
+import com.federicocolantoni.projects.interventix.helpers.Constants.BUFFER_TYPE;
 import com.federicocolantoni.projects.interventix.service.InterventixService;
 
 public class BufferInterventix {

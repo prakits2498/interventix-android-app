@@ -6,10 +6,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.entity.Cliente;
-import com.federicocolantoni.projects.interventix.entity.DettaglioIntervento;
-import com.federicocolantoni.projects.interventix.entity.Intervento;
-import com.federicocolantoni.projects.interventix.entity.Utente;
+import com.federicocolantoni.projects.interventix.models.Cliente;
+import com.federicocolantoni.projects.interventix.models.DettaglioIntervento;
+import com.federicocolantoni.projects.interventix.models.Intervento;
+import com.federicocolantoni.projects.interventix.models.Utente;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
