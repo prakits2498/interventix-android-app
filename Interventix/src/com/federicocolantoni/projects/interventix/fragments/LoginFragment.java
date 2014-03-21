@@ -60,7 +60,7 @@ import com.qustom.dialog.QustomDialogBuilder;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_login)
-public class Login extends Fragment {
+public class LoginFragment extends Fragment {
 
     @ViewById(R.id.field_password)
     EditText password;
