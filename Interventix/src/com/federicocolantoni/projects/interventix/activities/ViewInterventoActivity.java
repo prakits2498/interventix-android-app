@@ -23,8 +23,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.KeyEvent;
@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
+import com.federicocolantoni.projects.interventix.application.Interventix;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.federicocolantoni.projects.interventix.helpers.InterventixToast;
@@ -89,8 +90,8 @@ public class ViewInterventoActivity extends ActionBarActivity {
 	prefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 
 	SpannableStringBuilder spanStringBuilder = new SpannableStringBuilder(UtenteController.tecnicoLoggato.nome + " " + UtenteController.tecnicoLoggato.cognome);
-	spanStringBuilder.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spanStringBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	spanStringBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, spanStringBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	spanStringBuilder.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+	spanStringBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 	getSupportActionBar().setTitle(spanStringBuilder);
 
@@ -189,7 +190,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 	super.onDestroy();
 
-	com.federicocolantoni.projects.interventix.application.Interventix_.releaseDbHelper();
+	Interventix.releaseDbHelper();
     }
 
     @Override

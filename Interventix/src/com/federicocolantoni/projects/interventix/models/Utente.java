@@ -5,7 +5,6 @@ import java.io.Serializable;
 import android.content.ContentValues;
 
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB.Fields;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -168,7 +167,7 @@ public class Utente implements Serializable {
 	ContentValues values = new ContentValues();
 
 	values.put(UtenteDB.Fields.ID_UTENTE, user.idutente);
-	values.put(UtenteDB.Fields.TYPE, UtenteDB.UTENTE_ITEM_TYPE);
+	values.put(com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields.TYPE, UtenteDB.UTENTE_ITEM_TYPE);
 	values.put(UtenteDB.Fields.NOME, user.nome);
 	values.put(UtenteDB.Fields.COGNOME, user.cognome);
 	values.put(UtenteDB.Fields.USERNAME, user.username);

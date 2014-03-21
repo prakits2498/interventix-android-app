@@ -32,8 +32,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.internal.view.menu.MenuItemImpl;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.KeyEvent;
@@ -55,6 +55,7 @@ import com.android.volley.toolbox.Volley;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapters.ListInterventiAdapter;
+import com.federicocolantoni.projects.interventix.application.Interventix;
 import com.federicocolantoni.projects.interventix.core.BufferInterventix;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.helpers.BigDecimalTypeAdapter;
@@ -165,8 +166,8 @@ public class HomeActivity extends ActionBarActivity {
 	super.onStart();
 
 	SpannableStringBuilder spanStringBuilder = new SpannableStringBuilder(UtenteController.tecnicoLoggato.nome + " " + UtenteController.tecnicoLoggato.cognome);
-	spanStringBuilder.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spanStringBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-	spanStringBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, spanStringBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	spanStringBuilder.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+	spanStringBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 	getSupportActionBar().setTitle(spanStringBuilder);
 	getSupportActionBar().setSubtitle(R.string.incoming_interventions);
@@ -240,7 +241,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	super.onDestroy();
 
-	com.federicocolantoni.projects.interventix.application.Interventix_.releaseDbHelper();
+	Interventix.releaseDbHelper();
     }
 
     @Override
@@ -335,7 +336,7 @@ public class HomeActivity extends ActionBarActivity {
 	buffer.startTimer(BUFFER_TYPE.BUFFER_INTERVENTO);
 	buffer.startTimer(BUFFER_TYPE.BUFFER_CLIENTE);
 
-	utenteDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeUtenteDao();
+	utenteDao = Interventix.getDbHelper().getRuntimeUtenteDao();
 
 	UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
     }
@@ -714,7 +715,7 @@ public class HomeActivity extends ActionBarActivity {
 
 			if (interventions.length() > 0) {
 
-			    interventoDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeInterventoDao();
+			    interventoDao = Interventix.getDbHelper().getRuntimeInterventoDao();
 
 			    ArrayList<Long> interventionsToDelete = new ArrayList<Long>();
 

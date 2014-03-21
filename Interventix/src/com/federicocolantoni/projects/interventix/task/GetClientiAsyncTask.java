@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.os.AsyncTask;
 
+import com.federicocolantoni.projects.interventix.application.Interventix;
 import com.federicocolantoni.projects.interventix.models.Cliente;
 import com.federicocolantoni.projects.interventix.models.InterventoController;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
@@ -19,11 +20,11 @@ public class GetClientiAsyncTask extends AsyncTask<Void, Void, ArrayList<Cliente
 
 	ArrayList<Cliente> listaClienti = new ArrayList<Cliente>();
 
-	RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeClienteDao();
+	RuntimeExceptionDao<Cliente, Long> clienteDao = Interventix.getDbHelper().getRuntimeClienteDao();
 
 	listaClienti = (ArrayList<Cliente>) clienteDao.queryForAll();
 
-	com.federicocolantoni.projects.interventix.application.Interventix_.releaseDbHelper();
+	Interventix.releaseDbHelper();
 
 	return listaClienti;
     }

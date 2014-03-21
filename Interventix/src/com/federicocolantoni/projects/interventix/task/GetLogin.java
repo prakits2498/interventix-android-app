@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
+import com.federicocolantoni.projects.interventix.application.Interventix;
 import com.federicocolantoni.projects.interventix.helpers.CheckConnection;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.federicocolantoni.projects.interventix.helpers.InterventixToast;
@@ -93,7 +94,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 
 		    Utente utente = gson.fromJson(data.toString(), Utente.class);
 
-		    RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeUtenteDao();
+		    RuntimeExceptionDao<Utente, Long> utenteDao = Interventix.getDbHelper().getRuntimeUtenteDao();
 
 		    if (!utenteDao.idExists(utente.idutente))
 			utenteDao.createIfNotExists(utente);
@@ -109,7 +110,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 
 		    result = Activity.RESULT_OK;
 
-		    com.federicocolantoni.projects.interventix.application.Interventix_.releaseDbHelper();
+		    Interventix.releaseDbHelper();
 		}
 		else {
 		    result = Constants.ERRORE_LOGIN;
@@ -183,11 +184,11 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 			accountManager.setPassword(account, encryptedPassword);
 			accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
-			RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeUtenteDao();
+			RuntimeExceptionDao<Utente, Long> utenteDao = Interventix.getDbHelper().getRuntimeUtenteDao();
 
 			UtenteController.tecnicoLoggato = utenteDao.queryForEq("username", username).get(0);
 
-			com.federicocolantoni.projects.interventix.application.Interventix_.releaseDbHelper();
+			Interventix.releaseDbHelper();
 
 			break;
 		    }

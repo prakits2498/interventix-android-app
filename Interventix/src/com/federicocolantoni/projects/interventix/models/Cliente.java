@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB.Fields;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -221,7 +220,7 @@ public class Cliente implements Serializable {
 	ContentValues values = new ContentValues();
 
 	values.put(ClienteDB.Fields.ID_CLIENTE, cliente.idcliente);
-	values.put(ClienteDB.Fields.TYPE, ClienteDB.CLIENTE_ITEM_TYPE);
+	values.put(com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields.TYPE, ClienteDB.CLIENTE_ITEM_TYPE);
 	values.put(ClienteDB.Fields.CITTA, cliente.citta);
 	values.put(ClienteDB.Fields.CODICE_FISCALE, cliente.codicefiscale);
 	values.put(ClienteDB.Fields.CONFLITTO, cliente.conflitto);

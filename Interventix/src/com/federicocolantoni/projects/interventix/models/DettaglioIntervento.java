@@ -8,7 +8,6 @@ import android.content.ContentValues;
 
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB.Fields;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -168,7 +167,7 @@ public class DettaglioIntervento implements Serializable {
 	ContentValues values = new ContentValues();
 
 	values.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, dettIntervento.iddettagliointervento);
-	values.put(DettaglioInterventoDB.Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
+	values.put(com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
 	values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, dettIntervento.descrizione);
 	values.put(DettaglioInterventoDB.Fields.INTERVENTO, dettIntervento.idintervento);
 

@@ -43,6 +43,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
+import com.federicocolantoni.projects.interventix.application.Interventix;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.helpers.CheckConnection;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
@@ -81,7 +82,7 @@ public class Login extends Fragment {
 
 	super.onCreate(savedInstanceState);
 
-	defaultPrefs = PreferenceManager.getDefaultSharedPreferences(com.federicocolantoni.projects.interventix.application.Interventix_.getContext());
+	defaultPrefs = PreferenceManager.getDefaultSharedPreferences(Interventix.getContext());
     }
 
     @Override
@@ -97,7 +98,7 @@ public class Login extends Fragment {
 
 	super.onStop();
 
-	com.federicocolantoni.projects.interventix.application.Interventix_.releaseDbHelper();
+	Interventix.releaseDbHelper();
     }
 
     @Override
@@ -161,7 +162,7 @@ public class Login extends Fragment {
 		    parameters.put(Constants.JSON_PASSWORD, password.getText().toString());
 		    parameters.put(Constants.JSON_TYPE, Constants.USER_TYPE.TECNICO.name());
 
-		    final String prefsUrl = com.federicocolantoni.projects.interventix.application.Interventix_.getContext().getResources().getString(R.string.prefs_key_url);
+		    final String prefsUrl = Interventix.getContext().getResources().getString(R.string.prefs_key_url);
 
 		    final String url = defaultPrefs.getString(prefsUrl, null);
 
@@ -221,7 +222,7 @@ public class Login extends Fragment {
 
 		// connessione in modalità offline
 
-		accountManager = AccountManager.get(com.federicocolantoni.projects.interventix.application.Interventix_.getContext());
+		accountManager = AccountManager.get(Interventix.getContext());
 
 		Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
 
@@ -230,8 +231,8 @@ public class Login extends Fragment {
 		    QustomDialogBuilder builder = new QustomDialogBuilder(getActivity());
 
 		    builder.setIcon(R.drawable.ic_launcher);
-		    builder.setTitleColor(com.federicocolantoni.projects.interventix.application.Interventix_.getContext().getResources().getColor(R.color.interventix_color));
-		    builder.setDividerColor(com.federicocolantoni.projects.interventix.application.Interventix_.getContext().getResources().getColor(R.color.interventix_color));
+		    builder.setTitleColor(Interventix.getContext().getResources().getColor(R.color.interventix_color));
+		    builder.setDividerColor(Interventix.getContext().getResources().getColor(R.color.interventix_color));
 
 		    builder.setTitle(getString(R.string.not_offline_access_title));
 		    builder.setMessage(getString(R.string.not_offline_access_message)).setPositiveButton(getString(R.string.ok_btn), new Dialog.OnClickListener() {
@@ -278,10 +279,10 @@ public class Login extends Fragment {
 		    setRefreshActionButtonState(false);
 
 		    Intent intent =
-			    new Intent(com.federicocolantoni.projects.interventix.application.Interventix_.getContext(), com.federicocolantoni.projects.interventix.activities.HomeActivity_.class);
+			    new Intent(Interventix.getContext(), com.federicocolantoni.projects.interventix.activities.HomeActivity_.class);
 		    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-		    com.federicocolantoni.projects.interventix.application.Interventix_.getContext().startActivity(intent);
+		    Interventix.getContext().startActivity(intent);
 		}
 	    }
 	}
@@ -333,7 +334,7 @@ public class Login extends Fragment {
 	    e.printStackTrace();
 	}
 
-	accountManager = AccountManager.get(com.federicocolantoni.projects.interventix.application.Interventix_.getContext());
+	accountManager = AccountManager.get(Interventix.getContext());
 
 	Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
 
@@ -344,7 +345,7 @@ public class Login extends Fragment {
 	    accountManager.addAccountExplicitly(account, encryptedPassword, null);
 	    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
-	    globalPrefs = com.federicocolantoni.projects.interventix.application.Interventix_.getContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    globalPrefs = Interventix.getContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 
 	    final Editor edit = globalPrefs.edit().putString(Constants.USERNAME, username.getText().toString()).putString(Constants.PASSWORD, encryptedPassword);
 
@@ -366,13 +367,13 @@ public class Login extends Fragment {
 	    }
 	}
 
-	Intent intent = new Intent(com.federicocolantoni.projects.interventix.application.Interventix_.getContext(), com.federicocolantoni.projects.interventix.activities.HomeActivity_.class);
+	Intent intent = new Intent(Interventix.getContext(), com.federicocolantoni.projects.interventix.activities.HomeActivity_.class);
 	intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 	setRefreshActionButtonState(false);
 
 	password.setText("");
 
-	com.federicocolantoni.projects.interventix.application.Interventix_.getContext().startActivity(intent);
+	Interventix.getContext().startActivity(intent);
     }
 }
