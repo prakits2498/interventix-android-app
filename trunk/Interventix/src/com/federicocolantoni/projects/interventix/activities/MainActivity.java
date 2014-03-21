@@ -94,7 +94,7 @@ public class MainActivity extends ActionBarActivity implements OnDateSetListener
 
 		    FragmentManager manager = getSupportFragmentManager();
 
-		    com.federicocolantoni.projects.interventix.fragments.Login_ fragLogin = new com.federicocolantoni.projects.interventix.fragments.Login_();
+		    com.federicocolantoni.projects.interventix.fragments.LoginFragment_ fragLogin = new com.federicocolantoni.projects.interventix.fragments.LoginFragment_();
 
 		    FragmentTransaction transaction = manager.beginTransaction();
 
@@ -127,7 +127,7 @@ public class MainActivity extends ActionBarActivity implements OnDateSetListener
 
 	    FragmentManager manager = getSupportFragmentManager();
 
-	    com.federicocolantoni.projects.interventix.fragments.Login_ fragLogin = new com.federicocolantoni.projects.interventix.fragments.Login_();
+	    com.federicocolantoni.projects.interventix.fragments.LoginFragment_ fragLogin = new com.federicocolantoni.projects.interventix.fragments.LoginFragment_();
 
 	    FragmentTransaction transaction = manager.beginTransaction();
 
