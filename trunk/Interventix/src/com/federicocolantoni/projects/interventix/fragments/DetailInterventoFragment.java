@@ -41,7 +41,6 @@ import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog.OnDateSetListener;
-import com.doomonafireball.betterpickers.radialtimepicker.RadialPickerLayout;
 import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog;
 import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog.OnTimeSetListener;
 import com.federicocolantoni.projects.interventix.R;
@@ -916,7 +915,7 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
     }
 
     @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+    public void onTimeSet(RadialTimePickerDialog dialog, int hourOfDay, int minute) {
 
 	if (timeInizioPickerDialog != null && timeInizioPickerDialog.isVisible()) {
 

@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog.OnDateSetListener;
-import com.doomonafireball.betterpickers.radialtimepicker.RadialPickerLayout;
 import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog;
 import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog.OnTimeSetListener;
 import com.federicocolantoni.projects.interventix.R;
@@ -410,7 +409,7 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
     }
 
     @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+    public void onTimeSet(RadialTimePickerDialog dialog, int hourOfDay, int minute) {
 
 	// mutableDateTime.setHourOfDay(hourOfDay);
 	// mutableDateTime.setMinuteOfHour(minute);
