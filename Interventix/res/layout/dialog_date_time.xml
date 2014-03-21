@@ -3,7 +3,7 @@
 	android:id="@+id/DateTimeDialog"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content" >
-	<com.federicocolantoni.projects.interventix.utils.DateTimePicker
+	<com.federicocolantoni.projects.interventix.helpers.DateTimePicker
 		android:id="@+id/DateTimePicker"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" />
