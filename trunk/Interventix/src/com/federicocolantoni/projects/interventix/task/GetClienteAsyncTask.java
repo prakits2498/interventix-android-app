@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
-import com.federicocolantoni.projects.interventix.entity.Cliente;
+import com.federicocolantoni.projects.interventix.models.Cliente;
 
 public class GetClienteAsyncTask extends AsyncTask<Long, Void, Cliente> {
 

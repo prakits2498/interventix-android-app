@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
-import com.federicocolantoni.projects.interventix.entity.Utente;
+import com.federicocolantoni.projects.interventix.models.Utente;
 
 public class GetNominativoUtenteAsyncTask extends AsyncTask<Long, Void, Utente> {
 

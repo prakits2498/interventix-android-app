@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields;
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
-import com.federicocolantoni.projects.interventix.entity.Intervento;
+import com.federicocolantoni.projects.interventix.models.Intervento;
 
 public class GetInterventoAsyncTask extends AsyncTask<Long, Void, Intervento> {
 
