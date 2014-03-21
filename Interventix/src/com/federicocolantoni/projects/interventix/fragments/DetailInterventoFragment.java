@@ -198,13 +198,13 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 		mutableDateTimeFine = dateTimeFine.toMutableDateTime();
 	    }
 
-	    tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN, Locale.ITALY));
-	    tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN, Locale.ITALY));
+	    tvRowDateInizio.setText(dateTimeInizio.toString(Constants.DATE_PATTERN, Locale.ITALY));
+	    tvRowTimeInizio.setText(dateTimeInizio.toString(Constants.TIME_PATTERN, Locale.ITALY));
 
-	    tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN, Locale.ITALY));
-	    tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN, Locale.ITALY));
+	    tvRowDateFine.setText(dateTimeFine.toString(Constants.DATE_PATTERN, Locale.ITALY));
+	    tvRowTimeFine.setText(dateTimeFine.toString(Constants.TIME_PATTERN, Locale.ITALY));
 
-	    DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeFine.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	    DateTime dtTotOre = new DateTime(dateTimeFine.getMillis() - dateTimeFine.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
 	    tvRowTotOre.setText(dtTotOre.toString(DateTimeFormat.forPattern(Constants.TIME_PATTERN)));
 	}
@@ -286,18 +286,22 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 	    dettaglio.modificato = (Constants.DETTAGLIO_NUOVO);
 	    dettaglio.idintervento = (InterventoController.controller.getIntervento().idintervento);
 
-	    mutableDateTimeInizio = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	    dateTimeInizio = new DateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
-	    tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN, Locale.ITALY));
-	    tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN, Locale.ITALY));
+	    mutableDateTimeInizio = dateTimeInizio.toMutableDateTime();
 
-	    mutableDateTimeFine = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-	    mutableDateTimeFine.addHours(1);
+	    tvRowDateInizio.setText(dateTimeInizio.toString(Constants.DATE_PATTERN, Locale.ITALY));
+	    tvRowTimeInizio.setText(dateTimeInizio.toString(Constants.TIME_PATTERN, Locale.ITALY));
 
-	    tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN, Locale.ITALY));
-	    tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN, Locale.ITALY));
+	    dateTimeFine = new DateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	    dateTimeFine = dateTimeFine.plusHours(1);
 
-	    DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	    mutableDateTimeFine = dateTimeFine.toMutableDateTime();
+
+	    tvRowDateFine.setText(dateTimeFine.toString(Constants.DATE_PATTERN, Locale.ITALY));
+	    tvRowTimeFine.setText(dateTimeFine.toString(Constants.TIME_PATTERN, Locale.ITALY));
+
+	    DateTime dtTotOre = new DateTime(dateTimeFine.getMillis() - dateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
 	    tvRowTotOre.setText(dtTotOre.toString(DateTimeFormat.forPattern(Constants.TIME_PATTERN)));
 	}
@@ -850,11 +854,11 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	if (calendarDateInizioPickerDialog != null && calendarDateInizioPickerDialog.isVisible()) {
 
-	    mutableDateTimeInizio.setYear(year);
-	    mutableDateTimeInizio.setMonthOfYear(monthOfYear + 1);
-	    mutableDateTimeInizio.setDayOfMonth(dayOfMonth);
+	    // mutableDateTimeInizio.setYear(year);
+	    // mutableDateTimeInizio.setMonthOfYear(monthOfYear + 1);
+	    // mutableDateTimeInizio.setDayOfMonth(dayOfMonth);
 
-	    // mutableDateTimeInizio.setDate(year, monthOfYear + 1, dayOfMonth);
+	    mutableDateTimeInizio.setDate(year, monthOfYear + 1, dayOfMonth);
 
 	    tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN));
 
@@ -879,11 +883,11 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	if (calendarDateFinePickerDialog != null && calendarDateFinePickerDialog.isVisible()) {
 
-	    mutableDateTimeFine.setYear(year);
-	    mutableDateTimeFine.setMonthOfYear(monthOfYear + 1);
-	    mutableDateTimeFine.setDayOfMonth(dayOfMonth);
+	    // mutableDateTimeFine.setYear(year);
+	    // mutableDateTimeFine.setMonthOfYear(monthOfYear + 1);
+	    // mutableDateTimeFine.setDayOfMonth(dayOfMonth);
 
-	    // mutableDateTimeFine.setDate(year, monthOfYear + 1, dayOfMonth);
+	    mutableDateTimeFine.setDate(year, monthOfYear + 1, dayOfMonth);
 
 	    tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN));
 

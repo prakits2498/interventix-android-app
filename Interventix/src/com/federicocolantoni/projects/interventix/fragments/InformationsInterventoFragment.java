@@ -394,9 +394,11 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
     @Override
     public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
 
-	mutableDateTime.setYear(year);
-	mutableDateTime.setMonthOfYear(monthOfYear + 1);
-	mutableDateTime.setDayOfMonth(dayOfMonth);
+	// mutableDateTime.setYear(year);
+	// mutableDateTime.setMonthOfYear(monthOfYear + 1);
+	// mutableDateTime.setDayOfMonth(dayOfMonth);
+
+	mutableDateTime.setDate(year, monthOfYear, dayOfMonth);
 
 	tvDateInterv.setText(mutableDateTime.toString(Constants.DATE_PATTERN));
 
@@ -410,8 +412,10 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
 
-	mutableDateTime.setHourOfDay(hourOfDay);
-	mutableDateTime.setMinuteOfHour(minute);
+	// mutableDateTime.setHourOfDay(hourOfDay);
+	// mutableDateTime.setMinuteOfHour(minute);
+
+	mutableDateTime.setTime(hourOfDay, minute, 0, 0);
 
 	tvTimeInterv.setText(mutableDateTime.toString(Constants.TIME_PATTERN));
 
