@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.widget.Toast;
 
 import com.federicocolantoni.projects.interventix.R;
+import com.federicocolantoni.projects.interventix.application.Interventix;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.federicocolantoni.projects.interventix.helpers.InterventixToast;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
@@ -17,21 +18,21 @@ public class InterventoController {
 
     public static void insertOnDB() {
 
-	RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeInterventoDao();
+	RuntimeExceptionDao<Intervento, Long> interventoDao = Interventix.getDbHelper().getRuntimeInterventoDao();
 
 	InterventoController.controller.getIntervento().modificato = Constants.INTERVENTO_NUOVO;
 
 	interventoDao.createIfNotExists(InterventoController.controller.getIntervento());
 
-	RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeUtenteDao();
+	RuntimeExceptionDao<Utente, Long> utenteDao = Interventix.getDbHelper().getRuntimeUtenteDao();
 
 	utenteDao.createIfNotExists(InterventoController.controller.getTecnico());
 
-	RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeClienteDao();
+	RuntimeExceptionDao<Cliente, Long> clienteDao = Interventix.getDbHelper().getRuntimeClienteDao();
 
 	clienteDao.createIfNotExists(InterventoController.controller.getCliente());
 
-	RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
+	RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = Interventix.getDbHelper().getRuntimeDettaglioInterventoDao();
 
 	for (DettaglioIntervento dettaglio : InterventoController.controller.getListaDettagli()) {
 
@@ -47,28 +48,28 @@ public class InterventoController {
 	    }
 	}
 
-	com.federicocolantoni.projects.interventix.application.Interventix_.releaseDbHelper();
+	Interventix.releaseDbHelper();
 
-	InterventixToast.makeToast(com.federicocolantoni.projects.interventix.application.Interventix_.getContext().getString(R.string.new_intervention_added), Toast.LENGTH_SHORT);
+	InterventixToast.makeToast(Interventix.getContext().getString(R.string.new_intervention_added), Toast.LENGTH_SHORT);
     }
 
     public static void updateOnDB() {
 
-	RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeInterventoDao();
+	RuntimeExceptionDao<Intervento, Long> interventoDao = Interventix.getDbHelper().getRuntimeInterventoDao();
 
 	InterventoController.controller.getIntervento().modificato = Constants.INTERVENTO_MODIFICATO;
 
 	interventoDao.update(InterventoController.controller.getIntervento());
 
-	RuntimeExceptionDao<Utente, Long> utenteDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeUtenteDao();
+	RuntimeExceptionDao<Utente, Long> utenteDao = Interventix.getDbHelper().getRuntimeUtenteDao();
 
 	utenteDao.update(InterventoController.controller.getTecnico());
 
-	RuntimeExceptionDao<Cliente, Long> clienteDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeClienteDao();
+	RuntimeExceptionDao<Cliente, Long> clienteDao = Interventix.getDbHelper().getRuntimeClienteDao();
 
 	clienteDao.update(InterventoController.controller.getCliente());
 
-	RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeDettaglioInterventoDao();
+	RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = Interventix.getDbHelper().getRuntimeDettaglioInterventoDao();
 
 	for (DettaglioIntervento dettaglio : InterventoController.controller.getListaDettagli()) {
 
@@ -91,10 +92,10 @@ public class InterventoController {
 	    }
 	}
 
-	com.federicocolantoni.projects.interventix.application.Interventix_.releaseDbHelper();
+	Interventix.releaseDbHelper();
 
 	InterventixToast.makeToast(
-		String.format(com.federicocolantoni.projects.interventix.application.Interventix_.getContext().getString(R.string.intervention_updated),
+		String.format(Interventix.getContext().getString(R.string.intervention_updated),
 			InterventoController.controller.getIntervento().numero), Toast.LENGTH_SHORT);
     }
 }

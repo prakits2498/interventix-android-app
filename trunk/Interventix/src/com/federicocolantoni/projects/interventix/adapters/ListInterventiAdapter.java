@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
+import com.federicocolantoni.projects.interventix.application.Interventix;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.federicocolantoni.projects.interventix.models.Cliente;
 import com.federicocolantoni.projects.interventix.models.Intervento;
@@ -30,7 +31,7 @@ public class ListInterventiAdapter extends BaseAdapter {
 
     public ListInterventiAdapter(List<Intervento> listaInterventiAperti) {
 
-	mInflater = LayoutInflater.from(com.federicocolantoni.projects.interventix.application.Interventix_.getContext());
+	mInflater = LayoutInflater.from(Interventix.getContext());
 	listaInterventi = listaInterventiAperti;
     }
 
@@ -79,7 +80,7 @@ public class ListInterventiAdapter extends BaseAdapter {
 	else
 	    convertView.setBackgroundResource(R.drawable.list_pressed_item);
 
-	String numeroInterv = com.federicocolantoni.projects.interventix.application.Interventix_.getContext().getString(R.string.numero_intervento) + intervento.numero;
+	String numeroInterv = Interventix.getContext().getString(R.string.numero_intervento) + intervento.numero;
 	tvNumeroIntervento.setText(numeroInterv);
 
 	if (intervento.nuovo) {
@@ -113,7 +114,7 @@ public class ListInterventiAdapter extends BaseAdapter {
 
 	DateTime dt = new DateTime(intervento.dataora);
 
-	tvDataIntervento.setText(dt.toString(com.federicocolantoni.projects.interventix.application.Interventix_.getContext().getString(R.string.date_format), Locale.ITALY) + " - ");
+	tvDataIntervento.setText(dt.toString(Interventix.getContext().getString(R.string.date_format), Locale.ITALY) + " - ");
 
 	return convertView;
     }

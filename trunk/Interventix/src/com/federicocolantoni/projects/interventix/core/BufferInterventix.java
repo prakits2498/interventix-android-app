@@ -6,7 +6,6 @@ import java.util.TimerTask;
 import android.content.Intent;
 
 import com.federicocolantoni.projects.interventix.application.Interventix;
-import com.federicocolantoni.projects.interventix.application.Interventix_;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.federicocolantoni.projects.interventix.helpers.Constants.BUFFER_TYPE;
 import com.federicocolantoni.projects.interventix.service.InterventixService;
@@ -99,7 +98,7 @@ public class BufferInterventix {
 
 		    interventixService.setAction(Constants.ACTION_GET_INTERVENTI);
 
-		    Interventix_.getContext().startService(interventixService);
+		    Interventix.getContext().startService(interventixService);
 
 		    break;
 
@@ -109,7 +108,7 @@ public class BufferInterventix {
 
 		    interventixService.setAction(Constants.ACTION_GET_CLIENTI);
 
-		    Interventix_.getContext().startService(interventixService);
+		    Interventix.getContext().startService(interventixService);
 
 		    break;
 	    }

@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.federicocolantoni.projects.interventix.R;
+import com.federicocolantoni.projects.interventix.application.Interventix;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.federicocolantoni.projects.interventix.helpers.Utils;
@@ -76,7 +77,7 @@ public class InterventixService extends IntentService {
 	    });
 	    List<Intervento> tuttiInterventi = interventoDao.query(qb.prepare());
 
-	    SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(com.federicocolantoni.projects.interventix.application.Interventix_.getContext());
+	    SharedPreferences prefsDefault = PreferenceManager.getDefaultSharedPreferences(Interventix.getContext());
 
 	    String prefs_url = getResources().getString(R.string.prefs_key_url);
 
@@ -160,7 +161,7 @@ public class InterventixService extends IntentService {
 	    e.printStackTrace();
 	}
 
-	com.federicocolantoni.projects.interventix.application.Interventix_.releaseDbHelper();
+	Interventix.releaseDbHelper();
 
 	Intent finishBuffer = new Intent(Constants.ACTION_FINISH_BUFFER);
 

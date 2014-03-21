@@ -7,7 +7,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB.Fields;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -260,7 +259,7 @@ public class Intervento implements Serializable {
 	ContentValues values = new ContentValues();
 
 	values.put(InterventoDB.Fields.ID_INTERVENTO, intervento.idintervento);
-	values.put(InterventoDB.Fields.TYPE, InterventoDB.INTERVENTO_ITEM_TYPE);
+	values.put(com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields.TYPE, InterventoDB.INTERVENTO_ITEM_TYPE);
 	values.put(InterventoDB.Fields.CANCELLATO, intervento.cancellato);
 	values.put(InterventoDB.Fields.COSTO_ACCESSORI, intervento.costoaccessori.doubleValue());
 	values.put(InterventoDB.Fields.COSTO_COMPONENTI, intervento.costocomponenti.doubleValue());

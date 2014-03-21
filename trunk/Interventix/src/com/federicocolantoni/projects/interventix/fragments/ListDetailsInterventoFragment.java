@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapters.ListDettagliInterventiAdapter;
+import com.federicocolantoni.projects.interventix.application.Interventix;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.federicocolantoni.projects.interventix.models.DettaglioIntervento;
@@ -187,6 +188,6 @@ public class ListDetailsInterventoFragment extends Fragment implements OnDismiss
 
 	super.onStop();
 
-	com.federicocolantoni.projects.interventix.application.Interventix_.releaseDbHelper();
+	Interventix.releaseDbHelper();
     }
 }
