@@ -1,8 +1,8 @@
 #
-# generated on 2014/02/10 10:48:45
+# generated on 2014/03/21 05:17:47
 #
 # --table-start--
-dataClass=com.federicocolantoni.projects.interventix.entity.Cliente
+dataClass=com.federicocolantoni.projects.interventix.models.Cliente
 tableName=Clienti
 # --table-fields-start--
 # --field-start--
@@ -58,7 +58,7 @@ fieldName=conflitto
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.federicocolantoni.projects.interventix.entity.DettaglioIntervento
+dataClass=com.federicocolantoni.projects.interventix.models.DettaglioIntervento
 tableName=DettagliIntervento
 # --table-fields-start--
 # --field-start--
@@ -96,7 +96,7 @@ fieldName=nuovo
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.federicocolantoni.projects.interventix.entity.Intervento
+dataClass=com.federicocolantoni.projects.interventix.models.Intervento
 tableName=Interventi
 # --table-fields-start--
 # --field-start--
@@ -182,7 +182,7 @@ fieldName=iva
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.federicocolantoni.projects.interventix.entity.Utente
+dataClass=com.federicocolantoni.projects.interventix.models.Utente
 tableName=Tecnici
 # --table-fields-start--
 # --field-start--
