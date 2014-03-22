@@ -399,7 +399,7 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
 	mutableDateTime.setDate(year, monthOfYear, dayOfMonth);
 
-	tvDateInterv.setText(mutableDateTime.toString(Constants.DATE_PATTERN));
+	// tvDateInterv.setText(mutableDateTime.toString(Constants.DATE_PATTERN));
 
 	InterventoController.controller.getIntervento().dataora = (mutableDateTime.getMillis());
 
@@ -416,7 +416,7 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
 	mutableDateTime.setTime(hourOfDay, minute, 0, 0);
 
-	tvTimeInterv.setText(mutableDateTime.toString(Constants.TIME_PATTERN));
+	// tvTimeInterv.setText(mutableDateTime.toString(Constants.TIME_PATTERN));
 
 	InterventoController.controller.getIntervento().dataora = (mutableDateTime.getMillis());
 

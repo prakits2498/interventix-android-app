@@ -3,6 +3,7 @@ package com.federicocolantoni.projects.interventix.models;
 import java.io.Serializable;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import android.content.ContentValues;
 
@@ -41,7 +42,13 @@ public class DettaglioIntervento implements Serializable {
 	tipo = new String();
 	oggetto = new String();
 	descrizione = new String();
-	tecniciintervento = new JSONArray().toString();
+	try {
+	    tecniciintervento = new JSONArray("[]").toString();
+	}
+	catch (JSONException e) {
+
+	    e.printStackTrace();
+	}
 	nuovo = false;
 	modificato = new String();
     }
