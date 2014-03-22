@@ -2,6 +2,7 @@ package com.federicocolantoni.projects.interventix.models;
 
 import java.io.Serializable;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -57,7 +58,8 @@ public class DettaglioIntervento implements Serializable {
     public String toString() {
 
 	return String.format("DettaglioIntervento [iddettagliointervento=%s, idintervento=%s, inizio=%s, fine=%s, tipo=%s, oggetto=%s, descrizione=%s, tecniciintervento=%s, modificato=%s, nuovo=%s]",
-		iddettagliointervento, idintervento, inizio, fine, tipo, oggetto, descrizione, tecniciintervento, modificato, nuovo);
+		iddettagliointervento, idintervento, (new DateTime(inizio).toString(Constants.DATE_PATTERN) + " - " + new DateTime(inizio).toString(Constants.TIME_PATTERN)),
+		(new DateTime(fine).toString(Constants.DATE_PATTERN) + " - " + new DateTime(fine).toString(Constants.TIME_PATTERN)), tipo, oggetto, descrizione, tecniciintervento, modificato, nuovo);
     }
 
     @Override

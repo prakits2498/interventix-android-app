@@ -112,6 +112,14 @@ public class ListDetailsInterventoFragment extends Fragment implements OnDismiss
     }
 
     @Override
+    public void onResume() {
+
+	super.onResume();
+
+	System.out.println("Lista dettagli caricata dal DB\n" + InterventoController.controller.getListaDettagli().toString());
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
 	super.onCreateOptionsMenu(menu, inflater);

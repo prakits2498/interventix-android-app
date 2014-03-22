@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.federicocolantoni.projects.interventix"
-    android:versionCode="87"
-    android:versionName="0.0.870" >
+    android:versionCode="90"
+    android:versionName="0.0.900-beta1" >
 
     <uses-sdk
         android:maxSdkVersion="19"
