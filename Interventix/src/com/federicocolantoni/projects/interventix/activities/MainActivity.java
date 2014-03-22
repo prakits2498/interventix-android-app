@@ -4,7 +4,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
-import org.joda.time.DateTime;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -26,24 +25,20 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
-import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
-import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog.OnDateSetListener;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.application.Interventix;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.helpers.ChangeLogDialog;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
-import com.federicocolantoni.projects.interventix.helpers.InterventixToast;
 import com.federicocolantoni.projects.interventix.models.Utente;
 import com.federicocolantoni.projects.interventix.models.UtenteController;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 @SuppressLint("NewApi")
 @EActivity(R.layout.activity_main)
-public class MainActivity extends ActionBarActivity implements OnDateSetListener {
+public class MainActivity extends ActionBarActivity {
 
     @ViewById(R.id.tv_changelog)
     TextView tvChangelog;
@@ -66,9 +61,15 @@ public class MainActivity extends ActionBarActivity implements OnDateSetListener
 
 	super.onCreate(savedInstanceState);
 
-	accountManager = AccountManager.get(this);
-
 	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
+    }
+
+    @Override
+    protected void onStart() {
+
+	super.onStart();
+
+	accountManager = AccountManager.get(this);
 
 	globalPrefs = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
 
@@ -80,14 +81,12 @@ public class MainActivity extends ActionBarActivity implements OnDateSetListener
 
 	for (Account account : accounts) {
 
-	    // passo 3)
 	    if (account.name.equals(username)) {
 
 		utenteTrovato = true;
 
 		String pwd = accountManager.getPassword(account);
 
-		// passo 5)
 		if (pwd == null) {
 
 		    System.out.println("Utente " + account.name + " trovato - password nulla");
@@ -107,8 +106,6 @@ public class MainActivity extends ActionBarActivity implements OnDateSetListener
 		    else
 			PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_support_preferences_options, true);
 		}
-
-		// passo 4)
 		else {
 
 		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.ORMLITE_USERNAME, account.name).get(0);
@@ -120,7 +117,6 @@ public class MainActivity extends ActionBarActivity implements OnDateSetListener
 	    }
 	}
 
-	// passo 2)
 	if (!utenteTrovato) {
 
 	    System.out.println("Utente " + username + " non trovato");
@@ -140,12 +136,6 @@ public class MainActivity extends ActionBarActivity implements OnDateSetListener
 	    else
 		PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.activity_support_preferences_options, true);
 	}
-    }
-
-    @Override
-    protected void onStart() {
-
-	super.onStart();
 
 	tvChangelog.setOnClickListener(new OnClickListener() {
 
@@ -164,15 +154,6 @@ public class MainActivity extends ActionBarActivity implements OnDateSetListener
 	super.onDestroy();
 
 	Interventix.releaseDbHelper();
-    }
-
-    public void showPicker(View view) {
-
-	FragmentManager fm = getSupportFragmentManager();
-	DateTime now = DateTime.now();
-	CalendarDatePickerDialog calendarDatePickerDialog = CalendarDatePickerDialog.newInstance(this, now.getYear(), now.getMonthOfYear() - 1, now.getDayOfMonth());
-	calendarDatePickerDialog.setYearRange(1970, 3000);
-	calendarDatePickerDialog.show(fm, "fragment_date_picker_name");
     }
 
     public static class FirstRunDialog extends DialogFragment implements OnClickListener {
@@ -213,11 +194,5 @@ public class MainActivity extends ActionBarActivity implements OnDateSetListener
 		    break;
 	    }
 	}
-    }
-
-    @Override
-    public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-
-	InterventixToast.makeToast("Year: " + year + "\nMonth: " + monthOfYear + "\nDay: " + dayOfMonth, Toast.LENGTH_LONG);
     }
 }

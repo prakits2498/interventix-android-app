@@ -20,8 +20,11 @@ import org.json.simple.parser.ParseException;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -233,6 +236,8 @@ public class HomeActivity extends ActionBarActivity {
 		e.printStackTrace();
 		BugSenseHandler.sendException(e);
 	    }
+
+	    setRefreshActionButtonState(false);
 	}
     }
 
@@ -249,7 +254,39 @@ public class HomeActivity extends ActionBarActivity {
 
 	if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-	    // finish();
+	    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+
+		AlertDialog.Builder builder = new Builder(this);
+
+		builder.setTitle("Logout");
+		builder.setMessage("Effettuare il logout dall'app?");
+		builder.setPositiveButton(getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+
+			dialog.dismiss();
+
+			AccountManager accountManager = AccountManager.get(HomeActivity.this);
+
+			Account account = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX)[0];
+
+			accountManager.clearPassword(account);
+
+			finish();
+		    }
+		});
+		builder.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
+
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+
+			dialog.dismiss();
+		    }
+		});
+
+		builder.create().show();
+	    }
 	}
 
 	return true;
@@ -258,7 +295,39 @@ public class HomeActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
 
-	// finish();
+	if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+
+	    AlertDialog.Builder builder = new Builder(this);
+
+	    builder.setTitle("Logout");
+	    builder.setMessage("Effettuare il logout dall'app?");
+	    builder.setPositiveButton(getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+
+		    dialog.dismiss();
+
+		    AccountManager accountManager = AccountManager.get(HomeActivity.this);
+
+		    Account account = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX)[0];
+
+		    accountManager.clearPassword(account);
+
+		    finish();
+		}
+	    });
+	    builder.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
+
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+
+		    dialog.dismiss();
+		}
+	    });
+
+	    builder.create().show();
+	}
     }
 
     @Override

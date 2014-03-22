@@ -28,9 +28,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.internal.view.menu.MenuItemImpl;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -60,13 +63,16 @@ import com.qustom.dialog.QustomDialogBuilder;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_login)
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements TextWatcher {
 
     @ViewById(R.id.field_password)
     EditText password;
 
     @ViewById(R.id.field_username)
     EditText username;
+
+    @ViewById(R.id.btn_login)
+    Button btnLogin;
 
     @OrmLiteDao(helper = InterventixDBHelper.class, model = Utente.class)
     RuntimeExceptionDao<Utente, Long> utenteDao;
@@ -91,6 +97,10 @@ public class LoginFragment extends Fragment {
 	super.onStart();
 
 	setHasOptionsMenu(true);
+
+	username.addTextChangedListener(this);
+	password.addTextChangedListener(this);
+	btnLogin.setEnabled(false);
     }
 
     @Override
@@ -145,145 +155,139 @@ public class LoginFragment extends Fragment {
     @Click(R.id.btn_login)
     void startLogin() {
 
-	if (username.getText().toString().length() == 0 || password.getText().toString().length() == 0)
-	    InterventixToast.makeToast(getString(R.string.toast_username_and_password_required), Toast.LENGTH_SHORT);
-	else {
+	setRefreshActionButtonState(true);
 
-	    setRefreshActionButtonState(true);
+	String jsonReq = new String();
 
-	    String jsonReq = new String();
+	if (CheckConnection.connectionIsAlive()) {
 
-	    if (CheckConnection.connectionIsAlive()) {
+	    try {
+		HashMap<String, String> parameters = new HashMap<String, String>();
 
-		try {
-		    HashMap<String, String> parameters = new HashMap<String, String>();
+		parameters.put(Constants.JSON_USERNAME, username.getText().toString());
+		parameters.put(Constants.JSON_PASSWORD, password.getText().toString());
+		parameters.put(Constants.JSON_TYPE, Constants.USER_TYPE.TECNICO.name());
 
-		    parameters.put(Constants.JSON_USERNAME, username.getText().toString());
-		    parameters.put(Constants.JSON_PASSWORD, password.getText().toString());
-		    parameters.put(Constants.JSON_TYPE, Constants.USER_TYPE.TECNICO.name());
+		final String prefsUrl = Interventix.getContext().getResources().getString(R.string.prefs_key_url);
 
-		    final String prefsUrl = Interventix.getContext().getResources().getString(R.string.prefs_key_url);
+		final String url = defaultPrefs.getString(prefsUrl, null);
 
-		    final String url = defaultPrefs.getString(prefsUrl, null);
+		jsonReq = JsonCR2.createRequest(Constants.JSON_USER_SECTION, Constants.JSON_LOGIN_ACTION, parameters, -1);
 
-		    jsonReq = JsonCR2.createRequest(Constants.JSON_USER_SECTION, Constants.JSON_LOGIN_ACTION, parameters, -1);
+		RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
 
-		    RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+		StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), url, jsonReq), new Listener<String>() {
 
-		    StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), url, jsonReq), new Listener<String>() {
+		    @Override
+		    public void onResponse(String response) {
 
-			@Override
-			public void onResponse(String response) {
+			try {
 
-			    try {
+			    final JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
 
-				final JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
+			    System.out.println(jsonResp.toString(2));
 
-				System.out.println(jsonResp.toString(2));
+			    parseResponse(jsonResp);
 
-				parseResponse(jsonResp);
-
-			    }
-			    catch (ParseException e) {
-
-				BugSenseHandler.sendException(e);
-				e.printStackTrace();
-			    }
-			    catch (Exception e) {
-
-				BugSenseHandler.sendException(e);
-				e.printStackTrace();
-			    }
-			    finally {
-
-				setRefreshActionButtonState(false);
-			    }
 			}
-		    }, new ErrorListener() {
+			catch (ParseException e) {
 
-			@Override
-			public void onErrorResponse(VolleyError error) {
+			    BugSenseHandler.sendException(e);
+			    e.printStackTrace();
+			}
+			catch (Exception e) {
+
+			    BugSenseHandler.sendException(e);
+			    e.printStackTrace();
+			}
+			finally {
 
 			    setRefreshActionButtonState(false);
-
-			    InterventixToast.makeToast(getString(R.string.service_not_available), Toast.LENGTH_LONG);
 			}
-		    });
+		    }
+		}, new ErrorListener() {
 
-		    requestQueue.add(jsonRequest);
-		}
-		catch (Exception e) {
+		    @Override
+		    public void onErrorResponse(VolleyError error) {
 
-		    e.printStackTrace();
-		    BugSenseHandler.sendException(e);
-		}
+			setRefreshActionButtonState(false);
+
+			InterventixToast.makeToast(getString(R.string.service_not_available), Toast.LENGTH_LONG);
+		    }
+		});
+
+		requestQueue.add(jsonRequest);
+	    }
+	    catch (Exception e) {
+
+		e.printStackTrace();
+		BugSenseHandler.sendException(e);
+	    }
+	}
+	else {
+
+	    // connessione in modalità offline
+
+	    accountManager = AccountManager.get(Interventix.getContext());
+
+	    Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
+
+	    if (accounts.length == 0) {
+
+		QustomDialogBuilder builder = new QustomDialogBuilder(getActivity());
+
+		builder.setIcon(R.drawable.ic_launcher);
+		builder.setTitleColor(Interventix.getContext().getResources().getColor(R.color.interventix_color));
+		builder.setDividerColor(Interventix.getContext().getResources().getColor(R.color.interventix_color));
+
+		builder.setTitle(getString(R.string.not_offline_access_title));
+		builder.setMessage(getString(R.string.not_offline_access_message)).setPositiveButton(getString(R.string.ok_btn), new Dialog.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialogInterface, int i) {
+
+			dialogInterface.dismiss();
+		    }
+		});
+
+		builder.create().show();
+
+		setRefreshActionButtonState(false);
 	    }
 	    else {
 
-		// connessione in modalità offline
+		for (Account account : accounts) {
 
-		accountManager = AccountManager.get(Interventix.getContext());
+		    if (account.name.equals(username.getText().toString())) {
 
-		Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
+			String encryptedPassword = null;
 
-		if (accounts.length == 0) {
-
-		    QustomDialogBuilder builder = new QustomDialogBuilder(getActivity());
-
-		    builder.setIcon(R.drawable.ic_launcher);
-		    builder.setTitleColor(Interventix.getContext().getResources().getColor(R.color.interventix_color));
-		    builder.setDividerColor(Interventix.getContext().getResources().getColor(R.color.interventix_color));
-
-		    builder.setTitle(getString(R.string.not_offline_access_title));
-		    builder.setMessage(getString(R.string.not_offline_access_message)).setPositiveButton(getString(R.string.ok_btn), new Dialog.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialogInterface, int i) {
-
-			    dialogInterface.dismiss();
+			try {
+			    encryptedPassword = PasswordHash.createHash(password.getText().toString());
 			}
-		    });
+			catch (NoSuchAlgorithmException e) {
 
-		    builder.create().show();
-
-		    setRefreshActionButtonState(false);
-		}
-		else {
-
-		    for (Account account : accounts) {
-
-			if (account.name.equals(username.getText().toString())) {
-
-			    String encryptedPassword = null;
-
-			    try {
-				encryptedPassword = PasswordHash.createHash(password.getText().toString());
-			    }
-			    catch (NoSuchAlgorithmException e) {
-
-				e.printStackTrace();
-			    }
-			    catch (InvalidKeySpecException e) {
-
-				e.printStackTrace();
-			    }
-
-			    accountManager.setPassword(account, encryptedPassword);
-			    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
-
-			    UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.JSON_USERNAME, username.getText().toString()).get(0);
-
-			    break;
+			    e.printStackTrace();
 			}
+			catch (InvalidKeySpecException e) {
+
+			    e.printStackTrace();
+			}
+
+			accountManager.setPassword(account, encryptedPassword);
+			accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
+
+			UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.JSON_USERNAME, username.getText().toString()).get(0);
+
+			break;
 		    }
-
-		    setRefreshActionButtonState(false);
-
-		    Intent intent =
-			    new Intent(Interventix.getContext(), com.federicocolantoni.projects.interventix.activities.HomeActivity_.class);
-		    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-		    Interventix.getContext().startActivity(intent);
 		}
+
+		setRefreshActionButtonState(false);
+
+		Intent intent = new Intent(Interventix.getContext(), com.federicocolantoni.projects.interventix.activities.HomeActivity_.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+		Interventix.getContext().startActivity(intent);
 	    }
 	}
     }
@@ -375,5 +379,24 @@ public class LoginFragment extends Fragment {
 	password.setText("");
 
 	Interventix.getContext().startActivity(intent);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+	if (username.getText().length() != 0 && password.getText().length() != 0)
+	    btnLogin.setEnabled(true);
+	else
+	    btnLogin.setEnabled(false);
     }
 }

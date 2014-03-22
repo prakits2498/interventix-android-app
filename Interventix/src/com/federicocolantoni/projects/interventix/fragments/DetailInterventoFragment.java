@@ -245,11 +245,15 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	    mutableDateTimeInizio = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 
+	    dettaglio.inizio = mutableDateTimeInizio.getMillis();
+
 	    tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN, Locale.ITALY));
 	    tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN, Locale.ITALY));
 
 	    mutableDateTimeFine = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
 	    mutableDateTimeFine.addHours(1);
+
+	    dettaglio.fine = mutableDateTimeFine.getMillis();
 
 	    tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN, Locale.ITALY));
 	    tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN, Locale.ITALY));
@@ -312,8 +316,6 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
     @Click(R.id.tv_row_time_inizio_dettaglio)
     void showDialogTimeInizioDettaglio() {
 
-	// mutableDateTimeInizio = new MutableDateTime(dettaglio.inizio, DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-
 	timeInizioPickerDialog =
 		RadialTimePickerDialog.newInstance(DetailInterventoFragment.this, mutableDateTimeInizio.getHourOfDay(), mutableDateTimeInizio.getMinuteOfHour(),
 			DateFormat.is24HourFormat(getActivity()));
@@ -336,11 +338,6 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
     @Click(R.id.tv_row_time_fine_dettaglio)
     void showDialogTimeFineDettaglio() {
 
-	// mutableDateTimeFine =
-	// MutableDateTime.parse(
-	// !tvRowTimeFine.getText().toString().isEmpty() ? tvRowTimeFine.getText().toString() : new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME)).toString(),
-	// DateTimeFormat.forPattern(Constants.TIME_PATTERN));
-
 	timeFinePickerDialog =
 		RadialTimePickerDialog.newInstance(DetailInterventoFragment.this, mutableDateTimeFine.getHourOfDay(), mutableDateTimeFine.getMinuteOfHour(), DateFormat.is24HourFormat(getActivity()));
 	timeFinePickerDialog.onCancel(new DialogInterface() {
@@ -362,11 +359,6 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
     @Click(R.id.tv_row_date_inizio_dettaglio)
     void showDialogDateInizioDettaglio() {
 
-	// mutableDateTimeInizio =
-	// MutableDateTime.parse(
-	// !tvRowDateInizio.getText().toString().isEmpty() ? tvRowDateInizio.getText().toString() : new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME)).toString(),
-	// DateTimeFormat.forPattern(Constants.DATE_PATTERN));
-
 	calendarDateInizioPickerDialog =
 		CalendarDatePickerDialog.newInstance(DetailInterventoFragment.this, mutableDateTimeInizio.getYear(), mutableDateTimeInizio.getMonthOfYear() - 1, mutableDateTimeInizio.getDayOfMonth());
 	calendarDateInizioPickerDialog.setYearRange(1970, 3000);
@@ -387,11 +379,6 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
     @Click(R.id.tv_row_date_fine_dettaglio)
     void showDialogDateFineDettaglio() {
-
-	// mutableDateTimeFine =
-	// MutableDateTime.parse(
-	// !tvRowDateFine.getText().toString().isEmpty() ? tvRowDateFine.getText().toString() : new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME)).toString(),
-	// DateTimeFormat.forPattern(Constants.DATE_PATTERN));
 
 	calendarDateFinePickerDialog =
 		CalendarDatePickerDialog.newInstance(DetailInterventoFragment.this, mutableDateTimeFine.getYear(), mutableDateTimeFine.getMonthOfYear() - 1, mutableDateTimeFine.getDayOfMonth());
@@ -425,8 +412,6 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
 
-		// tvRowTipo.setText(tipos[which]);
-
 		if (!dettaglio.nuovo) {
 		    dettaglio.tipo = (tipos[which]);
 		    dettaglio.modificato = (Constants.DETTAGLIO_MODIFICATO);
@@ -445,15 +430,6 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 	    }
 	});
 	tipo_dett.setCancelable(false);
-	// tipo_dett.setPositiveButton(ok_btn, new DialogInterface.OnClickListener() {
-	//
-	// @Override
-	// public void onClick(DialogInterface dialog, int which) {
-	//
-	// dialog.dismiss();
-	// updateUI();
-	// }
-	// });
 
 	tipo_dett.create().show();
     }
@@ -478,8 +454,6 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 	    public void onClick(DialogInterface dialog, int which) {
 
 		dialog.dismiss();
-
-		// tvRowOggetto.setText(mEdit_oggetto_dett.getText());
 
 		if (!dettaglio.nuovo) {
 		    dettaglio.oggetto = (mEdit_oggetto_dett.getText().toString());
@@ -520,8 +494,6 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 	    public void onClick(DialogInterface dialog, int which) {
 
 		dialog.dismiss();
-
-		// tvRowDescr.setText(mEdit_descrizione_dett.getText());
 
 		if (!dettaglio.nuovo) {
 		    dettaglio.descrizione = (mEdit_descrizione_dett.getText().toString());
@@ -633,8 +605,6 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 			if (cont == tecniciChecked.length - 1)
 			    break;
 		    }
-
-		    // tvRowTecnici.setText("" + tecnici.length());
 
 		    if (!dettaglio.nuovo) {
 			dettaglio.tecniciintervento = (tecnici.toString());
@@ -773,17 +743,7 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	if (calendarDateInizioPickerDialog != null && calendarDateInizioPickerDialog.isVisible()) {
 
-	    // mutableDateTimeInizio.setYear(year);
-	    // mutableDateTimeInizio.setMonthOfYear(monthOfYear + 1);
-	    // mutableDateTimeInizio.setDayOfMonth(dayOfMonth);
-
 	    mutableDateTimeInizio.setDate(year, monthOfYear + 1, dayOfMonth);
-
-	    // tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN));
-	    //
-	    // DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-	    //
-	    // tvRowTotOre.setText(dtTotOre.toString(Constants.TIME_PATTERN));
 
 	    if (!dettaglio.nuovo) {
 		dettaglio.inizio = (mutableDateTimeInizio.getMillis());
@@ -802,17 +762,7 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	if (calendarDateFinePickerDialog != null && calendarDateFinePickerDialog.isVisible()) {
 
-	    // mutableDateTimeFine.setYear(year);
-	    // mutableDateTimeFine.setMonthOfYear(monthOfYear + 1);
-	    // mutableDateTimeFine.setDayOfMonth(dayOfMonth);
-
 	    mutableDateTimeFine.setDate(year, monthOfYear + 1, dayOfMonth);
-
-	    // tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN));
-	    //
-	    // DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-	    //
-	    // tvRowTotOre.setText(dtTotOre.toString(Constants.TIME_PATTERN));
 
 	    if (!dettaglio.nuovo) {
 		dettaglio.fine = (mutableDateTimeFine.getMillis());
@@ -839,16 +789,7 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	if (timeInizioPickerDialog != null && timeInizioPickerDialog.isVisible()) {
 
-	    // mutableDateTimeInizio.setHourOfDay(hourOfDay);
-	    // mutableDateTimeInizio.setMinuteOfHour(minute);
-
 	    mutableDateTimeInizio.setTime(hourOfDay, minute, 0, 0);
-
-	    // tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN));
-	    //
-	    // DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-	    //
-	    // tvRowTotOre.setText(dtTotOre.toString(Constants.TIME_PATTERN));
 
 	    if (!dettaglio.nuovo) {
 		dettaglio.inizio = (mutableDateTimeInizio.getMillis());
@@ -867,16 +808,7 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	if (timeFinePickerDialog != null && timeFinePickerDialog.isVisible()) {
 
-	    // mutableDateTimeFine.setHourOfDay(hourOfDay);
-	    // mutableDateTimeFine.setMinuteOfHour(minute);
-
 	    mutableDateTimeFine.setTime(hourOfDay, minute, 0, 0);
-
-	    // tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN));
-	    //
-	    // DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-	    //
-	    // tvRowTotOre.setText(dtTotOre.toString(Constants.TIME_PATTERN));
 
 	    if (!dettaglio.nuovo) {
 		dettaglio.fine = (mutableDateTimeFine.getMillis());
