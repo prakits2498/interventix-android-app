@@ -28,9 +28,9 @@ import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.federicocolantoni.projects.interventix.models.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.models.InterventoController;
-import com.haarman.listviewanimations.itemmanipulation.OnDismissCallback;
-import com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.nhaarman.listviewanimations.itemmanipulation.OnDismissCallback;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.SwipeDismissAdapter;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_list_details)
@@ -93,7 +93,7 @@ public class ListDetailsInterventoFragment extends Fragment implements OnDismiss
 
 		Bundle bundle = new Bundle();
 
-		bundle.putSerializable(Constants.DETTAGLIO_N_ESIMO, InterventoController.controller.getListaDettagli().get(position));
+		bundle.putSerializable(Constants.DETTAGLIO_N_ESIMO, mAdapter.getItem(position));
 
 		FragmentManager manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
