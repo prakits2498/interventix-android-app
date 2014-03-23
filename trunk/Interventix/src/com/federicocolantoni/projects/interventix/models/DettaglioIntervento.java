@@ -22,7 +22,7 @@ public class DettaglioIntervento implements Serializable {
      */
     private static final long serialVersionUID = 3301272979527832708L;
 
-    @DatabaseField(canBeNull = true, useGetSet = false, id = true)
+    @DatabaseField(canBeNull = false, useGetSet = false, id = true)
     public Long iddettagliointervento;
 
     @DatabaseField(canBeNull = true, useGetSet = false)

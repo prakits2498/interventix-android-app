@@ -13,6 +13,9 @@ import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,6 +23,10 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -62,6 +69,22 @@ public class MainActivity extends ActionBarActivity {
 	super.onCreate(savedInstanceState);
 
 	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
+
+	SpannableStringBuilder spanStringBuilder = new SpannableStringBuilder(getString(R.string.app_name));
+	spanStringBuilder.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+	spanStringBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+	getSupportActionBar().setTitle(spanStringBuilder);
+
+	try {
+	    String appVersion = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
+
+	    getSupportActionBar().setSubtitle(appVersion);
+	}
+	catch (NameNotFoundException e) {
+
+	    e.printStackTrace();
+	}
     }
 
     @Override

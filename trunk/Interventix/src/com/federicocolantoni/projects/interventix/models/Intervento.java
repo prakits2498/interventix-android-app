@@ -19,7 +19,7 @@ public class Intervento implements Serializable {
      */
     private static final long serialVersionUID = -6145022542420590261L;
 
-    @DatabaseField(canBeNull = true, useGetSet = false, id = true)
+    @DatabaseField(canBeNull = false, useGetSet = false, id = true)
     public Long idintervento;
 
     @DatabaseField(canBeNull = true, useGetSet = false)

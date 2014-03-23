@@ -222,50 +222,42 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
     private void addNewDettaglio() {
 
-	long maxId = dettaglioDao.queryRawValue("select max(" + Constants.ORMLITE_IDDETTAGLIOINTERVENTO + ") from DettagliIntervento");
+	long maxId = dettaglioDao.queryRawValue(String.format("select max(%s) from DettagliIntervento", Constants.ORMLITE_IDDETTAGLIOINTERVENTO));
+
+	dettaglio = new DettaglioIntervento();
+
+	dettaglio.iddettagliointervento = (maxId + Constants.contatoreNuovoId);
+
+	dettaglio.nuovo = (true);
+	dettaglio.modificato = (Constants.DETTAGLIO_NUOVO);
+	dettaglio.idintervento = (InterventoController.controller.getIntervento().idintervento);
 
 	try {
-	    DettaglioIntervento foo = dettaglioDao.queryBuilder().where().eq(Constants.ORMLITE_IDDETTAGLIOINTERVENTO, maxId).queryForFirst();
-
-	    dettaglio = new DettaglioIntervento();
-
-	    dettaglio.iddettagliointervento = (foo.iddettagliointervento + Constants.contatoreNuovoId);
-
-	    dettaglio.nuovo = (true);
-	    dettaglio.modificato = (Constants.DETTAGLIO_NUOVO);
-	    dettaglio.idintervento = (InterventoController.controller.getIntervento().idintervento);
-
-	    try {
-		tvRowTecnici.setText("" + new JSONArray(dettaglio.tecniciintervento).length());
-	    }
-	    catch (JSONException e) {
-
-		e.printStackTrace();
-	    }
-
-	    mutableDateTimeInizio = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-
-	    dettaglio.inizio = mutableDateTimeInizio.getMillis();
-
-	    tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN, Locale.ITALY));
-	    tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN, Locale.ITALY));
-
-	    mutableDateTimeFine = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-	    mutableDateTimeFine.addHours(1);
-
-	    dettaglio.fine = mutableDateTimeFine.getMillis();
-
-	    tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN, Locale.ITALY));
-	    tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN, Locale.ITALY));
-
-	    DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
-
-	    tvRowTotOre.setText(dtTotOre.toString(DateTimeFormat.forPattern(Constants.TIME_PATTERN)));
+	    tvRowTecnici.setText("" + new JSONArray(dettaglio.tecniciintervento).length());
 	}
-	catch (SQLException e) {
+	catch (JSONException e) {
 
 	    e.printStackTrace();
 	}
+
+	mutableDateTimeInizio = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+
+	dettaglio.inizio = mutableDateTimeInizio.getMillis();
+
+	tvRowDateInizio.setText(mutableDateTimeInizio.toString(Constants.DATE_PATTERN, Locale.ITALY));
+	tvRowTimeInizio.setText(mutableDateTimeInizio.toString(Constants.TIME_PATTERN, Locale.ITALY));
+
+	mutableDateTimeFine = new MutableDateTime(DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+	mutableDateTimeFine.addHours(1);
+
+	dettaglio.fine = mutableDateTimeFine.getMillis();
+
+	tvRowDateFine.setText(mutableDateTimeFine.toString(Constants.DATE_PATTERN, Locale.ITALY));
+	tvRowTimeFine.setText(mutableDateTimeFine.toString(Constants.TIME_PATTERN, Locale.ITALY));
+
+	DateTime dtTotOre = new DateTime(mutableDateTimeFine.getMillis() - mutableDateTimeInizio.getMillis(), DateTimeZone.forID(Constants.TIMEZONE_EUROPE_ROME));
+
+	tvRowTotOre.setText(dtTotOre.toString(DateTimeFormat.forPattern(Constants.TIME_PATTERN)));
     }
 
     @Override
