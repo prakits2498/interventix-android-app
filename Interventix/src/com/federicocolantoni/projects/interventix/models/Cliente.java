@@ -17,7 +17,7 @@ public class Cliente implements Serializable {
      */
     private static final long serialVersionUID = 6163117197009443000L;
 
-    @DatabaseField(canBeNull = true, useGetSet = false, id = true)
+    @DatabaseField(canBeNull = false, useGetSet = false, id = true)
     public Long idcliente;
 
     @DatabaseField(canBeNull = true, useGetSet = false)

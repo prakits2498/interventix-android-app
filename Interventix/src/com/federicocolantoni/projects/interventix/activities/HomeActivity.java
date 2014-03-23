@@ -177,8 +177,6 @@ public class HomeActivity extends ActionBarActivity {
 
 	InterventoController.controller = null;
 
-	registerReceiver(receiverBufferFinish, new IntentFilter(Constants.ACTION_FINISH_BUFFER));
-
 	listOpen = (ListView) findViewById(R.id.list_interv_open);
 
 	listOpen.setOnItemClickListener(new OnItemClickListener() {
@@ -210,6 +208,8 @@ public class HomeActivity extends ActionBarActivity {
 	}
 	else {
 
+	    setRefreshActionButtonState(false);
+
 	    QueryBuilder<Intervento, Long> qb = interventoDao.queryBuilder();
 
 	    qb.selectColumns(new String[] {
@@ -236,8 +236,6 @@ public class HomeActivity extends ActionBarActivity {
 		e.printStackTrace();
 		BugSenseHandler.sendException(e);
 	    }
-
-	    setRefreshActionButtonState(false);
 	}
     }
 
@@ -399,6 +397,8 @@ public class HomeActivity extends ActionBarActivity {
     protected void onResume() {
 
 	super.onResume();
+
+	registerReceiver(receiverBufferFinish, new IntentFilter(Constants.ACTION_FINISH_BUFFER));
 
 	InterventoSingleton.reset();
 

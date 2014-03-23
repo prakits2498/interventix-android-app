@@ -111,8 +111,6 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 	    InterventoController.controller.setListaDettagli(dettaglioDao.queryForEq(Constants.ORMLITE_IDINTERVENTO, intervento.idintervento));
 
-	    // System.out.println("Lista dettagli caricata dal DB\n" + InterventoController.controller.getListaDettagli().toString());
-
 	    InterventoController.controller.setTecnico(utenteDao.queryForId(InterventoController.controller.getIntervento().tecnico));
 
 	    if (manager.getBackStackEntryCount() == 0) {

@@ -16,7 +16,7 @@ public class Utente implements Serializable {
      */
     private static final long serialVersionUID = -460809443185110082L;
 
-    @DatabaseField(canBeNull = true, useGetSet = false, id = true)
+    @DatabaseField(canBeNull = false, useGetSet = false, id = true)
     public Long idutente;
 
     @DatabaseField(canBeNull = true, useGetSet = false)
