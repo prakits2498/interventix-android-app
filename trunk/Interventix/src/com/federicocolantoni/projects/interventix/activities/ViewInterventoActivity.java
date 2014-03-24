@@ -183,14 +183,6 @@ public class ViewInterventoActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onDestroy() {
-
-	super.onDestroy();
-
-	// Interventix_.releaseDbHelper();
-    }
-
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
 	if (keyCode == KeyEvent.KEYCODE_BACK) {
