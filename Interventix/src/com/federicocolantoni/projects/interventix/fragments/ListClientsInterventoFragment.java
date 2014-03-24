@@ -168,12 +168,4 @@ public class ListClientsInterventoFragment extends Fragment {
 	InterventoController.listaClienti = (ArrayList<Cliente>) clienteDao.queryForAll();
 
     }
-
-    @Override
-    public void onStop() {
-
-	super.onStop();
-
-	// Interventix_.releaseDbHelper();
-    }
 }

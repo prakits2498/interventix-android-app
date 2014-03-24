@@ -183,14 +183,6 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 	}
     }
 
-    @Override
-    public void onStop() {
-
-	super.onStop();
-
-	// Interventix_.releaseDbHelper();
-    }
-
     private void updateUI() {
 
 	tvRowTipo.setText(dettaglio.tipo);

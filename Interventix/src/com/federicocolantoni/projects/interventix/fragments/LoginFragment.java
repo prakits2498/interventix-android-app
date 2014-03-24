@@ -104,14 +104,6 @@ public class LoginFragment extends Fragment implements TextWatcher {
     }
 
     @Override
-    public void onStop() {
-
-	super.onStop();
-
-	// Interventix_.releaseDbHelper();
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
 	inflater.inflate(R.menu.menu_main, menu);

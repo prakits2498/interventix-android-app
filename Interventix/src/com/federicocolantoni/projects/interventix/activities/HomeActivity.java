@@ -206,43 +206,44 @@ public class HomeActivity extends ActionBarActivity {
 	}
 	else {
 
-	    setRefreshActionButtonState(false);
+	    runOnUiThread(new Runnable() {
 
-	    QueryBuilder<Intervento, Long> qb = interventoDao.queryBuilder();
+		@Override
+		public void run() {
 
-	    qb.selectColumns(new String[] {
-		    Constants.ORMLITE_NUMERO, Constants.ORMLITE_DATAORA, Constants.ORMLITE_CLIENTE, Constants.ORMLITE_CONFLITTO, Constants.ORMLITE_MODIFICATO, Constants.ORMLITE_NUOVO
+		    readListInterventions();
+		}
 	    });
 
-	    try {
-		qb.where().eq(Constants.ORMLITE_TECNICO, UtenteController.tecnicoLoggato.idutente).and().eq(Constants.ORMLITE_CHIUSO, false);
-		qb.orderBy(Constants.ORMLITE_DATAORA, false).orderBy(Constants.ORMLITE_NUMERO, false);
-
-		List<Intervento> listaInterventiAperti = interventoDao.query(qb.prepare());
-
-		adapter = new ListInterventiAdapter(listaInterventiAperti);
-
-		animationAdapter = new SwingBottomInAnimationAdapter(adapter, 500, 1500);
-		animationAdapter.setAbsListView(listOpen);
-
-		listOpen.setAdapter(animationAdapter);
-
-		animationAdapter.notifyDataSetChanged();
-	    }
-	    catch (SQLException e) {
-
-		e.printStackTrace();
-		BugSenseHandler.sendException(e);
-	    }
+	    // setRefreshActionButtonState(false);
+	    //
+	    // QueryBuilder<Intervento, Long> qb = interventoDao.queryBuilder();
+	    //
+	    // qb.selectColumns(new String[] {
+	    // Constants.ORMLITE_NUMERO, Constants.ORMLITE_DATAORA, Constants.ORMLITE_CLIENTE, Constants.ORMLITE_CONFLITTO, Constants.ORMLITE_MODIFICATO, Constants.ORMLITE_NUOVO
+	    // });
+	    //
+	    // try {
+	    // qb.where().eq(Constants.ORMLITE_TECNICO, UtenteController.tecnicoLoggato.idutente).and().eq(Constants.ORMLITE_CHIUSO, false);
+	    // qb.orderBy(Constants.ORMLITE_DATAORA, false).orderBy(Constants.ORMLITE_NUMERO, false);
+	    //
+	    // List<Intervento> listaInterventiAperti = interventoDao.query(qb.prepare());
+	    //
+	    // adapter = new ListInterventiAdapter(listaInterventiAperti);
+	    //
+	    // animationAdapter = new SwingBottomInAnimationAdapter(adapter, 500, 1500);
+	    // animationAdapter.setAbsListView(listOpen);
+	    //
+	    // listOpen.setAdapter(animationAdapter);
+	    //
+	    // animationAdapter.notifyDataSetChanged();
+	    // }
+	    // catch (SQLException e) {
+	    //
+	    // e.printStackTrace();
+	    // BugSenseHandler.sendException(e);
+	    // }
 	}
-    }
-
-    @Override
-    protected void onDestroy() {
-
-	super.onDestroy();
-
-	// Interventix.releaseDbHelper();
     }
 
     @Override
@@ -334,7 +335,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	setRefreshActionButtonState(true);
 
-	return true;
+	return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -963,7 +964,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	adapter = new ListInterventiAdapter(listaInterventiAperti);
 
-	animationAdapter = new SwingBottomInAnimationAdapter(adapter, 500, 1500);
+	animationAdapter = new SwingBottomInAnimationAdapter(adapter, 1500, 1500);
 	animationAdapter.setAbsListView(listOpen);
 
 	listOpen.setAdapter(animationAdapter);

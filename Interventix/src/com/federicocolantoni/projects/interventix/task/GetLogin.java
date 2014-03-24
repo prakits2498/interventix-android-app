@@ -109,8 +109,6 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 		    UtenteController.tecnicoLoggato = utente;
 
 		    result = Activity.RESULT_OK;
-
-		    // Interventix_.releaseDbHelper();
 		}
 		else {
 		    result = Constants.ERRORE_LOGIN;
@@ -187,8 +185,6 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 			RuntimeExceptionDao<Utente, Long> utenteDao = Interventix.getDbHelper().getRuntimeUtenteDao();
 
 			UtenteController.tecnicoLoggato = utenteDao.queryForEq("username", username).get(0);
-
-			// Interventix_.releaseDbHelper();
 
 			break;
 		    }

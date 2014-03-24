@@ -104,14 +104,6 @@ public class ClientInterventoFragment extends Fragment {
     }
 
     @Override
-    public void onStop() {
-
-	super.onStop();
-
-	// Interventix_.releaseDbHelper();
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
 	super.onCreateOptionsMenu(menu, inflater);

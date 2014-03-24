@@ -189,12 +189,4 @@ public class ListDetailsInterventoFragment extends Fragment implements OnDismiss
 	    noDetails.setVisibility(View.VISIBLE);
 	}
     }
-
-    @Override
-    public void onStop() {
-
-	super.onStop();
-
-	// Interventix_.releaseDbHelper();
-    }
 }

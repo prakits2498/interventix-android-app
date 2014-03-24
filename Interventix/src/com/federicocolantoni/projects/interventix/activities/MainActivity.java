@@ -170,14 +170,6 @@ public class MainActivity extends ActionBarActivity {
 	});
     }
 
-    @Override
-    protected void onDestroy() {
-
-	super.onDestroy();
-
-	// Interventix_.releaseDbHelper();
-    }
-
     public static class FirstRunDialog extends DialogFragment implements OnClickListener {
 
 	private Button btn_ok;

@@ -48,8 +48,6 @@ public class InterventoController {
 	    }
 	}
 
-	// Interventix_.releaseDbHelper();
-
 	InterventixToast.makeToast(Interventix.getContext().getString(R.string.new_intervention_added), Toast.LENGTH_SHORT);
     }
 
@@ -91,8 +89,6 @@ public class InterventoController {
 		dettaglioDao.create(dettaglio);
 	    }
 	}
-
-	// Interventix_.releaseDbHelper();
 
 	InterventixToast.makeToast(String.format(Interventix.getContext().getString(R.string.intervention_updated), InterventoController.controller.getIntervento().numero), Toast.LENGTH_SHORT);
     }
