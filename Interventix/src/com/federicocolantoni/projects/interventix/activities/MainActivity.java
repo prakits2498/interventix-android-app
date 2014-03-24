@@ -35,7 +35,6 @@ import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.application.Interventix;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.helpers.ChangeLogDialog;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
@@ -176,7 +175,7 @@ public class MainActivity extends ActionBarActivity {
 
 	super.onDestroy();
 
-	Interventix.releaseDbHelper();
+	// Interventix_.releaseDbHelper();
     }
 
     public static class FirstRunDialog extends DialogFragment implements OnClickListener {

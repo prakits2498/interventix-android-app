@@ -34,7 +34,6 @@ import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.application.Interventix;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.federicocolantoni.projects.interventix.helpers.InterventixToast;
@@ -188,7 +187,7 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 	super.onDestroy();
 
-	Interventix.releaseDbHelper();
+	// Interventix_.releaseDbHelper();
     }
 
     @Override

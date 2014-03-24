@@ -19,7 +19,7 @@ public class GetNominativoClienteAsyncTask extends AsyncTask<Long, Void, Cliente
 
 	Cliente cliente = clienteDao.queryForId(params[0]);
 
-	Interventix.releaseDbHelper();
+	// Interventix_.releaseDbHelper();
 
 	return cliente;
     }

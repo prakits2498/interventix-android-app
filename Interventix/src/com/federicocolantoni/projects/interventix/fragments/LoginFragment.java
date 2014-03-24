@@ -108,7 +108,7 @@ public class LoginFragment extends Fragment implements TextWatcher {
 
 	super.onStop();
 
-	Interventix.releaseDbHelper();
+	// Interventix_.releaseDbHelper();
     }
 
     @Override
