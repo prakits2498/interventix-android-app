@@ -161,7 +161,7 @@ public class InterventixService extends IntentService {
 	    e.printStackTrace();
 	}
 
-	Interventix.releaseDbHelper();
+	// Interventix_.releaseDbHelper();
 
 	Intent finishBuffer = new Intent(Constants.ACTION_FINISH_BUFFER);
 

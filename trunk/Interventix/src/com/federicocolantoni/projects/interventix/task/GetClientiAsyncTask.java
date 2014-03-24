@@ -24,7 +24,7 @@ public class GetClientiAsyncTask extends AsyncTask<Void, Void, ArrayList<Cliente
 
 	listaClienti = (ArrayList<Cliente>) clienteDao.queryForAll();
 
-	Interventix.releaseDbHelper();
+	// Interventix_.releaseDbHelper();
 
 	return listaClienti;
     }

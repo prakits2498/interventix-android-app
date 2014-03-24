@@ -110,7 +110,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 
 		    result = Activity.RESULT_OK;
 
-		    Interventix.releaseDbHelper();
+		    // Interventix_.releaseDbHelper();
 		}
 		else {
 		    result = Constants.ERRORE_LOGIN;
@@ -188,7 +188,7 @@ public class GetLogin extends AsyncTask<String, Void, Integer> {
 
 			UtenteController.tecnicoLoggato = utenteDao.queryForEq("username", username).get(0);
 
-			Interventix.releaseDbHelper();
+			// Interventix_.releaseDbHelper();
 
 			break;
 		    }

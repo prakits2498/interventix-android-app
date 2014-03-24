@@ -1,4 +1,4 @@
-package com.federicocolantoni.projects.interventix.activities;
+package com.federicocolantoni.projects.interventix.fragments;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 import multiface.crypto.cr2.JsonCR2;
 
-import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
@@ -20,27 +20,17 @@ import org.json.simple.parser.ParseException;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.BroadcastReceiver;
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.internal.view.menu.MenuItemImpl;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
-import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -59,19 +49,16 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapters.ListInterventiAdapter;
 import com.federicocolantoni.projects.interventix.application.Interventix;
-import com.federicocolantoni.projects.interventix.core.BufferInterventix;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.helpers.BigDecimalTypeAdapter;
 import com.federicocolantoni.projects.interventix.helpers.CheckConnection;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
-import com.federicocolantoni.projects.interventix.helpers.Constants.BUFFER_TYPE;
 import com.federicocolantoni.projects.interventix.helpers.InterventixToast;
 import com.federicocolantoni.projects.interventix.helpers.ManagedAsyncTask;
 import com.federicocolantoni.projects.interventix.models.Cliente;
 import com.federicocolantoni.projects.interventix.models.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.models.Intervento;
 import com.federicocolantoni.projects.interventix.models.InterventoController;
-import com.federicocolantoni.projects.interventix.models.InterventoSingleton;
 import com.federicocolantoni.projects.interventix.models.Utente;
 import com.federicocolantoni.projects.interventix.models.UtenteController;
 import com.google.gson.ExclusionStrategy;
@@ -88,8 +75,8 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.nhaarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 @SuppressLint("NewApi")
-@EActivity(R.layout.activity_home)
-public class HomeActivity extends ActionBarActivity {
+@EFragment(R.layout.fragment_list_interventions)
+public class ListInterventionsFragment extends Fragment {
 
     private static final String REVISION = "revision";
     private ListInterventiAdapter adapter;
@@ -115,65 +102,32 @@ public class HomeActivity extends ActionBarActivity {
     @OrmLiteDao(helper = InterventixDBHelper.class, model = DettaglioIntervento.class)
     RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioInterventoDao;
 
-    private BufferInterventix buffer;
-
     SharedPreferences prefsDefault, globalPrefs;
 
     String prefsUrl;
 
     String urlString;
 
-    BroadcastReceiver receiverBufferFinish = new BroadcastReceiver() {
-
-	@Override
-	public void onReceive(Context context, Intent intent) {
-
-	    if (intent.getAction().equals(Constants.ACTION_FINISH_BUFFER)) {
-
-		try {
-		    getUsersSyncro();
-		}
-		catch (Exception e) {
-
-		    e.printStackTrace();
-		    BugSenseHandler.sendException(e);
-		}
-	    }
-	}
-    };
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
 
 	super.onCreate(savedInstanceState);
 
-	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
+	setHasOptionsMenu(true);
 
-	getSupportActionBar().setHomeButtonEnabled(false);
-	getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
-	buffer = BufferInterventix.getBufferInterventix();
-
-	prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+	prefsDefault = PreferenceManager.getDefaultSharedPreferences(getActivity());
 	prefsUrl = getResources().getString(R.string.prefs_key_url);
 	urlString = prefsDefault.getString(prefsUrl, null);
 
-	globalPrefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	globalPrefs = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 
 	UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
 
 	super.onStart();
-
-	SpannableStringBuilder spanStringBuilder = new SpannableStringBuilder(UtenteController.tecnicoLoggato.nome + " " + UtenteController.tecnicoLoggato.cognome);
-	spanStringBuilder.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-	spanStringBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-	getSupportActionBar().setTitle(spanStringBuilder);
-	getSupportActionBar().setSubtitle(R.string.incoming_interventions);
 
 	InterventoController.controller = null;
 
@@ -187,7 +141,7 @@ public class HomeActivity extends ActionBarActivity {
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(Constants.INTERVENTO, intervento);
 
-		Intent intent = new Intent(HomeActivity.this, ViewInterventoActivity_.class);
+		Intent intent = new Intent(getActivity(), com.federicocolantoni.projects.interventix.activities.ViewInterventoActivity_.class);
 		intent.putExtras(bundle);
 
 		startActivity(intent);
@@ -238,103 +192,9 @@ public class HomeActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-	super.onDestroy();
-
-	// Interventix.releaseDbHelper();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-	if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-	    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-
-		AlertDialog.Builder builder = new Builder(this);
-
-		builder.setTitle("Logout");
-		builder.setMessage("Effettuare il logout dall'app?");
-		builder.setPositiveButton(getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
-
-		    @Override
-		    public void onClick(DialogInterface dialog, int which) {
-
-			dialog.dismiss();
-
-			AccountManager accountManager = AccountManager.get(HomeActivity.this);
-
-			Account account = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX)[0];
-
-			accountManager.clearPassword(account);
-
-			finish();
-		    }
-		});
-		builder.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
-
-		    @Override
-		    public void onClick(DialogInterface dialog, int which) {
-
-			dialog.dismiss();
-		    }
-		});
-
-		builder.create().show();
-	    }
-	}
-
-	return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-
-	if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-
-	    AlertDialog.Builder builder = new Builder(this);
-
-	    builder.setTitle("Logout");
-	    builder.setMessage("Effettuare il logout dall'app?");
-	    builder.setPositiveButton(getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-
-		    dialog.dismiss();
-
-		    AccountManager accountManager = AccountManager.get(HomeActivity.this);
-
-		    Account account = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX)[0];
-
-		    accountManager.clearPassword(account);
-
-		    finish();
-		}
-	    });
-	    builder.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-
-		    dialog.dismiss();
-		}
-	    });
-
-	    builder.create().show();
-	}
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-	getMenuInflater().inflate(R.menu.menu_home, menu);
-	optionsMenu = menu;
-
-	setRefreshActionButtonState(true);
-
-	return true;
+	super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -359,7 +219,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	    case R.id.add_menu:
 
-		Intent intent = new Intent(HomeActivity.this, ViewInterventoActivity_.class);
+		Intent intent = new Intent(getActivity(), com.federicocolantoni.projects.interventix.activities.ViewInterventoActivity_.class);
 
 		startActivity(intent);
 
@@ -367,43 +227,18 @@ public class HomeActivity extends ActionBarActivity {
 
 	    case R.id.logout:
 
-		AccountManager accountManager = AccountManager.get(this);
+		AccountManager accountManager = AccountManager.get(getActivity());
 
 		Account account = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX)[0];
 
 		accountManager.clearPassword(account);
 
-		finish();
+		getActivity().finish();
 
 		break;
 	}
 
 	return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onPause() {
-
-	super.onPause();
-
-	buffer.stopTimer();
-
-	unregisterReceiver(receiverBufferFinish);
-    }
-
-    @Override
-    protected void onResume() {
-
-	super.onResume();
-
-	registerReceiver(receiverBufferFinish, new IntentFilter(Constants.ACTION_FINISH_BUFFER));
-
-	InterventoSingleton.reset();
-
-	buffer.startTimer(BUFFER_TYPE.BUFFER_INTERVENTO);
-	buffer.startTimer(BUFFER_TYPE.BUFFER_CLIENTE);
-
-	UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
     }
 
     private void setRefreshActionButtonState(final boolean refreshing) {
@@ -445,7 +280,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	String jsonReq = JsonCR2.createRequest(Constants.JSON_USERS_SECTION, Constants.JSON_SYNCRO_USERS_ACTION, parameters, UtenteController.tecnicoLoggato.idutente.intValue());
 
-	RequestQueue requestQueue = Volley.newRequestQueue(this);
+	RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
 
 	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), urlString, jsonReq), new Listener<String>() {
 
@@ -489,7 +324,7 @@ public class HomeActivity extends ActionBarActivity {
 
     private void runAsyncTaskUserSyncro(final JSONObject jsonResp) {
 
-	new ManagedAsyncTask<Void, Void, Integer>(HomeActivity.this) {
+	new ManagedAsyncTask<Void, Void, Integer>(getActivity()) {
 
 	    private JSONObject response = jsonResp;
 
@@ -531,10 +366,10 @@ public class HomeActivity extends ActionBarActivity {
 			    }
 			}
 
-			result = RESULT_OK;
+			result = Activity.RESULT_OK;
 		    }
 		    else {
-			result = RESULT_CANCELED;
+			result = Activity.RESULT_CANCELED;
 		    }
 		}
 		catch (Exception e) {
@@ -548,7 +383,7 @@ public class HomeActivity extends ActionBarActivity {
 	    @Override
 	    protected void onPostExecute(Integer result) {
 
-		if (result == RESULT_OK)
+		if (result == Activity.RESULT_OK)
 		    try {
 			getClientsSyncro(null);
 		    }
@@ -576,7 +411,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	jsonReq = JsonCR2.createRequest(Constants.JSON_CLIENTS_SECTION, Constants.JSON_SYNCRO_CLIENTS_ACTION, parameters, UtenteController.tecnicoLoggato.idutente.intValue());
 
-	RequestQueue requestQueue = Volley.newRequestQueue(this);
+	RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
 
 	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), urlString, jsonReq), new Listener<String>() {
 
@@ -621,7 +456,7 @@ public class HomeActivity extends ActionBarActivity {
 
     private void runAsyncTaskClientSyncro(final JSONObject jsonResp) {
 
-	new ManagedAsyncTask<Void, Void, Integer>(HomeActivity.this) {
+	new ManagedAsyncTask<Void, Void, Integer>(getActivity()) {
 
 	    private JSONObject response = jsonResp;
 
@@ -659,10 +494,10 @@ public class HomeActivity extends ActionBarActivity {
 			    clienteDao.deleteById(clientsDEL.getLong(k));
 			}
 
-			result = RESULT_OK;
+			result = Activity.RESULT_OK;
 		    }
 		    else {
-			result = RESULT_CANCELED;
+			result = Activity.RESULT_CANCELED;
 		    }
 		}
 		catch (Exception e) {
@@ -676,7 +511,7 @@ public class HomeActivity extends ActionBarActivity {
 	    @Override
 	    protected void onPostExecute(Integer result) {
 
-		if (result == RESULT_OK)
+		if (result == Activity.RESULT_OK)
 		    try {
 			getInterventionsSyncro(null);
 		    }
@@ -704,7 +539,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	jsonReq = JsonCR2.createRequest(Constants.JSON_INTERVENTIONS_SECTION, Constants.JSON_MYSYNCRO_INTERVENTIONS_ACTION, parameters, UtenteController.tecnicoLoggato.idutente.intValue());
 
-	RequestQueue requestQueue = Volley.newRequestQueue(this);
+	RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
 
 	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), urlString, jsonReq), new Listener<String>() {
 
@@ -748,7 +583,7 @@ public class HomeActivity extends ActionBarActivity {
 
     private void runAsyncTaskInterventionsSyncro(final JSONObject jsonResp) {
 
-	new ManagedAsyncTask<Void, Void, Integer>(HomeActivity.this) {
+	new ManagedAsyncTask<Void, Void, Integer>(getActivity()) {
 
 	    private JSONObject response = jsonResp;
 
@@ -796,10 +631,10 @@ public class HomeActivity extends ActionBarActivity {
 				interventoDao.deleteById(id);
 			}
 
-			result = RESULT_OK;
+			result = Activity.RESULT_OK;
 		    }
 		    else {
-			result = RESULT_CANCELED;
+			result = Activity.RESULT_CANCELED;
 		    }
 		}
 		catch (Exception e) {
@@ -909,7 +744,7 @@ public class HomeActivity extends ActionBarActivity {
 	    @Override
 	    protected void onPostExecute(Integer result) {
 
-		if (result != RESULT_OK) {
+		if (result != Activity.RESULT_OK) {
 
 		    InterventixToast.makeToast(toastErrorSyncro, Toast.LENGTH_LONG);
 
@@ -917,7 +752,7 @@ public class HomeActivity extends ActionBarActivity {
 		}
 		else {
 
-		    HomeActivity.this.runOnUiThread(new Runnable() {
+		    getActivity().runOnUiThread(new Runnable() {
 
 			@Override
 			public void run() {

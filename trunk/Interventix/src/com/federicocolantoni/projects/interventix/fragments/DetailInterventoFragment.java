@@ -43,7 +43,6 @@ import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDi
 import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog;
 import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog.OnTimeSetListener;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.application.Interventix;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.federicocolantoni.projects.interventix.helpers.ManagedAsyncTask;
@@ -189,7 +188,7 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	super.onStop();
 
-	Interventix.releaseDbHelper();
+	// Interventix_.releaseDbHelper();
     }
 
     private void updateUI() {
