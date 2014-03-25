@@ -32,20 +32,15 @@ public final class Constants {
     public static final String DETTAGLIO_INTERVENTO_ESISTENTE = "DETTAGLIO_INTERVENTO_ESISTENTE";
     public static final int ERRORE_LOGIN = -2;
     public static final int ERRORE_NO_CONNECTION = -3;
-
     public static final String INTERVENTO_NUOVO = "N";
     public static final String INTERVENTO_MODIFICATO = "M";
     public static final String INTERVENTO_SINCRONIZZATO = "U";
-
     public static final String DETTAGLIO_NUOVO = INTERVENTO_NUOVO;
     public static final String DETTAGLIO_MODIFICATO = INTERVENTO_MODIFICATO;
     public static final String DETTAGLIO_SINCRONIZZATO = INTERVENTO_SINCRONIZZATO;
-
     public static final int WHAT_MESSAGE_GET_CLIENTI = -1;
-
     public static final String ARRAY_DETTAGLI = "ARRAY_DETTAGLI";
     public static final String HASH_CODE_INTERVENTO_SINGLETON = "HASH_CODE_INTERVENTO_SINGLETON";
-
     public static int contatoreNuovoId = 1;
 
     // *** costanti per il tempo e le date *** \\
@@ -153,6 +148,32 @@ public final class Constants {
     public static final String JSON_SYNCRO_CLIENTS_ACTION = "syncro";
     public static final String JSON_USERS_SECTION = "users";
     public static final String JSON_SYNCRO_USERS_ACTION = "syncro";
+    public static final String JSON_ADD_INTERVENTIONS_ACTION = "add";
+    public static final String JSON_TIPO = "tipo";
+    public static final String JSON_OGGETTO = "oggetto";
+    public static final String JSON_INIZIO = "inizio";
+    public static final String JSON_FINE = "fine";
+    public static final String JSON_DESCRIZIONE = "descrizione";
+    public static final String JSON_TECNICI = "tecnici";
+    public static final String JSON_CLIENTE = "cliente";
+    public static final String JSON_TECNICO = "tecnico";
+    public static final String JSON_TIPOLOGIA = "tipologia";
+    public static final String JSON_MODALITA = "modalita";
+    public static final String JSON_PRODOTTO = "prodotto";
+    public static final String JSON_MOTIVO = "motivo";
+    public static final String JSON_NOMINATIVO = "nominativo";
+    public static final String JSON_DATAORA = "dataora";
+    public static final String JSON_RIF_FATTURA = "riffattura";
+    public static final String JSON_RIF_SCONTRINO = "rifscontrino";
+    public static final String JSON_FIRMA = "firma";
+    public static final String JSON_CHIUSO = "chiuso";
+    public static final String JSON_NOTE = "note";
+    public static final String JSON_TOTALE = "totale";
+    public static final String JSON_IVA = "iva";
+    public static final String JSON_IMPORTO = "importo";
+    public static final String JSON_COSTOACCESSORI = "costoaccessori";
+    public static final String JSON_COSTOCOMPONENTI = "costocomponenti";
+    public static final String JSON_COSTOMANODOPERA = "costomanodopera";
 
     // *** costanti per i nomi delle colonne di ORMLite *** \\
 
@@ -161,12 +182,12 @@ public final class Constants {
     public static final String ORMLITE_COGNOME = "cognome";
     public static final String ORMLITE_IDUTENTE = "idutente";
     public static final String ORMLITE_NUMERO = "numero";
-    public static final String ORMLITE_DATAORA = "dataora";
-    public static final String ORMLITE_CLIENTE = "cliente";
+    public static final String ORMLITE_DATAORA = JSON_DATAORA;
+    public static final String ORMLITE_CLIENTE = JSON_CLIENTE;
     public static final String ORMLITE_CONFLITTO = "conflitto";
     public static final String ORMLITE_MODIFICATO = "modificato";
     public static final String ORMLITE_NUOVO = "nuovo";
-    public static final String ORMLITE_TECNICO = "tecnico";
+    public static final String ORMLITE_TECNICO = JSON_TECNICO;
     public static final String ORMLITE_CHIUSO = "chiuso";
     public static final String ORMLITE_IDINTERVENTO = "idintervento";
     public static final String ORMLITE_IDDETTAGLIOINTERVENTO = "iddettagliointervento";

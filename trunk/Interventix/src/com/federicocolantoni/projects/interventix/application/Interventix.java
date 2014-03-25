@@ -52,7 +52,7 @@ public class Interventix extends Application {
     }
 
     /**
-     * Rilascia l'helper del database decrementanto di 1 il contatore di uso. L'helper verrà chiuso se il contatore è 0.
+     * Rilascia l'helper del database decrementato di 1 il contatore di uso. L'helper verrà chiuso se il contatore è 0.
      */
     // public static void releaseDbHelper() {
     //
