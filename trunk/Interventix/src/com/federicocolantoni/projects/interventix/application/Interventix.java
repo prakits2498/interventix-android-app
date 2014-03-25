@@ -16,7 +16,7 @@ public class Interventix extends Application {
 
     private static Interventix instance;
 
-    private static InterventixDBHelper dbHelper;
+    // private static InterventixDBHelper dbHelper;
 
     public static Interventix getInstance() {
 
@@ -29,26 +29,36 @@ public class Interventix extends Application {
     }
 
     /**
-     * Crea un'istanza della classe InterventixDBHelper alla quale è associato un contatore.
+     * Restituisce un'istanza singleton della classe InterventixDBHelper.
      * 
      * @return un oggetto di tipo InterventixDBHelper.
      */
     public static InterventixDBHelper getDbHelper() {
 
-	if (dbHelper == null)
-	    dbHelper = OpenHelperManager.getHelper(instance, InterventixDBHelper.class);
+	// if (dbHelper == null)
+	// dbHelper = OpenHelperManager.getHelper(instance, InterventixDBHelper.class);
 
-	return dbHelper;
+	return InterventixDBHelperHolder.INSTANCE;
+    }
+
+    private static class InterventixDBHelperHolder {
+
+	public static final InterventixDBHelper INSTANCE = OpenHelperManager.getHelper(instance, InterventixDBHelper.class);
+    }
+
+    protected InterventixDBHelper readResolve() {
+
+	return getDbHelper();
     }
 
     /**
      * Rilascia l'helper del database decrementanto di 1 il contatore di uso. L'helper verrà chiuso se il contatore è 0.
      */
-    public static void releaseDbHelper() {
-
-	OpenHelperManager.releaseHelper();
-	dbHelper = null;
-    }
+    // public static void releaseDbHelper() {
+    //
+    // OpenHelperManager.releaseHelper();
+    // dbHelper = null;
+    // }
 
     @SuppressLint("NewApi")
     @Override
