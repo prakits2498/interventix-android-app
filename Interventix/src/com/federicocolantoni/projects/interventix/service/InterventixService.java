@@ -47,13 +47,9 @@ public class InterventixService extends IntentService {
 
 	if (intent.getAction().equals(Constants.ACTION_GET_INTERVENTI)) {
 
-	    // System.out.println("Action " + Constants.ACTION_GET_INTERVENTI);
-
 	    inviaInterventi();
 	}
 	else if (intent.getAction().equals(Constants.ACTION_GET_CLIENTI)) {
-
-	    // System.out.println("Action " + Constants.ACTION_GET_CLIENTI);
 
 	    inviaClienti();
 	}
@@ -64,8 +60,6 @@ public class InterventixService extends IntentService {
     }
 
     private void inviaInterventi() {
-
-	// RuntimeExceptionDao<Intervento, Long> interventoDao = com.federicocolantoni.projects.interventix.application.Interventix_.getDbHelper().getRuntimeInterventoDao();
 
 	QueryBuilder<Intervento, Long> qb = interventoDao.queryBuilder();
 
@@ -91,27 +85,27 @@ public class InterventixService extends IntentService {
 
 		    Map<String, String> parameters = new HashMap<String, String>();
 
-		    parameters.put("cliente", Long.toString(intervento.cliente));
-		    parameters.put("tecnico", Long.toString(intervento.tecnico));
-		    parameters.put("tipologia", intervento.tipologia);
-		    parameters.put("modalita", intervento.modalita);
-		    parameters.put("prodotto", intervento.prodotto);
-		    parameters.put("motivo", intervento.motivo);
-		    parameters.put("nominativo", intervento.nominativo);
-		    parameters.put("dataora", "" + intervento.dataora);
-		    parameters.put("riffattura", intervento.riffattura);
-		    parameters.put("rifscontrino", intervento.rifscontrino);
-		    parameters.put("costomanodopera", intervento.costomanodopera.toPlainString());
-		    parameters.put("costocomponenti", intervento.costocomponenti.toPlainString());
-		    parameters.put("costoaccessori", intervento.costoaccessori.toPlainString());
-		    parameters.put("importo", intervento.importo.toPlainString());
-		    parameters.put("iva", intervento.iva.toPlainString());
-		    parameters.put("totale", intervento.totale.toPlainString());
-		    parameters.put("note", intervento.note);
-		    parameters.put("chiuso", Boolean.toString(intervento.chiuso));
-		    parameters.put("firma", intervento.firma);
+		    parameters.put(Constants.JSON_CLIENTE, Long.toString(intervento.cliente));
+		    parameters.put(Constants.JSON_TECNICO, Long.toString(intervento.tecnico));
+		    parameters.put(Constants.JSON_TIPOLOGIA, intervento.tipologia);
+		    parameters.put(Constants.JSON_MODALITA, intervento.modalita);
+		    parameters.put(Constants.JSON_PRODOTTO, intervento.prodotto);
+		    parameters.put(Constants.JSON_MOTIVO, intervento.motivo);
+		    parameters.put(Constants.JSON_NOMINATIVO, intervento.nominativo);
+		    parameters.put(Constants.JSON_DATAORA, "" + intervento.dataora);
+		    parameters.put(Constants.JSON_RIF_FATTURA, intervento.riffattura);
+		    parameters.put(Constants.JSON_RIF_SCONTRINO, intervento.rifscontrino);
+		    parameters.put(Constants.JSON_COSTOMANODOPERA, intervento.costomanodopera.toPlainString());
+		    parameters.put(Constants.JSON_COSTOCOMPONENTI, intervento.costocomponenti.toPlainString());
+		    parameters.put(Constants.JSON_COSTOACCESSORI, intervento.costoaccessori.toPlainString());
+		    parameters.put(Constants.JSON_IMPORTO, intervento.importo.toPlainString());
+		    parameters.put(Constants.JSON_IVA, intervento.iva.toPlainString());
+		    parameters.put(Constants.JSON_TOTALE, intervento.totale.toPlainString());
+		    parameters.put(Constants.JSON_NOTE, intervento.note);
+		    parameters.put(Constants.JSON_CHIUSO, Boolean.toString(intervento.chiuso));
+		    parameters.put(Constants.JSON_FIRMA, intervento.firma);
 
-		    List<DettaglioIntervento> listaDettagli = dettaglioDao.queryForEq("idintervento", intervento.idintervento);
+		    List<DettaglioIntervento> listaDettagli = dettaglioDao.queryForEq(Constants.ORMLITE_IDINTERVENTO, intervento.idintervento);
 
 		    JSONArray arrayDettagli = new JSONArray();
 
@@ -119,23 +113,24 @@ public class InterventixService extends IntentService {
 
 			JSONObject object = new JSONObject();
 
-			object.put("tipo", dettaglio.tipo);
-			object.put("oggetto", dettaglio.oggetto);
-			object.put("inizio", dettaglio.inizio);
-			object.put("fine", dettaglio.fine);
-			object.put("descrizione", dettaglio.descrizione);
-			object.put("tecnici", dettaglio.tecniciintervento);
+			object.put(Constants.JSON_TIPO, dettaglio.tipo);
+			object.put(Constants.JSON_OGGETTO, dettaglio.oggetto);
+			object.put(Constants.JSON_INIZIO, dettaglio.inizio);
+			object.put(Constants.JSON_FINE, dettaglio.fine);
+			object.put(Constants.JSON_DESCRIZIONE, dettaglio.descrizione);
+			object.put(Constants.JSON_TECNICI, dettaglio.tecniciintervento);
 
 			arrayDettagli.put(object);
 		    }
 
-		    parameters.put("dettagliintervento", arrayDettagli.toString());
+		    parameters.put(Constants.JSON_DETTAGLIINTERVENTO, arrayDettagli.toString());
 
-		    String jsonRequest = JsonCR2.createRequest("interventions", "add", parameters, UtenteController.tecnicoLoggato.idutente.intValue());
+		    String jsonRequest =
+			    JsonCR2.createRequest(Constants.JSON_INTERVENTIONS_SECTION, Constants.JSON_ADD_INTERVENTIONS_ACTION, parameters, UtenteController.tecnicoLoggato.idutente.intValue());
 
 		    JSONObject response = new org.json.JSONObject(Utils.connectionForURL(jsonRequest, url_string).toJSONString());
 
-		    if (response != null && response.getString("response").equalsIgnoreCase("success")) {
+		    if (response != null && response.getString(Constants.JSON_RESPONSE).equalsIgnoreCase(Constants.JSON_RESPONSE_SUCCESS)) {
 
 			System.out.println("Intervento " + intervento.numero + " inviato con successo");
 
