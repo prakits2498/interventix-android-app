@@ -3,6 +3,7 @@ package com.federicocolantoni.projects.interventix.fragments;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -46,6 +47,18 @@ public class ListDetailsInterventoFragment extends Fragment implements OnDismiss
     @ViewById(R.id.tv_no_details)
     TextView noDetails;
 
+    @StringRes(R.string.numero_intervento)
+    String numeroIntervento;
+
+    @StringRes(R.string.row_list_details)
+    String rowListDetails;
+
+    @StringRes(R.string.new_interv)
+    String nuovoIntervento;
+
+    @StringRes(R.string.no_details)
+    String stringNoDetails;
+
     @OrmLiteDao(helper = InterventixDBHelper.class, model = DettaglioIntervento.class)
     RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao;
 
@@ -63,10 +76,9 @@ public class ListDetailsInterventoFragment extends Fragment implements OnDismiss
 	super.onStart();
 
 	if (!InterventoController.controller.getIntervento().nuovo)
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_list_details));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(numeroIntervento + InterventoController.controller.getIntervento().numero + " - " + rowListDetails);
 	else
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_list_details));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(nuovoIntervento + " - " + rowListDetails);
 
 	if (InterventoController.controller.getListaDettagli().size() == 0) {
 	    layoutListDetails.setVisibility(View.INVISIBLE);
@@ -185,7 +197,7 @@ public class ListDetailsInterventoFragment extends Fragment implements OnDismiss
 
 	if (InterventoController.controller.getListaDettagli().size() == 0) {
 	    layoutListDetails.setVisibility(View.INVISIBLE);
-	    noDetails.setText(R.string.no_details);
+	    noDetails.setText(stringNoDetails);
 	    noDetails.setVisibility(View.VISIBLE);
 	}
     }

@@ -119,7 +119,23 @@ public class HomeActivity extends ActionBarActivity {
 
     SharedPreferences prefsDefault, globalPrefs;
 
+    @StringRes(R.string.prefs_key_url)
     String prefsUrl;
+
+    @StringRes(R.string.incoming_interventions)
+    String incomingInterventions;
+
+    @StringRes(R.string.ok_btn)
+    String btnOk;
+
+    @StringRes(R.string.btn_cancel)
+    String btnCancel;
+
+    @StringRes(R.string.formatted_url_string)
+    String formattedURL;
+
+    @StringRes(R.string.service_not_available)
+    String serviceNotAvailable;
 
     String urlString;
 
@@ -155,7 +171,7 @@ public class HomeActivity extends ActionBarActivity {
 	buffer = BufferInterventix.getBufferInterventix();
 
 	prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
-	prefsUrl = getResources().getString(R.string.prefs_key_url);
+	// prefsUrl = getResources().getString(R.string.prefs_key_url);
 	urlString = prefsDefault.getString(prefsUrl, null);
 
 	globalPrefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
@@ -173,7 +189,7 @@ public class HomeActivity extends ActionBarActivity {
 	spanStringBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 	getSupportActionBar().setTitle(spanStringBuilder);
-	getSupportActionBar().setSubtitle(R.string.incoming_interventions);
+	getSupportActionBar().setSubtitle(incomingInterventions);
 
 	InterventoController.controller = null;
 
@@ -257,7 +273,7 @@ public class HomeActivity extends ActionBarActivity {
 
 		builder.setTitle("Logout");
 		builder.setMessage("Effettuare il logout dall'app?");
-		builder.setPositiveButton(getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+		builder.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
@@ -273,7 +289,7 @@ public class HomeActivity extends ActionBarActivity {
 			finish();
 		    }
 		});
-		builder.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(btnCancel, new DialogInterface.OnClickListener() {
 
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
@@ -298,7 +314,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	    builder.setTitle("Logout");
 	    builder.setMessage("Effettuare il logout dall'app?");
-	    builder.setPositiveButton(getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+	    builder.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
@@ -314,7 +330,7 @@ public class HomeActivity extends ActionBarActivity {
 		    finish();
 		}
 	    });
-	    builder.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
+	    builder.setNegativeButton(btnCancel, new DialogInterface.OnClickListener() {
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
@@ -448,7 +464,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), urlString, jsonReq), new Listener<String>() {
+	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(formattedURL, urlString, jsonReq), new Listener<String>() {
 
 	    @Override
 	    public void onResponse(String response) {
@@ -481,7 +497,7 @@ public class HomeActivity extends ActionBarActivity {
 
 		setRefreshActionButtonState(false);
 
-		InterventixToast.makeToast(getString(R.string.service_not_available), Toast.LENGTH_LONG);
+		InterventixToast.makeToast(serviceNotAvailable, Toast.LENGTH_LONG);
 	    }
 	});
 
@@ -579,7 +595,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), urlString, jsonReq), new Listener<String>() {
+	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(formattedURL, urlString, jsonReq), new Listener<String>() {
 
 	    @Override
 	    public void onResponse(String response) {
@@ -612,7 +628,7 @@ public class HomeActivity extends ActionBarActivity {
 
 		setRefreshActionButtonState(false);
 
-		InterventixToast.makeToast(error.networkResponse.data == null ? getString(R.string.service_not_available) : new String(error.getMessage()), Toast.LENGTH_LONG);
+		InterventixToast.makeToast(error.networkResponse.data == null ? serviceNotAvailable : new String(error.getMessage()), Toast.LENGTH_LONG);
 	    }
 	});
 
@@ -707,7 +723,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), urlString, jsonReq), new Listener<String>() {
+	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(formattedURL, urlString, jsonReq), new Listener<String>() {
 
 	    @Override
 	    public void onResponse(String response) {
@@ -740,7 +756,7 @@ public class HomeActivity extends ActionBarActivity {
 
 		setRefreshActionButtonState(false);
 
-		InterventixToast.makeToast(error.networkResponse.data == null ? getString(R.string.service_not_available) : new String(error.getMessage()), Toast.LENGTH_LONG);
+		InterventixToast.makeToast(error.networkResponse.data == null ? serviceNotAvailable : new String(error.getMessage()), Toast.LENGTH_LONG);
 	    }
 	});
 

@@ -1,6 +1,7 @@
 package com.federicocolantoni.projects.interventix.fragments;
 
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.res.StringRes;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,15 @@ import com.federicocolantoni.projects.interventix.models.InterventoController;
 
 @EFragment(R.layout.fragment_annotations)
 public class AnnotationsInterventoFragment extends Fragment {
+
+    @StringRes(R.string.numero_intervento)
+    String numeroIntervento;
+
+    @StringRes(R.string.row_annotations)
+    String rowAnnotations;
+
+    @StringRes(R.string.new_interv)
+    String nuovoIntervento;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,10 +36,9 @@ public class AnnotationsInterventoFragment extends Fragment {
 	super.onStart();
 
 	if (!InterventoController.controller.getIntervento().nuovo)
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_annotations));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(numeroIntervento + InterventoController.controller.getIntervento().numero + " - " + rowAnnotations);
 	else
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_annotations));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(nuovoIntervento + " - " + rowAnnotations);
     }
 
     @Override

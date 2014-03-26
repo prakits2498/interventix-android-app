@@ -3,11 +3,15 @@ package com.federicocolantoni.projects.interventix.fragments;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.DrawableRes;
+import org.androidannotations.annotations.res.StringArrayRes;
+import org.androidannotations.annotations.res.StringRes;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -61,6 +65,42 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
     @ViewById(R.id.row_notes)
     LinearLayout rowNotes;
 
+    @StringRes(R.string.numero_intervento)
+    String numeroIntervento;
+
+    @StringRes(R.string.row_informations)
+    String rowInformations;
+
+    @StringRes(R.string.new_interv)
+    String nuovoIntervento;
+
+    @DrawableRes(R.drawable.ic_launcher)
+    Drawable icLaucher;
+
+    @StringRes(R.string.tipologia_title)
+    String tipologiaTitle;
+
+    @StringArrayRes(R.array.tipologia_choose)
+    String[] tipologiaChoose;
+
+    @StringRes(R.string.ok_btn)
+    String btnOk;
+
+    @StringRes(R.string.modalita_title)
+    String modalitaTitle;
+
+    @StringArrayRes(R.array.modalita_choose)
+    String[] modalitaChoose;
+
+    @StringRes(R.string.prodotto_title)
+    String prodottoTitle;
+
+    @StringRes(R.string.nominativo_title)
+    String nominativoTitle;
+
+    @StringRes(R.string.motivation_title)
+    String motivoTitle;
+
     private FragmentManager manager;
 
     private MutableDateTime mutableDateTime;
@@ -83,10 +123,9 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 	manager = getActivity().getSupportFragmentManager();
 
 	if (!InterventoController.controller.getIntervento().nuovo)
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_informations));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(numeroIntervento + InterventoController.controller.getIntervento().numero + " - " + rowInformations);
 	else
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_informations));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(nuovoIntervento + " - " + rowInformations);
     }
 
     @Override
@@ -156,22 +195,22 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
 	QustomDialogBuilder tipologia = new QustomDialogBuilder(getActivity());
 
-	tipologia.setIcon(R.drawable.ic_launcher);
+	tipologia.setIcon(icLaucher);
 	tipologia.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
 	tipologia.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
-	tipologia.setTitle(getString(R.string.tipologia_title));
-	final String[] choices = getResources().getStringArray(R.array.tipologia_choose);
-	tipologia.setSingleChoiceItems(choices, -1, new DialogInterface.OnClickListener() {
+	tipologia.setTitle(tipologiaTitle);
+	// final String[] choices = getResources().getStringArray(R.array.tipologia_choose);
+	tipologia.setSingleChoiceItems(tipologiaChoose, -1, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
 
-		InterventoController.controller.getIntervento().tipologia = (choices[which]);
+		InterventoController.controller.getIntervento().tipologia = (tipologiaChoose[which]);
 	    }
 	});
 
-	tipologia.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+	tipologia.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
@@ -190,21 +229,21 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
 	QustomDialogBuilder modalita = new QustomDialogBuilder(getActivity());
 
-	modalita.setIcon(R.drawable.ic_launcher);
+	modalita.setIcon(icLaucher);
 	modalita.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
 	modalita.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
-	modalita.setTitle(getResources().getString(R.string.modalita_title));
-	final String[] choices = getResources().getStringArray(R.array.modalita_choose);
-	modalita.setSingleChoiceItems(choices, -1, new DialogInterface.OnClickListener() {
+	modalita.setTitle(modalitaTitle);
+	// final String[] choices = getResources().getStringArray(R.array.modalita_choose);
+	modalita.setSingleChoiceItems(modalitaChoose, -1, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
 
-		InterventoController.controller.getIntervento().modalita = (choices[which]);
+		InterventoController.controller.getIntervento().modalita = (modalitaChoose[which]);
 	    }
 	});
 
-	modalita.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+	modalita.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
@@ -225,17 +264,17 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
 	QustomDialogBuilder prodotto = new QustomDialogBuilder(getActivity());
 
-	prodotto.setIcon(R.drawable.ic_launcher);
+	prodotto.setIcon(icLaucher);
 	prodotto.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
 	prodotto.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
-	prodotto.setTitle(getString(R.string.prodotto_title));
+	prodotto.setTitle(prodottoTitle);
 
 	mEdit_prodotto = new EditText(getActivity());
 	mEdit_prodotto.setText(tvProduct.getText());
 
 	prodotto.setCustomView(mEdit_prodotto, getActivity());
-	prodotto.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+	prodotto.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
@@ -258,18 +297,18 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
 	QustomDialogBuilder nominativo = new QustomDialogBuilder(getActivity());
 
-	nominativo.setIcon(R.drawable.ic_launcher);
+	nominativo.setIcon(icLaucher);
 	nominativo.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
 	nominativo.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
-	nominativo.setTitle(R.string.nominativo_title);
+	nominativo.setTitle(nominativoTitle);
 
 	mEdit_nominativo = new EditText(getActivity());
 	mEdit_nominativo.setText(tvNominativo.getText());
 
 	nominativo.setCustomView(mEdit_nominativo, getActivity());
 
-	nominativo.setPositiveButton(getResources().getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+	nominativo.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
@@ -292,11 +331,11 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
 	QustomDialogBuilder motivo = new QustomDialogBuilder(getActivity());
 
-	motivo.setIcon(R.drawable.ic_launcher);
+	motivo.setIcon(icLaucher);
 	motivo.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
 	motivo.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
-	motivo.setTitle(R.string.motivation_title);
+	motivo.setTitle(motivoTitle);
 
 	TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_motivation);
 
@@ -305,7 +344,7 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
 	motivo.setCustomView(mEdit_motivo, getActivity());
 
-	motivo.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
+	motivo.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {

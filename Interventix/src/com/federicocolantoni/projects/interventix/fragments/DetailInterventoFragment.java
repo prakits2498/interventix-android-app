@@ -110,6 +110,12 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
     @StringRes(R.string.choose_tecnici_title)
     static String choose_tecnici_title;
 
+    @StringRes(R.string.oggetto_dett_title)
+    String oggettoDettTitle;
+
+    @StringRes(R.string.descrizione_dett_title)
+    String descrizioneDettTitle;
+
     @OrmLiteDao(helper = InterventixDBHelper.class, model = DettaglioIntervento.class)
     RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao;
 
@@ -424,7 +430,7 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	AlertDialog.Builder oggetto_dett = new Builder(getActivity());
 
-	oggetto_dett.setTitle(R.string.oggetto_dett_title);
+	oggetto_dett.setTitle(oggettoDettTitle);
 
 	mEdit_oggetto_dett = new EditText(getActivity());
 	mEdit_oggetto_dett.setText(tvRowOggetto.getText());
@@ -464,7 +470,7 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	AlertDialog.Builder descrizione_dett = new Builder(getActivity());
 
-	descrizione_dett.setTitle(R.string.oggetto_dett_title);
+	descrizione_dett.setTitle(descrizioneDettTitle);
 
 	mEdit_descrizione_dett = new EditText(getActivity());
 	mEdit_descrizione_dett.setText(tvRowDescr.getText());
