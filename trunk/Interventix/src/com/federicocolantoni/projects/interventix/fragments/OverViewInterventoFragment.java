@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -52,6 +53,21 @@ public class OverViewInterventoFragment extends Fragment {
     @ViewById(R.id.tv_row_signature)
     TextView tvRowSignature;
 
+    @StringRes(R.string.numero_intervento)
+    String numeroIntervento;
+
+    @StringRes(R.string.new_interv)
+    String nuovoIntervento;
+
+    @StringRes(R.string.no_details)
+    String noDetails;
+
+    @StringRes(R.string.present)
+    String presente;
+
+    @StringRes(R.string.not_present)
+    String nonPresente;
+
     private FragmentManager manager;
 
     @Override
@@ -68,9 +84,9 @@ public class OverViewInterventoFragment extends Fragment {
 	super.onStart();
 
 	if (!InterventoController.controller.getIntervento().nuovo)
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero);
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(numeroIntervento + InterventoController.controller.getIntervento().numero);
 	else
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(nuovoIntervento);
 
 	manager = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
 
@@ -133,7 +149,7 @@ public class OverViewInterventoFragment extends Fragment {
 	}
 	else {
 
-	    tvRowDetails.setText(getString(R.string.no_details));
+	    tvRowDetails.setText(noDetails);
 	}
 
 	DecimalFormat formatter = new DecimalFormat("###,###,###.##");
@@ -144,11 +160,11 @@ public class OverViewInterventoFragment extends Fragment {
 	if (InterventoController.controller.getIntervento().firma != null)
 	    if (InterventoController.controller.getIntervento().firma.length() > 0) {
 
-		tvRowSignature.setText("Presente");
+		tvRowSignature.setText(presente);
 	    }
 	    else {
 
-		tvRowSignature.setText("Non presente");
+		tvRowSignature.setText(nonPresente);
 	    }
     }
 

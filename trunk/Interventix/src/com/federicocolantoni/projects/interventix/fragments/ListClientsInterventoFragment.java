@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -40,6 +41,15 @@ public class ListClientsInterventoFragment extends Fragment {
     @ViewById(R.id.list_clients)
     ListView listClienti;
 
+    @StringRes(R.string.numero_intervento)
+    String numeroIntervento;
+
+    @StringRes(R.string.row_list_clients)
+    String rowListClients;
+
+    @StringRes(R.string.new_interv)
+    String nuovoIntervento;
+
     @OrmLiteDao(helper = InterventixDBHelper.class, model = Cliente.class)
     RuntimeExceptionDao<Cliente, Long> clienteDao;
 
@@ -59,10 +69,9 @@ public class ListClientsInterventoFragment extends Fragment {
 	super.onStart();
 
 	if (!InterventoController.controller.getIntervento().nuovo)
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_list_clients));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(numeroIntervento + InterventoController.controller.getIntervento().numero + " - " + rowListClients);
 	else
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_list_clients));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(nuovoIntervento + " - " + rowListClients);
 
 	mAdapter = new ListClientiAdapter(getActivity(), R.layout.list_customers_row, R.id.tv_row_nominativo);
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,15 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 public class ClientInterventoFragment extends Fragment {
 
     private Cliente cliente;
+
+    @StringRes(R.string.numero_intervento)
+    String numeroIntervento;
+
+    @StringRes(R.string.row_client)
+    String rowClient;
+
+    @StringRes(R.string.new_interv)
+    String nuovoIntervento;
 
     @ViewById(R.id.tv_nomin_client)
     EditText editNominativoCliente;
@@ -80,10 +90,9 @@ public class ClientInterventoFragment extends Fragment {
 	super.onStart();
 
 	if (!InterventoController.controller.getIntervento().nuovo)
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_client));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(numeroIntervento + InterventoController.controller.getIntervento().numero + " - " + rowClient);
 	else
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_client));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(nuovoIntervento + " - " + rowClient);
 
 	Bundle args = getArguments();
 

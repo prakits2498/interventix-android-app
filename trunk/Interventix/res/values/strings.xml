@@ -48,6 +48,7 @@
     <string name="tipologia_title">Scegli una tipologia di intervento</string>
     <string name="tipo_dett_title">Scegli il tipo di dettaglio</string>
     <string name="oggetto_dett_title">"Inserisci l'oggetto del dettaglio"</string>
+    <string name="descrizione_dett_title">"Inserisci la descrizione del dettaglio"</string>
     <string name="not_offline_access_title">Accesso offline</string>
     <string name="not_offline_access_message">"Spiacente, ma per l'accesso offline l'account deve essere già registrato sul dispositivo."</string>
     <string name="new_intervention_added">"Nuovo intervento aggiunto\n con successo!"</string>
@@ -55,6 +56,8 @@
     <string name="no_details">"Nessun dettaglio presente"</string>
     <string name="incoming_interventions">Interventi in arrivo</string>
     <string name="end_date_less_than_start_date">"Errore! Inizio intervento maggiore di fine intervento"</string>
+    <string name="present">"Presente"</string>
+    <string name="not_present">"Non Presente"</string>
 
     <!-- Array di stringhe -->
     <string-array name="tipologia_choose">

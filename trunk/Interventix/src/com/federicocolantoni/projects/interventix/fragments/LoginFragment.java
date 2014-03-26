@@ -10,6 +10,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -73,6 +74,27 @@ public class LoginFragment extends Fragment implements TextWatcher {
 
     @ViewById(R.id.btn_login)
     Button btnLogin;
+
+    @StringRes(R.string.service_not_available)
+    String serviceNotAvailable;
+
+    @StringRes(R.string.prefs_key_url)
+    String prefsUrl;
+
+    @StringRes(R.string.formatted_url_string)
+    String formattedURL;
+
+    @StringRes(R.string.not_offline_access_title)
+    String notOfflineAccessTitle;
+
+    @StringRes(R.string.not_offline_access_message)
+    String notOfflineAccessMessage;
+
+    @StringRes(R.string.ok_btn)
+    String btnOk;
+
+    @StringRes(R.string.toast_login_error)
+    String toastLoginError;
 
     @OrmLiteDao(helper = InterventixDBHelper.class, model = Utente.class)
     RuntimeExceptionDao<Utente, Long> utenteDao;
@@ -160,15 +182,15 @@ public class LoginFragment extends Fragment implements TextWatcher {
 		parameters.put(Constants.JSON_PASSWORD, password.getText().toString());
 		parameters.put(Constants.JSON_TYPE, Constants.USER_TYPE.TECNICO.name());
 
-		final String prefsUrl = Interventix.getContext().getResources().getString(R.string.prefs_key_url);
+		// final String prefsUrl = Interventix.getContext().getResources().getString(R.string.prefs_key_url);
 
-		final String url = defaultPrefs.getString(prefsUrl, null);
+		final String url = defaultPrefs.getString(prefsUrl, "");
 
 		jsonReq = JsonCR2.createRequest(Constants.JSON_USER_SECTION, Constants.JSON_LOGIN_ACTION, parameters, -1);
 
 		RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
 
-		StringRequest jsonRequest = new StringRequest(Method.POST, String.format(getString(R.string.formatted_url_string), url, jsonReq), new Listener<String>() {
+		StringRequest jsonRequest = new StringRequest(Method.POST, String.format(formattedURL, url, jsonReq), new Listener<String>() {
 
 		    @Override
 		    public void onResponse(String response) {
@@ -204,7 +226,7 @@ public class LoginFragment extends Fragment implements TextWatcher {
 
 			setRefreshActionButtonState(false);
 
-			InterventixToast.makeToast(getString(R.string.service_not_available), Toast.LENGTH_LONG);
+			InterventixToast.makeToast(serviceNotAvailable, Toast.LENGTH_LONG);
 		    }
 		});
 
@@ -232,8 +254,8 @@ public class LoginFragment extends Fragment implements TextWatcher {
 		builder.setTitleColor(Interventix.getContext().getResources().getColor(R.color.interventix_color));
 		builder.setDividerColor(Interventix.getContext().getResources().getColor(R.color.interventix_color));
 
-		builder.setTitle(getString(R.string.not_offline_access_title));
-		builder.setMessage(getString(R.string.not_offline_access_message)).setPositiveButton(getString(R.string.ok_btn), new Dialog.OnClickListener() {
+		builder.setTitle(notOfflineAccessTitle);
+		builder.setMessage(notOfflineAccessMessage).setPositiveButton(btnOk, new Dialog.OnClickListener() {
 		    @Override
 		    public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -310,7 +332,7 @@ public class LoginFragment extends Fragment implements TextWatcher {
 	}
 	else {
 
-	    InterventixToast.makeToast(getString(R.string.toast_login_error), Toast.LENGTH_LONG);
+	    InterventixToast.makeToast(toastLoginError, Toast.LENGTH_LONG);
 	}
     }
 

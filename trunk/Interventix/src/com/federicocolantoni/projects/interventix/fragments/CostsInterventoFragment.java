@@ -6,9 +6,12 @@ import java.text.DecimalFormat;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.DrawableRes;
+import org.androidannotations.annotations.res.StringRes;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -29,6 +32,30 @@ import com.qustom.dialog.QustomDialogBuilder;
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_costs)
 public class CostsInterventoFragment extends Fragment {
+
+    @StringRes(R.string.numero_intervento)
+    String numeroIntervento;
+
+    @StringRes(R.string.row_costs)
+    String rowCosts;
+
+    @StringRes(R.string.new_interv)
+    String nuovoIntervento;
+
+    @StringRes(R.string.manodopera_title)
+    String manodoperaTitle;
+
+    @StringRes(R.string.componenti_title)
+    String componentiTitle;
+
+    @StringRes(R.string.accessori_title)
+    String accessoriTitle;
+
+    @StringRes(R.string.ok_btn)
+    String btnOk;
+
+    @DrawableRes(R.drawable.ic_launcher)
+    Drawable icLauncher;
 
     @ViewById(R.id.tv_row_manodopera)
     TextView tv_row_manodopera;
@@ -64,10 +91,9 @@ public class CostsInterventoFragment extends Fragment {
 	super.onStart();
 
 	if (!InterventoController.controller.getIntervento().nuovo)
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_costs));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(numeroIntervento + InterventoController.controller.getIntervento().numero + " - " + rowCosts);
 	else
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_costs));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(nuovoIntervento + " - " + rowCosts);
     }
 
     @Override
@@ -151,11 +177,11 @@ public class CostsInterventoFragment extends Fragment {
 
 	QustomDialogBuilder costoManodoperaDialog = new QustomDialogBuilder(getActivity());
 
-	costoManodoperaDialog.setIcon(R.drawable.ic_launcher);
+	costoManodoperaDialog.setIcon(icLauncher);
 	costoManodoperaDialog.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
 	costoManodoperaDialog.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
-	costoManodoperaDialog.setTitle(getString(R.string.manodopera_title));
+	costoManodoperaDialog.setTitle(manodoperaTitle);
 
 	final EditText mEditManodopera;
 	mEditManodopera = new EditText(getActivity());
@@ -164,7 +190,7 @@ public class CostsInterventoFragment extends Fragment {
 	mEditManodopera.setGravity(Gravity.RIGHT);
 
 	costoManodoperaDialog.setCustomView(mEditManodopera, getActivity());
-	costoManodoperaDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
+	costoManodoperaDialog.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
@@ -197,7 +223,7 @@ public class CostsInterventoFragment extends Fragment {
 	costoComponentiDialog.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
 	costoComponentiDialog.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
-	costoComponentiDialog.setTitle(getString(R.string.componenti_title));
+	costoComponentiDialog.setTitle(componentiTitle);
 
 	mEditComponenti = new EditText(getActivity());
 	mEditComponenti.setText("" + (InterventoController.controller.getIntervento().costocomponenti != null ? InterventoController.controller.getIntervento().costocomponenti : 0.0));
@@ -205,7 +231,7 @@ public class CostsInterventoFragment extends Fragment {
 	mEditComponenti.setGravity(Gravity.RIGHT);
 
 	costoComponentiDialog.setCustomView(mEditComponenti, getActivity());
-	costoComponentiDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
+	costoComponentiDialog.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
@@ -239,7 +265,7 @@ public class CostsInterventoFragment extends Fragment {
 	costoAccessoriDialog.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
 	costoAccessoriDialog.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
-	costoAccessoriDialog.setTitle(getString(R.string.accessori_title));
+	costoAccessoriDialog.setTitle(accessoriTitle);
 
 	mEditAccessori = new EditText(getActivity());
 	mEditAccessori.setText("" + (InterventoController.controller.getIntervento().costoaccessori != null ? InterventoController.controller.getIntervento().costoaccessori : 0.0));
@@ -247,7 +273,7 @@ public class CostsInterventoFragment extends Fragment {
 	mEditAccessori.setGravity(Gravity.RIGHT);
 
 	costoAccessoriDialog.setCustomView(mEditAccessori, getActivity());
-	costoAccessoriDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
+	costoAccessoriDialog.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {

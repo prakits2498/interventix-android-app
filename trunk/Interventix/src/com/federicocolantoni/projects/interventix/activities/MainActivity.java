@@ -58,6 +58,9 @@ public class MainActivity extends ActionBarActivity {
     @StringRes(R.string.welcome_message)
     static String welcomeMessage;
 
+    @StringRes(R.string.app_name)
+    String appName;
+
     private AccountManager accountManager;
 
     SharedPreferences globalPrefs;
@@ -69,7 +72,7 @@ public class MainActivity extends ActionBarActivity {
 
 	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
 
-	SpannableStringBuilder spanStringBuilder = new SpannableStringBuilder(getString(R.string.app_name));
+	SpannableStringBuilder spanStringBuilder = new SpannableStringBuilder(appName);
 	spanStringBuilder.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 	spanStringBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 

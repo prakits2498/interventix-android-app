@@ -3,6 +3,7 @@ package com.federicocolantoni.projects.interventix.fragments;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -32,6 +33,24 @@ public class ReferencesInterventoFragment extends Fragment {
     @ViewById(R.id.tv_row_rif_scontrino)
     TextView tvRifScontrino;
 
+    @StringRes(R.string.numero_intervento)
+    String numeroIntervento;
+
+    @StringRes(R.string.row_references)
+    String rowReferences;
+
+    @StringRes(R.string.new_interv)
+    String nuovoIntervento;
+
+    @StringRes(R.string.riferimenti_fattura_title)
+    String riferimentiFatturaTitle;
+
+    @StringRes(R.string.riferimenti_scontrino_title)
+    String riferimentiScontrinoTitle;
+
+    @StringRes(R.string.ok_btn)
+    String btnOk;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -46,10 +65,9 @@ public class ReferencesInterventoFragment extends Fragment {
 	super.onStart();
 
 	if (!InterventoController.controller.getIntervento().nuovo)
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_references));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(numeroIntervento + InterventoController.controller.getIntervento().numero + " - " + rowReferences);
 	else
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_references));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(nuovoIntervento + " - " + rowReferences);
     }
 
     @Override
@@ -73,16 +91,14 @@ public class ReferencesInterventoFragment extends Fragment {
 
 	AlertDialog.Builder rifFatturaDialog = new Builder(getActivity());
 
-	rifFatturaDialog.setTitle(R.string.riferimenti_fattura_title);
-
-	TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_rif_fattura);
+	rifFatturaDialog.setTitle(riferimentiFatturaTitle);
 
 	mEditRiferimentiFattura = new EditText(getActivity());
-	mEditRiferimentiFattura.setText(tv_motivo.getText());
+	mEditRiferimentiFattura.setText(tvRifFattura.getText());
 
 	rifFatturaDialog.setView(mEditRiferimentiFattura);
 
-	rifFatturaDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
+	rifFatturaDialog.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
@@ -105,16 +121,14 @@ public class ReferencesInterventoFragment extends Fragment {
 
 	AlertDialog.Builder rifScontrinoDialog = new Builder(getActivity());
 
-	rifScontrinoDialog.setTitle(R.string.riferimenti_scontrino_title);
-
-	TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_rif_scontrino);
+	rifScontrinoDialog.setTitle(riferimentiScontrinoTitle);
 
 	mEditRiferimentiScontrino = new EditText(getActivity());
-	mEditRiferimentiScontrino.setText(tv_motivo.getText());
+	mEditRiferimentiScontrino.setText(tvRifScontrino.getText());
 
 	rifScontrinoDialog.setView(mEditRiferimentiScontrino);
 
-	rifScontrinoDialog.setPositiveButton(R.string.ok_btn, new DialogInterface.OnClickListener() {
+	rifScontrinoDialog.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {

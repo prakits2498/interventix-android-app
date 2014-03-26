@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OrmLiteDao;
+import org.androidannotations.annotations.res.StringRes;
 import org.joda.time.DateTime;
 
 import android.annotation.SuppressLint;
@@ -65,6 +66,18 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
     @OrmLiteDao(helper = InterventixDBHelper.class, model = Utente.class)
     RuntimeExceptionDao<Utente, Long> utenteDao;
+
+    @StringRes(R.string.ok_btn)
+    static String btnOk;
+
+    @StringRes(R.string.btn_cancel)
+    static String btnCancel;
+
+    @StringRes(R.string.interv_mod_title)
+    static String intervModTitle;
+
+    @StringRes(R.string.interv_mod_text)
+    static String intervModMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,11 +241,11 @@ public class ViewInterventoActivity extends ActionBarActivity {
 
 	    AlertDialog.Builder exitDialog = new Builder(getActivity());
 
-	    exitDialog.setTitle(R.string.interv_mod_title);
-	    exitDialog.setMessage(R.string.interv_mod_text);
+	    exitDialog.setTitle(intervModTitle);
+	    exitDialog.setMessage(intervModMessage);
 
-	    exitDialog.setPositiveButton(getString(R.string.yes_btn), this);
-	    exitDialog.setNegativeButton(getString(R.string.no_btn), this);
+	    exitDialog.setPositiveButton(btnOk, this);
+	    exitDialog.setNegativeButton(btnCancel, this);
 
 	    return exitDialog.create();
 	}

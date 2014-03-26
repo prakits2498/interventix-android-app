@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.LongClick;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
@@ -44,6 +45,18 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
     @ViewById(R.id.layout_drawer)
     LinearLayout layout_drawer;
 
+    @StringRes(R.string.menu_settings)
+    String menuSettings;
+
+    @StringRes(R.string.numero_intervento)
+    String numeroIntervento;
+
+    @StringRes(R.string.row_signature)
+    String rowSignature;
+
+    @StringRes(R.string.new_interv)
+    String nuovoIntervento;
+
     DrawingView drawer;
 
     private ActionMode mActionModeSignature;
@@ -68,7 +81,7 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 	    MenuInflater inflater = mode.getMenuInflater();
 	    inflater.inflate(R.menu.context_menu_signature, menu);
 
-	    mode.setTitle(R.string.menu_settings);
+	    mode.setTitle(menuSettings);
 
 	    return true;
 	}
@@ -140,10 +153,9 @@ public class SignatureInterventoFragment extends Fragment implements OnClickList
 	super.onStart();
 
 	if (!InterventoController.controller.getIntervento().nuovo)
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(
-		    getString(R.string.numero_intervento) + InterventoController.controller.getIntervento().numero + " - " + getString(R.string.row_signature));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(numeroIntervento + InterventoController.controller.getIntervento().numero + " - " + rowSignature);
 	else
-	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.new_interv) + " - " + getString(R.string.row_signature));
+	    ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(nuovoIntervento + " - " + rowSignature);
 
 	signature.setDrawingCacheEnabled(true);
 
