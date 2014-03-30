@@ -10,6 +10,8 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,7 +19,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,18 +26,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
-import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog.OnDateSetListener;
-import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog;
-import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog.OnTimeSetListener;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.federicocolantoni.projects.interventix.models.InterventoController;
-import com.qustom.dialog.QustomDialogBuilder;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_informations)
-public class InformationsInterventoFragment extends Fragment implements OnDateSetListener, OnTimeSetListener {
+public class InformationsInterventoFragment extends Fragment /* implements OnDateSetListener, OnTimeSetListener */{
 
     @ViewById(R.id.tv_row_tipology)
     TextView tvTipology;
@@ -193,27 +189,17 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
     @Click(R.id.row_tipology)
     void showDialogTipologia() {
 
-	QustomDialogBuilder tipologia = new QustomDialogBuilder(getActivity());
+	AlertDialog.Builder tipologia = new Builder(getActivity());
 
 	tipologia.setIcon(icLaucher);
-	tipologia.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
-	tipologia.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
-
 	tipologia.setTitle(tipologiaTitle);
-	// final String[] choices = getResources().getStringArray(R.array.tipologia_choose);
+	tipologia.setCancelable(true);
 	tipologia.setSingleChoiceItems(tipologiaChoose, -1, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
 
 		InterventoController.controller.getIntervento().tipologia = (tipologiaChoose[which]);
-	    }
-	});
-
-	tipologia.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
-
-	    @Override
-	    public void onClick(DialogInterface dialog, int which) {
 
 		dialog.dismiss();
 
@@ -227,26 +213,17 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
     @Click(R.id.row_mode)
     void showDialogModalita() {
 
-	QustomDialogBuilder modalita = new QustomDialogBuilder(getActivity());
+	AlertDialog.Builder modalita = new Builder(getActivity());
 
 	modalita.setIcon(icLaucher);
-	modalita.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
-	modalita.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 	modalita.setTitle(modalitaTitle);
-	// final String[] choices = getResources().getStringArray(R.array.modalita_choose);
+	modalita.setCancelable(true);
 	modalita.setSingleChoiceItems(modalitaChoose, -1, new DialogInterface.OnClickListener() {
 
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
 
 		InterventoController.controller.getIntervento().modalita = (modalitaChoose[which]);
-	    }
-	});
-
-	modalita.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
-
-	    @Override
-	    public void onClick(DialogInterface dialog, int which) {
 
 		dialog.dismiss();
 
@@ -262,18 +239,16 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
 	final EditText mEdit_prodotto;
 
-	QustomDialogBuilder prodotto = new QustomDialogBuilder(getActivity());
+	AlertDialog.Builder prodotto = new Builder(getActivity());
 
 	prodotto.setIcon(icLaucher);
-	prodotto.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
-	prodotto.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
-
 	prodotto.setTitle(prodottoTitle);
+	prodotto.setCancelable(true);
 
 	mEdit_prodotto = new EditText(getActivity());
 	mEdit_prodotto.setText(tvProduct.getText());
 
-	prodotto.setCustomView(mEdit_prodotto, getActivity());
+	prodotto.setView(mEdit_prodotto);
 	prodotto.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 	    @Override
@@ -295,18 +270,16 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
 	final EditText mEdit_nominativo;
 
-	QustomDialogBuilder nominativo = new QustomDialogBuilder(getActivity());
+	AlertDialog.Builder nominativo = new Builder(getActivity());
 
 	nominativo.setIcon(icLaucher);
-	nominativo.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
-	nominativo.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
-
 	nominativo.setTitle(nominativoTitle);
+	nominativo.setCancelable(true);
 
 	mEdit_nominativo = new EditText(getActivity());
 	mEdit_nominativo.setText(tvNominativo.getText());
 
-	nominativo.setCustomView(mEdit_nominativo, getActivity());
+	nominativo.setView(mEdit_nominativo);
 
 	nominativo.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
@@ -329,20 +302,18 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 
 	final EditText mEdit_motivo;
 
-	QustomDialogBuilder motivo = new QustomDialogBuilder(getActivity());
+	AlertDialog.Builder motivo = new Builder(getActivity());
 
 	motivo.setIcon(icLaucher);
-	motivo.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
-	motivo.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
-
 	motivo.setTitle(motivoTitle);
+	motivo.setCancelable(true);
 
 	TextView tv_motivo = (TextView) getActivity().findViewById(R.id.tv_row_motivation);
 
 	mEdit_motivo = new EditText(getActivity());
 	mEdit_motivo.setText(tv_motivo.getText());
 
-	motivo.setCustomView(mEdit_motivo, getActivity());
+	motivo.setView(mEdit_motivo);
 
 	motivo.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
@@ -386,79 +357,5 @@ public class InformationsInterventoFragment extends Fragment implements OnDateSe
 	transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
 	transaction.commit();
-    }
-
-    @Click(R.id.tv_row_date)
-    public void showDatePicker() {
-
-	CalendarDatePickerDialog calendarDatePickerDialog =
-		CalendarDatePickerDialog.newInstance(InformationsInterventoFragment.this, mutableDateTime.getYear(), mutableDateTime.getMonthOfYear() - 1, mutableDateTime.getDayOfMonth());
-	calendarDatePickerDialog.setYearRange(1970, 3000);
-	calendarDatePickerDialog.onCancel(new DialogInterface() {
-
-	    @Override
-	    public void dismiss() {
-
-	    }
-
-	    @Override
-	    public void cancel() {
-
-	    }
-	});
-	calendarDatePickerDialog.show(manager, Constants.CALENDAR_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
-    }
-
-    @Click(R.id.tv_row_time)
-    public void showTimePicker() {
-
-	RadialTimePickerDialog timePickerDialog =
-		RadialTimePickerDialog.newInstance(InformationsInterventoFragment.this, mutableDateTime.getHourOfDay(), mutableDateTime.getMinuteOfHour(), DateFormat.is24HourFormat(getActivity()));
-	timePickerDialog.onCancel(new DialogInterface() {
-
-	    @Override
-	    public void dismiss() {
-
-	    }
-
-	    @Override
-	    public void cancel() {
-
-	    }
-	});
-	timePickerDialog.show(manager, Constants.TIMER_PICKER_INFORMATIONS_INTERVENTO_FRAGMENT);
-    }
-
-    @Override
-    public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-
-	// mutableDateTime.setYear(year);
-	// mutableDateTime.setMonthOfYear(monthOfYear + 1);
-	// mutableDateTime.setDayOfMonth(dayOfMonth);
-
-	mutableDateTime.setDate(year, monthOfYear, dayOfMonth);
-
-	// tvDateInterv.setText(mutableDateTime.toString(Constants.DATE_PATTERN));
-
-	InterventoController.controller.getIntervento().dataora = (mutableDateTime.getMillis());
-
-	dialog.dismiss();
-
-	updateUI();
-    }
-
-    @Override
-    public void onTimeSet(RadialTimePickerDialog dialog, int hourOfDay, int minute) {
-
-	// mutableDateTime.setHourOfDay(hourOfDay);
-	// mutableDateTime.setMinuteOfHour(minute);
-
-	mutableDateTime.setTime(hourOfDay, minute, 0, 0);
-
-	// tvTimeInterv.setText(mutableDateTime.toString(Constants.TIME_PATTERN));
-
-	InterventoController.controller.getIntervento().dataora = (mutableDateTime.getMillis());
-
-	updateUI();
     }
 }

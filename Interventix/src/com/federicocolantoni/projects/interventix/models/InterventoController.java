@@ -20,17 +20,24 @@ public class InterventoController {
 
 	RuntimeExceptionDao<Intervento, Long> interventoDao = Interventix.getDbHelper().getRuntimeInterventoDao();
 
-	InterventoController.controller.getIntervento().modificato = Constants.INTERVENTO_NUOVO;
+	if (interventoDao.idExists(InterventoController.controller.getIntervento().idintervento)) {
 
-	interventoDao.createIfNotExists(InterventoController.controller.getIntervento());
+	    InterventoController.controller.getIntervento().modificato = Constants.INTERVENTO_MODIFICATO;
+	}
+	else {
+
+	    InterventoController.controller.getIntervento().modificato = Constants.INTERVENTO_NUOVO;
+	}
+
+	interventoDao.createOrUpdate(InterventoController.controller.getIntervento());
 
 	RuntimeExceptionDao<Utente, Long> utenteDao = Interventix.getDbHelper().getRuntimeUtenteDao();
 
-	utenteDao.createIfNotExists(InterventoController.controller.getTecnico());
+	utenteDao.createOrUpdate(InterventoController.controller.getTecnico());
 
 	RuntimeExceptionDao<Cliente, Long> clienteDao = Interventix.getDbHelper().getRuntimeClienteDao();
 
-	clienteDao.createIfNotExists(InterventoController.controller.getCliente());
+	clienteDao.createOrUpdate(InterventoController.controller.getCliente());
 
 	RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao = Interventix.getDbHelper().getRuntimeDettaglioInterventoDao();
 
@@ -39,13 +46,13 @@ public class InterventoController {
 	    if (dettaglioDao.idExists(dettaglio.iddettagliointervento)) {
 
 		dettaglio.modificato = Constants.DETTAGLIO_MODIFICATO;
-
-		dettaglioDao.update(dettaglio);
 	    }
 	    else {
 
-		dettaglioDao.create(dettaglio);
+		dettaglio.modificato = Constants.DETTAGLIO_NUOVO;
 	    }
+
+	    dettaglioDao.createOrUpdate(dettaglio);
 	}
 
 	InterventixToast.makeToast(Interventix.getContext().getString(R.string.new_intervention_added), Toast.LENGTH_SHORT);
@@ -75,14 +82,7 @@ public class InterventoController {
 
 		dettaglio.modificato = Constants.DETTAGLIO_MODIFICATO;
 
-		int updated = dettaglioDao.update(dettaglio);
-
-		if (updated == 1) {
-
-		}
-		else {
-
-		}
+		dettaglioDao.update(dettaglio);
 	    }
 	    else {
 

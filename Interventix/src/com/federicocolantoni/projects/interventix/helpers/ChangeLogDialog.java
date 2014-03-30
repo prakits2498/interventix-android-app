@@ -6,6 +6,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
@@ -18,7 +20,6 @@ import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
-import com.qustom.dialog.QustomDialogBuilder;
 
 public class ChangeLogDialog {
 
@@ -129,14 +130,13 @@ public class ChangeLogDialog {
 	WebView _WebView = new WebView(fActivity);
 	_WebView.loadData(_HTML, "text/html", "utf-8");
 
-	QustomDialogBuilder builder = new QustomDialogBuilder(fActivity);
+	AlertDialog.Builder builder = new Builder(fActivity);
 
 	builder.setIcon(R.drawable.ic_launcher);
-	builder.setTitleColor(fActivity.getResources().getColor(R.color.interventix_color));
-	builder.setDividerColor(fActivity.getResources().getColor(R.color.interventix_color));
+	builder.setCancelable(true);
 
 	builder.setTitle(_Title);
-	builder.setCustomView(_WebView, fActivity.getApplicationContext()).setPositiveButton(_Close, new Dialog.OnClickListener() {
+	builder.setView(_WebView).setPositiveButton(_Close, new Dialog.OnClickListener() {
 	    @Override
 	    public void onClick(DialogInterface dialogInterface, int i) {
 

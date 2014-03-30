@@ -230,35 +230,6 @@ public class HomeActivity extends ActionBarActivity {
 		    readListInterventions();
 		}
 	    });
-
-	    // setRefreshActionButtonState(false);
-	    //
-	    // QueryBuilder<Intervento, Long> qb = interventoDao.queryBuilder();
-	    //
-	    // qb.selectColumns(new String[] {
-	    // Constants.ORMLITE_NUMERO, Constants.ORMLITE_DATAORA, Constants.ORMLITE_CLIENTE, Constants.ORMLITE_CONFLITTO, Constants.ORMLITE_MODIFICATO, Constants.ORMLITE_NUOVO
-	    // });
-	    //
-	    // try {
-	    // qb.where().eq(Constants.ORMLITE_TECNICO, UtenteController.tecnicoLoggato.idutente).and().eq(Constants.ORMLITE_CHIUSO, false);
-	    // qb.orderBy(Constants.ORMLITE_DATAORA, false).orderBy(Constants.ORMLITE_NUMERO, false);
-	    //
-	    // List<Intervento> listaInterventiAperti = interventoDao.query(qb.prepare());
-	    //
-	    // adapter = new ListInterventiAdapter(listaInterventiAperti);
-	    //
-	    // animationAdapter = new SwingBottomInAnimationAdapter(adapter, 500, 1500);
-	    // animationAdapter.setAbsListView(listOpen);
-	    //
-	    // listOpen.setAdapter(animationAdapter);
-	    //
-	    // animationAdapter.notifyDataSetChanged();
-	    // }
-	    // catch (SQLException e) {
-	    //
-	    // e.printStackTrace();
-	    // BugSenseHandler.sendException(e);
-	    // }
 	}
     }
 

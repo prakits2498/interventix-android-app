@@ -18,6 +18,8 @@ import org.json.simple.parser.ParseException;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -60,7 +62,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
-import com.qustom.dialog.QustomDialogBuilder;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_login)
@@ -248,11 +249,9 @@ public class LoginFragment extends Fragment implements TextWatcher {
 
 	    if (accounts.length == 0) {
 
-		QustomDialogBuilder builder = new QustomDialogBuilder(getActivity());
+		AlertDialog.Builder builder = new Builder(getActivity());
 
 		builder.setIcon(R.drawable.ic_launcher);
-		builder.setTitleColor(Interventix.getContext().getResources().getColor(R.color.interventix_color));
-		builder.setDividerColor(Interventix.getContext().getResources().getColor(R.color.interventix_color));
 
 		builder.setTitle(notOfflineAccessTitle);
 		builder.setMessage(notOfflineAccessMessage).setPositiveButton(btnOk, new Dialog.OnClickListener() {
