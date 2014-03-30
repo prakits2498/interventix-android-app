@@ -10,6 +10,8 @@ import org.androidannotations.annotations.res.DrawableRes;
 import org.androidannotations.annotations.res.StringRes;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -27,7 +29,6 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.federicocolantoni.projects.interventix.models.InterventoController;
-import com.qustom.dialog.QustomDialogBuilder;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_costs)
@@ -175,11 +176,9 @@ public class CostsInterventoFragment extends Fragment {
     @Click(R.id.row_manodopera)
     void showDialogManodopera() {
 
-	QustomDialogBuilder costoManodoperaDialog = new QustomDialogBuilder(getActivity());
+	AlertDialog.Builder costoManodoperaDialog = new Builder(getActivity());
 
 	costoManodoperaDialog.setIcon(icLauncher);
-	costoManodoperaDialog.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
-	costoManodoperaDialog.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
 
 	costoManodoperaDialog.setTitle(manodoperaTitle);
 
@@ -189,7 +188,7 @@ public class CostsInterventoFragment extends Fragment {
 	mEditManodopera.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 	mEditManodopera.setGravity(Gravity.RIGHT);
 
-	costoManodoperaDialog.setCustomView(mEditManodopera, getActivity());
+	costoManodoperaDialog.setView(mEditManodopera);
 	costoManodoperaDialog.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 	    @Override
@@ -218,10 +217,7 @@ public class CostsInterventoFragment extends Fragment {
 
 	final EditText mEditComponenti;
 
-	QustomDialogBuilder costoComponentiDialog = new QustomDialogBuilder(getActivity());
-
-	costoComponentiDialog.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
-	costoComponentiDialog.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
+	AlertDialog.Builder costoComponentiDialog = new Builder(getActivity());
 
 	costoComponentiDialog.setTitle(componentiTitle);
 
@@ -230,7 +226,7 @@ public class CostsInterventoFragment extends Fragment {
 	mEditComponenti.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 	mEditComponenti.setGravity(Gravity.RIGHT);
 
-	costoComponentiDialog.setCustomView(mEditComponenti, getActivity());
+	costoComponentiDialog.setView(mEditComponenti);
 	costoComponentiDialog.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 	    @Override
@@ -260,10 +256,7 @@ public class CostsInterventoFragment extends Fragment {
 
 	final EditText mEditAccessori;
 
-	QustomDialogBuilder costoAccessoriDialog = new QustomDialogBuilder(getActivity());
-
-	costoAccessoriDialog.setTitleColor(getActivity().getResources().getColor(R.color.interventix_color));
-	costoAccessoriDialog.setDividerColor(getActivity().getResources().getColor(R.color.interventix_color));
+	AlertDialog.Builder costoAccessoriDialog = new Builder(getActivity());
 
 	costoAccessoriDialog.setTitle(accessoriTitle);
 
@@ -272,7 +265,7 @@ public class CostsInterventoFragment extends Fragment {
 	mEditAccessori.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 	mEditAccessori.setGravity(Gravity.RIGHT);
 
-	costoAccessoriDialog.setCustomView(mEditAccessori, getActivity());
+	costoAccessoriDialog.setView(mEditAccessori);
 	costoAccessoriDialog.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
 
 	    @Override
