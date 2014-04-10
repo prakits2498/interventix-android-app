@@ -43,7 +43,7 @@
     <string name="welcome_message">"Interventix è stata avviata per la prima volta. Inserire l'indirizzo per la connessione al server che è stato fornito nel contratto."</string>
     <string name="logout_title">Richiesta di logout</string>
     <string name="logout_message">Sei sicuro di voler effettuare il logout?</string>
-    <string name="logout_positive_btn">Logout</string>
+    <string name="logout_menu">Logout</string>
     <string name="btn_cancel">Annulla</string>
     <string name="tipologia_title">Scegli una tipologia di intervento</string>
     <string name="tipo_dett_title">Scegli il tipo di dettaglio</string>
