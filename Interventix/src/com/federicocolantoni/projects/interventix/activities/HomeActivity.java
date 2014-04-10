@@ -20,11 +20,8 @@ import org.json.simple.parser.ParseException;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -171,7 +168,6 @@ public class HomeActivity extends ActionBarActivity {
 	buffer = BufferInterventix.getBufferInterventix();
 
 	prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
-	// prefsUrl = getResources().getString(R.string.prefs_key_url);
 	urlString = prefsDefault.getString(prefsUrl, null);
 
 	globalPrefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
@@ -238,39 +234,6 @@ public class HomeActivity extends ActionBarActivity {
 
 	if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-	    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-
-		AlertDialog.Builder builder = new Builder(this);
-
-		builder.setTitle("Logout");
-		builder.setMessage("Effettuare il logout dall'app?");
-		builder.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
-
-		    @Override
-		    public void onClick(DialogInterface dialog, int which) {
-
-			dialog.dismiss();
-
-			AccountManager accountManager = AccountManager.get(HomeActivity.this);
-
-			Account account = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX)[0];
-
-			accountManager.clearPassword(account);
-
-			finish();
-		    }
-		});
-		builder.setNegativeButton(btnCancel, new DialogInterface.OnClickListener() {
-
-		    @Override
-		    public void onClick(DialogInterface dialog, int which) {
-
-			dialog.dismiss();
-		    }
-		});
-
-		builder.create().show();
-	    }
 	}
 
 	return true;
@@ -279,50 +242,20 @@ public class HomeActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
 
-	if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-
-	    AlertDialog.Builder builder = new Builder(this);
-
-	    builder.setTitle("Logout");
-	    builder.setMessage("Effettuare il logout dall'app?");
-	    builder.setPositiveButton(btnOk, new DialogInterface.OnClickListener() {
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-
-		    dialog.dismiss();
-
-		    AccountManager accountManager = AccountManager.get(HomeActivity.this);
-
-		    Account account = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX)[0];
-
-		    accountManager.clearPassword(account);
-
-		    finish();
-		}
-	    });
-	    builder.setNegativeButton(btnCancel, new DialogInterface.OnClickListener() {
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-
-		    dialog.dismiss();
-		}
-	    });
-
-	    builder.create().show();
-	}
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-	getMenuInflater().inflate(R.menu.menu_home, menu);
+	super.onCreateOptionsMenu(menu);
+
+	getMenuInflater().inflate(R.menu.menu_home_activity, menu);
 	optionsMenu = menu;
 
-	setRefreshActionButtonState(true);
+	if (CheckConnection.connectionIsAlive())
+	    setRefreshActionButtonState(true);
 
-	return super.onCreateOptionsMenu(menu);
+	return true;
     }
 
     @Override
@@ -353,7 +286,7 @@ public class HomeActivity extends ActionBarActivity {
 
 		break;
 
-	    case R.id.logout:
+	    case R.id.logout_menu:
 
 		AccountManager accountManager = AccountManager.get(this);
 
