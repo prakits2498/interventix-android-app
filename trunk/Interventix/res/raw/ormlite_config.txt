@@ -1,5 +1,5 @@
 #
-# generated on 2014/03/21 05:17:47
+# generated on 2014/03/23 09:19:41
 #
 # --table-start--
 dataClass=com.federicocolantoni.projects.interventix.models.Cliente
@@ -7,6 +7,7 @@ tableName=Clienti
 # --table-fields-start--
 # --field-start--
 fieldName=idcliente
+canBeNull=false
 id=true
 # --field-end--
 # --field-start--
@@ -63,6 +64,7 @@ tableName=DettagliIntervento
 # --table-fields-start--
 # --field-start--
 fieldName=iddettagliointervento
+canBeNull=false
 id=true
 # --field-end--
 # --field-start--
@@ -101,6 +103,7 @@ tableName=Interventi
 # --table-fields-start--
 # --field-start--
 fieldName=idintervento
+canBeNull=false
 id=true
 # --field-end--
 # --field-start--
@@ -187,6 +190,7 @@ tableName=Tecnici
 # --table-fields-start--
 # --field-start--
 fieldName=idutente
+canBeNull=false
 id=true
 # --field-end--
 # --field-start--
