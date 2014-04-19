@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.federicocolantoni.projects.interventix"
-    android:versionCode="90"
-    android:versionName="0.0.900-beta1" >
+    android:versionCode="100"
+    android:versionName="0.0.900-beta2" >
 
     <uses-sdk
         android:maxSdkVersion="19"
@@ -75,12 +75,6 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-
-        <provider
-            android:name="com.federicocolantoni.projects.interventix.data.InterventixContentProvider"
-            android:authorities="com.federicocolantoni.projects.interventix"
-            android:exported="false" >
-        </provider>
     </application>
 
 </manifest>

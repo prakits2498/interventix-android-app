@@ -56,78 +56,145 @@ import com.j256.ormlite.stmt.QueryBuilder;
 @EFragment(R.layout.fragment_detail)
 public class DetailInterventoFragment extends Fragment implements OnDateSetListener, OnTimeSetListener {
 
-    @ViewById(R.id.row_tipo_dettaglio)
-    View rowTipo;
-
-    @ViewById(R.id.tv_row_tipo_dettaglio)
-    TextView tvRowTipo;
-
-    @ViewById(R.id.row_oggetto_dettaglio)
-    View rowOggetto;
-
-    @ViewById(R.id.tv_row_oggetto_dettaglio)
-    TextView tvRowOggetto;
-
-    @ViewById(R.id.row_descrizione_dettaglio)
-    View rowDescr;
-
-    @ViewById(R.id.tv_row_descrizione_dettaglio)
-    TextView tvRowDescr;
-
-    @ViewById(R.id.row_tecnici_dettaglio)
-    View rowTecnici;
-
-    @ViewById(R.id.tv_row_tecnici_dettaglio)
-    TextView tvRowTecnici;
-
-    @ViewById(R.id.tv_row_date_inizio_dettaglio)
-    TextView tvRowDateInizio;
-
-    @ViewById(R.id.tv_row_time_inizio_dettaglio)
-    TextView tvRowTimeInizio;
-
-    @ViewById(R.id.tv_row_date_fine_dettaglio)
-    TextView tvRowDateFine;
-
-    @ViewById(R.id.tv_row_time_fine_dettaglio)
-    TextView tvRowTimeFine;
-
-    @ViewById(R.id.row_tot_ore_dettaglio)
-    View rowTotOre;
-
-    @ViewById(R.id.tv_row_tot_ore_dettaglio)
-    TextView tvRowTotOre;
-
     @StringRes(R.string.ok_btn)
     static String ok_btn;
-
     @StringRes(R.string.btn_cancel)
     static String cancel_btn;
-
     @StringRes(R.string.tipo_dett_title)
     static String tipo_dett_title;
-
     @StringRes(R.string.choose_tecnici_title)
     static String choose_tecnici_title;
-
-    @StringRes(R.string.oggetto_dett_title)
-    String oggettoDettTitle;
-
-    @StringRes(R.string.descrizione_dett_title)
-    String descrizioneDettTitle;
-
-    @OrmLiteDao(helper = InterventixDBHelper.class, model = DettaglioIntervento.class)
-    RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao;
-
     @OrmLiteDao(helper = InterventixDBHelper.class, model = Utente.class)
     static RuntimeExceptionDao<Utente, Long> utenteDao;
-
+    @ViewById(R.id.row_tipo_dettaglio)
+    View rowTipo;
+    @ViewById(R.id.tv_row_tipo_dettaglio)
+    TextView tvRowTipo;
+    @ViewById(R.id.row_oggetto_dettaglio)
+    View rowOggetto;
+    @ViewById(R.id.tv_row_oggetto_dettaglio)
+    TextView tvRowOggetto;
+    @ViewById(R.id.row_descrizione_dettaglio)
+    View rowDescr;
+    @ViewById(R.id.tv_row_descrizione_dettaglio)
+    TextView tvRowDescr;
+    @ViewById(R.id.row_tecnici_dettaglio)
+    View rowTecnici;
+    @ViewById(R.id.tv_row_tecnici_dettaglio)
+    TextView tvRowTecnici;
+    @ViewById(R.id.tv_row_date_inizio_dettaglio)
+    TextView tvRowDateInizio;
+    @ViewById(R.id.tv_row_time_inizio_dettaglio)
+    TextView tvRowTimeInizio;
+    @ViewById(R.id.tv_row_date_fine_dettaglio)
+    TextView tvRowDateFine;
+    @ViewById(R.id.tv_row_time_fine_dettaglio)
+    TextView tvRowTimeFine;
+    @ViewById(R.id.row_tot_ore_dettaglio)
+    View rowTotOre;
+    @ViewById(R.id.tv_row_tot_ore_dettaglio)
+    TextView tvRowTotOre;
+    @StringRes(R.string.oggetto_dett_title)
+    String oggettoDettTitle;
+    @StringRes(R.string.descrizione_dett_title)
+    String descrizioneDettTitle;
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = DettaglioIntervento.class)
+    RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao;
     private DettaglioIntervento dettaglio;
 
     private MutableDateTime mutableDateTimeInizio, mutableDateTimeFine;
 
     private CalendarDatePickerDialog calendarDateInizioPickerDialog, calendarDateFinePickerDialog;
     private RadialTimePickerDialog timeInizioPickerDialog, timeFinePickerDialog;
+
+    private static String[] getAllTecnici(final ContentResolver contentResolver) throws InterruptedException, ExecutionException {
+
+	AsyncTask<Void, Void, String[]> tuttiTecnici = new AsyncTask<Void, Void, String[]>() {
+
+	    @Override
+	    protected String[] doInBackground(Void... params) {
+
+		ArrayList<String> arrayTecnici = new ArrayList<String>();
+
+		QueryBuilder<Utente, Long> qb = utenteDao.queryBuilder();
+
+		qb.selectColumns(Constants.ORMLITE_IDUTENTE);
+
+		try {
+
+		    List<Utente> listaUtenti = utenteDao.query(qb.prepare());
+
+		    for (Utente utente : listaUtenti) {
+
+			arrayTecnici.add("" + utente.idutente);
+		    }
+		}
+		catch (SQLException e) {
+
+		    e.printStackTrace();
+		}
+
+		String[] tecnici = new String[arrayTecnici.size()];
+
+		return arrayTecnici.toArray(tecnici);
+	    }
+
+	    @Override
+	    protected void onPostExecute(String[] result) {
+
+	    }
+	};
+
+	tuttiTecnici.execute();
+
+	return tuttiTecnici.get();
+    }
+
+    private static ManagedAsyncTask<String, Void, String[]> getTuttiNomiTecnici(final ActionBarActivity activity) {
+
+	ManagedAsyncTask<String, Void, String[]> tuttiNomiTecniciAsyncTask = new ManagedAsyncTask<String, Void, String[]>(activity) {
+
+	    @Override
+	    protected String[] doInBackground(String... params) {
+
+		ArrayList<String> arrayNomiTecnici = new ArrayList<String>();
+
+		for (String param : params) {
+
+		    QueryBuilder<Utente, Long> qb = utenteDao.queryBuilder();
+
+		    qb.selectColumns(Constants.ORMLITE_NOME, Constants.ORMLITE_COGNOME);
+
+		    try {
+			qb.where().eq(Constants.ORMLITE_IDUTENTE, param);
+
+			List<Utente> listaUtenti = utenteDao.query(qb.prepare());
+
+			for (Utente utente : listaUtenti) {
+
+			    arrayNomiTecnici.add(utente.nome + " " + utente.cognome);
+			}
+		    }
+		    catch (SQLException e) {
+
+			e.printStackTrace();
+		    }
+		}
+
+		String[] tecnici = new String[arrayNomiTecnici.size()];
+
+		return arrayNomiTecnici.toArray(tecnici);
+	    }
+
+	    @Override
+	    protected void onPostExecute(String[] result) {
+
+		super.onPostExecute(result);
+	    }
+	};
+
+	return tuttiNomiTecniciAsyncTask;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -223,7 +290,7 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	dettaglio = new DettaglioIntervento();
 
-	dettaglio.iddettagliointervento = (maxId + Constants.contatoreNuovoId);
+	dettaglio.iddettagliointervento = (maxId + Constants.sNuovoId);
 
 	dettaglio.nuovo = (true);
 	dettaglio.modificato = (Constants.DETTAGLIO_NUOVO);
@@ -632,99 +699,6 @@ public class DetailInterventoFragment extends Fragment implements OnDateSetListe
 
 	tecnici_dett.create().show();
 	;
-    }
-
-    private static String[] getAllTecnici(final ContentResolver contentResolver) throws InterruptedException, ExecutionException {
-
-	AsyncTask<Void, Void, String[]> tuttiTecnici = new AsyncTask<Void, Void, String[]>() {
-
-	    @Override
-	    protected String[] doInBackground(Void... params) {
-
-		ArrayList<String> arrayTecnici = new ArrayList<String>();
-
-		QueryBuilder<Utente, Long> qb = utenteDao.queryBuilder();
-
-		qb.selectColumns(new String[] {
-		    Constants.ORMLITE_IDUTENTE
-		});
-
-		try {
-
-		    List<Utente> listaUtenti = utenteDao.query(qb.prepare());
-
-		    for (Utente utente : listaUtenti) {
-
-			arrayTecnici.add("" + utente.idutente);
-		    }
-		}
-		catch (SQLException e) {
-
-		    e.printStackTrace();
-		}
-
-		String[] tecnici = new String[arrayTecnici.size()];
-
-		return arrayTecnici.toArray(tecnici);
-	    }
-
-	    @Override
-	    protected void onPostExecute(String[] result) {
-
-	    }
-	};
-
-	tuttiTecnici.execute();
-
-	return tuttiTecnici.get();
-    }
-
-    private static ManagedAsyncTask<String, Void, String[]> getTuttiNomiTecnici(final ActionBarActivity activity) {
-
-	ManagedAsyncTask<String, Void, String[]> tuttiNomiTecniciAsyncTask = new ManagedAsyncTask<String, Void, String[]>(activity) {
-
-	    @Override
-	    protected String[] doInBackground(String... params) {
-
-		ArrayList<String> arrayNomiTecnici = new ArrayList<String>();
-
-		for (String param : params) {
-
-		    QueryBuilder<Utente, Long> qb = utenteDao.queryBuilder();
-
-		    qb.selectColumns(new String[] {
-			    Constants.ORMLITE_NOME, Constants.ORMLITE_COGNOME
-		    });
-
-		    try {
-			qb.where().eq(Constants.ORMLITE_IDUTENTE, param);
-
-			List<Utente> listaUtenti = utenteDao.query(qb.prepare());
-
-			for (Utente utente : listaUtenti) {
-
-			    arrayNomiTecnici.add(utente.nome + " " + utente.cognome);
-			}
-		    }
-		    catch (SQLException e) {
-
-			e.printStackTrace();
-		    }
-		}
-
-		String[] tecnici = new String[arrayNomiTecnici.size()];
-
-		return arrayNomiTecnici.toArray(tecnici);
-	    }
-
-	    @Override
-	    protected void onPostExecute(String[] result) {
-
-		super.onPostExecute(result);
-	    }
-	};
-
-	return tuttiNomiTecniciAsyncTask;
     }
 
     @Override

@@ -14,7 +14,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -73,7 +72,7 @@ public class MainActivity extends ActionBarActivity {
 	BugSenseHandler.initAndStartSession(this, Constants.API_KEY);
 
 	SpannableStringBuilder spanStringBuilder = new SpannableStringBuilder(appName);
-	spanStringBuilder.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+	spanStringBuilder.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.interventix_color)), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 	spanStringBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 	getSupportActionBar().setTitle(spanStringBuilder);

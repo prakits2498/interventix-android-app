@@ -2,10 +2,6 @@ package com.federicocolantoni.projects.interventix.models;
 
 import java.io.Serializable;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.ClienteDB;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -213,75 +209,5 @@ public class Cliente implements Serializable {
 	    return false;
 	}
 	return true;
-    }
-
-    public static ContentValues insertSQL(Cliente cliente) {
-
-	ContentValues values = new ContentValues();
-
-	values.put(ClienteDB.Fields.ID_CLIENTE, cliente.idcliente);
-	values.put(com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields.TYPE, ClienteDB.CLIENTE_ITEM_TYPE);
-	values.put(ClienteDB.Fields.CITTA, cliente.citta);
-	values.put(ClienteDB.Fields.CODICE_FISCALE, cliente.codicefiscale);
-	values.put(ClienteDB.Fields.CONFLITTO, cliente.conflitto);
-	values.put(ClienteDB.Fields.EMAIL, cliente.email);
-	values.put(ClienteDB.Fields.FAX, cliente.fax);
-	values.put(ClienteDB.Fields.INDIRIZZO, cliente.indirizzo);
-	values.put(ClienteDB.Fields.INTERNO, cliente.interno);
-	values.put(ClienteDB.Fields.NOMINATIVO, cliente.nominativo);
-	values.put(ClienteDB.Fields.NOTE, cliente.note);
-	values.put(ClienteDB.Fields.PARTITAIVA, cliente.partitaiva);
-	values.put(ClienteDB.Fields.REFERENTE, cliente.referente);
-	values.put(ClienteDB.Fields.REVISIONE, cliente.revisione);
-	values.put(ClienteDB.Fields.TELEFONO, cliente.telefono);
-	values.put(ClienteDB.Fields.UFFICIO, cliente.ufficio);
-
-	return values;
-    }
-
-    public static ContentValues updateSQL(Cliente cliente) {
-
-	ContentValues values = new ContentValues();
-
-	values.put(ClienteDB.Fields.CITTA, cliente.citta);
-	values.put(ClienteDB.Fields.CODICE_FISCALE, cliente.codicefiscale);
-	values.put(ClienteDB.Fields.CONFLITTO, cliente.conflitto);
-	values.put(ClienteDB.Fields.EMAIL, cliente.email);
-	values.put(ClienteDB.Fields.FAX, cliente.fax);
-	values.put(ClienteDB.Fields.INDIRIZZO, cliente.indirizzo);
-	values.put(ClienteDB.Fields.INTERNO, cliente.interno);
-	values.put(ClienteDB.Fields.NOMINATIVO, cliente.nominativo);
-	values.put(ClienteDB.Fields.NOTE, cliente.note);
-	values.put(ClienteDB.Fields.PARTITAIVA, cliente.partitaiva);
-	values.put(ClienteDB.Fields.REFERENTE, cliente.referente);
-	values.put(ClienteDB.Fields.REVISIONE, cliente.revisione);
-	values.put(ClienteDB.Fields.TELEFONO, cliente.telefono);
-	values.put(ClienteDB.Fields.UFFICIO, cliente.ufficio);
-
-	return values;
-    }
-
-    public static Cliente getFromCursor(Cursor cursor) {
-
-	Cliente cliente = new Cliente();
-
-	cliente.cancellato = (cursor.getInt(cursor.getColumnIndex(ClienteDB.Fields.CANCELLATO)) == 1 ? true : false);
-	cliente.citta = (cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.CITTA)));
-	cliente.codicefiscale = (cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.CODICE_FISCALE)));
-	cliente.conflitto = (cursor.getInt(cursor.getColumnIndex(ClienteDB.Fields.CONFLITTO)) == 1 ? true : false);
-	cliente.email = (cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.EMAIL)));
-	cliente.fax = (cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.FAX)));
-	cliente.idcliente = (cursor.getLong(cursor.getColumnIndex(ClienteDB.Fields.ID_CLIENTE)));
-	cliente.indirizzo = (cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.INDIRIZZO)));
-	cliente.interno = (cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.INTERNO)));
-	cliente.nominativo = (cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOMINATIVO)));
-	cliente.note = (cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.NOTE)));
-	cliente.partitaiva = (cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.PARTITAIVA)));
-	cliente.referente = (cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.REFERENTE)));
-	cliente.revisione = (cursor.getLong(cursor.getColumnIndex(ClienteDB.Fields.REVISIONE)));
-	cliente.telefono = (cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.TELEFONO)));
-	cliente.ufficio = (cursor.getString(cursor.getColumnIndex(ClienteDB.Fields.UFFICIO)));
-
-	return cliente;
     }
 }

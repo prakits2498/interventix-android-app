@@ -28,7 +28,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="4dp"
                     android:text="@string/row_tipology"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/interventix_color"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="4dp"
                     android:text="@string/row_mode"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/interventix_color"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="4dp"
                     android:text="@string/row_product"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/interventix_color"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="4dp"
                     android:text="@string/row_motivation"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/interventix_color"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="4dp"
                     android:text="@string/row_name"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/interventix_color"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -168,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="4dp"
                     android:text="@string/row_date"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/interventix_color"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -216,7 +216,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="4dp"
                     android:text="@string/row_references"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/interventix_color"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -238,7 +238,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="4dp"
                     android:text="@string/row_annotations"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/interventix_color"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>

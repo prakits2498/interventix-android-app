@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import multiface.crypto.cr2.JsonCR2;
 
@@ -20,13 +22,11 @@ import org.json.simple.parser.ParseException;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -56,12 +56,10 @@ import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapters.ListInterventiAdapter;
 import com.federicocolantoni.projects.interventix.application.Interventix;
-import com.federicocolantoni.projects.interventix.core.BufferInterventix;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.helpers.BigDecimalTypeAdapter;
 import com.federicocolantoni.projects.interventix.helpers.CheckConnection;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
-import com.federicocolantoni.projects.interventix.helpers.Constants.BUFFER_TYPE;
 import com.federicocolantoni.projects.interventix.helpers.InterventixToast;
 import com.federicocolantoni.projects.interventix.helpers.ManagedAsyncTask;
 import com.federicocolantoni.projects.interventix.models.Cliente;
@@ -71,6 +69,7 @@ import com.federicocolantoni.projects.interventix.models.InterventoController;
 import com.federicocolantoni.projects.interventix.models.InterventoSingleton;
 import com.federicocolantoni.projects.interventix.models.Utente;
 import com.federicocolantoni.projects.interventix.models.UtenteController;
+import com.federicocolantoni.projects.interventix.service.InterventixService_;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.FieldNamingPolicy;
@@ -89,10 +88,6 @@ import com.nhaarman.listviewanimations.swinginadapters.prepared.SwingBottomInAni
 public class HomeActivity extends ActionBarActivity {
 
     private static final String REVISION = "revision";
-    private ListInterventiAdapter adapter;
-    private SwingBottomInAnimationAdapter animationAdapter;
-
-    private Menu optionsMenu;
 
     @ViewById(R.id.list_interv_open)
     ListView listOpen;
@@ -111,8 +106,6 @@ public class HomeActivity extends ActionBarActivity {
 
     @OrmLiteDao(helper = InterventixDBHelper.class, model = DettaglioIntervento.class)
     RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioInterventoDao;
-
-    private BufferInterventix buffer;
 
     SharedPreferences prefsDefault, globalPrefs;
 
@@ -136,24 +129,25 @@ public class HomeActivity extends ActionBarActivity {
 
     String urlString;
 
-    BroadcastReceiver receiverBufferFinish = new BroadcastReceiver() {
+    Timer schedulerSendInterventions;
+
+    TimerTask interventionsTask = new TimerTask() {
 
 	@Override
-	public void onReceive(Context context, Intent intent) {
+	public void run() {
 
-	    if (intent.getAction().equals(Constants.ACTION_FINISH_BUFFER)) {
+	    Intent intent = new Intent(HomeActivity.this, InterventixService_.class);
 
-		try {
-		    getUsersSyncro();
-		}
-		catch (Exception e) {
+	    intent.setAction(Constants.ACTION_GET_INTERVENTI);
+	    intent.putExtra(Constants.TECNICO, UtenteController.tecnicoLoggato);
 
-		    e.printStackTrace();
-		    BugSenseHandler.sendException(e);
-		}
-	    }
+	    startService(intent);
 	}
     };
+
+    private ListInterventiAdapter adapter;
+    private SwingBottomInAnimationAdapter animationAdapter;
+    private Menu optionsMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,27 +159,40 @@ public class HomeActivity extends ActionBarActivity {
 	getSupportActionBar().setHomeButtonEnabled(false);
 	getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-	buffer = BufferInterventix.getBufferInterventix();
-
 	prefsDefault = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
 	urlString = prefsDefault.getString(prefsUrl, null);
 
 	globalPrefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 
-	UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
+	new AsyncTask<String, Void, Utente>() {
+
+	    @Override
+	    protected Utente doInBackground(String... params) {
+
+		return utenteDao.queryForEq(Constants.ORMLITE_USERNAME, params[0]).get(0);
+	    }
+
+	    @Override
+	    protected void onPostExecute(Utente utente) {
+
+		UtenteController.tecnicoLoggato = utente;
+
+		SpannableStringBuilder spanStringBuilder = new SpannableStringBuilder(UtenteController.tecnicoLoggato.nome + " " + UtenteController.tecnicoLoggato.cognome);
+		spanStringBuilder.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.interventix_color)), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		spanStringBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+		getSupportActionBar().setTitle(spanStringBuilder);
+		getSupportActionBar().setSubtitle(incomingInterventions);
+	    }
+	}.execute(globalPrefs.getString(Constants.USERNAME, ""));
+
+	schedulerSendInterventions = new Timer(Constants.SCHEDULER_NAME, true);
     }
 
     @Override
     protected void onStart() {
 
 	super.onStart();
-
-	SpannableStringBuilder spanStringBuilder = new SpannableStringBuilder(UtenteController.tecnicoLoggato.nome + " " + UtenteController.tecnicoLoggato.cognome);
-	spanStringBuilder.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-	spanStringBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, spanStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-	getSupportActionBar().setTitle(spanStringBuilder);
-	getSupportActionBar().setSubtitle(incomingInterventions);
 
 	InterventoController.controller = null;
 
@@ -214,19 +221,69 @@ public class HomeActivity extends ActionBarActivity {
 
 		e.printStackTrace();
 		BugSenseHandler.sendException(e);
+
+		setRefreshActionButtonState(false);
 	    }
 	}
 	else {
 
-	    runOnUiThread(new Runnable() {
+	    new AsyncTask<Long, Void, List<Intervento>>() {
 
 		@Override
-		public void run() {
+		protected List<Intervento> doInBackground(Long... params) {
 
-		    readListInterventions();
+		    QueryBuilder<Intervento, Long> qb;
+
+		    qb = interventoDao.queryBuilder();
+
+		    qb.selectColumns(Constants.ORMLITE_NUMERO, Constants.ORMLITE_DATAORA, Constants.ORMLITE_CLIENTE, Constants.ORMLITE_CONFLITTO, Constants.ORMLITE_MODIFICATO, Constants.ORMLITE_NUOVO);
+
+		    try {
+			qb.where().eq(Constants.ORMLITE_TECNICO, params[0]).and().eq(Constants.ORMLITE_CHIUSO, false);
+			qb.orderBy(Constants.ORMLITE_DATAORA, false).orderBy(Constants.ORMLITE_NUMERO, false);
+		    }
+		    catch (SQLException e) {
+
+			e.printStackTrace();
+			BugSenseHandler.sendException(e);
+		    }
+
+		    List<Intervento> listaInterventiAperti = null;
+
+		    try {
+			listaInterventiAperti = interventoDao.query(qb.prepare());
+		    }
+		    catch (SQLException e) {
+
+			e.printStackTrace();
+			BugSenseHandler.sendException(e);
+		    }
+
+		    return listaInterventiAperti;
 		}
-	    });
+
+		@Override
+		protected void onPostExecute(List<Intervento> listaInterventi) {
+
+		    adapter = new ListInterventiAdapter(listaInterventi);
+
+		    animationAdapter = new SwingBottomInAnimationAdapter(adapter, 1500, 1500);
+		    animationAdapter.setAbsListView(listOpen);
+
+		    listOpen.setAdapter(animationAdapter);
+
+		    animationAdapter.notifyDataSetChanged();
+
+		    setRefreshActionButtonState(false);
+		}
+	    }.execute(UtenteController.tecnicoLoggato.idutente);
 	}
+    }
+
+    @Override
+    protected void onPause() {
+
+	super.onPause();
     }
 
     @Override
@@ -286,10 +343,20 @@ public class HomeActivity extends ActionBarActivity {
 
 		break;
 
+	    case R.id.send_interventions:
+
+		Intent intService = new Intent(Constants.ACTION_GET_INTERVENTI);
+		intService.setClass(this, InterventixService_.class);
+
+		startService(intService);
+
+		break;
+
 	    case R.id.logout_menu:
 
 		AccountManager accountManager = AccountManager.get(this);
 
+		assert accountManager != null;
 		Account account = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX)[0];
 
 		accountManager.clearPassword(account);
@@ -303,28 +370,26 @@ public class HomeActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onPause() {
-
-	super.onPause();
-
-	buffer.stopTimer();
-
-	unregisterReceiver(receiverBufferFinish);
-    }
-
-    @Override
     protected void onResume() {
 
 	super.onResume();
 
-	registerReceiver(receiverBufferFinish, new IntentFilter(Constants.ACTION_FINISH_BUFFER));
-
 	InterventoSingleton.reset();
 
-	buffer.startTimer(BUFFER_TYPE.BUFFER_INTERVENTO);
-	buffer.startTimer(BUFFER_TYPE.BUFFER_CLIENTE);
+	new AsyncTask<String, Void, Utente>() {
 
-	UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.ORMLITE_USERNAME, globalPrefs.getString(Constants.USERNAME, "")).get(0);
+	    @Override
+	    protected Utente doInBackground(String... params) {
+
+		return utenteDao.queryForEq(Constants.ORMLITE_USERNAME, params[0]).get(0);
+	    }
+
+	    @Override
+	    protected void onPostExecute(Utente utente) {
+
+		UtenteController.tecnicoLoggato = utente;
+	    }
+	}.execute(globalPrefs.getString(Constants.USERNAME, ""));
     }
 
     private void setRefreshActionButtonState(final boolean refreshing) {
@@ -471,7 +536,7 @@ public class HomeActivity extends ActionBarActivity {
 
 		if (result == RESULT_OK)
 		    try {
-			getClientsSyncro(null);
+			getClientsSyncro();
 		    }
 		    catch (Exception e) {
 
@@ -488,9 +553,9 @@ public class HomeActivity extends ActionBarActivity {
 	}.execute();
     }
 
-    private void getClientsSyncro(JSONObject response) throws Exception {
+    private void getClientsSyncro() throws Exception {
 
-	String jsonReq = new String();
+	String jsonReq;
 
 	Map<String, Object> parameters = new HashMap<String, Object>();
 	parameters.put(REVISION, globalPrefs.getLong(Constants.REVISION_CLIENTI, 0L));
@@ -532,7 +597,7 @@ public class HomeActivity extends ActionBarActivity {
 
 		setRefreshActionButtonState(false);
 
-		InterventixToast.makeToast(error.networkResponse.data == null ? serviceNotAvailable : new String(error.getMessage()), Toast.LENGTH_LONG);
+		InterventixToast.makeToast(error.networkResponse.data == null ? serviceNotAvailable : error.getMessage(), Toast.LENGTH_LONG);
 	    }
 	});
 
@@ -599,7 +664,7 @@ public class HomeActivity extends ActionBarActivity {
 
 		if (result == RESULT_OK)
 		    try {
-			getInterventionsSyncro(null);
+			getInterventionsSyncro();
 		    }
 		    catch (Exception e) {
 
@@ -616,9 +681,9 @@ public class HomeActivity extends ActionBarActivity {
 	}.execute();
     }
 
-    private void getInterventionsSyncro(JSONObject jsonResp) throws Exception {
+    private void getInterventionsSyncro() throws Exception {
 
-	String jsonReq = new String();
+	String jsonReq;
 
 	Map<String, Object> parameters = new HashMap<String, Object>();
 	parameters.put(REVISION, globalPrefs.getLong(Constants.REVISION_INTERVENTI, 0L));
@@ -660,7 +725,7 @@ public class HomeActivity extends ActionBarActivity {
 
 		setRefreshActionButtonState(false);
 
-		InterventixToast.makeToast(error.networkResponse.data == null ? serviceNotAvailable : new String(error.getMessage()), Toast.LENGTH_LONG);
+		InterventixToast.makeToast(error.networkResponse.data == null ? serviceNotAvailable : error.getMessage(), Toast.LENGTH_LONG);
 	    }
 	});
 
@@ -838,59 +903,73 @@ public class HomeActivity extends ActionBarActivity {
 		}
 		else {
 
-		    HomeActivity.this.runOnUiThread(new Runnable() {
+		    new AsyncTask<Long, Void, List<Intervento>>() {
 
 			@Override
-			public void run() {
+			protected List<Intervento> doInBackground(Long... params) {
 
-			    readListInterventions();
+			    QueryBuilder<Intervento, Long> qb;
+
+			    qb = interventoDao.queryBuilder();
+
+			    qb.selectColumns(Constants.ORMLITE_NUMERO, Constants.ORMLITE_DATAORA, Constants.ORMLITE_CLIENTE, Constants.ORMLITE_CONFLITTO, Constants.ORMLITE_MODIFICATO,
+				    Constants.ORMLITE_NUOVO);
+
+			    try {
+				qb.where().eq(Constants.ORMLITE_TECNICO, params[0]).and().eq(Constants.ORMLITE_CHIUSO, false);
+				qb.orderBy(Constants.ORMLITE_DATAORA, false).orderBy(Constants.ORMLITE_NUMERO, false);
+			    }
+			    catch (SQLException e) {
+
+				e.printStackTrace();
+				BugSenseHandler.sendException(e);
+			    }
+
+			    List<Intervento> listaInterventiAperti = null;
+
+			    try {
+				listaInterventiAperti = interventoDao.query(qb.prepare());
+			    }
+			    catch (SQLException e) {
+
+				e.printStackTrace();
+				BugSenseHandler.sendException(e);
+			    }
+
+			    return listaInterventiAperti;
 			}
-		    });
+
+			@Override
+			protected void onPostExecute(List<Intervento> listaInterventi) {
+
+			    adapter = new ListInterventiAdapter(listaInterventi);
+
+			    animationAdapter = new SwingBottomInAnimationAdapter(adapter, 1500, 1500);
+			    animationAdapter.setAbsListView(listOpen);
+
+			    listOpen.setAdapter(animationAdapter);
+
+			    animationAdapter.notifyDataSetChanged();
+
+			    setRefreshActionButtonState(false);
+
+			    scheduleSendingInterventionsAlarm();
+			}
+		    }.execute(UtenteController.tecnicoLoggato.idutente);
 		}
 	    }
 	}.execute();
     }
 
-    private void readListInterventions() {
-
-	QueryBuilder<Intervento, Long> qb;
-
-	qb = interventoDao.queryBuilder();
-
-	qb.selectColumns(new String[] {
-		Constants.ORMLITE_NUMERO, Constants.ORMLITE_DATAORA, Constants.ORMLITE_CLIENTE, Constants.ORMLITE_CONFLITTO, Constants.ORMLITE_MODIFICATO, Constants.ORMLITE_NUOVO
-	});
+    private void scheduleSendingInterventionsAlarm() {
 
 	try {
-	    qb.where().eq(Constants.ORMLITE_TECNICO, UtenteController.tecnicoLoggato.idutente).and().eq(Constants.ORMLITE_CHIUSO, false);
-	    qb.orderBy(Constants.ORMLITE_DATAORA, false).orderBy(Constants.ORMLITE_NUMERO, false);
+
+	    schedulerSendInterventions.scheduleAtFixedRate(interventionsTask, Constants.DELAY_SCHEDULER_START, Constants.PERIOD_BETWEEN_SUBSEQUENT_EXCECUTIONS);
 	}
-	catch (SQLException e) {
+	catch (IllegalStateException e) {
 
 	    e.printStackTrace();
-	    BugSenseHandler.sendException(e);
 	}
-
-	List<Intervento> listaInterventiAperti = null;
-
-	try {
-	    listaInterventiAperti = interventoDao.query(qb.prepare());
-	}
-	catch (SQLException e) {
-
-	    e.printStackTrace();
-	    BugSenseHandler.sendException(e);
-	}
-
-	adapter = new ListInterventiAdapter(listaInterventiAperti);
-
-	animationAdapter = new SwingBottomInAnimationAdapter(adapter, 1500, 1500);
-	animationAdapter.setAbsListView(listOpen);
-
-	listOpen.setAdapter(animationAdapter);
-
-	animationAdapter.notifyDataSetChanged();
-
-	setRefreshActionButtonState(false);
     }
 }

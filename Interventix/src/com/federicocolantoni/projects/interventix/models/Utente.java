@@ -2,9 +2,6 @@ package com.federicocolantoni.projects.interventix.models;
 
 import java.io.Serializable;
 
-import android.content.ContentValues;
-
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.UtenteDB;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -43,10 +40,6 @@ public class Utente implements Serializable {
 	conflitto = false;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
 
@@ -160,39 +153,5 @@ public class Utente implements Serializable {
 	    return false;
 	}
 	return true;
-    }
-
-    public static ContentValues insertSQL(Utente user) {
-
-	ContentValues values = new ContentValues();
-
-	values.put(UtenteDB.Fields.ID_UTENTE, user.idutente);
-	values.put(com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields.TYPE, UtenteDB.UTENTE_ITEM_TYPE);
-	values.put(UtenteDB.Fields.NOME, user.nome);
-	values.put(UtenteDB.Fields.COGNOME, user.cognome);
-	values.put(UtenteDB.Fields.USERNAME, user.username);
-	values.put(UtenteDB.Fields.CANCELLATO, user.cancellato);
-	values.put(UtenteDB.Fields.REVISIONE, user.revisione);
-	values.put(UtenteDB.Fields.EMAIL, user.email);
-	values.put(UtenteDB.Fields.TIPO, user.tipo);
-	values.put(UtenteDB.Fields.CESTINATO, user.cestinato);
-
-	return values;
-    }
-
-    public static ContentValues updateSQL(Utente user) {
-
-	ContentValues values = new ContentValues();
-
-	values.put(UtenteDB.Fields.NOME, user.nome);
-	values.put(UtenteDB.Fields.COGNOME, user.cognome);
-	values.put(UtenteDB.Fields.USERNAME, user.username);
-	values.put(UtenteDB.Fields.CANCELLATO, user.cancellato);
-	values.put(UtenteDB.Fields.REVISIONE, user.revisione);
-	values.put(UtenteDB.Fields.EMAIL, user.email);
-	values.put(UtenteDB.Fields.TIPO, user.tipo);
-	values.put(UtenteDB.Fields.CESTINATO, user.cestinato);
-
-	return values;
     }
 }

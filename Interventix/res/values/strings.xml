@@ -58,6 +58,7 @@
     <string name="end_date_less_than_start_date">"Errore! Inizio intervento maggiore di fine intervento"</string>
     <string name="present">"Presente"</string>
     <string name="not_present">"Non Presente"</string>
+    <string name="notification_content_text">"Tutte le modifiche agli interventi sono state inviate. Clicca per effettuare la sincronizzazione con il server"</string>
 
     <!-- Array di stringhe -->
     <string-array name="tipologia_choose">

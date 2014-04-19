@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/interventix_color_black"
+            android:textColor="@color/interventix_color"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -24,7 +24,7 @@
             android:id="@+id/tv_numero_intervento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/interventix_color_black"
+            android:textColor="@color/interventix_color"
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>

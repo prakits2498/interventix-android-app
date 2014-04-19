@@ -1,193 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:background="@android:color/transparent"
-	android:orientation="vertical" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical" >
 
-	<ScrollView
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:background="@android:color/transparent" >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent" >
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@android:color/transparent"
-			android:orientation="vertical" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:orientation="vertical" >
 
-			<LinearLayout
-				android:id="@+id/row_manodopera"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@drawable/pressed_item"
-				android:orientation="vertical" >
+            <LinearLayout
+                android:id="@+id/row_manodopera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pressed_item"
+                android:orientation="vertical" >
 
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingLeft="4dp"
-					android:text="@string/row_manodopera"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:text="@string/row_manodopera"
+                    android:textColor="@color/interventix_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-				<TextView
-					android:id="@+id/tv_row_manodopera"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingLeft="4dp"
-					android:textSize="16sp" />
-			</LinearLayout>
+                <TextView
+                    android:id="@+id/tv_row_manodopera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:background="@color/interventix_color_black" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/interventix_color_black" />
 
-			<LinearLayout
-				android:id="@+id/row_componenti"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@drawable/pressed_item"
-				android:orientation="vertical" >
+            <LinearLayout
+                android:id="@+id/row_componenti"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pressed_item"
+                android:orientation="vertical" >
 
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingLeft="4dp"
-					android:text="@string/row_componenti"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:text="@string/row_componenti"
+                    android:textColor="@color/interventix_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-				<TextView
-					android:id="@+id/tv_row_componenti"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingLeft="4dp"
-					android:textSize="16sp" />
-			</LinearLayout>
+                <TextView
+                    android:id="@+id/tv_row_componenti"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:background="@color/interventix_color_black" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/interventix_color_black" />
 
-			<LinearLayout
-				android:id="@+id/row_accessori"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@drawable/pressed_item"
-				android:orientation="vertical" >
+            <LinearLayout
+                android:id="@+id/row_accessori"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pressed_item"
+                android:orientation="vertical" >
 
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingLeft="4dp"
-					android:text="@string/row_accessori"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:text="@string/row_accessori"
+                    android:textColor="@color/interventix_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-				<TextView
-					android:id="@+id/tv_row_accessori"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingLeft="4dp"
-					android:textSize="16sp" />
-			</LinearLayout>
+                <TextView
+                    android:id="@+id/tv_row_accessori"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:background="@color/interventix_color_black" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/interventix_color_black" />
 
-			<LinearLayout
-				android:id="@+id/row_importo"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical" >
+            <LinearLayout
+                android:id="@+id/row_importo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@color/interventix_color_gray"
-					android:paddingLeft="4dp"
-					android:text="@string/row_importo"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/interventix_color_gray"
+                    android:paddingLeft="4dp"
+                    android:text="@string/row_importo"
+                    android:textColor="@color/interventix_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-				<TextView
-					android:id="@+id/tv_row_importo"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@color/interventix_color_gray"
-					android:paddingLeft="4dp"
-					android:textSize="16sp" />
-			</LinearLayout>
+                <TextView
+                    android:id="@+id/tv_row_importo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/interventix_color_gray"
+                    android:paddingLeft="4dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:background="@color/interventix_color_black" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/interventix_color_black" />
 
-			<LinearLayout
-				android:id="@+id/row_iva"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical" >
+            <LinearLayout
+                android:id="@+id/row_iva"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@color/interventix_color_gray"
-					android:paddingLeft="4dp"
-					android:text="@string/row_iva"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/interventix_color_gray"
+                    android:paddingLeft="4dp"
+                    android:text="@string/row_iva"
+                    android:textColor="@color/interventix_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-				<TextView
-					android:id="@+id/tv_row_iva"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@color/interventix_color_gray"
-					android:paddingLeft="4dp"
-					android:textSize="16sp" />
-			</LinearLayout>
+                <TextView
+                    android:id="@+id/tv_row_iva"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/interventix_color_gray"
+                    android:paddingLeft="4dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:background="@color/interventix_color_black" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/interventix_color_black" />
 
-			<LinearLayout
-				android:id="@+id/row_totale"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical" >
+            <LinearLayout
+                android:id="@+id/row_totale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@color/interventix_color_red"
-					android:paddingLeft="4dp"
-					android:text="@string/row_totale"
-					android:textColor="@android:color/black"
-					android:textSize="18sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/interventix_color_red"
+                    android:paddingLeft="4dp"
+                    android:text="@string/row_totale"
+                    android:textColor="@color/interventix_color_black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-				<TextView
-					android:id="@+id/tv_row_totale"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@color/interventix_color_red"
-					android:paddingLeft="4dp"
-					android:textSize="16sp" />
-			</LinearLayout>
-		</LinearLayout>
-	</ScrollView>
+                <TextView
+                    android:id="@+id/tv_row_totale"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/interventix_color_red"
+                    android:paddingLeft="4dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

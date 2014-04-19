@@ -6,10 +6,6 @@ import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import android.content.ContentValues;
-
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.DettaglioInterventoDB;
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -169,59 +165,5 @@ public class DettaglioIntervento implements Serializable {
 	    return false;
 	}
 	return true;
-    }
-
-    public static ContentValues insertSQL(DettaglioIntervento dettIntervento, boolean sincronizzato, boolean nuovo) {
-
-	ContentValues values = new ContentValues();
-
-	values.put(DettaglioInterventoDB.Fields.ID_DETTAGLIO_INTERVENTO, dettIntervento.iddettagliointervento);
-	values.put(com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields.TYPE, DettaglioInterventoDB.DETTAGLIO_INTERVENTO_ITEM_TYPE);
-	values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, dettIntervento.descrizione);
-	values.put(DettaglioInterventoDB.Fields.INTERVENTO, dettIntervento.idintervento);
-
-	if (sincronizzato)
-	    values.put(DettaglioInterventoDB.Fields.MODIFICATO, Constants.DETTAGLIO_SINCRONIZZATO);
-	else
-	    values.put(DettaglioInterventoDB.Fields.MODIFICATO, Constants.DETTAGLIO_MODIFICATO);
-
-	if (nuovo) {
-	    values.put(DettaglioInterventoDB.Fields.NUOVO, Constants.DETTAGLIO_NUOVO);
-	    values.put(DettaglioInterventoDB.Fields.MODIFICATO, "");
-	}
-
-	values.put(DettaglioInterventoDB.Fields.OGGETTO, dettIntervento.oggetto);
-	values.put(DettaglioInterventoDB.Fields.TIPO, dettIntervento.tipo);
-	values.put(DettaglioInterventoDB.Fields.INIZIO, dettIntervento.inizio);
-	values.put(DettaglioInterventoDB.Fields.FINE, dettIntervento.fine);
-	values.put(DettaglioInterventoDB.Fields.TECNICI, dettIntervento.tecniciintervento.toString());
-
-	return values;
-    }
-
-    public static ContentValues updateSQL(DettaglioIntervento dettIntervento, boolean sincronizzato, boolean nuovo) {
-
-	ContentValues values = new ContentValues();
-
-	values.put(DettaglioInterventoDB.Fields.DESCRIZIONE, dettIntervento.descrizione);
-	values.put(DettaglioInterventoDB.Fields.INTERVENTO, dettIntervento.idintervento);
-
-	if (sincronizzato)
-	    values.put(InterventoDB.Fields.MODIFICATO, Constants.INTERVENTO_SINCRONIZZATO);
-	else
-	    values.put(InterventoDB.Fields.MODIFICATO, Constants.INTERVENTO_MODIFICATO);
-
-	if (nuovo) {
-	    values.put(DettaglioInterventoDB.Fields.NUOVO, Constants.DETTAGLIO_NUOVO);
-	    values.put(InterventoDB.Fields.MODIFICATO, Constants.INTERVENTO_MODIFICATO);
-	}
-
-	values.put(DettaglioInterventoDB.Fields.OGGETTO, dettIntervento.oggetto);
-	values.put(DettaglioInterventoDB.Fields.TIPO, dettIntervento.tipo);
-	values.put(DettaglioInterventoDB.Fields.INIZIO, dettIntervento.inizio);
-	values.put(DettaglioInterventoDB.Fields.FINE, dettIntervento.fine);
-	values.put(DettaglioInterventoDB.Fields.TECNICI, dettIntervento.tecniciintervento.toString());
-
-	return values;
     }
 }

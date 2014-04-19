@@ -26,6 +26,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -100,7 +101,7 @@ public class LoginFragment extends Fragment implements TextWatcher {
     @OrmLiteDao(helper = InterventixDBHelper.class, model = Utente.class)
     RuntimeExceptionDao<Utente, Long> utenteDao;
 
-    private SharedPreferences defaultPrefs, globalPrefs;
+    private SharedPreferences defaultPrefs;
 
     private AccountManager accountManager;
 
@@ -172,7 +173,7 @@ public class LoginFragment extends Fragment implements TextWatcher {
 
 	setRefreshActionButtonState(true);
 
-	String jsonReq = new String();
+	String jsonReq;
 
 	if (CheckConnection.connectionIsAlive()) {
 
@@ -182,8 +183,6 @@ public class LoginFragment extends Fragment implements TextWatcher {
 		parameters.put(Constants.JSON_USERNAME, username.getText().toString());
 		parameters.put(Constants.JSON_PASSWORD, password.getText().toString());
 		parameters.put(Constants.JSON_TYPE, Constants.USER_TYPE.TECNICO.name());
-
-		// final String prefsUrl = Interventix.getContext().getResources().getString(R.string.prefs_key_url);
 
 		final String url = defaultPrefs.getString(prefsUrl, "");
 
@@ -245,6 +244,7 @@ public class LoginFragment extends Fragment implements TextWatcher {
 
 	    accountManager = AccountManager.get(Interventix.getContext());
 
+	    assert accountManager != null;
 	    Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
 
 	    if (accounts.length == 0) {
@@ -289,7 +289,20 @@ public class LoginFragment extends Fragment implements TextWatcher {
 			accountManager.setPassword(account, encryptedPassword);
 			accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
-			UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.JSON_USERNAME, username.getText().toString()).get(0);
+			new AsyncTask<String, Void, Utente>() {
+
+			    @Override
+			    protected Utente doInBackground(String... params) {
+
+				return utenteDao.queryForEq(Constants.ORMLITE_USERNAME, params[0]).get(0);
+			    }
+
+			    @Override
+			    protected void onPostExecute(Utente utente) {
+
+				UtenteController.tecnicoLoggato = utente;
+			    }
+			}.execute(username.getText().toString());
 
 			break;
 		    }
@@ -315,24 +328,53 @@ public class LoginFragment extends Fragment implements TextWatcher {
 
 	    Utente utente = gson.fromJson(data.toString(), Utente.class);
 
-	    if (!utenteDao.idExists(utente.idutente))
-		utenteDao.create(utente);
-	    else {
+	    new AsyncTask<Utente, Void, Void>() {
 
-		Utente utExists = utenteDao.queryForId(utente.idutente);
+		@Override
+		protected Void doInBackground(Utente... params) {
 
-		if (!utExists.equals(utente))
-		    utenteDao.update(utente);
-	    }
+		    if (!utenteDao.idExists(params[0].idutente))
+			utenteDao.create(params[0]);
+		    else {
 
-	    UtenteController.tecnicoLoggato = utente;
+			Utente utExists = utenteDao.queryForId(params[0].idutente);
 
-	    addAccountAndStartActivity();
+			if (!utExists.equals(params[0]))
+			    utenteDao.update(params[0]);
+		    }
+
+		    UtenteController.tecnicoLoggato = params[0];
+
+		    return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void aVoid) {
+
+		    addAccountAndStartActivity();
+		}
+	    }.execute(utente);
 	}
 	else {
 
 	    InterventixToast.makeToast(toastLoginError, Toast.LENGTH_LONG);
 	}
+    }
+
+    @Override
+    public void onResume() {
+
+	super.onResume();
+
+	setRefreshActionButtonState(false);
+    }
+
+    @Override
+    public void onPause() {
+
+	super.onPause();
+
+	setRefreshActionButtonState(false);
     }
 
     private void addAccountAndStartActivity() {
@@ -353,6 +395,7 @@ public class LoginFragment extends Fragment implements TextWatcher {
 
 	accountManager = AccountManager.get(Interventix.getContext());
 
+	assert accountManager != null;
 	Account[] accounts = accountManager.getAccountsByType(Constants.ACCOUNT_TYPE_INTERVENTIX);
 
 	if (accounts.length == 0) {
@@ -362,9 +405,9 @@ public class LoginFragment extends Fragment implements TextWatcher {
 	    accountManager.addAccountExplicitly(account, encryptedPassword, null);
 	    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
-	    globalPrefs = Interventix.getContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+	    SharedPreferences globalPrefs = Interventix.getContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 
-	    final Editor edit = globalPrefs.edit().putString(Constants.USERNAME, username.getText().toString()).putString(Constants.PASSWORD, encryptedPassword);
+	    final Editor edit = globalPrefs.edit().putString(Constants.USERNAME, username.getText().toString());
 
 	    edit.apply();
 	}
@@ -377,7 +420,20 @@ public class LoginFragment extends Fragment implements TextWatcher {
 		    accountManager.setPassword(account, password.getText().toString());
 		    accountManager.setAuthToken(account, Constants.ACCOUNT_TYPE_INTERVENTIX, Constants.ACCOUNT_AUTH_TOKEN);
 
-		    UtenteController.tecnicoLoggato = utenteDao.queryForEq(Constants.ORMLITE_USERNAME, username.getText().toString()).get(0);
+		    new AsyncTask<String, Void, Utente>() {
+
+			@Override
+			protected Utente doInBackground(String... params) {
+
+			    return utenteDao.queryForEq(Constants.ORMLITE_USERNAME, params[0]).get(0);
+			}
+
+			@Override
+			protected void onPostExecute(Utente utente) {
+
+			    UtenteController.tecnicoLoggato = utente;
+			}
+		    }.execute(username.getText().toString());
 
 		    break;
 		}
@@ -386,8 +442,6 @@ public class LoginFragment extends Fragment implements TextWatcher {
 
 	Intent intent = new Intent(Interventix.getContext(), com.federicocolantoni.projects.interventix.activities.HomeActivity_.class);
 	intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-	setRefreshActionButtonState(false);
 
 	password.setText("");
 

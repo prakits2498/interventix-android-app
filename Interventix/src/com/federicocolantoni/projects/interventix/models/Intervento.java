@@ -3,11 +3,6 @@ package com.federicocolantoni.projects.interventix.models;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-
-import com.federicocolantoni.projects.interventix.data.InterventixDBContract.InterventoDB;
-import com.federicocolantoni.projects.interventix.helpers.Constants;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -67,8 +62,8 @@ public class Intervento implements Serializable {
 
 	return String
 		.format("Intervento [idintervento=%s, dataora=%s, cliente=%s, tecnico=%s, numero=%s, tipologia=%s, prodotto=%s, motivo=%s, nominativo=%s, riffattura=%s, rifscontrino=%s, note=%s, modalita=%s, firma=%s, modificato=%s, saldato=%s, cancellato=%s, chiuso=%s, conflitto=%s, nuovo=%s, costomanodopera=%s, costocomponenti=%s, costoaccessori=%s, importo=%s, totale=%s, iva=%s]",
-			idintervento, dataora, cliente, tecnico, numero, tipologia, prodotto, motivo, nominativo, riffattura, rifscontrino, note, modalita, firma, modificato, saldato, cancellato,
-			chiuso, conflitto, nuovo, costomanodopera, costocomponenti, costoaccessori, importo, totale, iva);
+			idintervento, dataora, cliente, tecnico, numero, tipologia, prodotto, motivo, nominativo, riffattura, rifscontrino, note, modalita, firma.substring(0, 49), modificato,
+			saldato, cancellato, chiuso, conflitto, nuovo, costomanodopera, costocomponenti, costoaccessori, importo, totale, iva);
     }
 
     @Override
@@ -252,115 +247,5 @@ public class Intervento implements Serializable {
 	else if (!totale.equals(other.totale))
 	    return false;
 	return true;
-    }
-
-    public static ContentValues insertSQL(Intervento intervento, boolean sincronizzato) {
-
-	ContentValues values = new ContentValues();
-
-	values.put(InterventoDB.Fields.ID_INTERVENTO, intervento.idintervento);
-	values.put(com.federicocolantoni.projects.interventix.data.InterventixDBContract.Data.Fields.TYPE, InterventoDB.INTERVENTO_ITEM_TYPE);
-	values.put(InterventoDB.Fields.CANCELLATO, intervento.cancellato);
-	values.put(InterventoDB.Fields.COSTO_ACCESSORI, intervento.costoaccessori.doubleValue());
-	values.put(InterventoDB.Fields.COSTO_COMPONENTI, intervento.costocomponenti.doubleValue());
-	values.put(InterventoDB.Fields.COSTO_MANODOPERA, intervento.costomanodopera.doubleValue());
-	values.put(InterventoDB.Fields.DATA_ORA, intervento.dataora);
-	values.put(InterventoDB.Fields.FIRMA, intervento.firma);
-	values.put(InterventoDB.Fields.CLIENTE, intervento.cliente);
-	values.put(InterventoDB.Fields.IMPORTO, intervento.importo.doubleValue());
-	values.put(InterventoDB.Fields.IVA, intervento.iva.doubleValue());
-	values.put(InterventoDB.Fields.MODALITA, intervento.modalita);
-
-	if (sincronizzato)
-	    values.put(InterventoDB.Fields.MODIFICATO, Constants.INTERVENTO_SINCRONIZZATO);
-	else
-	    values.put(InterventoDB.Fields.MODIFICATO, Constants.INTERVENTO_MODIFICATO);
-
-	values.put(InterventoDB.Fields.MOTIVO, intervento.motivo);
-	values.put(InterventoDB.Fields.NOMINATIVO, intervento.nominativo);
-	values.put(InterventoDB.Fields.NOTE, intervento.note);
-	values.put(InterventoDB.Fields.NUMERO_INTERVENTO, intervento.numero);
-
-	if (!sincronizzato)
-	    values.put(InterventoDB.Fields.NUOVO, Constants.INTERVENTO_NUOVO);
-
-	values.put(InterventoDB.Fields.PRODOTTO, intervento.prodotto);
-	values.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, intervento.riffattura);
-	values.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO, intervento.rifscontrino);
-	values.put(InterventoDB.Fields.SALDATO, intervento.saldato);
-	values.put(InterventoDB.Fields.TIPOLOGIA, intervento.tipologia);
-	values.put(InterventoDB.Fields.TOTALE, intervento.totale.doubleValue());
-	values.put(InterventoDB.Fields.CHIUSO, intervento.chiuso);
-	values.put(InterventoDB.Fields.TECNICO, intervento.tecnico);
-
-	return values;
-    }
-
-    public static ContentValues updateSQL(Intervento intervento, boolean sincronizzato) {
-
-	ContentValues values = new ContentValues();
-
-	values.put(InterventoDB.Fields.CANCELLATO, intervento.cancellato);
-	values.put(InterventoDB.Fields.COSTO_ACCESSORI, intervento.costoaccessori.doubleValue());
-	values.put(InterventoDB.Fields.COSTO_COMPONENTI, intervento.costocomponenti.doubleValue());
-	values.put(InterventoDB.Fields.COSTO_MANODOPERA, intervento.costomanodopera.doubleValue());
-	values.put(InterventoDB.Fields.DATA_ORA, intervento.dataora);
-	values.put(InterventoDB.Fields.FIRMA, intervento.firma);
-	values.put(InterventoDB.Fields.CLIENTE, intervento.cliente);
-	values.put(InterventoDB.Fields.IMPORTO, intervento.importo.doubleValue());
-	values.put(InterventoDB.Fields.IVA, intervento.iva.doubleValue());
-	values.put(InterventoDB.Fields.MODALITA, intervento.modalita);
-
-	if (sincronizzato)
-	    values.put(InterventoDB.Fields.MODIFICATO, Constants.INTERVENTO_SINCRONIZZATO);
-	else
-	    values.put(InterventoDB.Fields.MODIFICATO, Constants.INTERVENTO_MODIFICATO);
-
-	values.put(InterventoDB.Fields.MOTIVO, intervento.motivo);
-	values.put(InterventoDB.Fields.NOMINATIVO, intervento.nominativo);
-	values.put(InterventoDB.Fields.NOTE, intervento.note);
-	values.put(InterventoDB.Fields.NUMERO_INTERVENTO, intervento.numero);
-	values.put(InterventoDB.Fields.PRODOTTO, intervento.prodotto);
-	values.put(InterventoDB.Fields.RIFERIMENTO_FATTURA, intervento.riffattura);
-	values.put(InterventoDB.Fields.RIFERIMENTO_SCONTRINO, intervento.rifscontrino);
-	values.put(InterventoDB.Fields.SALDATO, intervento.saldato);
-	values.put(InterventoDB.Fields.TIPOLOGIA, intervento.tipologia);
-	values.put(InterventoDB.Fields.TOTALE, intervento.totale.doubleValue());
-	values.put(InterventoDB.Fields.CHIUSO, intervento.chiuso);
-	values.put(InterventoDB.Fields.TECNICO, intervento.tecnico);
-
-	return values;
-    }
-
-    public static Intervento getFromCursor(Cursor cursor) {
-
-	Intervento intervento = new Intervento();
-
-	intervento.cancellato = (cursor.getInt(cursor.getColumnIndex(InterventoDB.Fields.CANCELLATO)) == 1 ? true : false);
-	intervento.chiuso = (cursor.getInt(cursor.getColumnIndex(InterventoDB.Fields.CHIUSO)) == 1 ? true : false);
-	intervento.conflitto = (cursor.getInt(cursor.getColumnIndex(InterventoDB.Fields.CONFLITTO)) == 1 ? true : false);
-	intervento.costoaccessori = (BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(InterventoDB.Fields.COSTO_ACCESSORI))));
-	intervento.costocomponenti = (BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(InterventoDB.Fields.COSTO_COMPONENTI))));
-	intervento.costomanodopera = (BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(InterventoDB.Fields.COSTO_MANODOPERA))));
-	intervento.dataora = (cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.DATA_ORA)));
-	intervento.firma = (cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.FIRMA)));
-	intervento.cliente = (cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.CLIENTE)));
-	intervento.idintervento = (cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.ID_INTERVENTO)));
-	intervento.tecnico = (cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.TECNICO)));
-	intervento.importo = (BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(InterventoDB.Fields.IMPORTO))));
-	intervento.iva = (BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(InterventoDB.Fields.IVA))));
-	intervento.modalita = (cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.MODALITA)));
-	intervento.motivo = (cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.MOTIVO)));
-	intervento.nominativo = (cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.NOMINATIVO)));
-	intervento.note = (cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.NOTE)));
-	intervento.numero = (cursor.getLong(cursor.getColumnIndex(InterventoDB.Fields.NUMERO_INTERVENTO)));
-	intervento.prodotto = (cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.PRODOTTO)));
-	intervento.riffattura = (cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.RIFERIMENTO_FATTURA)));
-	intervento.rifscontrino = (cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.RIFERIMENTO_SCONTRINO)));
-	intervento.saldato = (cursor.getInt(cursor.getColumnIndex(InterventoDB.Fields.SALDATO)) == 1 ? true : false);
-	intervento.tipologia = (cursor.getString(cursor.getColumnIndex(InterventoDB.Fields.TIPOLOGIA)));
-	intervento.totale = (BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(InterventoDB.Fields.TOTALE))));
-
-	return intervento;
     }
 }
