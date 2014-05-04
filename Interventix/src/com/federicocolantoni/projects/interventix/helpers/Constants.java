@@ -80,6 +80,7 @@ public final class Constants {
     public static final String JSON_USERS_SECTION = "users";
     public static final String JSON_SYNCRO_USERS_ACTION = "syncro";
     public static final String JSON_ADD_INTERVENTIONS_ACTION = "add";
+    public static final String JSON_MOD_INTERVENTIONS_ACTION = "mod";
     public static final String JSON_TIPO = "tipo";
     public static final String JSON_OGGETTO = "oggetto";
     public static final String JSON_INIZIO = "inizio";
@@ -105,6 +106,10 @@ public final class Constants {
     public static final String JSON_TOTALE = "totale";
     public static final String JSON_IVA = "iva";
     public static final String JSON_IMPORTO = "importo";
+    public static final String JSON_IDINTERVENTO = "idintervento";
+    public static final String JSON_REVISIONE = "revisione";
+    public static final String JSON_ACTION = "action";
+    public static final String JSON_SECTION = "section";
 
     // *** costanti per i nomi delle colonne di ORMLite *** \\
     public static final String JSON_COSTOACCESSORI = "costoaccessori";
@@ -123,7 +128,7 @@ public final class Constants {
 
     // *** dati per il buffer *** \\
     public static final int MILLISECONDI = 1000;
-    public static final int SECONDI = 60;
+    public static final int SECONDI = 1;
     public static final int MINUTI = 30 * SECONDI * MILLISECONDI;
     public static final String ACTION_GET_INTERVENTI = Interventix.getContext().getPackageName() + "." + BUFFER_TYPE.BUFFER_INTERVENTO.name();
     public static final String ACTION_GET_CLIENTI = Interventix.getContext().getPackageName() + "." + BUFFER_TYPE.BUFFER_CLIENTE.name();
@@ -140,6 +145,7 @@ public final class Constants {
     public static final int NOTIFICATIOND_ID_INTERVENTIX = 23;
 
     public static final String TECNICO = "TECNICO";
+
     public static int sNumberOfNotificationEvents = 0;
 
     public static enum BUFFER_TYPE {
