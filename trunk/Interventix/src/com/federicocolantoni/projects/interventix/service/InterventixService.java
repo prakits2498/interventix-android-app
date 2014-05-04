@@ -1,7 +1,9 @@
 package com.federicocolantoni.projects.interventix.service;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import multiface.crypto.cr2.JsonCR2;
@@ -9,21 +11,26 @@ import multiface.crypto.cr2.JsonCR2;
 import org.androidannotations.annotations.EService;
 import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.res.StringRes;
+import org.apache.commons.io.FileUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
-import com.federicocolantoni.projects.interventix.activities.HomeActivity_;
 import com.federicocolantoni.projects.interventix.data.InterventixDBHelper;
 import com.federicocolantoni.projects.interventix.helpers.Constants;
+import com.federicocolantoni.projects.interventix.helpers.Utils;
 import com.federicocolantoni.projects.interventix.models.DettaglioIntervento;
 import com.federicocolantoni.projects.interventix.models.Intervento;
 import com.federicocolantoni.projects.interventix.models.Utente;
@@ -46,7 +53,14 @@ public class InterventixService extends IntentService {
     @OrmLiteDao(helper = InterventixDBHelper.class, model = DettaglioIntervento.class)
     RuntimeExceptionDao<DettaglioIntervento, Long> dettaglioDao;
 
+    @OrmLiteDao(helper = InterventixDBHelper.class, model = Utente.class)
+    RuntimeExceptionDao<Utente, Long> utenteDao;
+
     Utente tecnico;
+
+    private long counter = 0l;
+
+    SharedPreferences prefsDefault, globalPrefs;
 
     Map<String, Object> parameters;
 
@@ -60,7 +74,13 @@ public class InterventixService extends IntentService {
 
 	super.onStart(intent, startId);
 
-	tecnico = (Utente) intent.getSerializableExtra(Constants.TECNICO);
+	Constants.sNumberOfNotificationEvents = 0;
+
+	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
+
+	tecnico = utenteDao.queryForEq(Constants.ORMLITE_USERNAME, prefs.getString(Constants.USERNAME, "")).get(0);
+
+	prefsDefault = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override
@@ -103,19 +123,138 @@ public class InterventixService extends IntentService {
 
 	    Intervento intervento = listaInterventi.next();
 
-	    System.out.println(intervento);
+	    QueryBuilder<DettaglioIntervento, Long> qbDettagli = dettaglioDao.queryBuilder();
+
+	    qbDettagli.where().eq(Constants.ORMLITE_IDINTERVENTO, intervento.idintervento);
+
+	    CloseableIterator<DettaglioIntervento> listaDettagli = dettaglioDao.iterator(qbDettagli.prepare());
+
+	    parameters.put(Constants.JSON_CLIENTE, Long.toString(intervento.cliente));
+	    parameters.put(Constants.JSON_TECNICO, Long.toString(intervento.tecnico));
+	    parameters.put(Constants.JSON_TIPOLOGIA, intervento.tipologia);
+	    parameters.put(Constants.JSON_MODALITA, intervento.modalita);
+	    parameters.put(Constants.JSON_PRODOTTO, intervento.prodotto);
+	    parameters.put(Constants.JSON_MOTIVO, intervento.motivo);
+	    parameters.put(Constants.JSON_NOMINATIVO, intervento.nominativo);
+	    parameters.put(Constants.JSON_DATAORA, Long.toString(intervento.dataora));
+	    parameters.put(Constants.JSON_RIF_FATTURA, intervento.riffattura);
+	    parameters.put(Constants.JSON_RIF_SCONTRINO, intervento.rifscontrino);
+	    parameters.put(Constants.JSON_COSTOMANODOPERA, intervento.costomanodopera.toString());
+	    parameters.put(Constants.JSON_COSTOCOMPONENTI, intervento.costocomponenti.toString());
+	    parameters.put(Constants.JSON_COSTOACCESSORI, intervento.costoaccessori.toString());
+	    parameters.put(Constants.JSON_IMPORTO, intervento.importo.toString());
+	    parameters.put(Constants.JSON_IVA, intervento.iva.toString());
+	    parameters.put(Constants.JSON_TOTALE, intervento.totale.toString());
+	    parameters.put(Constants.JSON_NOTE, intervento.note);
+	    parameters.put(Constants.JSON_CHIUSO, Boolean.toString(intervento.chiuso));
+	    parameters.put(Constants.JSON_FIRMA, intervento.firma);
+
+	    if (listaDettagli.hasNext()) {
+
+		JSONArray arrayDettagli = new JSONArray();
+
+		while (listaDettagli.hasNext()) {
+
+		    DettaglioIntervento dettInter = listaDettagli.next();
+
+		    JSONObject dettaglio = new JSONObject();
+
+		    try {
+
+			dettaglio.put(Constants.JSON_TIPO, dettInter.tipo);
+			dettaglio.put(Constants.JSON_OGGETTO, dettInter.oggetto);
+			dettaglio.put(Constants.JSON_INIZIO, dettInter.inizio);
+			dettaglio.put(Constants.JSON_FINE, dettInter.fine);
+			dettaglio.put(Constants.JSON_DESCRIZIONE, dettInter.descrizione);
+			dettaglio.put(Constants.JSON_TECNICIINTERVENTO, new JSONArray(dettInter.tecniciintervento));
+		    }
+		    catch (JSONException e) {
+
+			BugSenseHandler.sendException(e);
+			e.printStackTrace();
+		    }
+
+		    arrayDettagli.put(dettaglio);
+		}
+
+		listaDettagli.closeQuietly();
+
+		parameters.put(Constants.JSON_DETTAGLIINTERVENTO, arrayDettagli);
+	    }
+
+	    try {
+
+		String urlString = prefsDefault.getString(prefsUrl, null);
+
+		String jsonReq = null;
+
+		if (intervento.nuovo)
+		    jsonReq = JsonCR2.createRequest(Constants.JSON_INTERVENTIONS_SECTION, Constants.JSON_ADD_INTERVENTIONS_ACTION, parameters, tecnico.idutente.intValue());
+		else {
+
+		    parameters.put(Constants.JSON_IDINTERVENTO, Long.toString(intervento.idintervento));
+
+		    SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
+
+		    parameters.put(Constants.JSON_REVISIONE, Long.toString(prefs.getLong(Constants.REVISION_INTERVENTI, 0l)));
+
+		    jsonReq = JsonCR2.createRequest(Constants.JSON_INTERVENTIONS_SECTION, Constants.JSON_MOD_INTERVENTIONS_ACTION, parameters, tecnico.idutente.intValue());
+		}
+
+		File reqJSON = new File(getFilesDir(), "request_json.txt");
+
+		FileUtils.writeStringToFile(reqJSON, jsonReq);
+
+		JSONObject response = new JSONObject(Utils.connectionForURL(jsonReq, urlString).toJSONString());
+
+		if (response.getString(Constants.JSON_RESPONSE).equals(Constants.JSON_RESPONSE_SUCCESS)) {
+
+		    JSONObject request = response.getJSONObject("request");
+
+		    if (request.getString(Constants.JSON_ACTION).equals(Constants.JSON_MOD_INTERVENTIONS_ACTION)
+			    && request.getString(Constants.JSON_SECTION).equals(Constants.JSON_INTERVENTIONS_SECTION)) {
+
+			counter++;
+
+			intervento.modificato = Constants.INTERVENTO_SINCRONIZZATO;
+			intervento.nuovo = false;
+
+			interventoDao.update(intervento);
+
+			List<DettaglioIntervento> listDett = dettaglioDao.queryForEq(Constants.ORMLITE_IDINTERVENTO, intervento.idintervento);
+
+			for (DettaglioIntervento dett : listDett) {
+
+			    dett.modificato = Constants.DETTAGLIO_SINCRONIZZATO;
+			    dett.nuovo = false;
+
+			    dettaglioDao.update(dett);
+			}
+		    }
+		    else if (request.getString(Constants.JSON_ACTION).equals(Constants.JSON_ADD_INTERVENTIONS_ACTION)
+			    && request.getString(Constants.JSON_SECTION).equals(Constants.JSON_INTERVENTIONS_SECTION)) {
+
+			interventoDao.delete(intervento);
+
+			counter++;
+
+			System.out.println(response.getJSONObject(Constants.JSON_DATA).toString());
+		    }
+		}
+		else {
+
+		    System.out.println(response.toString());
+		    break;
+		}
+	    }
+	    catch (Exception e) {
+
+		e.printStackTrace();
+	    }
 	}
 
-	try {
-	    JsonCR2.createRequest(Constants.JSON_INTERVENTIONS_SECTION, Constants.JSON_ADD_INTERVENTIONS_ACTION, parameters, tecnico.idutente.intValue());
-	}
-	catch (Exception e) {
-
-	    e.printStackTrace();
-	}
-
-	// TODO send notification after all interventions are sent to the server
-	sendNotification();
+	if (counter > 0)
+	    sendNotification();
     }
 
     private void sendNotification() {
@@ -124,29 +263,20 @@ public class InterventixService extends IntentService {
 
 	notification.setSmallIcon(R.drawable.ic_stat_interventix_icon);
 	notification.setContentTitle(getString(R.string.app_name));
-	// notification.setContentText(getString(R.string.notification_content_text));
+	notification.setContentText(getString(R.string.notification_content_text));
 
-	Intent updateInterventions = new Intent(this, HomeActivity_.class);
+	Intent updateInterventions = new Intent(this, com.federicocolantoni.projects.interventix.activities.HomeActivity_.class);
 
-	PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, updateInterventions, PendingIntent.FLAG_UPDATE_CURRENT);
+	PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, updateInterventions, PendingIntent.FLAG_ONE_SHOT);
 
 	notification.setContentIntent(pendingIntent);
 	notification.setNumber(++Constants.sNumberOfNotificationEvents);
 	notification.setAutoCancel(true);
-	notification.setDefaults(Notification.FLAG_ONLY_ALERT_ONCE | Notification.FLAG_SHOW_LIGHTS);
 	notification.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 	notification.setVibrate(new long[] {
 		0, 300, 100, 300, 100, 500
 	});
-
-	int red = Color.red(R.color.interventix_color);
-	int green = Color.green(R.color.interventix_color);
-	int blue = Color.blue(R.color.interventix_color);
-
-	int notifLightColor = Color.argb(255, red, green, blue);
-
-	notification.setLights(notifLightColor, 300, 1000);
-	notification.setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_content_text)));
+	notification.setLights(getResources().getColor(R.color.interventix_color), 300, 1000);
 
 	NotificationManager notifManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
