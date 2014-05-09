@@ -223,7 +223,14 @@ public class InformationsInterventoFragment extends Fragment /* implements OnDat
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
 
-		InterventoController.controller.getIntervento().modalita = (modalitaChoose[which]);
+		if (modalitaChoose[which].equals(Constants.CONTRATTUALIZZATO))
+		    InterventoController.controller.getIntervento().modalita = Constants.MODE_INTERVENTO.CONTRACT.getName();
+		else if (modalitaChoose[which].equals(Constants.PAGAMENTO_DIRETTO))
+		    InterventoController.controller.getIntervento().modalita = Constants.MODE_INTERVENTO.PAYMENT.getName();
+		else if (modalitaChoose[which].equals(Constants.POST_VENDITA))
+		    InterventoController.controller.getIntervento().modalita = Constants.MODE_INTERVENTO.POSTSALE.getName();
+		else
+		    InterventoController.controller.getIntervento().modalita = Constants.MODE_INTERVENTO.RENTUSE.getName();
 
 		dialog.dismiss();
 

@@ -157,4 +157,26 @@ public final class Constants {
 
 	TECNICO, AMMINISTRATORE
     }
+
+    public static final String CONTRATTUALIZZATO = "Contrattualizzato";
+    public static final String PAGAMENTO_DIRETTO = "Pagamento Diretto";
+    public static final String POST_VENDITA = "Post-Vendita (Garanzia)";
+    public static final String COMODATO_USO = "Comodato d'uso";
+
+    public static enum MODE_INTERVENTO {
+
+	CONTRACT("contract"), PAYMENT("payment"), POSTSALE("postsale"), RENTUSE("rentuse");
+
+	private String name;
+
+	private MODE_INTERVENTO(String name) {
+
+	    this.name = name;
+	}
+
+	public String getName() {
+
+	    return name;
+	}
+    }
 }

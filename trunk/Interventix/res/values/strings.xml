@@ -71,6 +71,13 @@
         <item n="2">Post-Vendita (Garanzia)</item>
         <item n="3">"Comodato d'uso"</item>
     </string-array>
+
+<!--     <string-array name="modalita_choose"> -->
+<!--         <item n="0">contract</item> -->
+<!--         <item n="1">payment</item> -->
+<!--         <item n="2">postsale</item> -->
+<!--         <item n="3">"rentuse"</item> -->
+<!--     </string-array> -->
     <string-array name="tipo_dettaglio_intervento">
         <item n="0">Regolazione</item>
         <item n="1">Ripristino</item>
