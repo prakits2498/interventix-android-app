@@ -1,9 +1,11 @@
 package com.federicocolantoni.projects.interventix.helpers;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -23,9 +25,9 @@ public class Utils {
 
     public static JSONObject connectionForURL(String json_req, final String url_string) throws Exception {
 
-	String formattedURL = url_string + "?DATA=" + json_req;
+	String parameter = "DATA=" + json_req;
 
-	URL url = new URL(formattedURL);
+	URL url = new URL(url_string);
 
 	HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	conn.setConnectTimeout(Constants.CONNECTION_TIMEOUT);
@@ -34,14 +36,19 @@ public class Utils {
 	// set user-agent
 	// conn.setRequestProperty("User-Agent", "...");
 
-	conn.setRequestProperty("Accept-Charset", "UTF-8");
-	conn.setRequestProperty("Content-Type", "text/plain");
-	conn.setRequestProperty("Content-Length", Integer.toString(formattedURL.length()));
+	// conn.setRequestProperty("Accept-Charset", "UTF-8");
+	// conn.setRequestProperty("Content-Type", "text/plain");
+	// conn.setRequestProperty("Content-Length", Integer.toString(formattedURL.length()));
 	conn.setDefaultUseCaches(true);
-	conn.setDoOutput(true);
+	conn.setAllowUserInteraction(true);
+	conn.setDoInput(true);
 	conn.setReadTimeout(Constants.CONNECTION_TIMEOUT);
 
 	conn.connect();
+
+	BufferedWriter out = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+	out.write(parameter);
+	out.close();
 
 	if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 

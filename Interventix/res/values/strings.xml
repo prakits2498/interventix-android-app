@@ -38,7 +38,7 @@
     <string name="first_run">first_run</string>
     <string name="prefs_url_title">"Inserisci l'indirizzo del sito che ti è stato fornito nel contratto."</string>
     <string name="prefs_url_hint">http://azienda.interventix.com</string>
-    <string name="default_url">http://37.187.1.50:8080/interventix/connector</string>
+    <string name="default_url">http://www.interventix.it/connector</string>
     <string name="welcome_title">Benvenuto su Interventix</string>
     <string name="welcome_message">"Interventix è stata avviata per la prima volta. Inserire l'indirizzo per la connessione al server che è stato fornito nel contratto."</string>
     <string name="logout_title">Richiesta di logout</string>
@@ -72,12 +72,12 @@
         <item n="3">"Comodato d'uso"</item>
     </string-array>
 
-<!--     <string-array name="modalita_choose"> -->
-<!--         <item n="0">contract</item> -->
-<!--         <item n="1">payment</item> -->
-<!--         <item n="2">postsale</item> -->
-<!--         <item n="3">"rentuse"</item> -->
-<!--     </string-array> -->
+    <!-- <string-array name="modalita_choose"> -->
+    <!-- <item n="0">contract</item> -->
+    <!-- <item n="1">payment</item> -->
+    <!-- <item n="2">postsale</item> -->
+    <!-- <item n="3">"rentuse"</item> -->
+    <!-- </string-array> -->
     <string-array name="tipo_dettaglio_intervento">
         <item n="0">Regolazione</item>
         <item n="1">Ripristino</item>
