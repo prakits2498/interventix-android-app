@@ -1,8 +1,12 @@
 package com.federicocolantoni.projects.interventix.helpers;
 
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.EBean.Scope;
+
 import com.federicocolantoni.projects.interventix.application.Interventix;
 
-public final class Constants {
+@EBean(scope = Scope.Singleton)
+public class Constants {
 
     // *** API key BugSense ***\\
     public static final String API_KEY = "0ec355e8";
@@ -170,6 +174,26 @@ public final class Constants {
 	private String name;
 
 	private MODE_INTERVENTO(String name) {
+
+	    this.name = name;
+	}
+
+	public String getName() {
+
+	    return name;
+	}
+    }
+
+    public static final String RICHIESTA = "Su richiesta";
+    public static final String PROGRAMMATA = "Programmata";
+
+    public static enum TYPE_INTERVENTO {
+
+	REQUEST("request"), PROGRAMMED("programmed");
+
+	private String name;
+
+	private TYPE_INTERVENTO(String name) {
 
 	    this.name = name;
 	}
