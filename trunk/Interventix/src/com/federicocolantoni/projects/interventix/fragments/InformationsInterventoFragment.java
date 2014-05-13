@@ -134,11 +134,21 @@ public class InformationsInterventoFragment extends Fragment /* implements OnDat
 
     private void updateUI() {
 
-	tvTipology.setText(InterventoController.controller.getIntervento().tipologia);
+	if (InterventoController.controller.getIntervento().tipologia.equals(Constants.TYPE_INTERVENTO.REQUEST.getName()))
+	    tvTipology.setText(Constants.RICHIESTA);
+	else
+	    tvTipology.setText(Constants.PROGRAMMATA);
 
 	tvProduct.setText(InterventoController.controller.getIntervento().prodotto);
 
-	tvMode.setText(InterventoController.controller.getIntervento().modalita);
+	if (InterventoController.controller.getIntervento().modalita.equals(Constants.MODE_INTERVENTO.CONTRACT.getName()))
+	    tvMode.setText(Constants.CONTRATTUALIZZATO);
+	else if (InterventoController.controller.getIntervento().modalita.equals(Constants.MODE_INTERVENTO.PAYMENT.getName()))
+	    tvMode.setText(Constants.PAGAMENTO_DIRETTO);
+	else if (InterventoController.controller.getIntervento().modalita.equals(Constants.MODE_INTERVENTO.POSTSALE.getName()))
+	    tvMode.setText(Constants.POST_VENDITA);
+	else
+	    tvMode.setText(Constants.COMODATO_USO);
 
 	tvMotivation.setText(InterventoController.controller.getIntervento().motivo);
 
@@ -199,7 +209,10 @@ public class InformationsInterventoFragment extends Fragment /* implements OnDat
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
 
-		InterventoController.controller.getIntervento().tipologia = (tipologiaChoose[which]);
+		if (tipologiaChoose[which].equals(Constants.RICHIESTA))
+		    InterventoController.controller.getIntervento().tipologia = Constants.TYPE_INTERVENTO.REQUEST.getName();
+		else
+		    InterventoController.controller.getIntervento().tipologia = Constants.TYPE_INTERVENTO.PROGRAMMED.getName();
 
 		dialog.dismiss();
 
