@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import multiface.crypto.cr2.JsonCR2;
 
@@ -56,6 +58,10 @@ public class InterventixService extends IntentService {
     @OrmLiteDao(helper = InterventixDBHelper.class, model = Utente.class)
     RuntimeExceptionDao<Utente, Long> utenteDao;
 
+    Timer schedulerSendInterventions;
+
+    TimerTask interventionsTask;
+
     Utente tecnico;
 
     private long counter = 0l;
@@ -74,6 +80,27 @@ public class InterventixService extends IntentService {
 
 	super.onStart(intent, startId);
 
+	System.out.println("Service avviato");
+
+	schedulerSendInterventions = new Timer(Constants.SCHEDULER_NAME, false);
+
+	interventionsTask = new TimerTask() {
+
+	    @Override
+	    public void run() {
+
+		try {
+
+		    inviaInterventi();
+		    inviaClienti();
+		}
+		catch (SQLException e) {
+
+		    e.printStackTrace();
+		}
+	    }
+	};
+
 	Constants.sNumberOfNotificationEvents = 0;
 
 	SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
@@ -81,26 +108,13 @@ public class InterventixService extends IntentService {
 	tecnico = utenteDao.queryForEq(Constants.ORMLITE_USERNAME, prefs.getString(Constants.USERNAME, "")).get(0);
 
 	prefsDefault = PreferenceManager.getDefaultSharedPreferences(this);
+
+	schedulerSendInterventions.schedule(interventionsTask, Constants.DELAY_SCHEDULER_START, Constants.PERIOD_BETWEEN_SUBSEQUENT_EXCECUTIONS);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
 
-	if (intent.getAction().equals(Constants.ACTION_GET_INTERVENTI)) {
-
-	    try {
-
-		inviaInterventi();
-	    }
-	    catch (SQLException e) {
-
-		e.printStackTrace();
-	    }
-	}
-	else if (intent.getAction().equals(Constants.ACTION_GET_CLIENTI)) {
-
-	    inviaClienti();
-	}
     }
 
     private void inviaClienti() {
@@ -123,6 +137,8 @@ public class InterventixService extends IntentService {
 
 	    Intervento intervento = listaInterventi.next();
 
+	    System.out.println(intervento);
+
 	    QueryBuilder<DettaglioIntervento, Long> qbDettagli = dettaglioDao.queryBuilder();
 
 	    qbDettagli.where().eq(Constants.ORMLITE_IDINTERVENTO, intervento.idintervento);
@@ -131,6 +147,7 @@ public class InterventixService extends IntentService {
 
 	    parameters.put(Constants.JSON_CLIENTE, Long.toString(intervento.cliente));
 	    parameters.put(Constants.JSON_TECNICO, Long.toString(intervento.tecnico));
+	    parameters.put(Constants.JSON_NUMERO, Long.toString(intervento.numero));
 	    parameters.put(Constants.JSON_TIPOLOGIA, intervento.tipologia);
 	    parameters.put(Constants.JSON_MODALITA, intervento.modalita);
 	    parameters.put(Constants.JSON_PRODOTTO, intervento.prodotto);
@@ -188,9 +205,14 @@ public class InterventixService extends IntentService {
 
 		String jsonReq = null;
 
-		if (intervento.nuovo)
+		if (intervento.nuovo) {
+
+		    System.out.println("Sta per essere inviato un nuovo intervento.");
 		    jsonReq = JsonCR2.createRequest(Constants.JSON_INTERVENTIONS_SECTION, Constants.JSON_ADD_INTERVENTIONS_ACTION, parameters, tecnico.idutente.intValue());
+		}
 		else {
+
+		    System.out.println("Sta per essere inviato un intervento modificato.");
 
 		    parameters.put(Constants.JSON_IDINTERVENTO, Long.toString(intervento.idintervento));
 

@@ -32,13 +32,6 @@ public class Utils {
 	HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	conn.setConnectTimeout(Constants.CONNECTION_TIMEOUT);
 	conn.setRequestMethod(HttpPost.METHOD_NAME);
-
-	// set user-agent
-	// conn.setRequestProperty("User-Agent", "...");
-
-	// conn.setRequestProperty("Accept-Charset", "UTF-8");
-	// conn.setRequestProperty("Content-Type", "text/plain");
-	// conn.setRequestProperty("Content-Length", Integer.toString(formattedURL.length()));
 	conn.setDefaultUseCaches(true);
 	conn.setAllowUserInteraction(true);
 	conn.setDoInput(true);
