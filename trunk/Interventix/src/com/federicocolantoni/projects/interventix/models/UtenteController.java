@@ -1,6 +1,5 @@
 package com.federicocolantoni.projects.interventix.models;
 
-
 public class UtenteController {
 
     public static Utente tecnicoLoggato;

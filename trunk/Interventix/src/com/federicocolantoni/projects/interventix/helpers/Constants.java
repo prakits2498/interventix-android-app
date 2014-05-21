@@ -114,6 +114,7 @@ public class Constants {
     public static final String JSON_REVISIONE = "revisione";
     public static final String JSON_ACTION = "action";
     public static final String JSON_SECTION = "section";
+    public static final String JSON_NUMERO = "numero";
 
     // *** costanti per i nomi delle colonne di ORMLite *** \\
     public static final String JSON_COSTOACCESSORI = "costoaccessori";

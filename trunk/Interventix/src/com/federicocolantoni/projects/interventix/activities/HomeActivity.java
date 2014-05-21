@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import multiface.crypto.cr2.JsonCR2;
 
@@ -128,21 +126,6 @@ public class HomeActivity extends ActionBarActivity {
 
     String urlString;
 
-    Timer schedulerSendInterventions;
-
-    TimerTask interventionsTask = new TimerTask() {
-
-	@Override
-	public void run() {
-
-	    Intent intent = new Intent(HomeActivity.this, com.federicocolantoni.projects.interventix.service.InterventixService_.class);
-
-	    intent.setAction(Constants.ACTION_GET_INTERVENTI);
-
-	    startService(intent);
-	}
-    };
-
     private ListInterventiAdapter adapter;
     private SwingBottomInAnimationAdapter animationAdapter;
     private Menu optionsMenu;
@@ -162,7 +145,7 @@ public class HomeActivity extends ActionBarActivity {
 
 	globalPrefs = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 
-	schedulerSendInterventions = new Timer(Constants.SCHEDULER_NAME, true);
+	startInterventixService();
     }
 
     @Override
@@ -932,8 +915,6 @@ public class HomeActivity extends ActionBarActivity {
 			    animationAdapter.notifyDataSetChanged();
 
 			    setRefreshActionButtonState(false);
-
-			    scheduleSendingInterventionsAlarm();
 			}
 		    }.execute(UtenteController.tecnicoLoggato.idutente);
 		}
@@ -941,15 +922,12 @@ public class HomeActivity extends ActionBarActivity {
 	}.execute();
     }
 
-    private void scheduleSendingInterventionsAlarm() {
+    private void startInterventixService() {
 
-	try {
+	Intent intent = new Intent(this, com.federicocolantoni.projects.interventix.service.InterventixService_.class);
 
-	    schedulerSendInterventions.scheduleAtFixedRate(interventionsTask, Constants.DELAY_SCHEDULER_START, Constants.PERIOD_BETWEEN_SUBSEQUENT_EXCECUTIONS);
-	}
-	catch (IllegalStateException e) {
+	stopService(intent);
 
-	    e.printStackTrace();
-	}
+	startService(intent);
     }
 }
