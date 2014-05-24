@@ -112,6 +112,7 @@ public class Constants {
     public static final String JSON_IMPORTO = "importo";
     public static final String JSON_IDINTERVENTO = "idintervento";
     public static final String JSON_REVISIONE = "revisione";
+    public static final String JSON_SALDATO = "saldato";
     public static final String JSON_ACTION = "action";
     public static final String JSON_SECTION = "section";
     public static final String JSON_NUMERO = "numero";

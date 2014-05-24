@@ -164,6 +164,7 @@ public class InterventixService extends IntentService {
 	    parameters.put(Constants.JSON_TOTALE, intervento.totale.toString());
 	    parameters.put(Constants.JSON_NOTE, intervento.note);
 	    parameters.put(Constants.JSON_CHIUSO, Boolean.toString(intervento.chiuso));
+	    parameters.put(Constants.JSON_SALDATO, Boolean.toString(intervento.saldato));
 	    parameters.put(Constants.JSON_FIRMA, intervento.firma);
 
 	    if (listaDettagli.hasNext()) {
