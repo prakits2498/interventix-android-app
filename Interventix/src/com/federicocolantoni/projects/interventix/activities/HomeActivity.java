@@ -43,13 +43,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.adapters.ListInterventiAdapter;
@@ -78,6 +71,8 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 import com.nhaarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 @SuppressLint("NewApi")
@@ -394,46 +389,42 @@ public class HomeActivity extends ActionBarActivity {
 
 	String jsonReq = JsonCR2.createRequest(Constants.JSON_USERS_SECTION, Constants.JSON_SYNCRO_USERS_ACTION, parameters, UtenteController.tecnicoLoggato.idutente.intValue());
 
-	RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(formattedURL, urlString, jsonReq), new Listener<String>() {
+	Ion.with(this).load(String.format(formattedURL, urlString)).setBodyParameter(Constants.DATA_POST_PARAMETER, jsonReq).asString().setCallback(new FutureCallback<String>() {
 
 	    @Override
-	    public void onResponse(String response) {
+	    public void onCompleted(Exception exception, String response) {
 
-		try {
+		if (response != null) {
 
-		    JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
+		    try {
 
-		    runAsyncTaskUserSyncro(jsonResp);
+			JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
+
+			runAsyncTaskUserSyncro(jsonResp);
+		    }
+		    catch (ParseException e) {
+
+			e.printStackTrace();
+			BugSenseHandler.sendException(e);
+		    }
+		    catch (Exception e) {
+
+			e.printStackTrace();
+			BugSenseHandler.sendException(e);
+		    }
+		    finally {
+
+			setRefreshActionButtonState(false);
+		    }
 		}
-		catch (ParseException e) {
-
-		    e.printStackTrace();
-		    BugSenseHandler.sendException(e);
-		}
-		catch (Exception e) {
-
-		    e.printStackTrace();
-		    BugSenseHandler.sendException(e);
-		}
-		finally {
+		else {
 
 		    setRefreshActionButtonState(false);
+
+		    InterventixToast.makeToast(serviceNotAvailable, Toast.LENGTH_LONG);
 		}
 	    }
-	}, new ErrorListener() {
-
-	    @Override
-	    public void onErrorResponse(VolleyError error) {
-
-		setRefreshActionButtonState(false);
-
-		InterventixToast.makeToast(serviceNotAvailable, Toast.LENGTH_LONG);
-	    }
 	});
-
-	requestQueue.add(jsonRequest);
     }
 
     private void runAsyncTaskUserSyncro(final JSONObject jsonResp) {
@@ -525,47 +516,41 @@ public class HomeActivity extends ActionBarActivity {
 
 	jsonReq = JsonCR2.createRequest(Constants.JSON_CLIENTS_SECTION, Constants.JSON_SYNCRO_CLIENTS_ACTION, parameters, UtenteController.tecnicoLoggato.idutente.intValue());
 
-	RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(formattedURL, urlString, jsonReq), new Listener<String>() {
+	Ion.with(this).load(String.format(formattedURL, urlString)).setBodyParameter(Constants.DATA_POST_PARAMETER, jsonReq).asString().setCallback(new FutureCallback<String>() {
 
 	    @Override
-	    public void onResponse(String response) {
+	    public void onCompleted(Exception exception, String response) {
 
-		try {
+		if (response != null) {
+		    try {
 
-		    JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
+			JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
 
-		    runAsyncTaskClientSyncro(jsonResp);
+			runAsyncTaskClientSyncro(jsonResp);
+		    }
+		    catch (ParseException e) {
+
+			e.printStackTrace();
+			BugSenseHandler.sendException(e);
+		    }
+		    catch (Exception e) {
+
+			e.printStackTrace();
+			BugSenseHandler.sendException(e);
+		    }
+		    finally {
+
+			setRefreshActionButtonState(false);
+		    }
 		}
-		catch (ParseException e) {
-
-		    e.printStackTrace();
-		    BugSenseHandler.sendException(e);
-		}
-		catch (Exception e) {
-
-		    e.printStackTrace();
-		    BugSenseHandler.sendException(e);
-		}
-		finally {
+		else {
 
 		    setRefreshActionButtonState(false);
+
+		    InterventixToast.makeToast(serviceNotAvailable, Toast.LENGTH_LONG);
 		}
 	    }
-	}, new ErrorListener() {
-
-	    @Override
-	    public void onErrorResponse(VolleyError error) {
-
-		setRefreshActionButtonState(false);
-
-		InterventixToast.makeToast(error.networkResponse.data == null ? serviceNotAvailable : error.getMessage(), Toast.LENGTH_LONG);
-	    }
 	});
-
-	requestQueue.add(jsonRequest);
-
     }
 
     private void runAsyncTaskClientSyncro(final JSONObject jsonResp) {
@@ -653,46 +638,42 @@ public class HomeActivity extends ActionBarActivity {
 
 	jsonReq = JsonCR2.createRequest(Constants.JSON_INTERVENTIONS_SECTION, Constants.JSON_MYSYNCRO_INTERVENTIONS_ACTION, parameters, UtenteController.tecnicoLoggato.idutente.intValue());
 
-	RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-	StringRequest jsonRequest = new StringRequest(Method.POST, String.format(formattedURL, urlString, jsonReq), new Listener<String>() {
+	Ion.with(this).load(String.format(formattedURL, urlString)).setBodyParameter(Constants.DATA_POST_PARAMETER, jsonReq).asString().setCallback(new FutureCallback<String>() {
 
 	    @Override
-	    public void onResponse(String response) {
+	    public void onCompleted(Exception exception, String response) {
 
-		try {
+		if (response != null) {
 
-		    JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
+		    try {
 
-		    runAsyncTaskInterventionsSyncro(jsonResp);
+			JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
+
+			runAsyncTaskInterventionsSyncro(jsonResp);
+		    }
+		    catch (ParseException e) {
+
+			e.printStackTrace();
+			BugSenseHandler.sendException(e);
+		    }
+		    catch (Exception e) {
+
+			e.printStackTrace();
+			BugSenseHandler.sendException(e);
+		    }
+		    finally {
+
+			setRefreshActionButtonState(false);
+		    }
 		}
-		catch (ParseException e) {
-
-		    e.printStackTrace();
-		    BugSenseHandler.sendException(e);
-		}
-		catch (Exception e) {
-
-		    e.printStackTrace();
-		    BugSenseHandler.sendException(e);
-		}
-		finally {
+		else {
 
 		    setRefreshActionButtonState(false);
+
+		    InterventixToast.makeToast(serviceNotAvailable, Toast.LENGTH_LONG);
 		}
 	    }
-	}, new ErrorListener() {
-
-	    @Override
-	    public void onErrorResponse(VolleyError error) {
-
-		setRefreshActionButtonState(false);
-
-		InterventixToast.makeToast(error.networkResponse.data == null ? serviceNotAvailable : error.getMessage(), Toast.LENGTH_LONG);
-	    }
 	});
-
-	requestQueue.add(jsonRequest);
     }
 
     private void runAsyncTaskInterventionsSyncro(final JSONObject jsonResp) {

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
@@ -10,39 +8,54 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="G:/common libraries/com.haarman.listviewanimations-2.5.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="G:/common libraries/nineoldandroids-2.4.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="G:/common libraries/androidannotations-bundle-3.0.1/androidannotations-api-3.0.1.jar" sourcepath="G:/common libraries/androidannotations-bundle-3.0.1/sources/androidannotations-api-3.0.1-sources.jar">
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/com.haarman.listviewanimations-2.6.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/nineoldandroids-2.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/androidannotations-bundle-3.0.1/androidannotations-api-3.0.1.jar" sourcepath="G:/common libraries/androidannotations-bundle-3.0.1/sources/androidannotations-api-3.0.1-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/G:/common%20libraries/androidannotations-bundle-3.0.1/javadoc/androidannotations-api-3.0.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="G:/common libraries/json-simple-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="G:/common libraries/bugsense-3.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="G:/common libraries/google-gson-2.2.4/gson-2.2.4.jar" sourcepath="G:/common libraries/google-gson-2.2.4/gson-2.2.4-sources.jar">
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/bugsense-3.6.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/google-gson-2.2.4/gson-2.2.4.jar" sourcepath="/Users/federico/Documents/common project libraries/google-gson-2.2.4/gson-2.2.4-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/G:/common%20libraries/google-gson-2.2.4/gson-2.2.4-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/Users/federico/Documents/common%20project%20libraries/google-gson-2.2.4/gson-2.2.4-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="G:/common libraries/joda-time-2.3/joda-time-2.3.jar" sourcepath="G:/common libraries/joda-time-2.3/joda-time-2.3-sources.jar">
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/json-simple-1.1.1.jar" sourcepath="G:/common libraries/joda-time-2.3/joda-time-2.3-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/G:/common%20libraries/joda-time-2.3/joda-time-2.3-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="G:/common libraries/ORMLite Android/ormlite-core-4.48.jar" sourcepath="G:/common libraries/ORMLite Android/ormlite-core-4.48-sources.jar">
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/ORMLite Android/ormlite-core-4.48.jar" sourcepath="/Users/federico/Documents/common project libraries/ORMLite Android/ormlite-core-4.48-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/G:/common%20libraries/ORMLite%20Android/ormlite-core-4.48-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/Users/federico/Documents/common%20project%20libraries/ORMLite/ormlite-core-4.48-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="G:/common libraries/ORMLite Android/ormlite-android-4.48.jar" sourcepath="G:/common libraries/ORMLite Android/ormlite-android-4.48-sources.jar">
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/ORMLite Android/ormlite-android-4.48.jar" sourcepath="/Users/federico/Documents/common project libraries/ORMLite/ormlite-android-4.48-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/G:/common%20libraries/ORMLite%20Android/ormlite-android-4.48-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/Users/federico/Documents/common%20project%20libraries/ORMLite/ormlite-android-4.48-javadoc.jar!/"/>
+			<attribute name="source_encoding" value="UTF-8"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="G:/common libraries/bcprov-jdk16-146/bcprov-jdk16-146.jar" sourcepath="G:/common libraries/bcprov-jdk16-146/src.zip">
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/bcprov-jdk16-146/bcprov-jdk16-146.jar" sourcepath="G:/common libraries/bcprov-jdk16-146/src.zip">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/G:/common%20libraries/bcprov-jdk16-146/docs/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/joda-time-2.3/joda-time-2.3.jar" sourcepath="/Users/federico/Documents/common project libraries/joda-time-2.3/joda-time-2.3-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/Users/federico/Documents/common%20project%20libraries/joda-time-2.3/joda-time-2.3-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/commons-io-2.4/commons-io-2.4.jar" sourcepath="/Users/federico/Documents/common project libraries/commons-io-2.4/commons-io-2.4-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/Users/federico/Documents/common%20project%20libraries/commons-io-2.4/commons-io-2.4-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/Ion/androidasync-1.3.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/Ion/ion-1.3.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/federico/Documents/common project libraries/enroscar-goro-2.0.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

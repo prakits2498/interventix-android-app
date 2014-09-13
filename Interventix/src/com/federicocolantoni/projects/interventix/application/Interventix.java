@@ -69,19 +69,5 @@ public class Interventix extends Application {
 	instance = this;
 
 	super.onCreate();
-	loadAsyncTask();
-    }
-
-    private void loadAsyncTask() {
-
-	try {
-	    Class.forName("android.os.AsyncTask");
-	}
-	catch (ClassNotFoundException e) {
-
-	    BugSenseHandler.sendException(e);
-
-	    e.printStackTrace();
-	}
     }
 }
