@@ -267,7 +267,6 @@ public class InterventixService extends IntentService {
 		else {
 
 		    System.out.println(response.toString());
-		    break;
 		}
 	    }
 	    catch (Exception e) {

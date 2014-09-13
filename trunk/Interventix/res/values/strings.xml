@@ -102,7 +102,7 @@
     <string name="prefs_key_auto_login">PREFS_KEY_AUTO_LOGIN</string>
     <string name="username">Username</string>
     <string name="password_">Password</string>
-    <string name="formatted_url_string" formatted="false">%1$s?DATA=%2$s</string>
+    <string name="formatted_url_string" formatted="false">%1$s</string>
     <string name="service_not_available">"Servizio momentaneamente non disponibile"</string>
 
     <!-- strings for progress' login -->

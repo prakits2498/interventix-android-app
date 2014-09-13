@@ -41,13 +41,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.bugsense.trace.BugSenseHandler;
 import com.federicocolantoni.projects.interventix.R;
 import com.federicocolantoni.projects.interventix.application.Interventix;
@@ -63,6 +56,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 @SuppressLint("NewApi")
 @EFragment(R.layout.fragment_login)
@@ -188,49 +183,43 @@ public class LoginFragment extends Fragment implements TextWatcher {
 
 		jsonReq = JsonCR2.createRequest(Constants.JSON_USER_SECTION, Constants.JSON_LOGIN_ACTION, parameters, -1);
 
-		RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-
-		StringRequest jsonRequest = new StringRequest(Method.POST, String.format(formattedURL, url, jsonReq), new Listener<String>() {
+		Ion.with(getActivity()).load(String.format(formattedURL, url)).setBodyParameter(Constants.DATA_POST_PARAMETER, jsonReq).asString().setCallback(new FutureCallback<String>() {
 
 		    @Override
-		    public void onResponse(String response) {
+		    public void onCompleted(Exception exception, String response) {
 
-			try {
+			if (response != null) {
+			    try {
 
-			    final JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
+				final JSONObject jsonResp = new JSONObject(JsonCR2.read(response.trim()).toJSONString());
 
-			    System.out.println(jsonResp.toString(2));
+				System.out.println(jsonResp.toString(2));
 
-			    parseResponse(jsonResp);
+				parseResponse(jsonResp);
 
+			    }
+			    catch (ParseException e) {
+
+				BugSenseHandler.sendException(e);
+				e.printStackTrace();
+			    }
+			    catch (Exception e) {
+
+				BugSenseHandler.sendException(e);
+				e.printStackTrace();
+			    }
+			    finally {
+
+				setRefreshActionButtonState(false);
+			    }
 			}
-			catch (ParseException e) {
-
-			    BugSenseHandler.sendException(e);
-			    e.printStackTrace();
-			}
-			catch (Exception e) {
-
-			    BugSenseHandler.sendException(e);
-			    e.printStackTrace();
-			}
-			finally {
-
+			else {
 			    setRefreshActionButtonState(false);
+
+			    InterventixToast.makeToast(serviceNotAvailable, Toast.LENGTH_LONG);
 			}
-		    }
-		}, new ErrorListener() {
-
-		    @Override
-		    public void onErrorResponse(VolleyError error) {
-
-			setRefreshActionButtonState(false);
-
-			InterventixToast.makeToast(serviceNotAvailable, Toast.LENGTH_LONG);
 		    }
 		});
-
-		requestQueue.add(jsonRequest);
 	    }
 	    catch (Exception e) {
 

@@ -2,6 +2,7 @@ package com.federicocolantoni.projects.interventix.models;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -62,8 +63,9 @@ public class Intervento implements Serializable {
 
 	return String
 		.format("Intervento [idintervento=%s, dataora=%s, cliente=%s, tecnico=%s, numero=%s, tipologia=%s, prodotto=%s, motivo=%s, nominativo=%s, riffattura=%s, rifscontrino=%s, note=%s, modalita=%s, firma=%s, modificato=%s, saldato=%s, cancellato=%s, chiuso=%s, conflitto=%s, nuovo=%s, costomanodopera=%s, costocomponenti=%s, costoaccessori=%s, importo=%s, totale=%s, iva=%s]",
-			idintervento, dataora, cliente, tecnico, numero, tipologia, prodotto, motivo, nominativo, riffattura, rifscontrino, note, modalita, firma.substring(0, 49), modificato,
-			saldato, cancellato, chiuso, conflitto, nuovo, costomanodopera, costocomponenti, costoaccessori, importo, totale, iva);
+			idintervento, dataora, cliente, tecnico, numero, tipologia, prodotto, motivo, nominativo, riffattura, rifscontrino, note, modalita, firma.substring(0, 49) + "...", modificato,
+			saldato, cancellato, chiuso, conflitto, nuovo, costomanodopera.round(new MathContext(2)).doubleValue(), costocomponenti.round(new MathContext(2)).doubleValue(), costoaccessori
+				.round(new MathContext(2)).doubleValue(), importo.round(new MathContext(2)).doubleValue(), totale.doubleValue(), iva.round(new MathContext(2)).doubleValue());
     }
 
     @Override

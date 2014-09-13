@@ -164,6 +164,7 @@ public class Constants {
 	TECNICO, AMMINISTRATORE
     }
 
+    // *** altre stringhe ***\\
     public static final String CONTRATTUALIZZATO = "Contrattualizzato";
     public static final String PAGAMENTO_DIRETTO = "Pagamento Diretto";
     public static final String POST_VENDITA = "Post-Vendita (Garanzia)";
@@ -205,4 +206,6 @@ public class Constants {
 	    return name;
 	}
     }
+
+    public static final String DATA_POST_PARAMETER = "DATA";
 }
