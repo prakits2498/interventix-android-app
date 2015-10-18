@@ -1,0 +1,1 @@
+Il progetto ha lo scopo di creare l'applicazione Interventix per piattaforma Android
